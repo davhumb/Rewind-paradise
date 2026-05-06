@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, 
+        initial-scale=1.0, maximum-scale=1.0, 
+        user-scalable=no">
+  <title>Rewind Paradise — La Nuit</title>
+  <link rel="stylesheet" href="data/theme.css">
+  <script src="data/dialogues.js"></script>
+  <style>
+
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* BARRE HAUT */
+    .top-bar {
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      background: #080810;
+      border-bottom: 1px solid #1e1e3a;
+    }
+
+    .night-title {
+      font-size: 11px;
+      color: #6060aa;
+      letter-spacing: 3px;
+    }
+
+    .night-day {
+      font-size: 9px;
+      color: #3a3a60;
+      letter-spacing: 1px;
+    }
+
+    /* ZONE PRINCIPALE */
+    .main-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* AMBIANCE NUIT */
+    .night-ambiance {
+      background: #080818;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .ambiance-label {
+      font-size: 8px;
+      color: #3a3a60;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .ambiance-text {
+      font-size: 11px;
+      color: #8080aa;
+      font-style: italic;
+      line-height: 1.6;
+      letter-spacing: 0.5px;
+    }
+
+    /* BILAN NUIT */
+    .bilan-section {
+      background: #0a0a1a;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .bilan-label {
+      font-size: 8px;
+      color: #ff8855;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .bilan-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #0f0f20;
+    }
+
+    .bilan-row:last-child { border-bottom: none; }
+
+    .bilan-nom {
+      font-size: 10px;
+      color: #7070aa;
+      letter-spacing: 1px;
+    }
+
+    .bilan-val {
+      font-size: 11px;
+      color: #f0f0ff;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    .bilan-val.bon  { color: #00ffc8; }
+    .bilan-val.mal  { color: #ff4466; }
+    .bilan-val.warn { color: #ff8855; }
+
+    /* MESSAGES */
+    .messages-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message-card {
+      background: #0a0a1a;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .message-header {
+      background: #0f0f22;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e1e3a;
+    }
+
+    .message-sender {
+      font-size: 10px;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    .message-sender.jackson { color: #00ffc8; }
+    .message-sender.canopi  { color: #8888cc; }
+    .message-sender.cutter  { color: #cc8844; }
+    .message-sender.corey   { color: #ff8855; }
+    .message-sender.inconnu { color: #666688; }
+    .message-sender.warning { color: #ff8855; }
+    .message-sender.danger  { color: #ff4466; }
+
+    .message-heure {
+      font-size: 8px;
+      color: #3a3a60;
+      letter-spacing: 1px;
+    }
+
+    .message-body {
+      padding: 10px 12px;
+    }
+
+    .message-text {
+      font-size: 11px;
+      color: #c0c0dd;
+      line-height: 1.7;
+      font-style: italic;
+      letter-spacing: 0.3px;
+    }
+
+    /* Répondeur */
+    .repondeur {
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
+      border-left: 3px solid #3a3a60;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 12px;
+    }
+
+    .repondeur-label {
+      font-size: 8px;
+      color: #3a3a60;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .repondeur-text {
+      font-size: 11px;
+      color: #9090bb;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* COLLECTE JACKSON */
+    .collecte-card {
+      background: #071a10;
+      border: 1px solid #00ffc830;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .collecte-label {
+      font-size: 8px;
+      color: #00ffc8;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .collecte-montant {
+      font-size: 22px;
+      color: #00ffc8;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px #00ffc8;
+      margin-bottom: 4px;
+    }
+
+    .collecte-detail {
+      font-size: 9px;
+      color: #4a9a7a;
+      letter-spacing: 1px;
+    }
+
+    /* RÉCAP NOTE */
+    .note-recap {
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+
+    .note-recap-label {
+      font-size: 8px;
+      color: #444466;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .note-recap-film {
+      font-size: 11px;
+      color: #8888aa;
+      font-style: italic;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .note-recap-val {
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-shadow: 0 0 12px currentColor;
+    }
+
+    .note-recap-val.haute  { color: #00ffc8; }
+    .note-recap-val.moyenne{ color: #ff8855; }
+    .note-recap-val.basse  { color: #ff4466; }
+
+    .note-recap-commentaire {
+      font-size: 10px;
+      color: #666688;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* ÉNERGIE */
+    .energie-section {
+      background: #0a0a1a;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .energie-label {
+      font-size: 8px;
+      color: #444466;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .energie-bar-container {
+      width: 100%;
+      height: 8px;
+      background: #0f0f20;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .energie-bar {
+      height: 100%;
+      background: #ffdd44;
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .energie-texte {
+      font-size: 10px;
+      color: #8888aa;
+      letter-spacing: 1px;
+    }
+
+    /* BOUTON CONTINUER */
+    .continuer-btn {
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .continuer-btn:active { background: #0f0f22; }
+
+    .continuer-text {
+      font-size: 11px;
+      color: #4a4a70;
+      letter-spacing: 3px;
+    }
+
+    /* FADE */
+    .fade-out { animation: fadeOut 0.5s forwards; }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="night-title">░ LA NUIT ░</div>
+    <div class="night-day" id="night-day">Nuit — Jour 1</div>
+  </div>
+
+  <div class="main-area" id="main-area">
+    <!-- Rempli par JS -->
+  </div>
+
+  <!-- JAUGES -->
+  <div class="bottom-bar">
+    <div class="gauge-item">
+      <span class="gauge-icon">💰</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar money" id="bar-money"
+             style="width:40%"></div>
+      </div>
+      <span class="gauge-value" id="val-money">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">🎬</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar legal" id="bar-legal"
+             style="width:0%"></div>
+      </div>
+      <span class="gauge-value" id="val-legal">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">👁</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar expo" id="bar-expo"
+             style="width:0%"></div>
+      </div>
+      <span class="gauge-value" id="val-expo">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">⚡</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar energy" id="bar-energy"
+             style="width:100%"></div>
+      </div>
+      <span class="gauge-value" id="val-energy">—</span>
+    </div>
+  </div>
+
+  <script>
+
+    let gameState = {};
+
+    // Messages de nuit par semaine / personnage
+    const MESSAGES_NUIT = {
+
+      jackson: {
+        1: [
+          "T'as fait quoi ce soir ? Je veux pas savoir. Je veux juste que ça continue à tourner.",
+          "Le Rewind Paradise c'est un investissement. Traite-le comme tel.",
+          "Collecte mercredi. Comme d'hab."
+        ],
+        2: [
+          "On me dit que t'as des trucs intéressants dans la réserve. C'est bien. Continue.",
+          "Certaines personnes posent des questions sur le vidéoclub. Réponds pas.",
+          "Collecte mercredi. 120$. Exact."
+        ],
+        3: [
+          "Le type en costume qui vient louer des films — laisse-le faire. Il fait partie des meubles.",
+          "Si quelqu'un te parle de DiMaggio tu m'appelles. Direct.",
+          "Collecte mercredi. 150$. On monte."
+        ],
+        4: [
+          "DiMaggio veut te voir. C'est pas une invitation que tu refuses.",
+          "Le vidéoclub peut continuer à tourner. Ou pas. C'est toi qui choisis.",
+          "Collecte mercredi. 180$. Dernière fois je l'augmente."
+        ]
+      },
+
+      canopi: {
+        1: [
+          "Ghost était excellent. Dommage pour la fin.",
+          "J'ai noté quelque chose dans mon carnet ce soir. Rien d'important encore."
+        ],
+        2: [
+          "Je reviens demain. J'ai des questions sur le stock.",
+          "Celluloïd Scalpel. Vous connaissez ?"
+        ],
+        3: [
+          "Les faits sont là. Je les rassemble.",
+          "Ce n'est pas personnel. C'est mon travail."
+        ],
+        4: [
+          "Dossier presque complet.",
+          "Une dernière visite suffira, je pense."
+        ]
+      },
+
+      cutter: {
+        1: [
+          "Quelqu'un fait des micro-métrages dans ce quartier. Pas encore bons. Mais présents.",
+        ],
+        2: [
+          "La coupe de ce soir était... intéressante. Je reviendrai.",
+          "Celluloïd Scalpel numéro 18. Bientôt."
+        ],
+        3: [
+          "Je commence à comprendre ce que vous cherchez. Continue.",
+          "La bascule c'est pas un moment. C'est une décision."
+        ],
+        4: [
+          "Le meilleur micro-métrage que j'ai vu cette année. C'est vous.",
+          "Je prévoie d'écrire quelque chose. Pas encore sûr de quoi."
+        ]
+      },
+
+      corey: {
+        1: [
+          "Fred. T'as oublié d'éteindre les néons. Encore.",
+          "La Beaulieu 16mm dans la vitrine. Je peux pas m'en empêcher de la regarder."
+        ],
+        2: [
+          "J'ai rembobiné les cassettes ce soir. Toutes. Même celles qui en avaient pas besoin.",
+          "Le gamin avec les cheveux rouges est revenu. Il a sonné longtemps."
+        ],
+        3: [
+          "Fred. Ramon. Je sais pas. Fais attention.",
+          "J'ai lu le Celluloïd Scalpel. Cutter parle de 'quelqu'un dans le quartier'."
+        ],
+        4: [
+          "Si DiMaggio dit quelque chose — tu me préviens. Promis ?",
+          "Les micro-métrages. On a fait quelque chose de bien, Fred."
+        ]
+      },
+
+      inconnu: [
+        "Message de numéro inconnu : 'Continue.'",
+        "Numéro masqué : 'On regarde.'",
+        "SMS anonyme : 'Celluloïd Scalpel. Numéro 19.'"
+      ]
+
+    };
+
+    const AMBIANCES_NUIT = [
+      "Les néons bourdonnent. La ville se tait par étapes.",
+      "Quelqu'un a laissé une cassette dans la boîte de retour. Pas de reçu.",
+      "Il pleut sur la vitrine. Les reflets bougent.",
+      "Le répondeur clignote. Deux messages. Fred écoute pas encore.",
+      "La Beaulieu 16mm dans la vitrine du magasin d'en face. Toujours là.",
+      "3h du matin. Les camions de livraison. Le quartier qui recommence.",
+      "Les étagères dans le noir. L'odeur de plastique et de poussière."
+    ];
+
+    // ===================================================
+    // INIT
+    // ===================================================
+
+    window.onload = function() {
+      const save = localStorage.getItem('rewindParadise_save');
+      if (!save) {
+        window.location.href = 'index.html';
+        return;
+      }
+      gameState = JSON.parse(save);
+      updateUI();
+
+      document.getElementById('night-day').textContent =
+        `Nuit — Jour ${gameState.jour}`;
+
+      buildNightScreen();
+    };
+
+    // ===================================================
+    // CONSTRUIRE L'ÉCRAN DE NUIT
+    // ===================================================
+
+    function buildNightScreen() {
+      const gs      = gameState;
+      const area    = document.getElementById('main-area');
+      const semaine = gs.semaine || 1;
+      const jour    = gs.jour || 1;
+      const note    = gs.currentNote || null;
+      const estMercredi = (jour % 7 === 3);
+
+      let html = '';
+
+      // 1. AMBIANCE
+      const ambiance = AMBIANCES_NUIT[
+        Math.floor(Math.random() * AMBIANCES_NUIT.length)
+      ];
+      html += `
+        <div class="night-ambiance">
+          <div class="ambiance-label">░ CETTE NUIT ░</div>
+          <div class="ambiance-text">${ambiance}</div>
+        </div>
+      `;
+
+      // 2. RÉCAP NOTE DU MICRO-MÉTRAGE
+      if (note !== null) {
+        const noteClass = note >= 7 ? 'haute' : note >= 5 ? 'moyenne' : 'basse';
+        const derniereCassette = gs.derniereCassette || 'inconnu';
+
+        const commentaires = {
+          haute:   "Cutter a remarqué quelque chose ce soir.",
+          moyenne: "Correct. Pas suffisant pour l'histoire.",
+          basse:   "On recommence demain."
+        };
+
+        html += `
+          <div class="note-recap">
+            <div class="note-recap-label">MICRO-MÉTRAGE — CE SOIR</div>
+            <div class="note-recap-film">${derniereCassette.replace(/_/g,' ').toUpperCase()}</div>
+            <div class="note-recap-val ${noteClass}">${note}/10</div>
+            <div class="note-recap-commentaire">
+              ${commentaires[noteClass]}
+            </div>
+          </div>
+        `;
+      }
+
+      // 3. COLLECTE JACKSON (mercredi)
+      if (estMercredi) {
+        const montants = { 1:120, 2:120, 3:150, 4:180 };
+        const montant  = montants[semaine] || 120;
+
+        if (gs.argent >= montant) {
+          gs.argent -= montant;
+          html += `
+            <div class="collecte-card">
+              <div class="collecte-label">COLLECTE JACKSON</div>
+              <div class="collecte-montant">-${montant}$</div>
+              <div class="collecte-detail">
+                Payé. Il repart sans un mot.
+              </div>
+            </div>
+          `;
+        } else {
+          gs.jacksonHumeur = 'furieux';
+          html += `
+            <div class="collecte-card" style="border-color:#ff446630;background:#180710;">
+              <div class="collecte-label" style="color:#ff4466;">
+                COLLECTE JACKSON — MANQUE
+              </div>
+              <div class="collecte-montant" style="color:#ff4466;">
+                ${montant}$ REQUIS
+              </div>
+              <div class="collecte-detail" style="color:#ff446480;">
+                Tu as ${gs.argent}$. Jackson est pas content.
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      // 4. MESSAGES
+      html += `<div class="messages-section">`;
+
+      // Message Jackson
+      const jacksonMsgs = MESSAGES_NUIT.jackson[semaine] || MESSAGES_NUIT.jackson[1];
+      const jacksonMsg  = jacksonMsgs[Math.floor(Math.random() * jacksonMsgs.length)];
+      html += messageHTML(
+        'JACKSON',
+        'jackson',
+        getHeure(22, 23),
+        jacksonMsg,
+        null
+      );
+
+      // Message Corey
+      const coreyMsgs = MESSAGES_NUIT.corey[semaine] || MESSAGES_NUIT.corey[1];
+      const coreyMsg  = coreyMsgs[Math.floor(Math.random() * coreyMsgs.length)];
+      html += messageHTML(
+        'COREY',
+        'corey',
+        getHeure(23, 1),
+        coreyMsg,
+        null
+      );
+
+      // Message Canopi (semaine 2+, aléatoire)
+      if (semaine >= 2 && Math.random() > 0.5) {
+        const canopiMsgs = MESSAGES_NUIT.canopi[semaine] || MESSAGES_NUIT.canopi[2];
+        const canopiMsg  = canopiMsgs[Math.floor(Math.random() * canopiMsgs.length)];
+        html += messageHTML(
+          'INSPECTEUR CANOPI',
+          'canopi',
+          getHeure(20, 21),
+          canopiMsg,
+          'Répondeur du Rewind Paradise'
+        );
+      }
+
+      // Message Cutter (selon crédibilité)
+      if (gs.credibilite >= 30 && Math.random() > 0.6) {
+        const cutterMsgs = MESSAGES_NUIT.cutter[semaine] || MESSAGES_NUIT.cutter[1];
+        const cutterMsg  = cutterMsgs[Math.floor(Math.random() * cutterMsgs.length)];
+        html += messageHTML(
+          'THE GLITCH / CUTTER',
+          'cutter',
+          getHeure(1, 3),
+          cutterMsg,
+          null
+        );
+      }
+
+      // Message inconnu (semaine 3+)
+      if (semaine >= 3 && Math.random() > 0.7) {
+        const inconnu = MESSAGES_NUIT.inconnu;
+        html += messageHTML(
+          'INCONNU',
+          'inconnu',
+          getHeure(2, 4),
+          inconnu[Math.floor(Math.random() * inconnu.length)],
+          null
+        );
+      }
+
+      html += `</div>`;
+
+      // 5. BILAN DE NUIT
+      const energieMax = gs.energieMax || 15;
+      let energieRecuperee = Math.min(5, energieMax - gs.energie);
+      if (gs.energieBonusTomorrow) {
+        energieRecuperee += gs.energieBonusTomorrow;
+        gs.energieBonusTomorrow = 0;
+      }
+      energieRecuperee = Math.max(0, energieRecuperee);
+      gs.energie = Math.min(energieMax, gs.energie + energieRecuperee);
+
+      const energiePct = (gs.energie / energieMax) * 100;
+
+      html += `
+        <div class="energie-section">
+          <div class="energie-label">ÉNERGIE — LENDEMAIN</div>
+          <div class="energie-bar-container">
+            <div class="energie-bar" style="width:${energiePct}%"></div>
+          </div>
+          <div class="energie-texte">
+            ${gs.energie}/${energieMax}
+            ${energieRecuperee > 0
+              ? `<span style="color:#00ffc8;margin-left:8px;">
+                   +${energieRecuperee} récupérés
+                 </span>`
+              : ''
+            }
+          </div>
+        </div>
+      `;
+
+      // 6. BILAN GÉNÉRAL
+      html += `
+        <div class="bilan-section">
+          <div class="bilan-label">BILAN — FIN DE JOURNÉE ${jour}</div>
+          <div class="bilan-row">
+            <span class="bilan-nom">ARGENT</span>
+            <span class="bilan-val ${gs.argent > 200 ? 'bon' : gs.argent > 50 ? '' : 'mal'}">
+              ${gs.argent}$
+            </span>
+          </div>
+          <div class="bilan-row">
+            <span class="bilan-nom">LÉGALITÉ</span>
+            <span class="bilan-val ${gs.legalite >= 70 ? 'mal' : gs.legalite >= 40 ? 'warn' : 'bon'}">
+              ${gs.legalite}%
+            </span>
+          </div>
+          <div class="bilan-row">
+            <span class="bilan-nom">EXPOSITION</span>
+            <span class="bilan-val ${gs.exposition >= 70 ? 'mal' : gs.exposition >= 40 ? 'warn' : 'bon'}">
+              ${gs.exposition}%
+            </span>
+          </div>
+          <div class="bilan-row">
+            <span class="bilan-nom">CRÉDIBILITÉ</span>
+            <span class="bilan-val ${gs.credibilite >= 70 ? 'bon' : gs.credibilite >= 40 ? '' : 'mal'}">
+              ${gs.credibilite}%
+            </span>
+          </div>
+          <div class="bilan-row">
+            <span class="bilan-nom">RÉPUTATION</span>
+            <span class="bilan-val">
+              ${'★'.repeat(Math.round(gs.reputation || 3))}${'☆'.repeat(5 - Math.round(gs.reputation || 3))}
+            </span>
+          </div>
+        </div>
+      `;
+
+      // 7. BOUTON CONTINUER
+      html += `
+        <div class="continuer-btn" onclick="passerAuLendemain()">
+          <div class="continuer-text">▶ LENDEMAIN</div>
+        </div>
+      `;
+
+      area.innerHTML = html;
+      updateUI();
+      saveGame();
+    }
+
+    // ===================================================
+    // UTILITAIRES
+    // ===================================================
+
+    function messageHTML(nom, classe, heure, texte, repondeur) {
+      return `
+        <div class="message-card">
+          <div class="message-header">
+            <span class="message-sender ${classe}">${nom}</span>
+            <span class="message-heure">${heure}</span>
+          </div>
+          <div class="message-body">
+            <div class="message-text">"${texte}"</div>
+          </div>
+          ${repondeur ? `
+            <div class="repondeur">
+              <div class="repondeur-label">${repondeur}</div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function getHeure(minH, maxH) {
+      const h = minH + Math.floor(Math.random() * (maxH - minH + 1));
+      const m = Math.floor(Math.random() * 60);
+      return `${String(h % 24).padStart(2,'0')}h${String(m).padStart(2,'0')}`;
+    }
+
+    function passerAuLendemain() {
+      const gs = gameState;
+
+      // Avancer le jour
+      gs.jour++;
+
+      // Avancer la semaine si nécessaire
+      if (gs.jour > gs.semaine * 7) {
+        gs.semaine++;
+      }
+
+      // Vérifier les fins
+      if (gs.argent <= 0 && gs.jacksonHumeur === 'furieux') {
+        gs.fin = 'mauvaise_reception_anticipee';
+        saveGame();
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = 'ending.html';
+        }, 500);
+        return;
+      }
+
+      if (gs.legalite >= 100 || gs.exposition >= 100) {
+        gs.fin = 'mauvaise_reception';
+        saveGame();
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = 'ending.html';
+        }, 500);
+        return;
+      }
+
+      if (gs.semaine > 5) {
+        // Calculer la fin
+        if (gs.credibilite >= 85 && noteMoyenne() >= 7.5) {
+          gs.fin = 'coupez';
+        } else if (gs.ultimatum_dimaggio) {
+          gs.fin = 'organisation_dimaggio';
+        } else if (gs.legalite < 70 && gs.exposition < 60) {
+          gs.fin = 'directors_cut';
+        } else {
+          gs.fin = 'mauvaise_reception';
+        }
+        saveGame();
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = 'ending.html';
+        }, 500);
+        return;
+      }
+
+      saveGame();
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = 'game.html';
+      }, 500);
+    }
+
+    function noteMoyenne() {
+      const notes = gameState.notesHistory || [];
+      if (notes.length === 0) return 0;
+      return notes.reduce((a, b) => a + b, 0) / notes.length;
+    }
+
+    function updateUI() {
+      const gs = gameState;
+      document.getElementById('bar-money').style.width =
+        Math.min(100, (gs.argent / 500) * 100) + '%';
+      document.getElementById('val-money').textContent = gs.argent + '$';
+      document.getElementById('bar-legal').style.width = gs.legalite + '%';
+      document.getElementById('val-legal').textContent = gs.legalite + '%';
+      document.getElementById('bar-expo').style.width  = gs.exposition + '%';
+      document.getElementById('val-expo').textContent  = gs.exposition + '%';
+      const ePct = (gs.energie / (gs.energieMax || 15)) * 100;
+      document.getElementById('bar-energy').style.width = ePct + '%';
+      document.getElementById('val-energy').textContent =
+        gs.energie + '/' + (gs.energieMax || 15);
+    }
+
+    function saveGame() {
+      localStorage.setItem(
+        'rewindParadise_save',
+        JSON.stringify(gameState)
+      );
+    }
+
+  </script>
+
+</body>
+</html>

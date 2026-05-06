@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, 
+        initial-scale=1.0, maximum-scale=1.0, 
+        user-scalable=no">
+  <title>Rewind Paradise — Fin</title>
+  <link rel="stylesheet" href="data/theme.css">
+  <style>
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #000000;
+      font-family: 'Courier New', monospace;
+      color: #ccccdd;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 2px,
+        rgba(0,0,0,0.2) 2px, rgba(0,0,0,0.2) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ===== ÉCRAN NOIR ===== */
+    .black-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      z-index: 500;
+      transition: opacity 2s ease;
+    }
+
+    .black-screen.fade {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ===== ZONE PRINCIPALE ===== */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 16px;
+      gap: 16px;
+      overflow-y: auto;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .main-area.visible { opacity: 1; }
+
+    /* ===== HEADER ===== */
+    .fin-header {
+      text-align: center;
+      padding: 20px 0 10px;
+    }
+
+    .fin-label {
+      font-size: 9px;
+      color: #222233;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+    }
+
+    .fin-titre {
+      font-size: 22px;
+      letter-spacing: 3px;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      white-space: pre-line;
+    }
+
+    .fin-titre.directors { color: #00ffc8; text-shadow: 0 0 20px #00ffc8; }
+    .fin-titre.mauvaise  { color: #ff6b35; text-shadow: 0 0 20px #ff6b35; }
+    .fin-titre.coupez    { color: #ffffff; text-shadow: 0 0 10px #fff, 0 0 30px #fff; }
+
+    .fin-sous-titre {
+      font-size: 10px;
+      color: #222233;
+      letter-spacing: 3px;
+    }
+
+    /* ===== IMAGE ===== */
+    .fin-image {
+      text-align: center;
+      padding: 10px 0;
+      font-size: 48px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .fin-image.visible { opacity: 1; }
+
+    /* ===== SECTIONS ===== */
+    .fin-section {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .fin-section.visible { opacity: 1; }
+
+    /* NARRATIF */
+    .fin-narrative {
+      background: #050508;
+      border-left: 2px solid #1a1a3a;
+      padding: 14px 16px;
+    }
+
+    .fin-narrative-text {
+      font-size: 11px;
+      color: #888899;
+      line-height: 1.9;
+      letter-spacing: 0.5px;
+      font-style: italic;
+    }
+
+    .fin-narrative-text p {
+      margin-bottom: 12px;
+    }
+
+    .fin-narrative-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* DERNIÈRE IMAGE */
+    .fin-derniere {
+      background: #050508;
+      border: 1px solid #0d0d1a;
+      border-radius: 6px;
+      padding: 14px;
+    }
+
+    .derniere-label {
+      font-size: 8px;
+      color: #222233;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .derniere-text {
+      font-size: 10px;
+      color: #444455;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* CANOPI */
+    .fin-canopi {
+      background: #050510;
+      border: 1px solid #0d0d1a;
+      border-left: 2px solid #444466;
+      border-radius: 0 6px 6px 0;
+      padding: 12px 14px;
+    }
+
+    .canopi-label {
+      font-size: 8px;
+      color: #333355;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .canopi-text {
+      font-size: 10px;
+      color: #444455;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* COREY */
+    .fin-corey {
+      background: #050508;
+      border-left: 2px solid #ff6b3530;
+      padding: 10px 14px;
+    }
+
+    .corey-label-fin {
+      font-size: 8px;
+      color: #333333;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .corey-text-fin {
+      font-size: 10px;
+      color: #444444;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* STATS */
+    .fin-stats {
+      background: #050508;
+      border: 1px solid #0d0d1a;
+      border-radius: 6px;
+      padding: 14px;
+    }
+
+    .stats-label {
+      font-size: 8px;
+      color: #222233;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .stat-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid #0a0a12;
+    }
+
+    .stat-line:last-child { border-bottom: none; }
+
+    .stat-name {
+      font-size: 9px;
+      color: #333344;
+      letter-spacing: 1px;
+    }
+
+    .stat-val {
+      font-size: 10px;
+      color: #ccccdd;
+      letter-spacing: 1px;
+    }
+
+    .stat-val.good { color: #00ffc8; }
+    .stat-val.bad  { color: #ff0044; }
+    .stat-val.warn { color: #ff6b35; }
+
+    /* NOTE MOYENNE VISUELLE */
+    .note-moyenne-visual {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid #0a0a12;
+    }
+
+    .note-moyenne-label {
+      font-size: 8px;
+      color: #222233;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .note-moyenne-bar {
+      width: 100%;
+      height: 6px;
+      background: #0a0a15;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .note-moyenne-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1.5s ease;
+    }
+
+    /* GÉNÉRIQUE */
+    .generique {
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    .gen-separator {
+      font-size: 8px;
+      color: #111122;
+      letter-spacing: 2px;
+      margin: 4px 0;
+    }
+
+    .gen-titre {
+      font-size: 11px;
+      color: #222233;
+      letter-spacing: 3px;
+      margin: 6px 0;
+    }
+
+    .gen-line {
+      font-size: 8px;
+      color: #111122;
+      letter-spacing: 2px;
+      margin: 3px 0;
+    }
+
+    .gen-vhs {
+      font-size: 8px;
+      color: #0a0a15;
+      letter-spacing: 3px;
+      margin-top: 12px;
+    }
+
+    /* BOUTONS */
+    .fin-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 24px;
+    }
+
+    .btn-rejouer {
+      background: #0a0a15;
+      border: 1px solid #1a1a3a;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-rejouer:active { background: #111125; }
+
+    .btn-rejouer-text {
+      font-size: 11px;
+      color: #00ffc8;
+      letter-spacing: 3px;
+    }
+
+    .btn-titre {
+      background: #050508;
+      border: 1px solid #0d0d1a;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-titre:active { background: #080810; }
+
+    .btn-titre-text {
+      font-size: 10px;
+      color: #222233;
+      letter-spacing: 3px;
+    }
+
+    /* EFFETS SPÉCIAUX PAR FIN */
+    .glitch-effect {
+      animation: glitch 0.3s ease;
+    }
+
+    @keyframes glitch {
+      0%   { transform: translateX(0);  filter: none; }
+      25%  { transform: translateX(-3px); filter: hue-rotate(90deg); }
+      50%  { transform: translateX(3px);  filter: hue-rotate(-90deg); }
+      75%  { transform: translateX(-1px); filter: none; }
+      100% { transform: translateX(0);  filter: none; }
+    }
+
+    /* Grain pour fin mauvaise */
+    .grain-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="black-screen" id="black-screen"></div>
+  <div class="grain-overlay"></div>
+
+  <div class="main-area" id="main-area">
+
+    <div class="fin-header">
+      <div class="fin-label">FIN DE PARTIE</div>
+      <div class="fin-titre" id="fin-titre">—</div>
+      <div class="fin-sous-titre" id="fin-sous-titre">—</div>
+    </div>
+
+    <div class="fin-image fin-section" id="fin-image">—</div>
+
+    <div class="fin-narrative fin-section" id="fin-narrative">
+      <div class="fin-narrative-text" id="fin-narrative-text">—</div>
+    </div>
+
+    <div class="fin-canopi fin-section" id="fin-canopi">
+      <div class="canopi-label">CANOPI —</div>
+      <div class="canopi-text" id="canopi-text">—</div>
+    </div>
+
+    <div class="fin-corey fin-section" id="fin-corey">
+      <div class="corey-label-fin">COREY —</div>
+      <div class="corey-text-fin" id="corey-fin-text">—</div>
+    </div>
+
+    <div class="fin-derniere fin-section" id="fin-derniere">
+      <div class="derniere-label">DERNIÈRE IMAGE</div>
+      <div class="derniere-text" id="derniere-text">—</div>
+    </div>
+
+    <div class="fin-stats fin-section" id="fin-stats">
+      <div class="stats-label">BILAN DE PARTIE</div>
+      <div id="stats-content">—</div>
+      <div class="note-moyenne-visual">
+        <div class="note-moyenne-label">PROGRESSION ARTISTIQUE</div>
+        <div class="note-moyenne-bar">
+          <div class="note-moyenne-fill" id="note-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="generique fin-section" id="generique">
+      <div class="gen-separator">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</div>
+      <div class="gen-titre">REWIND PARADISE</div>
+      <div class="gen-line">MICRO-MÉTRAGE</div>
+      <div class="gen-separator">▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓</div>
+      <div class="gen-line" style="margin-top:10px">Un film de Fred et Corey</div>
+      <div class="gen-line">Critique : The Glitch</div>
+      <div class="gen-line">Distribution : Jackson</div>
+      <div class="gen-line">Enquêteur : Inspecteur Canopi</div>
+      <div class="gen-line" style="margin-top:8px">
+        Avec la participation de Jessica et Lucious
+      </div>
+      <div class="gen-vhs" style="margin-top:14px">
+        ◀◀ REMBOBINEZ AVANT DE RENDRE ▶▶
+      </div>
+    </div>
+
+    <div class="fin-buttons fin-section" id="fin-buttons">
+      <div class="btn-rejouer" onclick="rejouer()">
+        <div class="btn-rejouer-text">▶ REJOUER</div>
+      </div>
+      <div class="btn-titre" onclick="goToTitle()">
+        <div class="btn-titre-text">ÉCRAN TITRE</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+
+    // ===================================================
+    // DONNÉES DES FINS
+    // ===================================================
+
+    const FINS = {
+
+      // ===== FIN 1 — DIRECTOR'S CUT =====
+      directors_cut: {
+        titre: "DIRECTOR'S CUT",
+        sousTitre: "UNE SORTIE PROPRE",
+        classe: 'directors',
+        image: '🎬',
+
+        narratif: `
+          <p>Canopi est venu louer Ghost une dernière fois.</p>
+          <p>Il a payé. Il a attendu le reçu. Il l'a plié soigneusement. Il est reparti sans un mot sur l'enquête.</p>
+          <p>Dans la boîte de retour le lendemain matin : la cassette de Ghost. Et dessous, une feuille pliée en quatre.</p>
+          <p>"Dossier classé."</p>
+          <p>Deux mots. Rien d'autre.</p>
+          <p>Fred est parti faire son film. Il a pas dit au revoir au Rewind Paradise — il a juste fermé le rideau de fer une dernière fois, de l'extérieur. Il a regardé l'enseigne. Les néons orange. La moquette bleue visible à travers la vitre. Il est reparti sans se retourner.</p>
+          <p>Corey est resté. Le Rewind Palace tourne encore. Différemment. Mais encore.</p>
+          <p>Cutter a publié quelque chose dans Celluloïd Scalpel. Pas une critique. Un paragraphe. Il mentionnait "deux types dans un vidéoclub qui avaient compris quelque chose sur le cinéma sans jamais le formuler." Il donnait pas de nom.</p>
+          <p>C'était suffisant.</p>
+        `,
+
+        canopi: "Il est venu louer Ghost une dernière fois. Il a payé en liquide. Il est reparti. Dans sa poche : son carnet. Mais il a laissé quelque chose sur le comptoir. Son stylo. Le même depuis le début.",
+
+        corey: "Fred est parti. Le rideau est baissé. J'ai rembobiné toutes les cassettes ce soir. Même celles qui en avaient pas besoin. Je savais pas quoi faire d'autre.",
+
+        derniere_image: "Fred de dos, devant le rideau de fer fermé du Rewind Paradise. L'enseigne éteinte mais les néons pas encore froids. Il repart à gauche. On le voit plus. Le rideau reste là.",
+
+        ton: "Mélancolique mais ouvert. Pas une victoire totale. Une sortie propre dans une ville qui en offre pas souvent."
+      },
+
+      // ===== FIN 2 — MAUVAISE RÉCEPTION =====
+      mauvaise_reception: {
+        titre: "MAUVAISE\nRÉCEPTION",
+        sousTitre: "LA FIN D'UNE CHOSE",
+        classe: 'mauvaise',
+        image: '📡',
+
+        narratif: `
+          <p>Ça n'a pas pris longtemps, au final.</p>
+          <p>Une perquisition. Ou un ultimatum de DiMaggio. Dans les deux cas le résultat était le même — le Rewind Paradise a fermé. Pas dans un fracas de verre brisé. Administrativement. Économiquement. La ville avale les petites choses sans même s'en apercevoir.</p>
+          <p>Fred et Corey se sont retrouvés dehors. Pas en prison. Pas morts. Mais sans rien. Ou presque.</p>
+          <p>Corey a demandé : "T'as pris la cassette ?"</p>
+          <p>Fred a dit : "Laquelle ?"</p>
+          <p>Corey a souri. "Toutes."</p>
+          <p>Ils avaient tout pris. Les cassettes noires. Les notes. Le fanzine de Cutter. Les marques-pages. Tout ce qui pouvait rentrer dans deux sacs.</p>
+          <p>Jackson a pas rappelé. DiMaggio a pas rappelé. Canopi a classé le dossier sans le fermer vraiment — il a juste arrêté de venir louer Ghost.</p>
+          <p>La Beaulieu 16mm est restée dans la vitrine du magasin. Pour l'instant.</p>
+        `,
+
+        canopi: "J'ai eu ce qu'il fallait pour agir. J'ai agi. C'est mon travail. Si j'avais eu des réponses différentes à mes questions — peut-être. Mais j'ai eu les réponses que j'ai eues.",
+
+        corey: "On a tout perdu sauf les cassettes. Et les cassettes c'est tout ce qui comptait. Je pense. Je suis pas encore sûr. Je serai sûr dans quelques semaines.",
+
+        derniere_image: "Fred et Corey assis sur le trottoir devant le rideau de fer baissé du Rewind Paradise. Deux sacs entre eux. La rue est vide. Les néons sont éteints. Il reste une lumière dans la réserve — quelqu'un a oublié d'éteindre.",
+
+        ton: "Amer mais pas désespéré. La fin d'une chose, peut-être le début d'une autre."
+      },
+
+      // ===== FIN 2B — MAUVAISE RÉCEPTION ANTICIPÉE =====
+      mauvaise_reception_anticipee: {
+        titre: "MAUVAISE\nRÉCEPTION",
+        sousTitre: "FIN ANTICIPÉE",
+        classe: 'mauvaise',
+        image: '📡',
+
+        narratif: `
+          <p>L'argent a manqué avant tout le reste.</p>
+          <p>Jackson n'a pas été patient longtemps. Il avait ses propres comptes à rendre. C'est pas de sa faute — c'est la mécanique de la chose.</p>
+          <p>Le Rewind Paradise n'a pas survécu à la semaine. Certaines histoires s'arrêtent avant d'avoir vraiment commencé. Peut-être que c'est mieux. Peut-être que les films qui se terminent tôt sont les meilleurs micro-métrages.</p>
+          <p>Fred a pensé à ce que Cutter dirait.</p>
+          <p>Probablement : "Vous avez coupé avant même d'avoir quelque chose à couper."</p>
+          <p>Peut-être pas.</p>
+        `,
+
+        canopi: "Je suis venu louer Ghost. Le rideau était baissé. J'ai pas insisté.",
+
+        corey: "Ça a duré moins longtemps que prévu. Mais on a quand même fait des trucs bien pendant que ça durait. Non ?",
+
+        derniere_image: "Une enveloppe glissée sous le rideau de fer. Fred la ramasse. Il l'ouvre pas tout de suite. Il s'assoit sur les marches et regarde passer les voitures pendant dix minutes. Puis il l'ouvre.",
+
+        ton: "Court. Brutal. Sans fioriture. Comme un micro-métrage raté — mais pas sans intérêt."
+      },
+
+      // ===== FIN 3 — COUPEZ ! =====
+      coupez: {
+        titre: "COUPEZ !",
+        sousTitre: "LA SEULE VRAIE VICTOIRE",
+        classe: 'coupez',
+        image: '✂',
+
+        narratif: `
+          <p>Cutter a publié un article. Pas une critique. Un manifeste.</p>
+          <p>Il nommait le Rewind Paradise. Il nommait Fred et Corey. Il théorisait le micro-métrage comme forme d'art à part entière — pas un accident, pas un divertissement underground, une forme. Avec ses règles. Avec ses maîtres. Il citait deux noms.</p>
+          <p>L'article a été repris. D'abord par quelqu'un qui couvrait la scène underground. Puis par quelqu'un d'autre. Et encore un autre. Ça fait pas de vous une star — ça fait de vous quelqu'un dont on parle dans des conversations qui continueront sans vous.</p>
+          <p>Canopi a lu l'article. Il est venu louer Ghost. Il n'a rien dit sur l'enquête. Il a payé. Il est reparti. C'était sa façon de classer l'affaire.</p>
+          <p>DiMaggio a lu l'article. Il était furieux — trop de visibilité, exactement ce qu'il évitait. Mais il pouvait rien faire sans s'exposer lui-même. Il a rappelé Jackson. Il a coupé le lien avec le Rewind Paradise.</p>
+          <p>Jackson a envoyé un message. Un seul mot : "Bien."</p>
+          <p>Fred et Corey étaient libres. Artistiquement reconnus. Économiquement précaires. Exactement où ils voulaient être.</p>
+          <p>La Beaulieu 16mm est sortie de la vitrine du magasin.</p>
+        `,
+
+        canopi: "J'ai lu l'article de Celluloïd Scalpel. J'ai loué Ghost. En partant j'ai laissé mon badge sur le comptoir. Je l'ai pas fait exprès. Ou peut-être que si. Je sais pas encore.",
+
+        corey: "Cutter a écrit un manifeste. Sur nous. Sur ce qu'on faisait. Je l'ai lu six fois. La septième je l'ai rangé. Faut pas en faire trop. On a du travail.",
+
+        derniere_image: "La une de Celluloïd Scalpel numéro 21. Titre : 'Un bon micro-métrage ne change pas la fin. Il révèle que le début était déjà foutu.' En dessous : le Rewind Paradise, rideau levé, néons allumés. Et dans la vitrine, une camera 16mm.",
+
+        ton: "La seule fin qui ressemble à une vraie victoire. Elle coûte le plus cher à obtenir."
+      },
+
+      // ===== FIN SPÉCIALE — DIMAGGIO ACCEPTÉ =====
+      organisation_dimaggio: {
+        titre: "SOUS CONTRAT",
+        sousTitre: "LE PRIX DE LA SÉCURITÉ",
+        classe: 'mauvaise',
+        image: '🤝',
+
+        narratif: `
+          <p>DiMaggio a hoché la tête. "Bien." C'est tout ce qu'il a dit.</p>
+          <p>Le Rewind Paradise a continué à tourner. Les micro-métrages aussi. Mais quelque chose avait changé — une pression différente, plus silencieuse que Canopi, plus constante que Jackson.</p>
+          <p>Fred faisait les micro-métrages que DiMaggio voulait. Pas les mauvais — DiMaggio avait du goût, à sa façon. Mais les siens. Pas ceux de Fred.</p>
+          <p>Cutter a arrêté d'envoyer des critiques après la troisième semaine. Il a pas expliqué pourquoi. Fred savait pourquoi.</p>
+          <p>Corey a posé la question une fois : "On fait encore du cinéma ?"</p>
+          <p>Fred a pas répondu.</p>
+        `,
+
+        canopi: "L'enquête a été classée. Officiellement le Rewind Paradise est un vidéoclub. Officiellement.",
+
+        corey: "On fait encore des micro-métrages. Je pense qu'on en fait encore. Je suis plus sûr de rien.",
+
+        derniere_image: "Fred seul dans la réserve. Une cassette dans les mains. Il la regarde. Il la pose. Il en prend une autre. Il la pose aussi. La réserve est pleine de cassettes. Il choisit plus.",
+
+        ton: "La fin la plus triste. Pas de violence, pas d'éclat. Juste la disparition lente de quelque chose."
+      }
+
+    };
+
+    // ===================================================
+    // INIT
+    // ===================================================
+
+    window.onload = function() {
+      const save = localStorage.getItem('rewindParadise_save');
+      if (!save) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const gs = JSON.parse(save);
+      const finKey = gs.fin || 'directors_cut';
+      const fin = FINS[finKey] || FINS.directors_cut;
+
+      startEndingSequence(fin, gs);
+    };
+
+    // ===================================================
+    // SÉQUENCE DE FIN
+    // ===================================================
+
+    function startEndingSequence(fin, gs) {
+
+      // Écran noir 2 secondes
+      setTimeout(() => {
+        document.getElementById('black-screen').classList.add('fade');
+      }, 1500);
+
+      // Révéler le contenu
+      setTimeout(() => {
+        fillContent(fin, gs);
+        document.getElementById('main-area').classList.add('visible');
+      }, 2500);
+
+      // Révéler les sections progressivement
+      const sections = [
+        { id: 'fin-image',    delay: 3000 },
+        { id: 'fin-narrative', delay: 3800 },
+        { id: 'fin-canopi',   delay: 5000 },
+        { id: 'fin-corey',    delay: 5800 },
+        { id: 'fin-derniere', delay: 6600 },
+        { id: 'fin-stats',    delay: 7400 },
+        { id: 'generique',    delay: 8400 },
+        { id: 'fin-buttons',  delay: 9200 }
+      ];
+
+      sections.forEach(s => {
+        setTimeout(() => {
+          const el = document.getElementById(s.id);
+          if (el) el.classList.add('visible');
+        }, s.delay);
+      });
+
+      // Animer la barre de note moyenne
+      setTimeout(() => {
+        animateNoteBarre(gs);
+      }, 8000);
+    }
+
+    // ===================================================
+    // REMPLIR LE CONTENU
+    // ===================================================
+
+    function fillContent(fin, gs) {
+
+      // Titre et classe
+      const titreEl = document.getElementById('fin-titre');
+      titreEl.textContent = fin.titre;
+      titreEl.className   = 'fin-titre ' + fin.classe;
+
+      document.getElementById('fin-sous-titre').textContent =
+        fin.sousTitre;
+
+      // Image
+      document.getElementById('fin-image').textContent = fin.image;
+
+      // Narratif
+      document.getElementById('fin-narrative-text').innerHTML =
+        fin.narratif;
+
+      // Canopi
+      document.getElementById('canopi-text').textContent =
+        fin.canopi;
+
+      // Corey
+      document.getElementById('corey-fin-text').textContent =
+        fin.corey;
+
+      // Dernière image
+      document.getElementById('derniere-text').textContent =
+        fin.derniere_image;
+
+      // Stats
+      fillStats(gs, fin);
+    }
+
+    // ===================================================
+    // STATS
+    // ===================================================
+
+    function fillStats(gs, fin) {
+      const notes = gs.notesHistory || [];
+      const nbNotes = notes.length;
+
+      const moyenne = nbNotes > 0
+        ? (notes.reduce((a, b) => a + b, 0) / nbNotes).toFixed(1)
+        : '—';
+
+      const meilleure = nbNotes > 0
+        ? Math.max(...notes)
+        : '—';
+
+      const pireNote = nbNotes > 0
+        ? Math.min(...notes)
+        : '—';
+
+      // Série de bonnes notes
+      let meilleuresSerie = 0;
+      let serieCourante = 0;
+      notes.forEach(n => {
+        if (n >= 7) {
+          serieCourante++;
+          if (serieCourante > meilleuresSerie)
+            meilleuresSerie = serieCourante;
+        } else {
+          serieCourante = 0;
+        }
+      });
+
+      const content = document.getElementById('stats-content');
+      content.innerHTML = `
+        <div class="stat-line">
+          <span class="stat-name">JOURS JOUÉS</span>
+          <span class="stat-val">${gs.jour}</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">SEMAINES</span>
+          <span class="stat-val">${gs.semaine}</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">MICRO-MÉTRAGES</span>
+          <span class="stat-val">${nbNotes}</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">NOTE MOYENNE</span>
+          <span class="stat-val ${
+            parseFloat(moyenne) >= 7.5 ? 'good' :
+            parseFloat(moyenne) >= 5   ? ''     : 'bad'
+          }">${moyenne}/10</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">MEILLEURE NOTE</span>
+          <span class="stat-val ${
+            meilleure >= 9 ? 'good' :
+            meilleure >= 7 ? ''     : 'bad'
+          }">${meilleure}/10</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">NOTE LA PLUS BASSE</span>
+          <span class="stat-val ${pireNote <= 2 ? 'bad' : ''}">${pireNote}/10</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">MEILLEURE SÉRIE</span>
+          <span class="stat-val ${
+            meilleuresSerie >= 5 ? 'good' :
+            meilleuresSerie >= 3 ? ''     : 'bad'
+          }">${meilleuresSerie} consécutifs ≥7</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">ARGENT FINAL</span>
+          <span class="stat-val ${
+            gs.argent > 300 ? 'good' :
+            gs.argent > 50  ? ''     : 'bad'
+          }">${gs.argent}$</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">LÉGALITÉ FINALE</span>
+          <span class="stat-val ${
+            gs.legalite >= 80 ? 'bad' :
+            gs.legalite >= 50 ? 'warn' : 'good'
+          }">${gs.legalite}%</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">EXPOSITION FINALE</span>
+          <span class="stat-val ${
+            gs.exposition >= 80 ? 'bad' :
+            gs.exposition >= 50 ? 'warn' : 'good'
+          }">${gs.exposition}%</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">CRÉDIBILITÉ</span>
+          <span class="stat-val ${
+            gs.credibilite >= 85 ? 'good' :
+            gs.credibilite >= 50 ? ''     : 'bad'
+          }">${gs.credibilite}%</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">RÉPUTATION VIDÉOCLUB</span>
+          <span class="stat-val">${
+            '★'.repeat(Math.round(gs.reputation || 3)) +
+            '☆'.repeat(5 - Math.round(gs.reputation || 3))
+          }</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">JACKSON</span>
+          <span class="stat-val ${
+            gs.jacksonHumeur === 'cool'      ? 'good' :
+            gs.jacksonHumeur === 'furieux'   ? 'bad'  : 'warn'
+          }">${(gs.jacksonHumeur || 'cool').toUpperCase()}</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">JESSICA</span>
+          <span class="stat-val ${
+            gs.jessica_preuves ? 'good' : ''
+          }">${gs.jessica_preuves ? 'PREUVES OBTENUES' : 'ARC INCOMPLET'}</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">LUCIOUS</span>
+          <span class="stat-val ${
+            gs.lucious_finale_reussi ? 'good' : ''
+          }">${gs.lucious_finale_reussi ? 'COSTELLO RÉGLÉ' : 'ARC INCOMPLET'}</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">CUTTER</span>
+          <span class="stat-val ${
+            gs.cutterInteret === 'investi' || gs.cutterInteret === 'defie'
+              ? 'good' : ''
+          }">${getCutterStatus(gs)}</span>
+        </div>
+        <div class="stat-line">
+          <span class="stat-name">FIN OBTENUE</span>
+          <span class="stat-val ${
+            fin.classe === 'coupez'   ? 'good' :
+            fin.classe === 'directors' ? ''    : 'bad'
+          }">${fin.sousTitre}</span>
+        </div>
+      `;
+    }
+
+    function getCutterStatus(gs) {
+      switch(gs.cutterInteret) {
+        case 'investi': return 'INVESTI';
+        case 'defie':   return 'DÉFIÉ';
+        case 'intrigue':return 'INTRIGUÉ';
+        default:        return 'INDIFFÉRENT';
+      }
+    }
+
+    function animateNoteBarre(gs) {
+      const notes = gs.notesHistory || [];
+      if (notes.length === 0) return;
+
+      const moyenne = notes.reduce((a, b) => a + b, 0) / notes.length;
+      const pct = (moyenne / 10) * 100;
+
+      const bar = document.getElementById('note-bar');
+      if (!bar) return;
+
+      const color =
+        moyenne >= 7.5 ? '#00ffc8' :
+        moyenne >= 5   ? '#ff6b35' : '#ff0044';
+
+      bar.style.background = color;
+      bar.style.width = pct + '%';
+    }
+
+    // ===================================================
+    // BOUTONS
+    // ===================================================
+
+    function rejouer() {
+      localStorage.removeItem('rewindParadise_save');
+      window.location.href = 'index.html';
+    }
+
+    function goToTitle() {
+      window.location.href = 'index.html';
+    }
+
+  </script>
+
+</body>
+</html>

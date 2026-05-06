@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, 
+        initial-scale=1.0, maximum-scale=1.0, 
+        user-scalable=no">
+  <title>Rewind Paradise</title>
+  <link rel="stylesheet" href="data/theme.css">
+  <style>
+
+    /* ===== BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    /* ===== EFFET GRAIN VHS ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: 
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0,0,0,0.15) 2px,
+          rgba(0,0,0,0.15) 4px
+        );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* ===== TÉLÉVISION ===== */
+    .tv-container {
+      width: 90vw;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tv-body {
+      width: 100%;
+      background: #1a1a2e;
+      border-radius: 20px;
+      padding: 15px;
+      border: 3px solid #2a2a4e;
+      box-shadow: 
+        0 0 30px rgba(0, 255, 200, 0.1),
+        inset 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .tv-screen {
+      width: 100%;
+      background: #050510;
+      border-radius: 10px;
+      padding: 30px 20px;
+      border: 2px solid #111130;
+      position: relative;
+      overflow: hidden;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ===== EFFET SCANLINES ===== */
+    .tv-screen::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 200, 0.03),
+        rgba(0, 255, 200, 0.03) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+    }
+
+    /* ===== TITRE ===== */
+    .title-block {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: flicker 4s infinite;
+    }
+
+    .title-main {
+      font-size: 28px;
+      font-weight: bold;
+      color: #00ffc8;
+      text-shadow: 
+        0 0 10px #00ffc8,
+        0 0 20px #00ffc8,
+        2px 2px 0px #005540;
+      letter-spacing: 3px;
+      line-height: 1.2;
+    }
+
+    .title-sub {
+      font-size: 13px;
+      color: #ff6b35;
+      letter-spacing: 6px;
+      margin-top: 8px;
+      text-shadow: 0 0 8px #ff6b35;
+    }
+
+    .title-year {
+      font-size: 10px;
+      color: #444466;
+      letter-spacing: 4px;
+      margin-top: 4px;
+    }
+
+    /* ===== MENU ===== */
+    .menu-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: all 0.1s;
+      border: 1px solid transparent;
+      border-radius: 3px;
+    }
+
+    .menu-item:active {
+      background: rgba(0, 255, 200, 0.1);
+      border-color: #00ffc8;
+    }
+
+    .menu-item.selected {
+      background: rgba(0, 255, 200, 0.08);
+      border-color: rgba(0, 255, 200, 0.3);
+    }
+
+    .menu-cursor {
+      color: #00ffc8;
+      font-size: 14px;
+      margin-right: 10px;
+      width: 16px;
+      animation: blink 1s infinite;
+    }
+
+    .menu-text {
+      color: #ccccdd;
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+
+    .menu-item.disabled .menu-text {
+      color: #333344;
+    }
+
+    .menu-item.disabled .menu-cursor {
+      color: #333344;
+    }
+
+    /* ===== PIED DE L'ÉCRAN ===== */
+    .screen-footer {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .vhs-label {
+      font-size: 9px;
+      color: #222233;
+      letter-spacing: 3px;
+    }
+
+    /* ===== PIED DE LA TÉLÉ ===== */
+    .tv-base {
+      width: 60%;
+      height: 12px;
+      background: #1a1a2e;
+      border-radius: 0 0 8px 8px;
+      border: 2px solid #2a2a4e;
+      border-top: none;
+    }
+
+    .tv-stand {
+      width: 30%;
+      height: 8px;
+      background: #151525;
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* ===== SIGNAL PARASITE ===== */
+    .glitch-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: rgba(0, 255, 200, 0.4);
+      left: 0;
+      animation: glitch-move 6s infinite;
+      pointer-events: none;
+    }
+
+    /* ===== VERSION ===== */
+    .version-tag {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 9px;
+      color: #222233;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes flicker {
+      0%, 95%, 100% { opacity: 1; }
+      96% { opacity: 0.8; }
+      97% { opacity: 1; }
+      98% { opacity: 0.9; }
+    }
+
+    @keyframes glitch-move {
+      0% { top: -10%; opacity: 0; }
+      10% { opacity: 0; }
+      11% { opacity: 1; top: 20%; }
+      13% { opacity: 0; }
+      50% { top: 60%; opacity: 0; }
+      51% { opacity: 0.6; }
+      53% { opacity: 0; }
+      100% { top: 110%; opacity: 0; }
+    }
+
+    /* ===== TRANSITION ===== */
+    .fade-out {
+      animation: fadeOut 0.5s forwards;
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="tv-container">
+    <div class="tv-body">
+      <div class="tv-screen">
+
+        <!-- Ligne parasite VHS -->
+        <div class="glitch-line"></div>
+
+        <!-- Titre -->
+        <div class="title-block">
+          <div class="title-main">REWIND<br>PARADISE</div>
+          <div class="title-sub">MICRO-MÉTRAGE</div>
+          <div class="title-year">▓▓ EST. 1994 ▓▓</div>
+        </div>
+
+        <!-- Menu -->
+        <div class="menu-container">
+
+          <div class="menu-item selected" 
+               id="btn-nouvelle"
+               onclick="startGame()">
+            <span class="menu-cursor">▶</span>
+            <span class="menu-text">NOUVELLE PARTIE</span>
+          </div>
+
+          <div class="menu-item disabled" id="btn-continuer">
+            <span class="menu-cursor">▷</span>
+            <span class="menu-text">CONTINUER</span>
+          </div>
+
+          <div class="menu-item" 
+               id="btn-options"
+               onclick="showOptions()">
+            <span class="menu-cursor">▷</span>
+            <span class="menu-text">OPTIONS</span>
+          </div>
+
+        </div>
+
+        <!-- Pied d'écran -->
+        <div class="screen-footer">
+          <div class="vhs-label">
+            ◀◀ REMBOBINEZ AVANT DE RENDRE ▶▶
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="tv-base"></div>
+    <div class="tv-stand"></div>
+  </div>
+
+  <div class="version-tag">v0.1 — PROTO</div>
+
+  <script>
+
+    // ===== VÉRIFIER UNE SAUVEGARDE =====
+    window.onload = function() {
+      const save = localStorage.getItem('rewindParadise_save');
+      if (save) {
+        const btnContinuer = document.getElementById('btn-continuer');
+        btnContinuer.classList.remove('disabled');
+        btnContinuer.onclick = continueGame;
+        btnContinuer.querySelector('.menu-cursor').textContent = '▶';
+      }
+    };
+
+    // ===== NOUVELLE PARTIE =====
+    function startGame() {
+      // Initialiser la sauvegarde
+      const gameState = {
+        semaine: 1,
+        jour: 1,
+        argent: 200,
+        legalite: 0,
+        exposition: 0,
+        energie: 15,
+        energieMax: 15,
+        stock: {
+          action: 8,
+          horreur: 6,
+          drame: 4,
+          enfants: 6,
+          rarites: 1,
+          noires: 0
+        },
+        reputation: 3,
+        credibilite: 0,
+        jacksonHumeur: 'cool',
+        cutterInteret: 'indifferent',
+        notesHistory: [],
+        choicesHistory: []
+      };
+
+      localStorage.setItem(
+        'rewindParadise_save', 
+        JSON.stringify(gameState)
+      );
+
+      // Transition vers le jeu
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = 'game.html';
+      }, 500);
+    }
+
+    // ===== CONTINUER =====
+    function continueGame() {
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = 'game.html';
+      }, 500);
+    }
+
+    // ===== OPTIONS (à développer) =====
+    function showOptions() {
+      alert('OPTIONS — Session 3.x');
+    }
+
+  </script>
+
+</body>
+</html>
