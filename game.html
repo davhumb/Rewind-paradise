@@ -12,6 +12,7 @@
   <script src="data/canopi.js"></script>
   <script src="data/sounds.js"></script>
   <script src="data/achievements.js"></script>
+  <script src="data/upgrades.js"></script>
   <style>
 
     body {
@@ -55,6 +56,17 @@
       color: #444466;
       letter-spacing: 1px;
     }
+
+    /* Phase journée */
+    .phase-badge {
+      font-size: 8px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 1px;
+    }
+
+    .phase-badge.matin     { background: #0a1808; color: #ffdd44; border: 1px solid #ffdd4430; }
+    .phase-badge.apres_midi { background: #080818; color: #00ffc8; border: 1px solid #00ffc830; }
 
     .main-area {
       flex: 1;
@@ -105,6 +117,21 @@
     .shelf-count        { font-size: 9px; color: #00ffc8; font-weight: bold; }
     .shelf-count.low    { color: #ff8855; }
     .shelf-count.empty  { color: #ff4466; }
+
+    /* Weed stock */
+    .shelf-weed {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 2px;
+      margin-top: 4px;
+      border-top: 1px solid #1a2a1a;
+      cursor: pointer;
+    }
+
+    .shelf-genre-weed { font-size: 8px; color: #44aa44; letter-spacing: 1px; }
+    .shelf-count-weed { font-size: 9px; color: #44cc44; font-weight: bold; }
+    .shelf-count-weed.empty { color: #ff4466; }
 
     /* COMPTOIR */
     .counter-area {
@@ -216,20 +243,42 @@
       line-height: 1.5;
     }
 
-    /* BOUTON FERMER */
-    .close-btn {
+    /* BOUTONS BAS */
+    .bottom-buttons {
+      display: flex;
+      gap: 8px;
       margin: 8px 12px;
+      flex-shrink: 0;
+    }
+
+    .close-btn {
+      flex: 1;
       background: #100508;
       border: 1px solid #3a1515;
       border-radius: 6px;
       padding: 10px;
       text-align: center;
       cursor: pointer;
-      flex-shrink: 0;
     }
 
     .close-btn:active  { background: #180a0a; }
     .close-btn-text    { font-size: 10px; color: #ff8855; letter-spacing: 3px; }
+
+    /* Bouton pause déjeuner */
+    .pause-btn {
+      flex: 1;
+      background: #0a1000;
+      border: 1px solid #ffdd4430;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      display: none;
+    }
+
+    .pause-btn.visible { display: block; }
+    .pause-btn:active  { background: #121800; }
+    .pause-btn-text    { font-size: 10px; color: #ffdd44; letter-spacing: 2px; }
 
     /* PANNEAU CLIENT */
     .client-panel {
@@ -244,7 +293,7 @@
       overflow-y: auto;
     }
 
-    .client-panel.visible   { display: block; }
+    .client-panel.visible    { display: block; }
     .client-panel.ramon-panel { border-top-color: #cc88cc; }
 
     .panel-client-name {
@@ -277,7 +326,6 @@
       display: none;
     }
 
-    /* NOUVEAUX CLIENTS — badges */
     .panel-client-badge {
       display: inline-block;
       font-size: 8px;
@@ -287,9 +335,49 @@
       margin-bottom: 6px;
     }
 
-    .badge-concurrent  { background: #1a1000; color: #aa8800; border: 1px solid #aa880030; }
-    .badge-journaliste { background: #001a10; color: #00aa66; border: 1px solid #00aa6630; }
+    .badge-concurrent     { background: #1a1000; color: #aa8800; border: 1px solid #aa880030; }
+    .badge-journaliste    { background: #001a10; color: #00aa66; border: 1px solid #00aa6630; }
     .badge-collectionneur { background: #100018; color: #8844cc; border: 1px solid #8844cc30; }
+    .badge-negociation    { background: #0a1a0a; color: #00ffc8; border: 1px solid #00ffc830; }
+
+    /* BOUTON WEED */
+    .weed-btn {
+      background: #050f05;
+      border: 1px solid #44aa4440;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .weed-btn.visible { display: flex; }
+    .weed-btn:active  { background: #0a1a0a; }
+
+    .weed-btn-icon { font-size: 16px; }
+
+    .weed-btn-info { flex: 1; }
+
+    .weed-btn-titre {
+      font-size: 10px;
+      color: #44cc44;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+
+    .weed-btn-detail {
+      font-size: 8px;
+      color: #335533;
+      letter-spacing: 0.5px;
+    }
+
+    .weed-btn-prix {
+      font-size: 11px;
+      color: #44cc44;
+      font-weight: bold;
+    }
 
     .client-prefs {
       background: #060610;
@@ -352,11 +440,134 @@
 
     .film-info   { flex: 1; }
     .film-titre  { font-size: 11px; color: #e0e0f0; letter-spacing: 0.5px; margin-bottom: 2px; }
-    .film-detail { font-size: 8px;  color: #555577; letter-spacing: 1px; }
-    .film-match  { font-size: 9px;  margin-left: 8px; flex-shrink: 0; }
+    .film-detail { font-size: 8px; color: #555577; letter-spacing: 1px; }
+    .film-match  { font-size: 9px; margin-left: 8px; flex-shrink: 0; }
     .film-prix   { font-size: 10px; color: #00ffc8; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
 
-    /* Actions spéciales nouveaux clients */
+    /* NÉGOCIATION */
+    .negociation-zone {
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      display: none;
+    }
+
+    .negociation-zone.visible { display: block; }
+
+    .nego-label {
+      font-size: 8px;
+      color: #00ffc8;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .nego-film-titre {
+      font-size: 12px;
+      color: #f0f0ff;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .nego-prix-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .nego-prix-label { font-size: 9px; color: #666688; letter-spacing: 1px; }
+
+    .nego-prix-val {
+      font-size: 20px;
+      color: #00ffc8;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #00ffc8;
+      transition: color 0.2s;
+    }
+
+    .nego-prix-val.trop-bas  { color: #ff4466; text-shadow: 0 0 10px #ff4466; }
+    .nego-prix-val.bon       { color: #00ffc8; text-shadow: 0 0 10px #00ffc8; }
+    .nego-prix-val.trop-haut { color: #ff8855; text-shadow: 0 0 10px #ff8855; }
+
+    .nego-slider {
+      width: 100%;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: #0a0a18;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+      margin-bottom: 4px;
+    }
+
+    .nego-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #00ffc8;
+      cursor: pointer;
+      border: 2px solid #080818;
+      box-shadow: 0 0 8px #00ffc8;
+    }
+
+    .nego-slider-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .nego-slider-label { font-size: 8px; color: #333355; letter-spacing: 1px; }
+
+    .nego-reaction {
+      font-size: 10px;
+      color: #9090bb;
+      font-style: italic;
+      text-align: center;
+      padding: 6px;
+      min-height: 30px;
+    }
+
+    .nego-reaction.positif { color: #00ffc8; }
+    .nego-reaction.negatif { color: #ff4466; }
+
+    .nego-buttons { display: flex; gap: 6px; margin-top: 8px; }
+
+    .nego-btn-confirmer {
+      flex: 2;
+      background: #071a10;
+      border: 2px solid #00ffc8;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px;
+      color: #00ffc8;
+      letter-spacing: 2px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+    }
+
+    .nego-btn-confirmer:active { background: #0d2418; }
+
+    .nego-btn-annuler {
+      flex: 1;
+      background: #0a0a18;
+      border: 1px solid #2e2e50;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px;
+      color: #444466;
+      letter-spacing: 1px;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* ACTION SPÉCIALE */
     .action-speciale {
       background: #0a0a18;
       border: 1px solid #2e2e50;
@@ -367,19 +578,8 @@
     }
 
     .action-speciale:active { background: #0f0f22; }
-
-    .action-speciale-titre {
-      font-size: 10px;
-      color: #c0c0dd;
-      letter-spacing: 1px;
-      margin-bottom: 3px;
-    }
-
-    .action-speciale-detail {
-      font-size: 9px;
-      color: #555577;
-      letter-spacing: 0.5px;
-    }
+    .action-speciale-titre  { font-size: 10px; color: #c0c0dd; letter-spacing: 1px; margin-bottom: 3px; }
+    .action-speciale-detail { font-size: 9px; color: #555577; }
 
     .panel-alts {
       display: flex;
@@ -411,6 +611,22 @@
       letter-spacing: 2px;
       padding: 8px;
       margin-top: 4px;
+    }
+
+    /* JAUGE DISCRÉTION */
+    .discretion-bar {
+      position: fixed;
+      top: 52px; left: 0; right: 0;
+      height: 2px;
+      background: transparent;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .discretion-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #44aa44, #ffdd44, #ff4466);
+      transition: width 0.5s ease;
     }
 
     /* TENSION RAMON */
@@ -509,6 +725,7 @@
 
     .notif.visible   { display: block; animation: notifAnim 2.5s forwards; }
     .notif.negative  { border-color: #ff4466; color: #ff4466; background: #1a0710; }
+    .notif.weed      { border-color: #44cc44; color: #44cc44; background: #050f05; }
 
     @keyframes notifAnim {
       0%   { opacity: 0; transform: translateX(-50%) translateY(-6px); }
@@ -528,17 +745,26 @@
 </head>
 <body>
 
+  <!-- Jauge discrétion (barre fine en haut) -->
+  <div class="discretion-bar">
+    <div class="discretion-fill" id="discretion-fill"
+         style="width:0%"></div>
+  </div>
+
   <div class="tension-overlay" id="tension-overlay"></div>
 
   <div class="top-bar">
     <div class="top-bar-left">
       <div class="btn-icon" onclick="openJournal()">📰</div>
       <div class="shop-title">REWIND PARADISE</div>
+      <div class="phase-badge matin" id="phase-badge">MATIN</div>
     </div>
     <div class="top-bar-right">
       <div class="day-info" id="day-info">Jour 1 — S1</div>
       <div class="btn-icon"
            onclick="ACHIEVEMENTS.showPanel(gameState)">🏆</div>
+      <div class="btn-icon"
+           onclick="UPGRADES.showPanel(gameState)">🔧</div>
       <div class="btn-icon" onclick="openStock()">📦</div>
     </div>
   </div>
@@ -569,6 +795,12 @@
           <span class="shelf-genre">RARETÉS</span>
           <span class="shelf-count" id="stock-rarites">1</span>
         </div>
+        <!-- Stock weed caché -->
+        <div class="shelf-weed" onclick="showTooltip('stock_weed')"
+             id="shelf-weed" style="display:none;">
+          <span class="shelf-genre-weed">🌿 SG</span>
+          <span class="shelf-count-weed" id="stock-weed">0</span>
+        </div>
       </div>
 
       <div class="counter-area">
@@ -593,8 +825,15 @@
       </div>
     </div>
 
-    <div class="close-btn" onclick="closingTime()">
-      <div class="close-btn-text">▼ FERMER LE RIDEAU ▼</div>
+    <div class="bottom-buttons">
+      <!-- Bouton pause déjeuner -->
+      <div class="pause-btn" id="pause-btn" onclick="pauseDejeuner()">
+        <div class="pause-btn-text">⏸ PAUSE DÉJEUNER</div>
+      </div>
+      <!-- Bouton fermer -->
+      <div class="close-btn" onclick="closingTime()">
+        <div class="close-btn-text">▼ FERMER</div>
+      </div>
     </div>
 
   </div>
@@ -605,11 +844,51 @@
     <div class="panel-client-demand" id="panel-demand">—</div>
     <div class="panel-ramon-note"    id="panel-ramon-note">—</div>
     <div id="panel-badge"></div>
-    <div class="client-prefs"        id="client-prefs"></div>
+
+    <!-- BOUTON WEED -->
+    <div class="weed-btn" id="weed-btn" onclick="ajouterWeed()">
+      <span class="weed-btn-icon">🌿</span>
+      <div class="weed-btn-info">
+        <div class="weed-btn-titre">AJOUTER SICILIAN GOLD</div>
+        <div class="weed-btn-detail">
+          Corey glisse une tête dans le boîtier.
+        </div>
+      </div>
+      <span class="weed-btn-prix">+15$</span>
+    </div>
+
+    <!-- NÉGOCIATION -->
+    <div class="negociation-zone" id="negociation-zone">
+      <div class="nego-label">NÉGOCIATION</div>
+      <div class="nego-film-titre" id="nego-film-titre">—</div>
+      <div class="nego-prix-display">
+        <span class="nego-prix-label">PRIX PROPOSÉ :</span>
+        <span class="nego-prix-val" id="nego-prix-val">—$</span>
+      </div>
+      <input type="range" class="nego-slider" id="nego-slider"
+             min="1" max="20" value="5"
+             oninput="updateNego(this.value)">
+      <div class="nego-slider-labels">
+        <span class="nego-slider-label">BRADÉ</span>
+        <span class="nego-slider-label">JUSTE</span>
+        <span class="nego-slider-label">EXCESSIF</span>
+      </div>
+      <div class="nego-reaction" id="nego-reaction">
+        Faites glisser pour ajuster.
+      </div>
+      <div class="nego-buttons">
+        <div class="nego-btn-confirmer" onclick="confirmerNego()">
+          ▶ CONFIRMER
+        </div>
+        <div class="nego-btn-annuler" onclick="annulerNego()">✕</div>
+      </div>
+    </div>
+
+    <div class="client-prefs" id="client-prefs"></div>
     <div id="action-speciale-zone"></div>
-    <div class="films-label">CHOISIR UN FILM :</div>
-    <div class="films-list"          id="films-list"></div>
-    <div class="panel-alts"          id="panel-alts"></div>
+    <div class="films-label" id="films-label">CHOISIR UN FILM :</div>
+    <div class="films-list" id="films-list"></div>
+    <div class="panel-alts" id="panel-alts"></div>
     <div class="panel-close" onclick="closePanel()">✕ FERMER</div>
   </div>
 
@@ -620,28 +899,32 @@
     <div class="gauge-item" onclick="showTooltip('money')">
       <span class="gauge-icon">💰</span>
       <div class="gauge-bar-container">
-        <div class="gauge-bar money" id="bar-money" style="width:40%"></div>
+        <div class="gauge-bar money" id="bar-money"
+             style="width:40%"></div>
       </div>
       <span class="gauge-value" id="val-money">200$</span>
     </div>
     <div class="gauge-item" onclick="showTooltip('legal')">
       <span class="gauge-icon">🎬</span>
       <div class="gauge-bar-container">
-        <div class="gauge-bar legal" id="bar-legal" style="width:0%"></div>
+        <div class="gauge-bar legal" id="bar-legal"
+             style="width:0%"></div>
       </div>
       <span class="gauge-value" id="val-legal">0%</span>
     </div>
     <div class="gauge-item" onclick="showTooltip('expo')">
       <span class="gauge-icon">👁</span>
       <div class="gauge-bar-container">
-        <div class="gauge-bar expo" id="bar-expo" style="width:0%"></div>
+        <div class="gauge-bar expo" id="bar-expo"
+             style="width:0%"></div>
       </div>
       <span class="gauge-value" id="val-expo">0%</span>
     </div>
     <div class="gauge-item" onclick="showTooltip('energy')">
       <span class="gauge-icon">⚡</span>
       <div class="gauge-bar-container">
-        <div class="gauge-bar energy" id="bar-energy" style="width:100%"></div>
+        <div class="gauge-bar energy" id="bar-energy"
+             style="width:100%"></div>
       </div>
       <span class="gauge-value" id="val-energy">15/15</span>
     </div>
@@ -652,6 +935,13 @@
     let gameState = {};
     let currentClients = [];
     let activeClientIndex = -1;
+    let clientsServicis = 0; // compteur pour pause déjeuner
+    let weedAjoutee = false; // flag weed pour ce client
+
+    // Négociation
+    let negoFilmId   = null;
+    let negoPrixBase = 0;
+    let negoAccepte  = false;
 
     // ===================================================
     // CATALOGUE
@@ -691,24 +981,27 @@
     ];
 
     // ===================================================
-    // PROFILS CLIENTS
+    // CLIENTS — avec weedDemande et canNegociate
     // ===================================================
 
     const CLIENT_TYPES = [
 
-      // CANOPI
+      // CANOPI — apparition conditionnelle
       {
         id: 'canopi', name: 'INSPECTEUR CANOPI', mood: '😐',
         demande: '"Ghost, s\'il vous plaît. Comme d\'habitude."',
         aime: ['ghost','kramer','rain_man'],
-        deteste: ['arme_fatale','predator','terminator','die_hard','halloween','alien','suspiria','exorciste'],
+        deteste: ['arme_fatale','predator','terminator','die_hard',
+                  'halloween','alien','suspiria','exorciste'],
         accepte: ['drame'], energie: 1,
         thought: "Il revient. Évidemment qu'il revient.",
-        onServi: (gs, film) => {
+        canNegociate: false,
+        weedDemande: false, // Jamais de weed avec Canopi
+        onServi: (gs, film, prixFinal) => {
           if (film.id === 'ghost') {
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
             gs.ghost_loue_aujourd_hui = true;
-            gs.legalite  = Math.max(0, gs.legalite - 2);
+            gs.legalite   = Math.max(0, gs.legalite - 2);
             gs.reputation = Math.min(5, gs.reputation + 0.3);
             gs.argent += 2;
             return { msg: '+2$ — Ghost trouvé. Légalité -2%', positif: true };
@@ -716,10 +1009,9 @@
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
             gs.argent += 2;
             return { msg: '+2$ — Pas Ghost mais il accepte.', positif: true };
-          } else {
-            gs.legalite = Math.min(100, gs.legalite + 2);
-            return { msg: 'Mauvais choix. Légalité +2%.', positif: false };
           }
+          gs.legalite = Math.min(100, gs.legalite + 2);
+          return { msg: 'Mauvais choix. Légalité +2%.', positif: false };
         }
       },
 
@@ -727,11 +1019,13 @@
       {
         id: 'ramon', name: 'RAMON', mood: '🤵',
         demande: '"Pretty Woman. Vous l\'avez ?"',
-        aime: ['pretty_woman','dirty_dancing','quand_harry','nuits_blanches','officier'],
-        deteste: ['arme_fatale','predator','terminator','halloween','alien','exorciste'],
+        aime: ['pretty_woman','dirty_dancing','quand_harry',
+               'nuits_blanches','officier'],
+        deteste: ['arme_fatale','predator','terminator',
+                  'halloween','alien','exorciste'],
         accepte: ['comedie_romantique'], energie: 2,
-        thought: "Cet homme a des mains qui ont réglé des problèmes. Il veut Pretty Woman.",
-        isRamon: true,
+        thought: "Cet homme a des mains qui ont réglé des problèmes.",
+        isRamon: true, canNegociate: false, weedDemande: false,
         dialogues: {
           visite1: '"Pretty Woman. Vous l\'avez ?"',
           visite2: '"Dirty Dancing cette fois. Si vous avez."',
@@ -741,50 +1035,63 @@
         },
         notes_ambiance: {
           visite1: null,
-          visite2: "Il regarde les étagères méthodiquement. Pas les films — l'espace.",
-          visite3: "Il mentionne DiMaggio comme si c'était anodin. C'est pas anodin.",
-          visite4: "Ses yeux s'arrêtent sur la porte de la réserve. Une seconde de trop.",
+          visite2: "Il regarde les étagères méthodiquement.",
+          visite3: "Il mentionne DiMaggio. C'est pas anodin.",
+          visite4: "Ses yeux s'arrêtent sur la porte de la réserve.",
           visite5: "Il vient pas pour un film. C'est un message."
         },
-        onServi: (gs, film) => {
+        onServi: (gs, film, prixFinal) => {
           const visites = gs['client_ramon_count'] || 0;
           if (visites >= 4) {
             gs.ultimatum_dimaggio = true;
             gs.exposition = Math.min(100, gs.exposition + 5);
-            return { msg: 'Ramon repart sans la cassette. Quelque chose a changé.', positif: false };
+            return { msg: 'Ramon repart sans la cassette.', positif: false };
           }
           if (film.genre === 'comedie_romantique') {
-            gs.stock.comedie_romantique = Math.max(0, (gs.stock.comedie_romantique || 5) - 1);
-            gs.argent += film.prix;
-            if (visites >= 2) gs.exposition = Math.min(100, gs.exposition + 1);
-            return { msg: `+${film.prix}$ — Ramon repart avec sa cassette.`, positif: true };
-          } else {
-            gs.exposition = Math.min(100, gs.exposition + 2);
-            return { msg: 'Ramon hoche la tête. Il repart sans rien.', positif: false };
+            gs.stock.comedie_romantique =
+              Math.max(0, (gs.stock.comedie_romantique || 5) - 1);
+            gs.argent += prixFinal || film.prix;
+            if (visites >= 2)
+              gs.exposition = Math.min(100, gs.exposition + 1);
+            return {
+              msg: `+${prixFinal || film.prix}$ — Ramon repart avec sa cassette.`,
+              positif: true
+            };
           }
+          gs.exposition = Math.min(100, gs.exposition + 2);
+          return { msg: 'Ramon repart sans rien.', positif: false };
         }
       },
 
-      // MIGUEL
+      // MIGUEL — demande codée weed
       {
         id: 'miguel', name: 'MIGUEL', mood: '😏',
-        demande: '"Les cassettes spéciales. Vous savez."',
+        demande: '"Les cassettes spéciales. Vous avez... de quoi se détendre aussi ?"',
         aime: ['noir_01','noir_02','halloween','alien'],
         deteste: ['roi_lion','aladdin','home_alone','little_mermaid'],
         accepte: ['noires','horreur'], energie: 1,
         thought: "Miguel grandit. Dans tous les sens du terme.",
-        onServi: (gs, film) => {
+        canNegociate: false,
+        weedDemande: true, // Miguel peut vouloir de la weed
+        weedMessage: '"...et si Corey pouvait ajouter quelque chose dans le boîtier."',
+        onServi: (gs, film, prixFinal) => {
           if (film.genre === 'noires') {
             gs.stock.noires = Math.max(0, gs.stock.noires - 1);
             gs.credibilite  = Math.min(100, gs.credibilite + 2);
             gs.exposition   = Math.min(100, gs.exposition + 2);
-            gs.argent += film.prix;
+            gs.argent += prixFinal || film.prix;
             gs.noires_distribuees = (gs.noires_distribuees || 0) + 1;
-            return { msg: `+${film.prix}$ — Miguel repart content.`, positif: true };
+            return {
+              msg: `+${prixFinal || film.prix}$ — Miguel repart content.`,
+              positif: true
+            };
           } else if (film.genre === 'horreur') {
             gs.stock.horreur = Math.max(0, gs.stock.horreur - 1);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Pas ce qu'il voulait mais il prend.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return {
+              msg: `+${prixFinal || film.prix}$ — Il prend.`,
+              positif: true
+            };
           }
           return { msg: 'Miguel repart les mains vides.', positif: false };
         }
@@ -795,69 +1102,102 @@
         id: 'henderson', name: 'FAMILLE HENDERSON', mood: '😊',
         demande: '"Quelque chose pour toute la famille !"',
         aime: ['roi_lion','aladdin','home_alone','little_mermaid','forrest'],
-        deteste: ['halloween','alien','exorciste','suspiria','shining','noir_01','noir_02'],
+        deteste: ['halloween','alien','exorciste','suspiria','shining',
+                  'noir_01','noir_02'],
         accepte: ['enfants'], energie: 2,
         thought: "Surtout ne pas laisser traîner les cassettes noires.",
-        onServi: (gs, film) => {
+        canNegociate: false, weedDemande: false,
+        onServi: (gs, film, prixFinal) => {
           if (film.genre === 'enfants') {
             gs.stock.enfants = Math.max(0, gs.stock.enfants - 1);
             gs.reputation = Math.min(5, gs.reputation + 0.4);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Les Henderson sont ravis.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return {
+              msg: `+${prixFinal || film.prix}$ — Les Henderson sont ravis.`,
+              positif: true
+            };
           } else if (film.genre === 'drame') {
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Ça peut aller.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return { msg: `+${prixFinal || film.prix}$ — Ça peut aller.`, positif: true };
           }
           gs.reputation = Math.max(0, gs.reputation - 0.5);
           return { msg: 'Madame Henderson est scandalisée.', positif: false };
         }
       },
 
-      // CINÉPHILE
+      // CINÉPHILE — demande codée weed
       {
         id: 'cinephile', name: 'LE CINÉPHILE', mood: '🧐',
-        demande: '"Blow Out de De Palma. Ou Short Cuts d\'Altman ?"',
+        demande: '"Blow Out de De Palma. Et... vous auriez pas de quoi agrémenter le visionnage ?"',
         aime: ['blow_out','short_cuts','blue_velvet','boxcar','suspiria','shining'],
         deteste: ['roi_lion','aladdin','home_alone','arme_fatale','die_hard'],
         accepte: ['rarites','horreur'], energie: 2,
-        thought: "Toujours un film introuvable. C'est son truc.",
-        onServi: (gs, film) => {
+        thought: "Toujours un film introuvable. Et autre chose.",
+        canNegociate: true,
+        weedDemande: true,
+        weedMessage: '"Vous avez compris ce que je voulais dire ?"',
+        negoConfig: {
+          prixMin: 3, prixMax: 12, prixIdeal: 6, tolerance: 3,
+          reactions: {
+            bas:    '"C\'est cadeau. Je me sens coupable."',
+            juste:  '"Prix correct pour une rareté."',
+            haut:   '"Vous pensez que je suis riche ?"',
+            refuse: '"Trop cher. Je reviendrai."'
+          }
+        },
+        onServi: (gs, film, prixFinal) => {
           if (film.genre === 'rarites') {
             gs.stock.rarites = Math.max(0, gs.stock.rarites - 1);
             gs.reputation  = Math.min(5, gs.reputation + 0.5);
             gs.credibilite = Math.min(100, gs.credibilite + 1);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Le cinéphile est impressionné.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return {
+              msg: `+${prixFinal || film.prix}$ — Le cinéphile est impressionné.`,
+              positif: true
+            };
           } else if (film.genre === 'horreur'
                   && (film.id === 'shining' || film.id === 'suspiria')) {
             gs.stock.horreur = Math.max(0, gs.stock.horreur - 1);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Pas une rareté mais il accepte.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return { msg: `+${prixFinal || film.prix}$ — Il accepte.`, positif: true };
           }
           gs.reputation = Math.max(0, gs.reputation - 0.3);
           return { msg: 'Il repart déçu.', positif: false };
         }
       },
 
-      // ÉTUDIANT
+      // ÉTUDIANT — demande codée weed
       {
         id: 'etudiant', name: 'L\'ÉTUDIANT', mood: '😤',
-        demande: '"Un truc bien. Du fun ou quelque chose qui claque."',
+        demande: '"Un truc qui claque. Et... vous auriez pas un truc pour accompagner ça ?"',
         aime: ['die_hard','arme_fatale','terminator','predator','maverick','home_alone'],
         deteste: ['kramer','rain_man','thelma','short_cuts'],
         accepte: ['action','horreur'], energie: 1,
-        thought: "Pressé. Toujours pressé.",
-        onServi: (gs, film) => {
+        thought: "Pressé. Toujours pressé. Et défoncé peut-être.",
+        canNegociate: true,
+        weedDemande: true,
+        weedMessage: '"Corey m\'a dit que vous aviez du bon truc."',
+        negoConfig: {
+          prixMin: 1, prixMax: 6, prixIdeal: 3, tolerance: 2,
+          reactions: {
+            bas:    '"Sérieux ? Merci !"',
+            juste:  '"OK. Ça marche."',
+            haut:   '"C\'est cher pour un film d\'action."',
+            refuse: '"Non merci."'
+          }
+        },
+        onServi: (gs, film, prixFinal) => {
           if (film.ambiance.includes('fun') || film.ambiance.includes('violent')) {
-            gs.stock[film.genre] = Math.max(0, (gs.stock[film.genre] || 0) - 1);
+            gs.stock[film.genre] =
+              Math.max(0, (gs.stock[film.genre] || 0) - 1);
             gs.reputation = Math.min(5, gs.reputation + 0.2);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Il est content.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return { msg: `+${prixFinal || film.prix}$ — Il est content.`, positif: true };
           } else if (film.genre === 'action') {
             gs.stock.action = Math.max(0, gs.stock.action - 1);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Pas son préféré mais OK.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return { msg: `+${prixFinal || film.prix}$ — Pas son préféré mais OK.`, positif: true };
           }
           return { msg: 'Pas ce qu\'il cherchait.', positif: false };
         }
@@ -871,19 +1211,21 @@
         deteste: ['predator','terminator','halloween','alien','suspiria'],
         accepte: ['drame'], energie: 1,
         thought: "Elle revient souvent le mardi. Jamais le week-end.",
-        onServi: (gs, film) => {
+        canNegociate: false, weedDemande: false,
+        onServi: (gs, film, prixFinal) => {
           if (film.id === 'ghost' && gs.ghost_loue_aujourd_hui) {
-            return { msg: 'Ghost est déjà sorti aujourd\'hui.', positif: false };
+            return { msg: 'Ghost est déjà sorti.', positif: false };
           }
-          if (film.ambiance.includes('romance') || film.ambiance.includes('emotion')) {
+          if (film.ambiance.includes('romance')
+           || film.ambiance.includes('emotion')) {
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
             gs.reputation = Math.min(5, gs.reputation + 0.3);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — "Merci."`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return { msg: `+${prixFinal || film.prix}$ — "Merci."`, positif: true };
           } else if (film.genre === 'drame') {
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Pas exactement mais ça ira.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return { msg: `+${prixFinal || film.prix}$ — Ça ira.`, positif: true };
           }
           return { msg: 'Elle repart sans rien.', positif: false };
         }
@@ -897,83 +1239,95 @@
         deteste: ['roi_lion','aladdin','forrest','ghost'],
         accepte: ['horreur'], energie: 1,
         thought: "Il a clairement pas l'âge. Mais il est là.",
-        onServi: (gs, film) => {
+        canNegociate: true, weedDemande: false,
+        negoConfig: {
+          prixMin: 1, prixMax: 4, prixIdeal: 2, tolerance: 1,
+          reactions: {
+            bas:    '"Trop cool !"',
+            juste:  '"OK."',
+            haut:   '"J\'ai pas autant..."',
+            refuse: '"C\'est trop."'
+          }
+        },
+        onServi: (gs, film, prixFinal) => {
           if (film.genre === 'horreur') {
             gs.stock.horreur = Math.max(0, gs.stock.horreur - 1);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Théo est ravi.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return { msg: `+${prixFinal || film.prix}$ — Théo est ravi.`, positif: true };
           }
           return { msg: 'Théo fait la grimace.', positif: false };
         }
       },
 
-      // L'INCONNU
+      // L'INCONNU — demande codée weed
       {
         id: 'inconnu', name: 'L\'INCONNU', mood: '🧐',
-        demande: '"Quelque chose de différent. Pas dans le catalogue habituel."',
+        demande: '"Quelque chose de différent. Et... autre chose aussi."',
         aime: ['noir_01','noir_02','blue_velvet','suspiria','blow_out'],
         deteste: [], accepte: ['noires','rarites'], energie: 2,
-        thought: "Je l'ai jamais vu avant. Mauvais signe, peut-être.",
-        onServi: (gs, film) => {
+        thought: "Je l'ai jamais vu avant. Il demande plusieurs choses.",
+        canNegociate: false,
+        weedDemande: true,
+        weedMessage: '"Corey sait de quoi je parle."',
+        onServi: (gs, film, prixFinal) => {
           if (film.genre === 'noires') {
             gs.stock.noires = Math.max(0, gs.stock.noires - 1);
             gs.exposition  = Math.min(100, gs.exposition + 3);
             gs.credibilite = Math.min(100, gs.credibilite + 2);
-            gs.argent += film.prix;
+            gs.argent += prixFinal || film.prix;
             gs.noires_distribuees = (gs.noires_distribuees || 0) + 1;
-            return { msg: `+${film.prix}$ — Il repart vite.`, positif: true };
+            return { msg: `+${prixFinal || film.prix}$ — Il repart vite.`, positif: true };
           } else if (film.genre === 'rarites') {
             gs.stock.rarites = Math.max(0, gs.stock.rarites - 1);
-            gs.argent += film.prix;
-            return { msg: `+${film.prix}$ — Il reviendra.`, positif: true };
+            gs.argent += prixFinal || film.prix;
+            return { msg: `+${prixFinal || film.prix}$ — Il reviendra.`, positif: true };
           }
           return { msg: 'Il repart sans rien.', positif: false };
         }
       },
 
-      // ===================================================
-      // NOUVEAU — LE CONCURRENT
-      // ===================================================
+      // CONCURRENT
       {
         id: 'concurrent', name: 'LE CONCURRENT', mood: '😒',
         demande: '"Je regardais juste... votre sélection."',
         aime: ['blow_out','short_cuts','blue_velvet'],
-        deteste: [],
-        accepte: ['rarites'], energie: 1,
+        deteste: [], accepte: ['rarites'], energie: 1,
         isConcurrent: true,
-        thought: "Il gère le Galaxy Video à deux rues d'ici. Il espionne.",
+        thought: "Il gère le Galaxy Video. Il espionne.",
         badge: 'concurrent',
-        onServi: (gs, film) => {
-          // Il loue rarement — il vient surtout observer
+        canNegociate: true, weedDemande: false,
+        negoConfig: {
+          prixMin: 3, prixMax: 15, prixIdeal: 7, tolerance: 4,
+          reactions: {
+            bas:    '"Vous bradez vos raretés ?"',
+            juste:  '"Prix du marché. Correct."',
+            haut:   '"Galaxy Video fait mieux."',
+            refuse: '"Je repasserai."'
+          }
+        },
+        onServi: (gs, film, prixFinal) => {
           if (film.genre === 'rarites') {
             gs.stock.rarites = Math.max(0, gs.stock.rarites - 1);
-            gs.argent += film.prix;
+            gs.argent += prixFinal || film.prix;
             gs.reputation = Math.min(5, gs.reputation + 0.1);
-            return { msg: `+${film.prix}$ — Il repart avec la rareté. Suspicieux.`, positif: true };
+            return { msg: `+${prixFinal || film.prix}$ — Il repart avec la rareté.`, positif: true };
           }
-          // S'il repart sans rien — il a quand même observé
           gs.concurrent_visite = (gs.concurrent_visite || 0) + 1;
-          if (gs.concurrent_visite >= 3) {
-            gs.reputation = Math.max(0, gs.reputation - 0.3);
-          }
-          return { msg: 'Il repart en notant quelque chose. Galaxy Video.', positif: false };
+          return { msg: 'Il repart. Galaxy Video.', positif: false };
         },
-        // Action spéciale — lui proposer un accord
         actionSpeciale: {
           titre: '🤝 PROPOSER UN ACCORD',
-          detail: 'Partager le catalogue contre de l\'info sur ses clients.',
+          detail: 'Partager catalogue contre info clients.',
           effet: (gs) => {
             gs.accord_concurrent = true;
             gs.reputation = Math.min(5, gs.reputation + 0.5);
             gs.argent += 20;
-            return { msg: '+20$ — Accord Galaxy Video. Réputation +', positif: true };
+            return { msg: '+20$ — Accord Galaxy Video.', positif: true };
           }
         }
       },
 
-      // ===================================================
-      // NOUVEAU — LA JOURNALISTE
-      // ===================================================
+      // JOURNALISTE
       {
         id: 'journaliste', name: 'SOPHIE MARCHAIS', mood: '📝',
         demande: '"Je prépare un article sur les vidéoclubs indépendants."',
@@ -981,33 +1335,38 @@
         deteste: ['noir_01','noir_02'],
         accepte: ['drame','rarites'], energie: 2,
         isJournaliste: true,
-        thought: "Elle pose des questions sur Celluloïd Scalpel. Fais attention à ce que tu dis.",
+        thought: "Elle pose des questions sur Celluloïd Scalpel.",
         badge: 'journaliste',
-        onServi: (gs, film) => {
+        canNegociate: false, weedDemande: false,
+        onServi: (gs, film, prixFinal) => {
           if (film.genre === 'drame' || film.genre === 'rarites') {
-            gs.stock[film.genre] = Math.max(0, (gs.stock[film.genre] || 0) - 1);
-            gs.argent += film.prix;
+            gs.stock[film.genre] =
+              Math.max(0, (gs.stock[film.genre] || 0) - 1);
+            gs.argent += prixFinal || film.prix;
             gs.exposition = Math.min(100, gs.exposition + 3);
-            return { msg: `+${film.prix}$ — Elle prend des notes. Exposition +3.`, positif: true };
+            return {
+              msg: `+${prixFinal || film.prix}$ — Elle prend des notes.`,
+              positif: true
+            };
           }
-          return { msg: 'Elle repart. Elle reviendra avec des questions.', positif: false };
+          return { msg: 'Elle repart. Elle reviendra.', positif: false };
         },
-        // Action spéciale — répondre à ses questions
         actionSpeciale: {
           titre: '🎙 RÉPONDRE À SES QUESTIONS',
-          detail: 'Interview sur le Rewind Paradise. Exposition ++ mais Crédibilité +.',
+          detail: 'Interview. Exposition ++ / Crédibilité +.',
           effet: (gs) => {
             gs.exposition  = Math.min(100, gs.exposition + 8);
             gs.credibilite = Math.min(100, gs.credibilite + 5);
             gs.reputation  = Math.min(5, gs.reputation + 0.8);
-            return { msg: 'Interview accordée. Exposition +8 / Crédibilité +5.', positif: true };
+            return {
+              msg: 'Interview accordée. Exposition +8 / Crédibilité +5.',
+              positif: true
+            };
           }
         }
       },
 
-      // ===================================================
-      // NOUVEAU — LE COLLECTIONNEUR
-      // ===================================================
+      // COLLECTIONNEUR
       {
         id: 'collectionneur', name: 'M. BEAUMONT', mood: '🎩',
         demande: '"Je n\'achète pas. Je rachète. Vos raretés ont un prix ?"',
@@ -1015,19 +1374,37 @@
         deteste: ['roi_lion','aladdin','home_alone'],
         accepte: ['rarites','noires'], energie: 2,
         isCollectionneur: true,
-        thought: "Il veut acheter, pas louer. C'est différent.",
+        thought: "Il veut acheter, pas louer.",
         badge: 'collectionneur',
-        onServi: (gs, film) => {
-          // Il loue pas — il veut acheter
-          return { msg: 'M. Beaumont loue exceptionnellement.', positif: true };
+        canNegociate: true, weedDemande: false,
+        negoConfig: {
+          prixMin: 10, prixMax: 60, prixIdeal: 35, tolerance: 15,
+          reactions: {
+            bas:    '"Vous sous-estimez vos cassettes."',
+            juste:  '"Prix juste. Marché conclu."',
+            haut:   '"Je suis collectionneur, pas milliardaire."',
+            refuse: '"Je reviendrai avec une meilleure offre."'
+          }
         },
-        // Action spéciale — lui vendre une rareté
+        onServi: (gs, film, prixFinal) => {
+          if (film.genre === 'rarites' || film.genre === 'noires') {
+            gs.stock[film.genre] =
+              Math.max(0, (gs.stock[film.genre] || 0) - 1);
+            gs.argent += prixFinal || 35;
+            gs.credibilite = Math.min(100, gs.credibilite + 3);
+            return {
+              msg: `+${prixFinal || 35}$ — M. Beaumont repart satisfait.`,
+              positif: true
+            };
+          }
+          return { msg: 'M. Beaumont repart sans rien.', positif: false };
+        },
         actionSpeciale: {
           titre: '💎 LUI VENDRE UNE RARETÉ',
-          detail: '+35$ mais vous perdez définitivement la cassette.',
+          detail: '+35$ mais vous perdez la cassette.',
           effet: (gs) => {
             if ((gs.stock.rarites || 0) <= 0) {
-              return { msg: 'Plus de raretés en stock.', positif: false };
+              return { msg: 'Plus de raretés.', positif: false };
             }
             gs.stock.rarites = Math.max(0, gs.stock.rarites - 1);
             gs.argent += 35;
@@ -1051,16 +1428,57 @@
       }
       gameState = JSON.parse(save);
 
-      if (!gameState.stock.comedie_romantique) {
+      // Init stock
+      if (!gameState.stock.comedie_romantique)
         gameState.stock.comedie_romantique = 5;
+      if (!gameState.stock.weed)
+        gameState.stock.weed = 0;
+
+      // Réinitialiser flags journée
+      gameState.ghost_loue_aujourd_hui = false;
+
+      // Phase journée
+      const phase = gameState.phase_journee || 'matin';
+      updatePhaseBadge(phase);
+
+      // Appliquer effets upgrades
+      if (typeof UPGRADES !== 'undefined') {
+        UPGRADES.appliquerEffetsActifs(gameState);
       }
 
-      gameState.ghost_loue_aujourd_hui = false;
+      // Init discrétion
+      if (!gameState.discretion) gameState.discretion = 0;
+
       window.gameStateRef = gameState;
       updateUI();
       updateDayInfo();
+      updateWeedStock();
       setTimeout(startDay, 600);
     };
+
+    // ===================================================
+    // PHASE JOURNÉE
+    // ===================================================
+
+    function updatePhaseBadge(phase) {
+      const badge = document.getElementById('phase-badge');
+      if (phase === 'apres_midi') {
+        badge.textContent = 'APRÈS-MIDI';
+        badge.className   = 'phase-badge apres_midi';
+      } else {
+        badge.textContent = 'MATIN';
+        badge.className   = 'phase-badge matin';
+      }
+    }
+
+    function pauseDejeuner() {
+      gameState.phase_journee = 'pause';
+      saveGame();
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = 'quiz.html';
+      }, 500);
+    }
 
     // ===================================================
     // JOURNÉE
@@ -1071,67 +1489,140 @@
       updateFredThought('matin');
       checkDailyEvent();
 
-      if (typeof CANOPI !== 'undefined') {
-        const question = CANOPI.getQuestion(gameState);
+      // Interrogatoire Canopi si discrétion haute
+      checkInterrogatoireCanopi();
+
+      if (typeof SOUNDS !== 'undefined') {
+        setTimeout(() => SOUNDS.neons(4), 1000);
+      }
+    }
+
+    // ===================================================
+    // CANOPI — APPARITION CONDITIONNELLE
+    // ===================================================
+
+    function doitApparaitreCanopi() {
+      const gs = gameState;
+      const phase = gs.phase_journee || 'matin';
+
+      // Jamais en après-midi
+      if (phase === 'apres_midi') return false;
+
+      // Semaine 1 : 60% de chance
+      if (gs.semaine === 1) return Math.random() < 0.6;
+
+      // Semaine 2 : 50% de chance
+      if (gs.semaine === 2) return Math.random() < 0.5;
+
+      // Semaine 3-4 : 40% de chance
+      // Mais plus souvent si discrétion haute
+      if (gs.discretion >= 50) return Math.random() < 0.8;
+      return Math.random() < 0.4;
+    }
+
+    function checkInterrogatoireCanopi() {
+      const gs = gameState;
+
+      // Déclencher l'interrogatoire si discrétion > seuil
+      if (gs.discretion >= 60 && typeof CANOPI !== 'undefined') {
+        const question = CANOPI.getQuestion(gs);
         if (question) {
           setTimeout(() => {
             CANOPI.showInterrogatoire(question, () => {
               updateUI();
               saveGame();
             });
-          }, 3000);
+          }, 2000);
         }
-      }
-
-      // Néons d'ambiance
-      if (typeof SOUNDS !== 'undefined') {
-        setTimeout(() => SOUNDS.neons(4), 1000);
       }
     }
 
+    // ===================================================
+    // GÉNÉRER LES CLIENTS
+    // ===================================================
+
     function generateClients() {
       currentClients = [];
+      clientsServicis = 0;
 
-      // Canopi toujours présent
-      currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'canopi'), timer: 5 });
+      // Canopi — apparition conditionnelle
+      if (doitApparaitreCanopi()) {
+        // Canopi jamais en premier si discrétion haute
+        const canoPosInsert =
+          gameState.discretion >= 40
+            ? Math.floor(Math.random() * 3) + 1
+            : 0;
+        currentClients.push({
+          ...CLIENT_TYPES.find(c => c.id === 'canopi'),
+          timer: 5,
+          _insertAt: canoPosInsert
+        });
+      }
 
       // Ramon selon semaine
       const ramonChance =
         gameState.semaine >= 4 ? 1.0 :
         gameState.semaine >= 2 ? 0.6 : 0.2;
       if (Math.random() < ramonChance) {
-        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'ramon'), timer: 4 });
+        currentClients.push({
+          ...CLIENT_TYPES.find(c => c.id === 'ramon'), timer: 4
+        });
       }
 
       // Miguel dès S2
       if (gameState.semaine >= 2 && Math.random() > 0.5) {
-        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'miguel'), timer: 3 });
+        currentClients.push({
+          ...CLIENT_TYPES.find(c => c.id === 'miguel'), timer: 3
+        });
       }
 
       // Concurrent dès S2 (30%)
       if (gameState.semaine >= 2 && Math.random() > 0.7) {
-        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'concurrent'), timer: 3 });
+        currentClients.push({
+          ...CLIENT_TYPES.find(c => c.id === 'concurrent'), timer: 3
+        });
       }
 
-      // Journaliste dès S3 (25%)
+      // Journaliste dès S3
       if (gameState.semaine >= 3 && Math.random() > 0.75) {
-        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'journaliste'), timer: 4 });
+        currentClients.push({
+          ...CLIENT_TYPES.find(c => c.id === 'journaliste'), timer: 4
+        });
       }
 
-      // Collectionneur dès S3 (20%)
+      // Collectionneur dès S3
       if (gameState.semaine >= 3 && Math.random() > 0.8) {
-        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'collectionneur'), timer: 4 });
+        currentClients.push({
+          ...CLIENT_TYPES.find(c => c.id === 'collectionneur'),
+          timer: 4
+        });
       }
 
       // Clients aléatoires
       const autres = CLIENT_TYPES.filter(
-        c => !['canopi','ramon','miguel','concurrent','journaliste','collectionneur']
-              .includes(c.id)
+        c => !['canopi','ramon','miguel','concurrent',
+               'journaliste','collectionneur'].includes(c.id)
       );
       const nb = gameState.semaine >= 3 ? 4 : 3;
       for (let i = 0; i < nb; i++) {
         const r = Math.floor(Math.random() * autres.length);
-        currentClients.push({ ...autres[r], timer: Math.floor(Math.random() * 2) + 3 });
+        currentClients.push({
+          ...autres[r],
+          timer: Math.floor(Math.random() * 2) + 3
+        });
+      }
+
+      // Repositionner Canopi si nécessaire
+      const canopiIdx = currentClients.findIndex(
+        c => c.id === 'canopi'
+      );
+      if (canopiIdx !== -1 && currentClients[canopiIdx]._insertAt) {
+        const insertAt = Math.min(
+          currentClients[canopiIdx]._insertAt,
+          currentClients.length - 1
+        );
+        const [canopi] = currentClients.splice(canopiIdx, 1);
+        currentClients.splice(insertAt, 0, canopi);
       }
 
       renderQueue();
@@ -1139,9 +1630,26 @@
 
     function renderQueue() {
       const queue = document.getElementById('client-queue');
+
       if (currentClients.length === 0) {
-        queue.innerHTML = `<div class="no-clients">░ PLUS DE CLIENTS ░</div>`;
+        // Afficher bouton pause si matin et assez de clients servis
+        const phase = gameState.phase_journee || 'matin';
+        if (phase === 'matin') {
+          queue.innerHTML = `
+            <div class="no-clients">░ FILE VIDE ░</div>
+          `;
+          document.getElementById('pause-btn').classList.add('visible');
+        } else {
+          queue.innerHTML =
+            `<div class="no-clients">░ PLUS DE CLIENTS ░</div>`;
+        }
         return;
+      }
+
+      // Bouton pause visible après 3 clients servis (matin seulement)
+      const phase = gameState.phase_journee || 'matin';
+      if (phase === 'matin' && clientsServicis >= 3) {
+        document.getElementById('pause-btn').classList.add('visible');
       }
 
       queue.innerHTML = currentClients.map((client, i) => `
@@ -1153,6 +1661,7 @@
           <div class="client-info">
             <div class="client-name ${client.isRamon ? 'ramon' : ''}">
               ${client.name}
+              ${client.canNegociate ? ' 🤝' : ''}
             </div>
             <div class="client-demand">
               ${client.demande.substring(0,42)}${client.demande.length > 42 ? '...' : ''}
@@ -1175,18 +1684,18 @@
       activeClientIndex = index;
       const client  = currentClients[index];
       const visites = gameState['client_' + client.id + '_count'] || 0;
+      weedAjoutee = false;
 
-      // Pensée de Fred
       document.getElementById('fred-thought').textContent =
         `"${client.thought}"`;
 
-      // Panneau
-      const panel   = document.getElementById('client-panel');
-      const nameEl  = document.getElementById('panel-name');
+      const panel  = document.getElementById('client-panel');
+      const nameEl = document.getElementById('panel-name');
       nameEl.textContent = client.name;
-      nameEl.className   = 'panel-client-name' + (client.isRamon ? ' ramon' : '');
+      nameEl.className   = 'panel-client-name' +
+        (client.isRamon ? ' ramon' : '');
 
-      // Demande Ramon selon visite
+      // Demande Ramon
       let demande = client.demande;
       if (client.isRamon && client.dialogues) {
         const visitKey = 'visite' + Math.min(visites + 1, 5);
@@ -1194,7 +1703,7 @@
       }
       document.getElementById('panel-demand').textContent = demande;
 
-      // Note ambiance Ramon
+      // Note Ramon
       const ramonNote = document.getElementById('panel-ramon-note');
       if (client.isRamon && client.notes_ambiance) {
         const visitKey = 'visite' + Math.min(visites + 1, 5);
@@ -1205,24 +1714,50 @@
         ramonNote.style.display = 'none';
       }
 
-      // Badge nouveaux clients
+      // Badge
       const badgeZone = document.getElementById('panel-badge');
       if (client.isConcurrent) {
-        badgeZone.innerHTML = `<span class="panel-client-badge badge-concurrent">GALAXY VIDEO</span>`;
+        badgeZone.innerHTML =
+          `<span class="panel-client-badge badge-concurrent">GALAXY VIDEO</span>`;
       } else if (client.isJournaliste) {
-        badgeZone.innerHTML = `<span class="panel-client-badge badge-journaliste">PRESSE</span>`;
+        badgeZone.innerHTML =
+          `<span class="panel-client-badge badge-journaliste">PRESSE</span>`;
       } else if (client.isCollectionneur) {
-        badgeZone.innerHTML = `<span class="panel-client-badge badge-collectionneur">COLLECTIONNEUR</span>`;
+        badgeZone.innerHTML =
+          `<span class="panel-client-badge badge-collectionneur">COLLECTIONNEUR</span>`;
+      } else if (client.canNegociate) {
+        badgeZone.innerHTML =
+          `<span class="panel-client-badge badge-negociation">🤝 NÉGOCIE</span>`;
       } else {
         badgeZone.innerHTML = '';
       }
+
+      // Bouton WEED
+      const weedBtn = document.getElementById('weed-btn');
+      const stockWeed = gameState.stock.weed || 0;
+
+      // Jamais de weed avec Canopi
+      if (client.weedDemande && stockWeed > 0
+       && client.id !== 'canopi') {
+        // Afficher message codé
+        if (client.weedMessage) {
+          document.getElementById('panel-demand').textContent =
+            demande + ' ' + client.weedMessage;
+        }
+        weedBtn.classList.add('visible');
+      } else {
+        weedBtn.classList.remove('visible');
+      }
+
+      // Cacher négociation
+      document.getElementById('negociation-zone')
+              .classList.remove('visible');
 
       // Action spéciale
       const actionZone = document.getElementById('action-speciale-zone');
       if (client.actionSpeciale) {
         actionZone.innerHTML = `
-          <div class="action-speciale"
-               onclick="doActionSpeciale()">
+          <div class="action-speciale" onclick="doActionSpeciale()">
             <div class="action-speciale-titre">
               ${client.actionSpeciale.titre}
             </div>
@@ -1235,11 +1770,9 @@
         actionZone.innerHTML = '';
       }
 
-      // Bordure panneau
       panel.className = 'client-panel visible' +
         (client.isRamon ? ' ramon-panel' : '');
 
-      // Tension Ramon
       const tension = document.getElementById('tension-overlay');
       if (client.isRamon && gameState.semaine >= 3) {
         tension.classList.add('visible');
@@ -1253,6 +1786,210 @@
       renderQueue();
     }
 
+    // ===================================================
+    // WEED — SICILIAN GOLD
+    // ===================================================
+
+    function ajouterWeed() {
+      if (activeClientIndex < 0) return;
+      const client = currentClients[activeClientIndex];
+
+      const stockWeed = gameState.stock.weed || 0;
+      if (stockWeed <= 0) {
+        showNotif('Plus de Sicilian Gold.', false);
+        return;
+      }
+
+      weedAjoutee = true;
+      gameState.stock.weed = stockWeed - 1;
+
+      // Impact discrétion
+      gameState.discretion = Math.min(
+        100, (gameState.discretion || 0) + 8
+      );
+
+      // Cacher le bouton
+      document.getElementById('weed-btn').classList.remove('visible');
+
+      // Notification style weed
+      showNotifWeed('+15$ — Corey glisse une tête dans le boîtier.');
+
+      updateWeedStock();
+      updateDiscretion();
+    }
+
+    function showNotifWeed(message) {
+      const notif = document.getElementById('notif');
+      notif.textContent = message;
+      notif.className = 'notif visible weed';
+      setTimeout(() => { notif.className = 'notif'; }, 2500);
+    }
+
+    // ===================================================
+    // NÉGOCIATION
+    // ===================================================
+
+    function filmClique(filmId) {
+      if (activeClientIndex < 0) return;
+      const client = currentClients[activeClientIndex];
+
+      if (client.canNegociate && client.negoConfig) {
+        ouvrirNego(filmId, client);
+      } else {
+        servirFilm(filmId);
+      }
+    }
+
+    function ouvrirNego(filmId, client) {
+      const film = CATALOGUE.find(f => f.id === filmId);
+      if (!film) return;
+
+      negoFilmId = filmId;
+
+      const slider = document.getElementById('nego-slider');
+      slider.min   = client.negoConfig.prixMin;
+      slider.max   = client.negoConfig.prixMax;
+      slider.value = client.negoConfig.prixIdeal;
+
+      document.getElementById('nego-film-titre').textContent =
+        film.titre;
+
+      document.getElementById('negociation-zone')
+              .classList.add('visible');
+
+      setTimeout(() => {
+        document.getElementById('negociation-zone')
+                .scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+
+      updateNego(slider.value);
+    }
+
+    function updateNego(val) {
+      if (activeClientIndex < 0) return;
+      const client = currentClients[activeClientIndex];
+      const config = client.negoConfig;
+      if (!config) return;
+
+      const prix  = parseInt(val);
+      const ideal = config.prixIdeal;
+      const tol   = config.tolerance;
+      const valEl = document.getElementById('nego-prix-val');
+      const reEl  = document.getElementById('nego-reaction');
+
+      valEl.textContent = prix + '$';
+
+      if (prix < ideal - tol) {
+        valEl.className = 'nego-prix-val trop-bas';
+        reEl.className  = 'nego-reaction positif';
+        reEl.textContent = config.reactions.bas;
+        negoAccepte = true;
+      } else if (prix <= ideal + tol) {
+        valEl.className = 'nego-prix-val bon';
+        reEl.className  = 'nego-reaction';
+        reEl.textContent = config.reactions.juste;
+        negoAccepte = true;
+      } else if (prix <= ideal + tol * 2) {
+        valEl.className = 'nego-prix-val trop-haut';
+        reEl.className  = 'nego-reaction negatif';
+        reEl.textContent = config.reactions.haut;
+        negoAccepte = true;
+      } else {
+        valEl.className = 'nego-prix-val trop-bas';
+        reEl.className  = 'nego-reaction negatif';
+        reEl.textContent = config.reactions.refuse;
+        negoAccepte = false;
+      }
+    }
+
+    function confirmerNego() {
+      if (activeClientIndex < 0 || !negoFilmId) return;
+
+      if (!negoAccepte) {
+        showNotif('Le client refuse ce prix.', false);
+        currentClients.splice(activeClientIndex, 1);
+        activeClientIndex = -1;
+        closePanel();
+        renderQueue();
+        return;
+      }
+
+      const prix = parseInt(
+        document.getElementById('nego-slider').value
+      );
+      document.getElementById('negociation-zone')
+              .classList.remove('visible');
+      servirFilm(negoFilmId, prix);
+      negoFilmId = null;
+    }
+
+    function annulerNego() {
+      document.getElementById('negociation-zone')
+              .classList.remove('visible');
+      negoFilmId = null;
+    }
+
+    // ===================================================
+    // SERVIR UN FILM
+    // ===================================================
+
+    function servirFilm(filmId, prixFinal) {
+      if (activeClientIndex < 0) return;
+
+      const client = currentClients[activeClientIndex];
+      const film   = CATALOGUE.find(f => f.id === filmId);
+      if (!film) return;
+
+      if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) {
+        showNotif('Ghost est déjà sorti.', false);
+        return;
+      }
+
+      gameState.energie = Math.max(
+        0, gameState.energie - client.energie
+      );
+
+      // Ajouter le prix weed si applicable
+      let prixTotal = prixFinal || film.prix;
+      if (weedAjoutee) {
+        prixTotal += 15;
+        // Impact discrétion déjà appliqué dans ajouterWeed
+      }
+
+      const resultat = client.onServi(gameState, film, prixTotal);
+
+      // Impact discrétion selon le type de vente
+      if (film.genre === 'noires') {
+        gameState.discretion = Math.min(
+          100, (gameState.discretion || 0) + 5
+        );
+      }
+
+      if (resultat.positif && typeof SOUNDS !== 'undefined') {
+        SOUNDS.caisse();
+      }
+
+      const key = 'client_' + client.id + '_count';
+      gameState[key] = (gameState[key] || 0) + 1;
+      clientsServicis++;
+
+      weedAjoutee = false;
+
+      document.getElementById('tension-overlay')
+              .classList.remove('visible');
+      currentClients.splice(activeClientIndex, 1);
+      activeClientIndex = -1;
+
+      closePanel();
+      showNotif(resultat.msg, resultat.positif);
+      updateUI();
+      updateDiscretion();
+      renderQueue();
+      saveGame();
+
+      if (gameState.energie <= 0) updateFredThought('tired');
+    }
+
     function doActionSpeciale() {
       if (activeClientIndex < 0) return;
       const client = currentClients[activeClientIndex];
@@ -1261,6 +1998,7 @@
       const resultat = client.actionSpeciale.effet(gameState);
       const key = 'client_' + client.id + '_count';
       gameState[key] = (gameState[key] || 0) + 1;
+      clientsServicis++;
 
       currentClients.splice(activeClientIndex, 1);
       activeClientIndex = -1;
@@ -1269,40 +2007,90 @@
       closePanel();
       showNotif(resultat.msg, resultat.positif);
       updateUI();
-      saveGame();
       renderQueue();
+      saveGame();
+    }
+
+    function servirAleatoire() {
+      const stock = gameState.stock;
+      const dispo = CATALOGUE.filter(f => {
+        if (f.id === 'ghost' && gameState.ghost_loue_aujourd_hui)
+          return false;
+        if (f.genre === 'noires')
+          return (stock.noires || 0) > 0;
+        if (f.genre === 'rarites')
+          return (stock.rarites || 0) > 0;
+        if (f.genre === 'comedie_romantique')
+          return (stock.comedie_romantique || 0) > 0;
+        return (stock[f.genre] || 0) > 0;
+      });
+      if (dispo.length === 0) {
+        showNotif('Plus rien en stock.', false);
+        return;
+      }
+      servirFilm(dispo[Math.floor(Math.random() * dispo.length)].id);
+    }
+
+    function renvoyerClient() {
+      if (activeClientIndex < 0) return;
+      gameState.reputation = Math.max(0, gameState.reputation - 0.3);
+      document.getElementById('tension-overlay')
+              .classList.remove('visible');
+      currentClients.splice(activeClientIndex, 1);
+      activeClientIndex = -1;
+      closePanel();
+      showNotif('Client renvoyé. Réputation -', false);
+      updateUI();
+      renderQueue();
+      saveGame();
     }
 
     function renderPrefs(client, visites) {
       const prefs = document.getElementById('client-prefs');
       if (visites === 0) {
-        prefs.innerHTML = `<div class="prefs-label">PREMIÈRE VISITE — Apprenez ses goûts.</div>`;
+        prefs.innerHTML =
+          `<div class="prefs-label">PREMIÈRE VISITE — Apprenez ses goûts.</div>`;
         return;
       }
       const tags = [];
       client.aime.slice(0,3).forEach(id => {
         const film = CATALOGUE.find(f => f.id === id);
-        if (film) tags.push(`<span class="pref-tag aime">♥ ${film.titre}</span>`);
+        if (film) tags.push(
+          `<span class="pref-tag aime">♥ ${film.titre}</span>`
+        );
       });
       client.deteste.slice(0,2).forEach(id => {
         const film = CATALOGUE.find(f => f.id === id);
-        if (film) tags.push(`<span class="pref-tag deteste">✗ ${film.titre}</span>`);
+        if (film) tags.push(
+          `<span class="pref-tag deteste">✗ ${film.titre}</span>`
+        );
       });
       prefs.innerHTML = `
-        <div class="prefs-label">SES GOÛTS (${visites} visite${visites > 1 ? 's' : ''}) :</div>
+        <div class="prefs-label">
+          SES GOÛTS (${visites} visite${visites > 1 ? 's' : ''}) :
+        </div>
         ${tags.join('')}
       `;
     }
 
     function renderFilmsList(client) {
       const list  = document.getElementById('films-list');
+      const label = document.getElementById('films-label');
       const stock = gameState.stock;
 
+      label.textContent = client.canNegociate
+        ? 'CHOISIR UN FILM (négociation possible) :'
+        : 'CHOISIR UN FILM :';
+
       const dispo = CATALOGUE.filter(film => {
-        if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) return false;
-        if (film.genre === 'noires')             return (stock.noires || 0) > 0;
-        if (film.genre === 'rarites')            return (stock.rarites || 0) > 0;
-        if (film.genre === 'comedie_romantique') return (stock.comedie_romantique || 0) > 0;
+        if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui)
+          return false;
+        if (film.genre === 'noires')
+          return (stock.noires || 0) > 0;
+        if (film.genre === 'rarites')
+          return (stock.rarites || 0) > 0;
+        if (film.genre === 'comedie_romantique')
+          return (stock.comedie_romantique || 0) > 0;
         return (stock[film.genre] || 0) > 0;
       });
 
@@ -1333,7 +2121,7 @@
 
         return `
           <div class="film-option ${classe}"
-               onclick="servirFilm('${film.id}')">
+               onclick="filmClique('${film.id}')">
             <div class="film-info">
               <div class="film-titre">${film.titre}</div>
               <div class="film-detail">
@@ -1357,82 +2145,27 @@
 
     function renderAlts(client) {
       document.getElementById('panel-alts').innerHTML = `
-        <div class="panel-alt" onclick="servirAleatoire()">🎲 AU HASARD</div>
-        <div class="panel-alt danger" onclick="renvoyerClient()">✕ RENVOYER</div>
+        <div class="panel-alt" onclick="servirAleatoire()">
+          🎲 AU HASARD
+        </div>
+        <div class="panel-alt danger" onclick="renvoyerClient()">
+          ✕ RENVOYER
+        </div>
       `;
     }
 
-    // ===================================================
-    // SERVIR UN FILM
-    // ===================================================
-
-    function servirFilm(filmId) {
-      if (activeClientIndex < 0) return;
-
-      const client = currentClients[activeClientIndex];
-      const film   = CATALOGUE.find(f => f.id === filmId);
-      if (!film) return;
-
-      if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) {
-        showNotif('Ghost est déjà sorti aujourd\'hui.', false);
-        return;
-      }
-
-      gameState.energie = Math.max(0, gameState.energie - client.energie);
-
-      const resultat = client.onServi(gameState, film);
-
-      // Son caisse si positif
-      if (resultat.positif && typeof SOUNDS !== 'undefined') {
-        SOUNDS.caisse();
-      }
-
-      const key = 'client_' + client.id + '_count';
-      gameState[key] = (gameState[key] || 0) + 1;
-
-      document.getElementById('tension-overlay').classList.remove('visible');
-      currentClients.splice(activeClientIndex, 1);
-      activeClientIndex = -1;
-
-      closePanel();
-      showNotif(resultat.msg, resultat.positif);
-      updateUI();
-      renderQueue();
-      saveGame();
-
-      if (gameState.energie <= 0) updateFredThought('tired');
-    }
-
-    function servirAleatoire() {
-      const stock = gameState.stock;
-      const dispo = CATALOGUE.filter(f => {
-        if (f.id === 'ghost' && gameState.ghost_loue_aujourd_hui) return false;
-        if (f.genre === 'noires')             return (stock.noires || 0) > 0;
-        if (f.genre === 'rarites')            return (stock.rarites || 0) > 0;
-        if (f.genre === 'comedie_romantique') return (stock.comedie_romantique || 0) > 0;
-        return (stock[f.genre] || 0) > 0;
-      });
-      if (dispo.length === 0) { showNotif('Plus rien en stock.', false); return; }
-      servirFilm(dispo[Math.floor(Math.random() * dispo.length)].id);
-    }
-
-    function renvoyerClient() {
-      if (activeClientIndex < 0) return;
-      gameState.reputation = Math.max(0, gameState.reputation - 0.3);
-      document.getElementById('tension-overlay').classList.remove('visible');
-      currentClients.splice(activeClientIndex, 1);
-      activeClientIndex = -1;
-      closePanel();
-      showNotif('Client renvoyé. Réputation -', false);
-      updateUI();
-      renderQueue();
-      saveGame();
-    }
-
     function closePanel() {
-      document.getElementById('client-panel').className = 'client-panel';
-      document.getElementById('tension-overlay').classList.remove('visible');
+      document.getElementById('client-panel').className =
+        'client-panel';
+      document.getElementById('tension-overlay')
+              .classList.remove('visible');
+      document.getElementById('negociation-zone')
+              .classList.remove('visible');
+      document.getElementById('weed-btn')
+              .classList.remove('visible');
       activeClientIndex = -1;
+      negoFilmId = null;
+      weedAjoutee = false;
       renderQueue();
     }
 
@@ -1441,23 +2174,27 @@
     // ===================================================
 
     function closingTime() {
-      // Son rideau de fer
       if (typeof SOUNDS !== 'undefined') SOUNDS.rideauFer();
 
       if (currentClients.length > 0) {
         const lost = currentClients.length;
-        gameState.reputation = Math.max(0, gameState.reputation - lost * 0.2);
+        gameState.reputation = Math.max(
+          0, gameState.reputation - lost * 0.2
+        );
         currentClients = [];
-        showNotif(`${lost} client(s) reparti(s). Réputation -`, false);
+        showNotif(`${lost} client(s) reparti(s).`, false);
       }
 
       updateFredThought('fermeture');
       gameState.ghost_loue_aujourd_hui = false;
+      gameState.phase_journee = 'matin'; // Reset pour demain
       saveGame();
 
       setTimeout(() => {
         document.body.classList.add('fade-out');
-        setTimeout(() => { window.location.href = 'evening.html'; }, 500);
+        setTimeout(() => {
+          window.location.href = 'evening.html';
+        }, 500);
       }, 600);
     }
 
@@ -1468,8 +2205,13 @@
     function checkDailyEvent() {
       if (typeof EVENTS === 'undefined') return;
       const jourDansSemaine = ((gameState.jour - 1) % 7) + 1;
-      const narratif = EVENTS.getNarratif(gameState.semaine, jourDansSemaine);
-      if (narratif) { setTimeout(() => showEvent(narratif), 1500); return; }
+      const narratif = EVENTS.getNarratif(
+        gameState.semaine, jourDansSemaine
+      );
+      if (narratif) {
+        setTimeout(() => showEvent(narratif), 1500);
+        return;
+      }
       if (Math.random() > 0.5) {
         const evt = EVENTS.getEvent(gameState);
         if (evt) setTimeout(() => showEvent(evt), 2000);
@@ -1483,32 +2225,40 @@
       panel.style.cssText = `
         position:fixed;top:0;left:0;right:0;bottom:0;
         background:rgba(0,0,0,0.92);z-index:300;
-        display:flex;align-items:center;justify-content:center;
-        padding:16px;font-family:'Courier New',monospace;
+        display:flex;align-items:center;
+        justify-content:center;padding:16px;
+        font-family:'Courier New',monospace;
       `;
       panel.innerHTML = `
         <div style="background:#080818;border:1px solid #2e2e50;
              border-top:2px solid #ff8855;border-radius:8px;
              padding:16px;width:100%;max-width:400px;">
-          <div style="font-size:9px;color:#ff8855;letter-spacing:3px;margin-bottom:4px;">
+          <div style="font-size:9px;color:#ff8855;
+               letter-spacing:3px;margin-bottom:4px;">
             ÉVÉNEMENT ${event.icon}
           </div>
-          <div style="font-size:13px;color:#f0f0ff;letter-spacing:1px;margin-bottom:10px;">
+          <div style="font-size:13px;color:#f0f0ff;
+               letter-spacing:1px;margin-bottom:10px;">
             ${event.titre}
           </div>
-          <div style="font-size:10px;color:#9090bb;line-height:1.6;
-               margin-bottom:14px;font-style:italic;">
+          <div style="font-size:10px;color:#9090bb;
+               line-height:1.6;margin-bottom:14px;
+               font-style:italic;">
             ${event.texte}
           </div>
           <div style="display:flex;flex-direction:column;gap:6px;">
             ${event.choix.map((choix, i) => `
               <div onclick="resolveEvent(${i})"
-                   style="background:#0f0f22;border:1px solid #2e2e50;
-                          border-radius:4px;padding:10px 12px;cursor:pointer;">
-                <div style="font-size:10px;color:#f0f0ff;letter-spacing:1px;margin-bottom:2px;">
+                   style="background:#0f0f22;
+                          border:1px solid #2e2e50;
+                          border-radius:4px;
+                          padding:10px 12px;cursor:pointer;">
+                <div style="font-size:10px;color:#f0f0ff;
+                     letter-spacing:1px;margin-bottom:2px;">
                   ▶ ${choix.texte}
                 </div>
-                <div style="font-size:8px;color:#444466;letter-spacing:1px;">
+                <div style="font-size:8px;color:#444466;
+                     letter-spacing:1px;">
                   ${choix.detail}
                 </div>
               </div>
@@ -1543,7 +2293,8 @@
       }
       const gs      = gameState;
       const entrees = CANOPI.getCarnet(gs.semaine, gs.jour) || [];
-      const score   = CANOPI.interrogatoire.evaluerCoherence(gs.choicesHistory);
+      const score   = CANOPI.interrogatoire
+                            .evaluerCoherence(gs.choicesHistory);
 
       const panel = document.createElement('div');
       panel.id = 'journal-panel';
@@ -1555,64 +2306,87 @@
 
       panel.innerHTML = `
         <div style="background:#080818;border-bottom:1px solid #1e1e3a;
-             padding:12px 14px;display:flex;justify-content:space-between;
-             align-items:center;position:sticky;top:0;z-index:10;">
+             padding:12px 14px;display:flex;
+             justify-content:space-between;align-items:center;
+             position:sticky;top:0;z-index:10;">
           <span style="font-size:11px;color:#00ffc8;letter-spacing:2px;">
             JOURNAL & CARNET
           </span>
           <span onclick="document.getElementById('journal-panel').remove()"
-                style="font-size:10px;color:#444466;cursor:pointer;padding:4px 8px;">✕</span>
+                style="font-size:10px;color:#444466;
+                       cursor:pointer;padding:4px 8px;">✕</span>
         </div>
-        <div style="padding:14px;display:flex;flex-direction:column;gap:16px;">
+        <div style="padding:14px;display:flex;
+             flex-direction:column;gap:16px;">
 
           <div>
-            <div style="font-size:8px;color:#ff8855;letter-spacing:2px;margin-bottom:8px;">
-              LE PROJECTEUR DU QUARTIER — S${gs.semaine}J${gs.jour}
+            <div style="font-size:8px;color:#ff8855;
+                 letter-spacing:2px;margin-bottom:8px;">
+              LE PROJECTEUR — S${gs.semaine}J${gs.jour}
             </div>
-            <div style="font-size:10px;color:#7777aa;font-style:italic;
-                 line-height:1.6;border-left:1px solid #1e1e3a;padding-left:10px;">
+            <div style="font-size:10px;color:#7777aa;
+                 font-style:italic;line-height:1.6;
+                 border-left:1px solid #1e1e3a;padding-left:10px;">
               ${gs.legalite >= 30
-                ? '"Des courts-métrages non identifiés continuent de circuler. La police enquête."'
-                : '"Faits divers habituels. Rien de notable cette semaine."'
+                ? '"Des courts-métrages circulent. La police enquête."'
+                : '"Faits divers habituels."'
+              }
+            </div>
+          </div>
+
+          <!-- DISCRÉTION -->
+          <div>
+            <div style="font-size:8px;color:#44aa44;
+                 letter-spacing:2px;margin-bottom:6px;">
+              DISCRÉTION — ${gs.discretion || 0}%
+            </div>
+            <div style="width:100%;height:4px;
+                 background:#0a0a18;border-radius:2px;overflow:hidden;
+                 margin-bottom:6px;">
+              <div style="width:${gs.discretion || 0}%;height:100%;
+                   background:${
+                     (gs.discretion || 0) >= 70 ? '#ff4466'
+                     : (gs.discretion || 0) >= 40 ? '#ffdd44'
+                     : '#44aa44'
+                   };border-radius:2px;"></div>
+            </div>
+            <div style="font-size:9px;color:#444466;font-style:italic;">
+              ${(gs.discretion || 0) >= 70
+                ? 'Canopi va agir. Bientôt.'
+                : (gs.discretion || 0) >= 40
+                ? 'Canopi commence à avoir des doutes.'
+                : 'Tout va bien. Pour l\'instant.'
               }
             </div>
           </div>
 
           ${gs.semaine >= 2 ? `
           <div>
-            <div style="font-size:8px;color:#8855aa;letter-spacing:2px;margin-bottom:6px;">
+            <div style="font-size:8px;color:#8855aa;
+                 letter-spacing:2px;margin-bottom:6px;">
               NOTE — RAMON
             </div>
-            <div style="font-size:10px;color:#6644aa;font-style:italic;
-                 line-height:1.6;border-left:1px solid #3a1a3a;padding-left:10px;">
+            <div style="font-size:10px;color:#6644aa;
+                 font-style:italic;line-height:1.6;
+                 border-left:1px solid #3a1a3a;padding-left:10px;">
               ${getRamonNote(gs)}
             </div>
           </div>
           ` : ''}
 
-          ${gs.accord_concurrent ? `
           <div>
-            <div style="font-size:8px;color:#aa8800;letter-spacing:2px;margin-bottom:6px;">
-              ACCORD GALAXY VIDEO
-            </div>
-            <div style="font-size:10px;color:#887700;font-style:italic;
-                 line-height:1.6;border-left:1px solid #443300;padding-left:10px;">
-              Accord passé avec le concurrent. Partage d'infos clients.
-            </div>
-          </div>
-          ` : ''}
-
-          <div>
-            <div style="font-size:8px;color:#444466;letter-spacing:2px;margin-bottom:8px;">
+            <div style="font-size:8px;color:#444466;
+                 letter-spacing:2px;margin-bottom:8px;">
               CARNET DE CANOPI
             </div>
             ${entrees.length > 0
               ? entrees.map(e => `
-                  <div style="padding:8px 0;border-bottom:1px solid #0a0a18;">
-                    <div style="font-size:8px;color:#333355;letter-spacing:1px;margin-bottom:3px;">
-                      Jour ${e.jour}
-                    </div>
-                    <div style="font-size:10px;color:#6060aa;font-style:italic;line-height:1.5;">
+                  <div style="padding:8px 0;
+                       border-bottom:1px solid #0a0a18;">
+                    <div style="font-size:8px;color:#333355;
+                         margin-bottom:3px;">Jour ${e.jour}</div>
+                    <div style="font-size:10px;color:#6060aa;
+                         font-style:italic;line-height:1.5;">
                       ${e.texte}
                     </div>
                   </div>
@@ -1623,11 +2397,13 @@
 
           <div style="background:#080818;border:1px solid #1e1e3a;
                border-radius:6px;padding:10px 12px;">
-            <div style="font-size:8px;color:#333355;letter-spacing:2px;margin-bottom:6px;">
+            <div style="font-size:8px;color:#333355;
+                 letter-spacing:2px;margin-bottom:6px;">
               COHÉRENCE — CANOPI
             </div>
             <div style="font-size:11px;letter-spacing:1px;color:${
-              score >= 80 ? '#00ffc8' : score >= 50 ? '#ff8855' : '#ff4466'
+              score >= 80 ? '#00ffc8'
+              : score >= 50 ? '#ff8855' : '#ff4466'
             };">
               ${score}% — ${
                 score >= 80 ? 'Canopi a peu de preuves.'
@@ -1639,22 +2415,41 @@
 
         </div>
       `;
-
       document.body.appendChild(panel);
     }
 
     function getRamonNote(gs) {
       const v = gs['client_ramon_count'] || 0;
-      if (v === 0) return 'Un homme en costume. Comédies romantiques. Première observation.';
+      if (v === 0) return 'Un homme en costume. Comédies romantiques.';
       if (v === 1) return 'Il revient. Il regarde les étagères longuement.';
-      if (v === 2) return 'Il a mentionné DiMaggio. Comme si c\'était anodin.';
+      if (v === 2) return 'Il a mentionné DiMaggio.';
       if (v === 3) return 'Ses yeux s\'arrêtent sur la porte de la réserve.';
       return 'Il vient plus pour les films.';
     }
 
     // ===================================================
-    // STOCK
+    // STOCK + WEED
     // ===================================================
+
+    function updateWeedStock() {
+      const stock = gameState.stock.weed || 0;
+      const shelf = document.getElementById('shelf-weed');
+      const val   = document.getElementById('stock-weed');
+
+      if (stock > 0) {
+        shelf.style.display = 'flex';
+        val.textContent = stock;
+        val.className = stock <= 1 ? 'shelf-count-weed empty' : 'shelf-count-weed';
+      } else {
+        shelf.style.display = 'none';
+      }
+    }
+
+    function updateDiscretion() {
+      const pct  = Math.min(100, gameState.discretion || 0);
+      const fill = document.getElementById('discretion-fill');
+      if (fill) fill.style.width = pct + '%';
+    }
 
     function openStock() {
       const gs = gameState;
@@ -1668,32 +2463,75 @@
       ];
 
       const stockHTML = genres.map(g => {
-        const val   = gs.stock[g.id] || 0;
+        const val = gs.stock[g.id] || 0;
+        let prix  = g.prix;
+        if (gs.remise_stock) {
+          prix = Math.round(prix * (1 - gs.remise_stock));
+        }
         const pct   = (val / g.max) * 100;
-        const color = val === 0 ? '#ff4466' : val <= g.max * 0.3 ? '#ff8855' : '#00ffc8';
+        const color = val === 0 ? '#ff4466'
+                    : val <= g.max * 0.3 ? '#ff8855'
+                    : '#00ffc8';
         return `
-          <div style="background:#0a0a18;border:1px solid #1e1e3a;border-radius:6px;
-               padding:10px 12px;display:flex;align-items:center;gap:10px;">
+          <div style="background:#0a0a18;border:1px solid #1e1e3a;
+               border-radius:6px;padding:10px 12px;
+               display:flex;align-items:center;gap:10px;">
             <div style="flex:1;">
-              <div style="font-size:10px;color:#9090bb;letter-spacing:1px;margin-bottom:5px;">
+              <div style="font-size:10px;color:#9090bb;
+                   letter-spacing:1px;margin-bottom:5px;">
                 ${g.label}
+                ${gs.remise_stock ? `<span style="color:#00ffc8;font-size:8px;"> -${Math.round(gs.remise_stock*100)}%</span>` : ''}
               </div>
-              <div style="width:100%;height:4px;background:#050510;border-radius:2px;overflow:hidden;">
-                <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;"></div>
+              <div style="width:100%;height:4px;background:#050510;
+                   border-radius:2px;overflow:hidden;">
+                <div style="width:${pct}%;height:100%;
+                     background:${color};border-radius:2px;"></div>
               </div>
             </div>
-            <div style="font-size:13px;color:${color};font-weight:bold;width:24px;text-align:right;">
+            <div style="font-size:13px;color:${color};
+                 font-weight:bold;width:24px;text-align:right;">
               ${val}
             </div>
-            <div onclick="commanderStock('${g.id}', ${g.prix})"
-                 style="background:#0f0f1e;border:1px solid #2e2e50;border-radius:4px;
-                        padding:5px 8px;font-size:8px;color:#00ffc8;
+            <div onclick="commanderStock('${g.id}', ${prix})"
+                 style="background:#0f0f1e;border:1px solid #2e2e50;
+                        border-radius:4px;padding:5px 8px;
+                        font-size:8px;color:#00ffc8;
                         letter-spacing:1px;cursor:pointer;">
-              +${g.prix}$
+              ${prix}$
             </div>
           </div>
         `;
       }).join('');
+
+      // Section weed séparée
+      const weedStock = gs.stock.weed || 0;
+      const weedHTML = `
+        <div style="background:#050f05;border:1px solid #44aa4420;
+             border-radius:6px;padding:10px 12px;
+             display:flex;align-items:center;gap:10px;
+             margin-top:8px;">
+          <div style="flex:1;">
+            <div style="font-size:10px;color:#44aa44;
+                 letter-spacing:1px;margin-bottom:5px;">
+              🌿 SICILIAN GOLD
+            </div>
+            <div style="font-size:9px;color:#335533;font-style:italic;">
+              Stock discret. Corey gère.
+            </div>
+          </div>
+          <div style="font-size:13px;color:#44cc44;
+               font-weight:bold;width:24px;text-align:right;">
+            ${weedStock}
+          </div>
+          <div onclick="commanderWeed()"
+               style="background:#050f05;border:1px solid #44aa4430;
+                      border-radius:4px;padding:5px 8px;
+                      font-size:8px;color:#44cc44;
+                      letter-spacing:1px;cursor:pointer;">
+            +20$
+          </div>
+        </div>
+      `;
 
       const panel = document.createElement('div');
       panel.id = 'stock-panel';
@@ -1704,19 +2542,29 @@
       `;
       panel.innerHTML = `
         <div style="background:#080818;border-bottom:1px solid #1e1e3a;
-             padding:12px 14px;display:flex;justify-content:space-between;
-             align-items:center;position:sticky;top:0;z-index:10;">
-          <span style="font-size:11px;color:#00ffc8;letter-spacing:2px;">GESTION DU STOCK</span>
+             padding:12px 14px;display:flex;
+             justify-content:space-between;align-items:center;
+             position:sticky;top:0;z-index:10;">
+          <span style="font-size:11px;color:#00ffc8;letter-spacing:2px;">
+            GESTION DU STOCK
+          </span>
           <span onclick="document.getElementById('stock-panel').remove()"
-                style="font-size:10px;color:#444466;cursor:pointer;padding:4px 8px;">✕</span>
+                style="font-size:10px;color:#444466;
+                       cursor:pointer;padding:4px 8px;">✕</span>
         </div>
-        <div style="padding:14px;display:flex;flex-direction:column;gap:8px;">
-          <div style="font-size:10px;color:#7777aa;letter-spacing:1px;margin-bottom:4px;">
-            Budget : <span style="color:#00ffc8;font-weight:bold;">${gs.argent}$</span>
+        <div style="padding:14px;display:flex;
+             flex-direction:column;gap:8px;">
+          <div style="font-size:10px;color:#7777aa;
+               letter-spacing:1px;margin-bottom:4px;">
+            Budget :
+            <span style="color:#00ffc8;font-weight:bold;">
+              ${gs.argent}$
+            </span>
           </div>
           ${stockHTML}
-          <div style="font-size:8px;color:#333355;letter-spacing:1px;
-               text-align:center;margin-top:8px;">
+          ${weedHTML}
+          <div style="font-size:8px;color:#333355;
+               letter-spacing:1px;text-align:center;margin-top:8px;">
             Livraison le lendemain matin.
           </div>
         </div>
@@ -1725,10 +2573,19 @@
     }
 
     function commanderStock(genre, prix) {
-      if (gameState.argent < prix) { showNotif('Pas assez d\'argent.', false); return; }
+      if (gameState.argent < prix) {
+        showNotif('Pas assez d\'argent.', false);
+        return;
+      }
       gameState.argent -= prix;
-      const maxes  = { action:10, horreur:10, drame:10, enfants:10, comedie_romantique:8, rarites:3 };
-      const ajouts = { action:2,  horreur:2,  drame:2,  enfants:2,  comedie_romantique:2, rarites:1 };
+      const maxes  = {
+        action:10, horreur:10, drame:10,
+        enfants:10, comedie_romantique:8, rarites:3
+      };
+      const ajouts = {
+        action:2, horreur:2, drame:2,
+        enfants:2, comedie_romantique:2, rarites:1
+      };
       gameState.stock[genre] = Math.min(
         maxes[genre] || 10,
         (gameState.stock[genre] || 0) + (ajouts[genre] || 2)
@@ -1736,6 +2593,30 @@
       updateUI();
       saveGame();
       showNotif(`Commande passée. -${prix}$`, true);
+      const panel = document.getElementById('stock-panel');
+      if (panel) panel.remove();
+      openStock();
+    }
+
+    function commanderWeed() {
+      const prix = 20;
+      if (gameState.argent < prix) {
+        showNotif('Pas assez d\'argent.', false);
+        return;
+      }
+      gameState.argent -= prix;
+      gameState.stock.weed = (gameState.stock.weed || 0) + 3;
+
+      // Commander de la weed augmente légèrement la discrétion
+      gameState.discretion = Math.min(
+        100, (gameState.discretion || 0) + 3
+      );
+
+      updateUI();
+      updateWeedStock();
+      updateDiscretion();
+      saveGame();
+      showNotifWeed('Corey a réapprovisionné. -20$ / +3 SG');
       const panel = document.getElementById('stock-panel');
       if (panel) panel.remove();
       openStock();
@@ -1749,19 +2630,24 @@
       if (typeof DIALOGUES === 'undefined') return;
       let pool = [];
       const gs = gameState;
+
       if (context === 'matin') {
         if      (gs.semaine === 4) pool = DIALOGUES.fred.semaine4;
         else if (gs.semaine === 3) pool = DIALOGUES.fred.semaine3;
         else if (gs.semaine === 2) pool = DIALOGUES.fred.semaine2;
         else                       pool = DIALOGUES.fred.matin;
-        if (gs.legalite  >= 60) pool = [...pool, ...DIALOGUES.fred.legalite_haute];
-        if (gs.exposition >= 50) pool = [...pool, ...DIALOGUES.fred.exposition_haute];
-        if (gs.argent < 100)     pool = [...pool, ...DIALOGUES.fred.argent_serre];
+        if (gs.legalite  >= 60)
+          pool = [...pool, ...DIALOGUES.fred.legalite_haute];
+        if (gs.exposition >= 50)
+          pool = [...pool, ...DIALOGUES.fred.exposition_haute];
+        if (gs.argent < 100)
+          pool = [...pool, ...DIALOGUES.fred.argent_serre];
       } else if (context === 'tired') {
-        pool = ["Je suis à plat. Faut fermer.", "Plus d'énergie. La réserve attend."];
+        pool = ["Je suis à plat.", "Plus d'énergie. La réserve attend."];
       } else if (context === 'fermeture') {
         pool = DIALOGUES.fred.fermeture;
       }
+
       if (pool && pool.length > 0) {
         const t = pool[Math.floor(Math.random() * pool.length)];
         document.getElementById('fred-thought').textContent = `"${t}"`;
@@ -1796,6 +2682,9 @@
         if (val === 0)             el.classList.add('empty');
         else if (val <= max * 0.3) el.classList.add('low');
       });
+
+      updateWeedStock();
+      updateDiscretion();
     }
 
     function updateDayInfo() {
@@ -1814,7 +2703,8 @@
         stock_horreur:`Horreur : ${gs.stock.horreur || 0}/10`,
         stock_drame:  `Drame : ${gs.stock.drame || 0}/10`,
         stock_enfants:`Enfants : ${gs.stock.enfants || 0}/10`,
-        stock_rarites:`Raretés : ${gs.stock.rarites || 0}/3`
+        stock_rarites:`Raretés : ${gs.stock.rarites || 0}/3`,
+        stock_weed:   `Sicilian Gold : ${gs.stock.weed || 0} têtes`
       };
       const tooltip = document.getElementById('gauge-tooltip');
       tooltip.textContent = messages[type] || '';
@@ -1830,7 +2720,6 @@
     }
 
     function saveGame() {
-      // Vérifier les achievements
       if (typeof ACHIEVEMENTS !== 'undefined') {
         ACHIEVEMENTS.checkAndNotify(gameState);
       }
