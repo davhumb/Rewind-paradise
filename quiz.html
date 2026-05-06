@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, 
+        initial-scale=1.0, maximum-scale=1.0, 
+        user-scalable=no">
+  <title>Rewind Paradise — Quiz du Midi</title>
+  <link rel="stylesheet" href="data/style.css">
+  <script src="data/quiz.js"></script>
+  <style>
+
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      background: #050508;
+    }
+
+    /* BARRE HAUT */
+    .top-bar {
+      padding: 8px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      background: #080810;
+      border-bottom: 1px solid #1e1e3a;
+    }
+
+    .quiz-title {
+      font-size: 11px;
+      color: #ffdd44;
+      letter-spacing: 2px;
+      text-shadow: 0 0 8px #ffdd44;
+    }
+
+    .quiz-score-display {
+      font-size: 10px;
+      color: #444466;
+      letter-spacing: 1px;
+    }
+
+    /* ZONE PRINCIPALE */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 14px;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    /* INTRO */
+    .quiz-intro {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .intro-icon { font-size: 40px; margin-bottom: 12px; }
+
+    .intro-titre {
+      font-size: 14px;
+      color: #f0f0ff;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .intro-sous {
+      font-size: 10px;
+      color: #6060aa;
+      letter-spacing: 1px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .intro-corey {
+      background: #0a0a18;
+      border-left: 3px solid #ff8855;
+      padding: 8px 12px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .intro-corey-text {
+      font-size: 10px;
+      color: #c0c0dd;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .btn-commencer {
+      width: 100%;
+      background: #0a1808;
+      border: 2px solid #ffdd44;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 13px;
+      color: #ffdd44;
+      letter-spacing: 4px;
+      font-weight: bold;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 10px #ffdd44;
+      box-sizing: border-box;
+    }
+
+    .btn-commencer:active { transform: scale(0.97); }
+
+    /* QUESTION */
+    .question-zone {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .question-zone.visible { display: flex; }
+
+    /* Progress */
+    .quiz-progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .progress-label {
+      font-size: 9px;
+      color: #444466;
+      letter-spacing: 2px;
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #1e1e3a;
+      transition: background 0.3s;
+    }
+
+    .progress-dot.actif    { background: #ffdd44; box-shadow: 0 0 6px #ffdd44; }
+    .progress-dot.correct  { background: #00ffc8; }
+    .progress-dot.incorrect{ background: #ff4466; }
+
+    /* Timer */
+    .timer-zone {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .timer-bar-container {
+      flex: 1;
+      height: 6px;
+      background: #0a0a18;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .timer-bar {
+      height: 100%;
+      background: #ffdd44;
+      border-radius: 3px;
+      transition: width 0.1s linear, background 0.3s;
+    }
+
+    .timer-bar.urgent { background: #ff4466; }
+
+    .timer-val {
+      font-size: 14px;
+      color: #ffdd44;
+      font-weight: bold;
+      letter-spacing: 1px;
+      width: 30px;
+      text-align: right;
+      transition: color 0.3s;
+    }
+
+    .timer-val.urgent { color: #ff4466; }
+
+    /* Catégorie */
+    .question-cat {
+      font-size: 8px;
+      color: #333355;
+      letter-spacing: 3px;
+    }
+
+    /* Question texte */
+    .question-text {
+      font-size: 13px;
+      color: #f0f0ff;
+      line-height: 1.6;
+      letter-spacing: 0.5px;
+      min-height: 60px;
+    }
+
+    /* Choix */
+    .choix-liste {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .choix-item {
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 12px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s;
+    }
+
+    .choix-item:active { background: #141428; }
+
+    .choix-item.correct {
+      border-color: #00ffc8;
+      background: #051510;
+      animation: correctPulse 0.4s ease;
+    }
+
+    .choix-item.incorrect {
+      border-color: #ff4466;
+      background: #150510;
+      animation: incorrectShake 0.3s ease;
+    }
+
+    .choix-item.disabled { pointer-events: none; opacity: 0.5; }
+    .choix-item.disabled.correct { opacity: 1; }
+
+    @keyframes correctPulse {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes incorrectShake {
+      0%, 100% { transform: translateX(0); }
+      25%       { transform: translateX(-4px); }
+      75%       { transform: translateX(4px); }
+    }
+
+    .choix-lettre {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      background: #1e1e3a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #6060aa;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+      font-weight: bold;
+      transition: all 0.15s;
+    }
+
+    .choix-item.correct   .choix-lettre { background: #00ffc8; color: #000; }
+    .choix-item.incorrect .choix-lettre { background: #ff4466; color: #fff; }
+
+    .choix-text {
+      font-size: 11px;
+      color: #c0c0dd;
+      line-height: 1.4;
+      letter-spacing: 0.3px;
+    }
+
+    /* RÉSULTATS */
+    .resultats-zone {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 0;
+    }
+
+    .resultats-zone.visible { display: flex; }
+
+    .resultat-score {
+      font-size: 56px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      text-shadow: 0 0 20px currentColor;
+    }
+
+    .resultat-score.parfait  { color: #ffdd44; }
+    .resultat-score.bien     { color: #00ffc8; }
+    .resultat-score.moyen    { color: #ff8855; }
+    .resultat-score.nul      { color: #ff4466; }
+
+    .resultat-label {
+      font-size: 10px;
+      color: #444466;
+      letter-spacing: 3px;
+      margin-top: -10px;
+    }
+
+    .resultat-corey {
+      background: #0a0a18;
+      border-left: 3px solid #ff8855;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      width: 100%;
+    }
+
+    .resultat-corey-label {
+      font-size: 8px;
+      color: #ff8855;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .resultat-corey-text {
+      font-size: 12px;
+      color: #f0f0ff;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .resultat-recompenses {
+      width: 100%;
+      background: #080818;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .recomp-label {
+      font-size: 8px;
+      color: #444466;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .recomp-ligne {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid #0a0a18;
+    }
+
+    .recomp-ligne:last-child { border-bottom: none; }
+
+    .recomp-nom {
+      font-size: 10px;
+      color: #6060aa;
+      letter-spacing: 1px;
+    }
+
+    .recomp-val {
+      font-size: 11px;
+      color: #00ffc8;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .recomp-val.zero { color: #333355; }
+
+    /* Bouton continuer */
+    .btn-continuer {
+      width: 100%;
+      background: #080810;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      color: #6060aa;
+      letter-spacing: 3px;
+      font-family: 'Courier New', monospace;
+      box-sizing: border-box;
+    }
+
+    .btn-continuer:active { background: #0f0f1e; }
+
+    /* FADE */
+    .fade-out { animation: fadeOut 0.5s forwards; }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="quiz-title">⏸ PAUSE DÉJEUNER</div>
+    <div class="quiz-score-display" id="score-display">0 / 3</div>
+  </div>
+
+  <div class="main-area" id="main-area">
+
+    <!-- INTRO -->
+    <div class="quiz-intro" id="quiz-intro">
+      <div class="intro-icon">🎬</div>
+      <div class="intro-titre">QUIZ DU MIDI</div>
+      <div class="intro-sous">
+        Fred et Corey ferment le rideau.<br>
+        Trois questions. Trente secondes chacune.<br>
+        Cinéma, VHS, et tout le reste.
+      </div>
+      <div class="intro-corey">
+        <div class="intro-corey-text" id="intro-corey-text">
+          "T'as intérêt à pas faire zéro. C'est notre boulot quand même."
+        </div>
+      </div>
+      <div class="btn-commencer" onclick="commencerQuiz()">
+        ▶ COMMENCER
+      </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div class="question-zone" id="question-zone">
+
+      <div class="quiz-progress">
+        <span class="progress-label" id="progress-label">
+          QUESTION 1 / 3
+        </span>
+        <div class="progress-dots" id="progress-dots">
+          <div class="progress-dot actif" id="dot-0"></div>
+          <div class="progress-dot"       id="dot-1"></div>
+          <div class="progress-dot"       id="dot-2"></div>
+        </div>
+      </div>
+
+      <div class="timer-zone">
+        <div class="timer-bar-container">
+          <div class="timer-bar" id="timer-bar"
+               style="width:100%"></div>
+        </div>
+        <div class="timer-val" id="timer-val">30</div>
+      </div>
+
+      <div class="question-cat" id="question-cat">—</div>
+      <div class="question-text" id="question-text">—</div>
+
+      <div class="choix-liste" id="choix-liste"></div>
+
+    </div>
+
+    <!-- RÉSULTATS -->
+    <div class="resultats-zone" id="resultats-zone">
+
+      <div class="resultat-score" id="resultat-score">—</div>
+      <div class="resultat-label">/ 3 BONNES RÉPONSES</div>
+
+      <div class="resultat-corey">
+        <div class="resultat-corey-label">COREY —</div>
+        <div class="resultat-corey-text" id="resultat-corey-text">
+          —
+        </div>
+      </div>
+
+      <div class="resultat-recompenses">
+        <div class="recomp-label">RÉCOMPENSES</div>
+        <div class="recomp-ligne">
+          <span class="recomp-nom">ÉNERGIE</span>
+          <span class="recomp-val" id="recomp-energie">—</span>
+        </div>
+        <div class="recomp-ligne">
+          <span class="recomp-nom">ARGENT</span>
+          <span class="recomp-val" id="recomp-argent">—</span>
+        </div>
+      </div>
+
+      <div class="btn-continuer" onclick="continuerJeu()">
+        ▶ ROUVRIR LE RIDEAU
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    let gameState    = {};
+    let questions    = [];
+    let questionIdx  = 0;
+    let score        = 0;
+    let timerInterval= null;
+    let tempsRestant = 30;
+    let reponduDeja  = false;
+
+    const LETTRES = ['A', 'B', 'C', 'D'];
+
+    const INTRO_COREY = [
+      '"T\'as intérêt à pas faire zéro. C\'est notre boulot quand même."',
+      '"Trois questions. Trente secondes. Tu peux le faire Fred."',
+      '"Si tu fais zéro j\'arrête de rembobiner les cassettes."',
+      '"Allez. On a rien de mieux à faire à midi de toute façon."',
+      '"T\'as regardé assez de films pour répondre. Normalement."'
+    ];
+
+    // ===================================================
+    // INIT
+    // ===================================================
+
+    window.onload = function() {
+      const save = localStorage.getItem('rewindParadise_save');
+      if (!save) {
+        window.location.href = 'index.html';
+        return;
+      }
+      gameState = JSON.parse(save);
+
+      // Réplique d'intro de Corey
+      const introTexte = document.getElementById('intro-corey-text');
+      introTexte.textContent =
+        INTRO_COREY[Math.floor(Math.random() * INTRO_COREY.length)];
+    };
+
+    // ===================================================
+    // COMMENCER
+    // ===================================================
+
+    function commencerQuiz() {
+      questions   = QUIZ.getQuestions(gameState);
+      questionIdx = 0;
+      score       = 0;
+
+      document.getElementById('quiz-intro').style.display = 'none';
+      document.getElementById('question-zone').classList.add('visible');
+
+      afficherQuestion();
+    }
+
+    // ===================================================
+    // AFFICHER UNE QUESTION
+    // ===================================================
+
+    function afficherQuestion() {
+      if (questionIdx >= questions.length) {
+        afficherResultats();
+        return;
+      }
+
+      reponduDeja = false;
+      const q = questions[questionIdx];
+
+      // Progress
+      document.getElementById('progress-label').textContent =
+        `QUESTION ${questionIdx + 1} / 3`;
+
+      // Dots
+      for (let i = 0; i < 3; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        dot.className = 'progress-dot';
+        if (i < questionIdx)  dot.classList.add('correct');
+        if (i === questionIdx) dot.classList.add('actif');
+      }
+
+      // Catégorie et question
+      document.getElementById('question-cat').textContent =
+        `— ${q.categorie} —`;
+      document.getElementById('question-text').textContent =
+        q.question;
+
+      // Choix
+      const liste = document.getElementById('choix-liste');
+      liste.innerHTML = q.choix.map((choix, i) => `
+        <div class="choix-item" id="choix-${i}"
+             onclick="repondre(${i})">
+          <div class="choix-lettre">${LETTRES[i]}</div>
+          <div class="choix-text">${choix}</div>
+        </div>
+      `).join('');
+
+      // Score display
+      document.getElementById('score-display').textContent =
+        `${score} / 3`;
+
+      // Timer
+      startTimer();
+    }
+
+    // ===================================================
+    // TIMER
+    // ===================================================
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      tempsRestant = 30;
+
+      const bar = document.getElementById('timer-bar');
+      const val = document.getElementById('timer-val');
+
+      bar.style.width = '100%';
+      bar.className   = 'timer-bar';
+      val.textContent = '30';
+      val.className   = 'timer-val';
+
+      timerInterval = setInterval(() => {
+        tempsRestant--;
+
+        const pct = (tempsRestant / 30) * 100;
+        bar.style.width = pct + '%';
+        val.textContent = tempsRestant;
+
+        if (tempsRestant <= 10) {
+          bar.className = 'timer-bar urgent';
+          val.className = 'timer-val urgent';
+        }
+
+        if (tempsRestant <= 0) {
+          clearInterval(timerInterval);
+          // Temps écoulé — mauvaise réponse
+          tempsEcoule();
+        }
+      }, 1000);
+    }
+
+    function tempsEcoule() {
+      if (reponduDeja) return;
+      reponduDeja = true;
+
+      // Montrer la bonne réponse
+      const q = questions[questionIdx];
+      const bonEl = document.getElementById(`choix-${q.bonneIndex}`);
+      if (bonEl) bonEl.classList.add('correct');
+
+      // Désactiver tous les choix
+      document.querySelectorAll('.choix-item').forEach(el => {
+        el.classList.add('disabled');
+      });
+
+      // Mettre à jour le dot
+      const dot = document.getElementById(`dot-${questionIdx}`);
+      if (dot) dot.className = 'progress-dot incorrect';
+
+      setTimeout(questionSuivante, 1800);
+    }
+
+    // ===================================================
+    // RÉPONDRE
+    // ===================================================
+
+    function repondre(index) {
+      if (reponduDeja) return;
+      reponduDeja = true;
+      clearInterval(timerInterval);
+
+      const q     = questions[questionIdx];
+      const estBon = index === q.bonneIndex;
+
+      const itemEl = document.getElementById(`choix-${index}`);
+      const bonEl  = document.getElementById(`choix-${q.bonneIndex}`);
+
+      if (estBon) {
+        itemEl.classList.add('correct');
+        score++;
+        // Mettre à jour le dot
+        const dot = document.getElementById(`dot-${questionIdx}`);
+        if (dot) dot.className = 'progress-dot correct';
+      } else {
+        itemEl.classList.add('incorrect');
+        if (bonEl) bonEl.classList.add('correct');
+        const dot = document.getElementById(`dot-${questionIdx}`);
+        if (dot) dot.className = 'progress-dot incorrect';
+      }
+
+      // Désactiver
+      document.querySelectorAll('.choix-item').forEach(el => {
+        el.classList.add('disabled');
+      });
+
+      // Score display
+      document.getElementById('score-display').textContent =
+        `${score} / 3`;
+
+      setTimeout(questionSuivante, 1500);
+    }
+
+    function questionSuivante() {
+      questionIdx++;
+      afficherQuestion();
+    }
+
+    // ===================================================
+    // RÉSULTATS
+    // ===================================================
+
+    function afficherResultats() {
+      document.getElementById('question-zone')
+              .classList.remove('visible');
+      document.getElementById('resultats-zone')
+              .classList.add('visible');
+
+      // Score
+      const scoreEl = document.getElementById('resultat-score');
+      scoreEl.textContent = score;
+
+      let classe = 'nul';
+      if      (score === 3) classe = 'parfait';
+      else if (score === 2) classe = 'bien';
+      else if (score === 1) classe = 'moyen';
+      scoreEl.className = `resultat-score ${classe}`;
+
+      // Réplique Corey
+      const reactions = QUIZ.coreyReactions[classe];
+      document.getElementById('resultat-corey-text').textContent =
+        reactions[Math.floor(Math.random() * reactions.length)];
+
+      // Récompenses
+      const recomp = QUIZ.getRecompenses(score);
+
+      const energieEl = document.getElementById('recomp-energie');
+      const argentEl  = document.getElementById('recomp-argent');
+
+      if (recomp.energie > 0) {
+        energieEl.textContent = `+${recomp.energie}`;
+        energieEl.className   = 'recomp-val';
+        gameState.energie = Math.min(
+          gameState.energieMax || 15,
+          gameState.energie + recomp.energie
+        );
+      } else {
+        energieEl.textContent = '—';
+        energieEl.className   = 'recomp-val zero';
+      }
+
+      if (recomp.argent > 0) {
+        argentEl.textContent = `+${recomp.argent}$`;
+        argentEl.className   = 'recomp-val';
+        gameState.argent += recomp.argent;
+      } else {
+        argentEl.textContent = '—';
+        argentEl.className   = 'recomp-val zero';
+      }
+
+      // Sauvegarder
+      gameState.quiz_score_total =
+        (gameState.quiz_score_total || 0) + score;
+      gameState.quiz_parties =
+        (gameState.quiz_parties || 0) + 1;
+
+      localStorage.setItem(
+        'rewindParadise_save',
+        JSON.stringify(gameState)
+      );
+    }
+
+    // ===================================================
+    // CONTINUER
+    // ===================================================
+
+    function continuerJeu() {
+      // Marquer que c'est l'après-midi
+      gameState.phase_journee = 'apres_midi';
+      localStorage.setItem(
+        'rewindParadise_save',
+        JSON.stringify(gameState)
+      );
+
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = 'game.html';
+      }, 500);
+    }
+
+  </script>
+
+</body>
+</html>
