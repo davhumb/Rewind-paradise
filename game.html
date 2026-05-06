@@ -6,10 +6,12 @@
         initial-scale=1.0, maximum-scale=1.0, 
         user-scalable=no">
   <title>Rewind Paradise — Le Vidéoclub</title>
-  <link rel="stylesheet" href="data/theme.css">
+  <link rel="stylesheet" href="data/style.css">
   <script src="data/dialogues.js"></script>
   <script src="data/events.js"></script>
   <script src="data/canopi.js"></script>
+  <script src="data/sounds.js"></script>
+  <script src="data/achievements.js"></script>
   <style>
 
     body {
@@ -25,12 +27,20 @@
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
+      background: #080810;
+      border-bottom: 1px solid #1e1e3a;
     }
 
     .top-bar-left {
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .shop-title {
@@ -41,12 +51,11 @@
     }
 
     .day-info {
-      font-size: 10px;
-      color: #8888aa;
+      font-size: 9px;
+      color: #444466;
       letter-spacing: 1px;
     }
 
-    /* ===== ZONE PRINCIPALE ===== */
     .main-area {
       flex: 1;
       display: flex;
@@ -54,21 +63,20 @@
       overflow: hidden;
     }
 
-    /* ===== ILLUSTRATION ===== */
     .shop-illustration {
-      background: linear-gradient(180deg, #0d0d1f 0%, #111128 100%);
+      background: #080810;
       padding: 10px 12px;
       display: flex;
       gap: 10px;
       flex-shrink: 0;
-      border-bottom: 1px solid #2a2a4a;
+      border-bottom: 1px solid #1e1e3a;
     }
 
-    /* ===== ÉTAGÈRES ===== */
+    /* ÉTAGÈRES */
     .shelves {
       width: 82px;
-      background: #0f0f20;
-      border: 1px solid #2a2a4a;
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
       border-radius: 6px;
       padding: 8px 6px;
       flex-shrink: 0;
@@ -87,23 +95,18 @@
       justify-content: space-between;
       align-items: center;
       padding: 4px 2px;
-      border-bottom: 1px solid #1a1a2e;
+      border-bottom: 1px solid #0f0f20;
       cursor: pointer;
     }
 
-    .shelf-item:active { background: rgba(0,255,200,0.06); }
+    .shelf-item:active { background: rgba(0,255,200,0.04); }
 
-    .shelf-genre {
-      font-size: 8px;
-      color: #9999bb;
-      letter-spacing: 1px;
-    }
-
+    .shelf-genre { font-size: 8px; color: #6060aa; letter-spacing: 1px; }
     .shelf-count        { font-size: 9px; color: #00ffc8; font-weight: bold; }
     .shelf-count.low    { color: #ff8855; }
-    .shelf-count.empty  { color: #ff3355; }
+    .shelf-count.empty  { color: #ff4466; }
 
-    /* ===== COMPTOIR ===== */
+    /* COMPTOIR */
     .counter-area {
       flex: 1;
       display: flex;
@@ -112,8 +115,8 @@
     }
 
     .counter-top {
-      background: #0f0f20;
-      border: 1px solid #2a2a4a;
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
       border-radius: 6px;
       padding: 8px;
       flex: 1;
@@ -127,7 +130,7 @@
       margin-bottom: 6px;
     }
 
-    /* ===== CLIENTS ===== */
+    /* CLIENTS */
     .client-queue {
       display: flex;
       flex-direction: column;
@@ -135,8 +138,8 @@
     }
 
     .client-card {
-      background: #141428;
-      border: 1px solid #2a2a4a;
+      background: #0f0f1e;
+      border: 1px solid #1e1e3a;
       border-radius: 5px;
       padding: 7px 8px;
       display: flex;
@@ -146,45 +149,31 @@
       transition: all 0.15s;
     }
 
-    .client-card:active       { background: #1e1e38; border-color: #00ffc8; }
-    .client-card.active-client {
-      border-color: #00ffc8;
-      background: #0d1e22;
-      box-shadow: 0 0 10px rgba(0,255,200,0.15);
-    }
-
-    /* Ramon — bordure spéciale */
-    .client-card.ramon-card {
-      border-color: #4a2a4a;
-    }
-
-    .client-card.ramon-card:active {
-      border-color: #aa44aa;
-    }
+    .client-card:active        { background: #141428; border-color: #00ffc8; }
+    .client-card.active-client { border-color: #00ffc8; background: #071a14; }
+    .client-card.ramon-card    { border-color: #2e1a2e; }
 
     .client-mood   { font-size: 15px; width: 22px; }
     .client-info   { flex: 1; margin-left: 6px; }
     .client-name   { font-size: 10px; color: #00ffc8; letter-spacing: 1px; }
-    .client-demand { font-size: 9px;  color: #aaaacc; margin-top: 2px; line-height: 1.3; }
-
-    /* Ramon name spécial */
     .client-name.ramon { color: #cc88cc; }
+    .client-demand { font-size: 9px; color: #9090bb; margin-top: 2px; line-height: 1.3; }
 
-    .client-timer { display: flex; gap: 2px; }
+    .client-timer  { display: flex; gap: 2px; }
     .timer-dot       { width: 5px; height: 5px; border-radius: 50%; background: #00ffc8; }
-    .timer-dot.empty { background: #2a2a4a; }
+    .timer-dot.empty { background: #1e1e3a; }
 
     .no-clients {
       font-size: 9px;
-      color: #555577;
+      color: #333355;
       text-align: center;
       padding: 12px;
       letter-spacing: 1px;
     }
 
-    /* ===== TV ===== */
+    /* TV */
     .tv-small {
-      width: 58px;
+      width: 54px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
@@ -195,26 +184,26 @@
     .tv-small-screen {
       width: 100%;
       aspect-ratio: 4/3;
-      background: #050510;
-      border: 2px solid #2a2a4a;
+      background: #030308;
+      border: 2px solid #1e1e3a;
       border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .tv-small-label {
       font-size: 7px;
-      color: #444466;
+      color: #333355;
       letter-spacing: 1px;
       text-align: center;
     }
 
-    /* ===== PENSÉE DE FRED ===== */
+    /* FRED */
     .fred-thought {
-      background: #0c0c1c;
-      border-left: 2px solid #ff6b35;
+      background: #080810;
+      border-left: 2px solid #ff8855;
       padding: 7px 10px;
       margin: 0 12px;
       flex-shrink: 0;
@@ -222,17 +211,16 @@
 
     .fred-thought-text {
       font-size: 10px;
-      color: #aaaacc;
+      color: #9090bb;
       font-style: italic;
-      letter-spacing: 0.5px;
       line-height: 1.5;
     }
 
-    /* ===== BOUTON FERMER ===== */
+    /* BOUTON FERMER */
     .close-btn {
       margin: 8px 12px;
-      background: #1a0a0a;
-      border: 1px solid #4a2020;
+      background: #100508;
+      border: 1px solid #3a1515;
       border-radius: 6px;
       padding: 10px;
       text-align: center;
@@ -240,28 +228,24 @@
       flex-shrink: 0;
     }
 
-    .close-btn:active  { background: #2a1010; }
+    .close-btn:active  { background: #180a0a; }
     .close-btn-text    { font-size: 10px; color: #ff8855; letter-spacing: 3px; }
 
-    /* ===== PANNEAU CLIENT ===== */
+    /* PANNEAU CLIENT */
     .client-panel {
       display: none;
       position: fixed;
-      bottom: 72px; left: 0; right: 0;
-      background: #0f0f22;
+      bottom: 65px; left: 0; right: 0;
+      background: #080812;
       border-top: 2px solid #00ffc8;
-      padding: 14px 12px 12px;
+      padding: 12px 12px 10px;
       z-index: 50;
       max-height: 72vh;
       overflow-y: auto;
     }
 
-    .client-panel.visible { display: block; }
-
-    /* Ramon panel — bordure violette */
-    .client-panel.ramon-panel {
-      border-top-color: #cc88cc;
-    }
+    .client-panel.visible   { display: block; }
+    .client-panel.ramon-panel { border-top-color: #cc88cc; }
 
     .panel-client-name {
       font-size: 13px;
@@ -274,39 +258,50 @@
 
     .panel-client-demand {
       font-size: 11px;
-      color: #ccccee;
+      color: #c0c0dd;
       margin-bottom: 6px;
       line-height: 1.5;
       font-style: italic;
     }
 
-    /* Note d'ambiance Ramon */
     .panel-ramon-note {
-      background: #1a0a1a;
-      border: 1px solid #4a2a4a;
+      background: #100810;
+      border: 1px solid #3a1a3a;
       border-radius: 4px;
       padding: 6px 8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       font-size: 9px;
-      color: #8855aa;
+      color: #7a55aa;
       font-style: italic;
-      letter-spacing: 0.5px;
       line-height: 1.5;
       display: none;
     }
 
-    /* PRÉFÉRENCES CLIENT */
+    /* NOUVEAUX CLIENTS — badges */
+    .panel-client-badge {
+      display: inline-block;
+      font-size: 8px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .badge-concurrent  { background: #1a1000; color: #aa8800; border: 1px solid #aa880030; }
+    .badge-journaliste { background: #001a10; color: #00aa66; border: 1px solid #00aa6630; }
+    .badge-collectionneur { background: #100018; color: #8844cc; border: 1px solid #8844cc30; }
+
     .client-prefs {
-      background: #0a0a1a;
-      border: 1px solid #1e1e3e;
+      background: #060610;
+      border: 1px solid #141428;
       border-radius: 4px;
       padding: 6px 8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .prefs-label {
       font-size: 8px;
-      color: #666688;
+      color: #444466;
       letter-spacing: 1px;
       margin-bottom: 4px;
     }
@@ -320,13 +315,12 @@
       letter-spacing: 1px;
     }
 
-    .pref-tag.aime    { background: #001a0a; color: #00aa55; border: 1px solid #00aa5530; }
-    .pref-tag.deteste { background: #1a0005; color: #aa0033; border: 1px solid #aa003330; }
+    .pref-tag.aime    { background: #00100a; color: #00aa55; border: 1px solid #00aa5520; }
+    .pref-tag.deteste { background: #100005; color: #aa0033; border: 1px solid #aa003320; }
 
-    /* LISTE DE FILMS */
     .films-label {
       font-size: 9px;
-      color: #888899;
+      color: #666688;
       letter-spacing: 1px;
       margin-bottom: 6px;
     }
@@ -335,35 +329,58 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .film-option {
-      background: #141428;
-      border: 1px solid #2a2a4a;
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
       border-radius: 5px;
       padding: 9px 10px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: all 0.1s;
     }
 
-    .film-option:active      { background: #1e1e38; }
-    .film-option.meilleur    { border-color: #00ffc830; background: #0a1e14; }
-    .film-option.meilleur-ramon { border-color: #cc88cc40; background: #1a0a1a; }
-    .film-option.correct     { border-color: #ff883030; }
-    .film-option.mauvais     { border-color: #ff003330; opacity: 0.7; }
-    .film-option.rupture     { opacity: 0.4; pointer-events: none; }
+    .film-option:active         { background: #0f0f22; }
+    .film-option.meilleur       { border-color: #00ffc820; background: #051510; }
+    .film-option.meilleur-ramon { border-color: #cc88cc30; background: #100810; }
+    .film-option.correct        { border-color: #ff882020; }
+    .film-option.mauvais        { border-color: #ff002020; opacity: 0.6; }
+    .film-option.rupture        { opacity: 0.35; pointer-events: none; }
 
-    .film-info { flex: 1; }
-    .film-titre  { font-size: 11px; color: #ddddee; letter-spacing: 0.5px; margin-bottom: 2px; }
-    .film-detail { font-size: 8px;  color: #7777aa; letter-spacing: 1px; }
+    .film-info   { flex: 1; }
+    .film-titre  { font-size: 11px; color: #e0e0f0; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .film-detail { font-size: 8px;  color: #555577; letter-spacing: 1px; }
     .film-match  { font-size: 9px;  margin-left: 8px; flex-shrink: 0; }
     .film-prix   { font-size: 10px; color: #00ffc8; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
 
-    /* ACTIONS ALTERNATIVES */
+    /* Actions spéciales nouveaux clients */
+    .action-speciale {
+      background: #0a0a18;
+      border: 1px solid #2e2e50;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    .action-speciale:active { background: #0f0f22; }
+
+    .action-speciale-titre {
+      font-size: 10px;
+      color: #c0c0dd;
+      letter-spacing: 1px;
+      margin-bottom: 3px;
+    }
+
+    .action-speciale-detail {
+      font-size: 9px;
+      color: #555577;
+      letter-spacing: 0.5px;
+    }
+
     .panel-alts {
       display: flex;
       gap: 6px;
@@ -372,34 +389,52 @@
 
     .panel-alt {
       flex: 1;
-      background: #0a0a1a;
-      border: 1px solid #1e1e3e;
+      background: #060610;
+      border: 1px solid #141428;
       border-radius: 4px;
       padding: 8px 6px;
       text-align: center;
       cursor: pointer;
       font-size: 9px;
-      color: #888899;
+      color: #666688;
       letter-spacing: 1px;
     }
 
-    .panel-alt:active { background: #141428; }
-    .panel-alt.danger { color: #ff5533; border-color: #ff553320; }
+    .panel-alt:active { background: #0a0a18; }
+    .panel-alt.danger { color: #ff5533; border-color: #ff553315; }
 
     .panel-close {
       text-align: center;
       font-size: 9px;
-      color: #444466;
+      color: #333355;
       cursor: pointer;
       letter-spacing: 2px;
       padding: 8px;
       margin-top: 4px;
     }
 
-    /* ===== JAUGES ===== */
+    /* TENSION RAMON */
+    .tension-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #2a0a2a, #cc44cc, #2a0a2a);
+      z-index: 600;
+      animation: tensionPulse 1s infinite;
+    }
+
+    .tension-overlay.visible { display: block; }
+
+    @keyframes tensionPulse {
+      0%, 100% { opacity: 0.5; }
+      50%       { opacity: 1; }
+    }
+
+    /* JAUGES */
     .bottom-bar {
-      background: #0a0a18;
-      border-top: 1px solid #2a2a4a;
+      background: #080810;
+      border-top: 1px solid #1e1e3a;
       padding: 8px 12px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -418,48 +453,47 @@
     .gauge-icon { font-size: 14px; }
 
     .gauge-bar-container {
-      width: 100%; height: 5px;
-      background: #1e1e3e;
-      border-radius: 3px;
+      width: 100%; height: 4px;
+      background: #0f0f20;
+      border-radius: 2px;
       overflow: hidden;
     }
 
-    .gauge-bar { height: 100%; border-radius: 3px; transition: width 0.3s ease; }
+    .gauge-bar { height: 100%; border-radius: 2px; transition: width 0.3s; }
     .gauge-bar.money  { background: #00ffc8; }
     .gauge-bar.legal  { background: #ff8855; }
-    .gauge-bar.expo   { background: #ff3355; }
-    .gauge-bar.energy { background: #ffcc00; }
+    .gauge-bar.expo   { background: #ff4466; }
+    .gauge-bar.energy { background: #ffdd44; }
 
-    .gauge-value { font-size: 9px; color: #8888aa; letter-spacing: 1px; font-weight: bold; }
+    .gauge-value { font-size: 8px; color: #6060aa; letter-spacing: 1px; }
 
-    /* ===== TOOLTIP ===== */
     .gauge-tooltip {
       display: none;
       position: fixed;
-      bottom: 75px; left: 50%;
+      bottom: 72px; left: 50%;
       transform: translateX(-50%);
-      background: #0f0f22;
+      background: #0a0a18;
       border: 1px solid #00ffc8;
       border-radius: 6px;
-      padding: 10px 16px;
-      font-size: 11px;
+      padding: 8px 14px;
+      font-size: 10px;
       color: #f0f0ff;
       letter-spacing: 1px;
       text-align: center;
       z-index: 400;
       white-space: nowrap;
       max-width: 90vw;
+      font-family: 'Courier New', monospace;
     }
 
     .gauge-tooltip.visible { display: block; }
 
-    /* ===== NOTIFICATIONS ===== */
     .notif {
       display: none;
       position: fixed;
       top: 58px; left: 50%;
       transform: translateX(-50%);
-      background: #0d1e22;
+      background: #071a10;
       border: 2px solid #00ffc8;
       border-radius: 6px;
       padding: 10px 18px;
@@ -470,10 +504,11 @@
       text-align: center;
       max-width: 85vw;
       font-weight: bold;
+      font-family: 'Courier New', monospace;
     }
 
     .notif.visible   { display: block; animation: notifAnim 2.5s forwards; }
-    .notif.negative  { border-color: #ff3355; color: #ff3355; background: #1a0a10; }
+    .notif.negative  { border-color: #ff4466; color: #ff4466; background: #1a0710; }
 
     @keyframes notifAnim {
       0%   { opacity: 0; transform: translateX(-50%) translateY(-6px); }
@@ -482,25 +517,6 @@
       100% { opacity: 0; }
     }
 
-    /* ===== TENSION RAMON ===== */
-    .tension-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #4a0a4a, #cc44cc, #4a0a4a);
-      z-index: 600;
-      animation: tensionPulse 1s infinite;
-    }
-
-    .tension-overlay.visible { display: block; }
-
-    @keyframes tensionPulse {
-      0%, 100% { opacity: 0.6; }
-      50%       { opacity: 1; }
-    }
-
-    /* ===== FADE ===== */
     .fade-out { animation: fadeOut 0.5s forwards; }
 
     @keyframes fadeOut {
@@ -512,7 +528,6 @@
 </head>
 <body>
 
-  <!-- TENSION RAMON -->
   <div class="tension-overlay" id="tension-overlay"></div>
 
   <div class="top-bar">
@@ -520,8 +535,12 @@
       <div class="btn-icon" onclick="openJournal()">📰</div>
       <div class="shop-title">REWIND PARADISE</div>
     </div>
-    <div class="btn-icon" onclick="openStock()">📦</div>
-    <div class="day-info" id="day-info">Jour 1 — S1</div>
+    <div class="top-bar-right">
+      <div class="day-info" id="day-info">Jour 1 — S1</div>
+      <div class="btn-icon"
+           onclick="ACHIEVEMENTS.showPanel(gameState)">🏆</div>
+      <div class="btn-icon" onclick="openStock()">📦</div>
+    </div>
   </div>
 
   <div class="main-area">
@@ -582,18 +601,20 @@
 
   <!-- PANNEAU CLIENT -->
   <div class="client-panel" id="client-panel">
-    <div class="panel-client-name" id="panel-name">—</div>
+    <div class="panel-client-name"   id="panel-name">—</div>
     <div class="panel-client-demand" id="panel-demand">—</div>
-    <div class="panel-ramon-note" id="panel-ramon-note">—</div>
-    <div class="client-prefs" id="client-prefs"></div>
+    <div class="panel-ramon-note"    id="panel-ramon-note">—</div>
+    <div id="panel-badge"></div>
+    <div class="client-prefs"        id="client-prefs"></div>
+    <div id="action-speciale-zone"></div>
     <div class="films-label">CHOISIR UN FILM :</div>
-    <div class="films-list" id="films-list"></div>
-    <div class="panel-alts" id="panel-alts"></div>
+    <div class="films-list"          id="films-list"></div>
+    <div class="panel-alts"          id="panel-alts"></div>
     <div class="panel-close" onclick="closePanel()">✕ FERMER</div>
   </div>
 
   <div class="gauge-tooltip" id="gauge-tooltip"></div>
-  <div class="notif" id="notif"></div>
+  <div class="notif"         id="notif"></div>
 
   <div class="bottom-bar">
     <div class="gauge-item" onclick="showTooltip('money')">
@@ -628,59 +649,45 @@
 
   <script>
 
-    // ===== ÉTAT =====
     let gameState = {};
     let currentClients = [];
     let activeClientIndex = -1;
 
     // ===================================================
-    // CATALOGUE DE FILMS
+    // CATALOGUE
     // ===================================================
 
     const CATALOGUE = [
-      // ACTION
-      { id:'arme_fatale',    titre:'L\'Arme Fatale',              genre:'action',  ambiance:['violent','fun','duo'],        prix:3 },
-      { id:'predator',       titre:'Predator',                    genre:'action',  ambiance:['violent','jungle','tension'],  prix:3 },
-      { id:'terminator',     titre:'Terminator',                  genre:'action',  ambiance:['sf','violent','sombre'],       prix:3 },
-      { id:'die_hard',       titre:'Die Hard',                    genre:'action',  ambiance:['fun','violent','noel'],        prix:3 },
-      { id:'maverick',       titre:'Top Gun',                     genre:'action',  ambiance:['fun','romance','avion'],       prix:3 },
-
-      // HORREUR
-      { id:'shining',        titre:'Shining',                     genre:'horreur', ambiance:['psycho','lent','sombre'],     prix:2 },
-      { id:'halloween',      titre:'Halloween',                   genre:'horreur', ambiance:['slasher','nuit','tension'],   prix:2 },
-      { id:'alien',          titre:'Alien',                       genre:'horreur', ambiance:['sf','tension','claustro'],    prix:2 },
-      { id:'exorciste',      titre:'L\'Exorciste',                genre:'horreur', ambiance:['psycho','religion','lent'],   prix:2 },
-      { id:'suspiria',       titre:'Suspiria',                    genre:'horreur', ambiance:['bizarre','couleur','italie'], prix:2 },
-
-      // DRAME
-      { id:'ghost',          titre:'Ghost',                       genre:'drame',   ambiance:['romance','deuil','lent'],     prix:2 },
-      { id:'kramer',         titre:'Kramer vs Kramer',            genre:'drame',   ambiance:['famille','divorce','lent'],   prix:2 },
-      { id:'forrest',        titre:'Forrest Gump',                genre:'drame',   ambiance:['feel_good','long','usa'],     prix:2 },
-      { id:'rain_man',       titre:'Rain Man',                    genre:'drame',   ambiance:['famille','route','duo'],      prix:2 },
-      { id:'thelma',         titre:'Thelma & Louise',             genre:'drame',   ambiance:['route','femmes','liberte'],   prix:2 },
-
-      // COMÉDIE ROMANTIQUE — catégorie Ramon
-      { id:'pretty_woman',   titre:'Pretty Woman',                genre:'comedie_romantique', ambiance:['romance','fun','usa'],      prix:2 },
-      { id:'dirty_dancing',  titre:'Dirty Dancing',               genre:'comedie_romantique', ambiance:['romance','danse','ete'],    prix:2 },
-      { id:'quand_harry',    titre:'Quand Harry rencontre Sally', genre:'comedie_romantique', ambiance:['romance','amitie','nyc'],   prix:2 },
-      { id:'nuits_blanches', titre:'Nuits Blanches à Seattle',    genre:'comedie_romantique', ambiance:['romance','deuil','usa'],    prix:2 },
-      { id:'officier',       titre:'An Officer and a Gentleman',  genre:'comedie_romantique', ambiance:['romance','militaire','usa'],prix:2 },
-
-      // ENFANTS
-      { id:'roi_lion',       titre:'Le Roi Lion',                 genre:'enfants', ambiance:['famille','emotion','chant'],  prix:2 },
-      { id:'aladdin',        titre:'Aladdin',                     genre:'enfants', ambiance:['famille','magie','fun'],      prix:2 },
-      { id:'home_alone',     titre:'Maman j\'ai raté l\'avion',   genre:'enfants', ambiance:['fun','noel','enfant'],        prix:2 },
-      { id:'little_mermaid', titre:'La Petite Sirène',            genre:'enfants', ambiance:['famille','magie','chant'],    prix:2 },
-
-      // RARETÉS
-      { id:'blow_out',       titre:'Blow Out (De Palma)',          genre:'rarites', ambiance:['thriller','cinema','son'],   prix:5 },
-      { id:'boxcar',         titre:'Boxcar Bertha (Scorsese)',     genre:'rarites', ambiance:['violence','femme','route'],  prix:5 },
-      { id:'short_cuts',     titre:'Short Cuts (Altman)',          genre:'rarites', ambiance:['chorale','lent','usa'],      prix:5 },
-      { id:'blue_velvet',    titre:'Blue Velvet (Lynch)',          genre:'rarites', ambiance:['bizarre','sombre','usa'],    prix:5 },
-
-      // CASSETTES NOIRES
-      { id:'noir_01',        titre:'[MICRO-MÉTRAGE #1]',           genre:'noires',  ambiance:['underground','court'],       prix:8 },
-      { id:'noir_02',        titre:'[MICRO-MÉTRAGE #2]',           genre:'noires',  ambiance:['underground','court'],       prix:8 },
+      { id:'arme_fatale',    titre:'L\'Arme Fatale',              genre:'action',             ambiance:['violent','fun','duo'],        prix:3 },
+      { id:'predator',       titre:'Predator',                    genre:'action',             ambiance:['violent','jungle','tension'],  prix:3 },
+      { id:'terminator',     titre:'Terminator',                  genre:'action',             ambiance:['sf','violent','sombre'],       prix:3 },
+      { id:'die_hard',       titre:'Die Hard',                    genre:'action',             ambiance:['fun','violent','noel'],        prix:3 },
+      { id:'maverick',       titre:'Top Gun',                     genre:'action',             ambiance:['fun','romance','avion'],       prix:3 },
+      { id:'shining',        titre:'Shining',                     genre:'horreur',            ambiance:['psycho','lent','sombre'],     prix:2 },
+      { id:'halloween',      titre:'Halloween',                   genre:'horreur',            ambiance:['slasher','nuit','tension'],   prix:2 },
+      { id:'alien',          titre:'Alien',                       genre:'horreur',            ambiance:['sf','tension','claustro'],    prix:2 },
+      { id:'exorciste',      titre:'L\'Exorciste',                genre:'horreur',            ambiance:['psycho','religion','lent'],   prix:2 },
+      { id:'suspiria',       titre:'Suspiria',                    genre:'horreur',            ambiance:['bizarre','couleur','italie'], prix:2 },
+      { id:'ghost',          titre:'Ghost',                       genre:'drame',              ambiance:['romance','deuil','lent'],     prix:2 },
+      { id:'kramer',         titre:'Kramer vs Kramer',            genre:'drame',              ambiance:['famille','divorce','lent'],   prix:2 },
+      { id:'forrest',        titre:'Forrest Gump',                genre:'drame',              ambiance:['feel_good','long','usa'],     prix:2 },
+      { id:'rain_man',       titre:'Rain Man',                    genre:'drame',              ambiance:['famille','route','duo'],      prix:2 },
+      { id:'thelma',         titre:'Thelma & Louise',             genre:'drame',              ambiance:['route','femmes','liberte'],   prix:2 },
+      { id:'pretty_woman',   titre:'Pretty Woman',                genre:'comedie_romantique', ambiance:['romance','fun','usa'],        prix:2 },
+      { id:'dirty_dancing',  titre:'Dirty Dancing',               genre:'comedie_romantique', ambiance:['romance','danse','ete'],      prix:2 },
+      { id:'quand_harry',    titre:'Quand Harry rencontre Sally', genre:'comedie_romantique', ambiance:['romance','amitie','nyc'],     prix:2 },
+      { id:'nuits_blanches', titre:'Nuits Blanches à Seattle',    genre:'comedie_romantique', ambiance:['romance','deuil','usa'],      prix:2 },
+      { id:'officier',       titre:'An Officer and a Gentleman',  genre:'comedie_romantique', ambiance:['romance','militaire','usa'],  prix:2 },
+      { id:'roi_lion',       titre:'Le Roi Lion',                 genre:'enfants',            ambiance:['famille','emotion','chant'],  prix:2 },
+      { id:'aladdin',        titre:'Aladdin',                     genre:'enfants',            ambiance:['famille','magie','fun'],      prix:2 },
+      { id:'home_alone',     titre:'Maman j\'ai raté l\'avion',   genre:'enfants',            ambiance:['fun','noel','enfant'],        prix:2 },
+      { id:'little_mermaid', titre:'La Petite Sirène',            genre:'enfants',            ambiance:['famille','magie','chant'],    prix:2 },
+      { id:'blow_out',       titre:'Blow Out (De Palma)',          genre:'rarites',            ambiance:['thriller','cinema','son'],   prix:5 },
+      { id:'boxcar',         titre:'Boxcar Bertha (Scorsese)',     genre:'rarites',            ambiance:['violence','femme','route'],  prix:5 },
+      { id:'short_cuts',     titre:'Short Cuts (Altman)',          genre:'rarites',            ambiance:['chorale','lent','usa'],      prix:5 },
+      { id:'blue_velvet',    titre:'Blue Velvet (Lynch)',          genre:'rarites',            ambiance:['bizarre','sombre','usa'],    prix:5 },
+      { id:'noir_01',        titre:'[MICRO-MÉTRAGE #1]',           genre:'noires',             ambiance:['underground','court'],       prix:8 },
+      { id:'noir_02',        titre:'[MICRO-MÉTRAGE #2]',           genre:'noires',             ambiance:['underground','court'],       prix:8 },
     ];
 
     // ===================================================
@@ -689,407 +696,343 @@
 
     const CLIENT_TYPES = [
 
-      // ===== CANOPI =====
+      // CANOPI
       {
-        id: 'canopi',
-        name: 'INSPECTEUR CANOPI',
-        mood: '😐',
+        id: 'canopi', name: 'INSPECTEUR CANOPI', mood: '😐',
         demande: '"Ghost, s\'il vous plaît. Comme d\'habitude."',
-        aime:    ['ghost', 'kramer', 'rain_man'],
-        deteste: ['arme_fatale','predator','terminator','die_hard',
-                  'halloween','alien','suspiria','exorciste'],
-        accepte: ['drame'],
-        energie: 1,
+        aime: ['ghost','kramer','rain_man'],
+        deteste: ['arme_fatale','predator','terminator','die_hard','halloween','alien','suspiria','exorciste'],
+        accepte: ['drame'], energie: 1,
         thought: "Il revient. Évidemment qu'il revient.",
         onServi: (gs, film) => {
           if (film.id === 'ghost') {
-            // ✓ FIX : Ghost se décrémente du stock
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
             gs.ghost_loue_aujourd_hui = true;
-            gs.legalite = Math.max(0, gs.legalite - 2);
+            gs.legalite  = Math.max(0, gs.legalite - 2);
             gs.reputation = Math.min(5, gs.reputation + 0.3);
             gs.argent += 2;
-            return {
-              msg: '+2$ — Ghost trouvé. Légalité -2%',
-              positif: true,
-              argent: 0 // déjà ajouté
-            };
+            return { msg: '+2$ — Ghost trouvé. Légalité -2%', positif: true };
           } else if (film.genre === 'drame') {
+            gs.stock.drame = Math.max(0, gs.stock.drame - 1);
             gs.argent += 2;
-            return {
-              msg: '+2$ — Pas Ghost mais il accepte.',
-              positif: true,
-              argent: 0
-            };
+            return { msg: '+2$ — Pas Ghost mais il accepte.', positif: true };
           } else {
             gs.legalite = Math.min(100, gs.legalite + 2);
-            gs.reputation = Math.max(0, gs.reputation - 0.2);
-            return {
-              msg: 'Mauvais choix. Légalité +2%.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: 'Mauvais choix. Légalité +2%.', positif: false };
           }
         }
       },
 
-      // ===== RAMON =====
-      // Le mafieux qui loue des comédies romantiques
+      // RAMON
       {
-        id: 'ramon',
-        name: 'RAMON',
-        mood: '🤵',
+        id: 'ramon', name: 'RAMON', mood: '🤵',
         demande: '"Pretty Woman. Vous l\'avez ?"',
-        aime:    ['pretty_woman','dirty_dancing','quand_harry',
-                  'nuits_blanches','officier'],
-        deteste: ['arme_fatale','predator','terminator',
-                  'halloween','alien','exorciste'],
-        accepte: ['comedie_romantique'],
-        energie: 2,
+        aime: ['pretty_woman','dirty_dancing','quand_harry','nuits_blanches','officier'],
+        deteste: ['arme_fatale','predator','terminator','halloween','alien','exorciste'],
+        accepte: ['comedie_romantique'], energie: 2,
         thought: "Cet homme a des mains qui ont réglé des problèmes. Il veut Pretty Woman.",
         isRamon: true,
-
-        // Dialogues selon les visites
         dialogues: {
           visite1: '"Pretty Woman. Vous l\'avez ?"',
           visite2: '"Dirty Dancing cette fois. Si vous avez."',
-          visite3: '"Quand Harry rencontre Sally. M. DiMaggio aime bien ce film. Il vous le dira peut-être un jour."',
-          visite4: '"Bel endroit. Bien tenu." Il regarde la réserve. "Vous avez du nouveau en comédie romantique ?"',
-          visite5: '"M. DiMaggio voudrait vous rencontrer." Il pose Pretty Woman sur le comptoir. Il repart sans la louer.'
+          visite3: '"Quand Harry rencontre Sally. M. DiMaggio aime bien ce film."',
+          visite4: '"Bel endroit. Bien tenu." Il regarde la réserve.',
+          visite5: '"M. DiMaggio voudrait vous rencontrer." Il pose Pretty Woman sur le comptoir.'
         },
-
-        // Note d'ambiance selon les visites
         notes_ambiance: {
           visite1: null,
           visite2: "Il regarde les étagères méthodiquement. Pas les films — l'espace.",
           visite3: "Il mentionne DiMaggio comme si c'était anodin. C'est pas anodin.",
           visite4: "Ses yeux s'arrêtent sur la porte de la réserve. Une seconde de trop.",
-          visite5: "Il vient pas pour un film. Il pose Pretty Woman et repart. C'est un message."
+          visite5: "Il vient pas pour un film. C'est un message."
         },
-
         onServi: (gs, film) => {
           const visites = gs['client_ramon_count'] || 0;
-
-          // Visite 5 — ultimatum spécial
           if (visites >= 4) {
             gs.ultimatum_dimaggio = true;
             gs.exposition = Math.min(100, gs.exposition + 5);
-            return {
-              msg: 'Ramon repart sans la cassette. Quelque chose a changé.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: 'Ramon repart sans la cassette. Quelque chose a changé.', positif: false };
           }
-
           if (film.genre === 'comedie_romantique') {
-            gs.stock.comedie_romantique = Math.max(
-              0, (gs.stock.comedie_romantique || 5) - 1
-            );
+            gs.stock.comedie_romantique = Math.max(0, (gs.stock.comedie_romantique || 5) - 1);
             gs.argent += film.prix;
-            // Ramon satisfait = info sur DiMaggio
-            if (visites >= 2) {
-              gs.exposition = Math.min(100, gs.exposition + 1);
-            }
-            return {
-              msg: `+${film.prix}$ — Ramon repart avec sa cassette.`,
-              positif: true,
-              argent: 0
-            };
+            if (visites >= 2) gs.exposition = Math.min(100, gs.exposition + 1);
+            return { msg: `+${film.prix}$ — Ramon repart avec sa cassette.`, positif: true };
           } else {
             gs.exposition = Math.min(100, gs.exposition + 2);
-            return {
-              msg: 'Ramon hoche la tête. Il repart sans rien. Exposition +2.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: 'Ramon hoche la tête. Il repart sans rien.', positif: false };
           }
         }
       },
 
-      // ===== MIGUEL =====
+      // MIGUEL
       {
-        id: 'miguel',
-        name: 'MIGUEL',
-        mood: '😏',
+        id: 'miguel', name: 'MIGUEL', mood: '😏',
         demande: '"Les cassettes spéciales. Vous savez."',
-        aime:    ['noir_01','noir_02','halloween','alien'],
+        aime: ['noir_01','noir_02','halloween','alien'],
         deteste: ['roi_lion','aladdin','home_alone','little_mermaid'],
-        accepte: ['noires','horreur'],
-        energie: 1,
+        accepte: ['noires','horreur'], energie: 1,
         thought: "Miguel grandit. Dans tous les sens du terme.",
         onServi: (gs, film) => {
           if (film.genre === 'noires') {
             gs.stock.noires = Math.max(0, gs.stock.noires - 1);
-            gs.credibilite = Math.min(100, gs.credibilite + 2);
-            gs.exposition  = Math.min(100, gs.exposition + 2);
+            gs.credibilite  = Math.min(100, gs.credibilite + 2);
+            gs.exposition   = Math.min(100, gs.exposition + 2);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Miguel repart content. Exposition +2.`,
-              positif: true,
-              argent: 0
-            };
+            gs.noires_distribuees = (gs.noires_distribuees || 0) + 1;
+            return { msg: `+${film.prix}$ — Miguel repart content.`, positif: true };
           } else if (film.genre === 'horreur') {
             gs.stock.horreur = Math.max(0, gs.stock.horreur - 1);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Pas ce qu'il voulait mais il prend.`,
-              positif: true,
-              argent: 0
-            };
-          } else {
-            return {
-              msg: 'Miguel repart les mains vides.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Pas ce qu'il voulait mais il prend.`, positif: true };
           }
+          return { msg: 'Miguel repart les mains vides.', positif: false };
         }
       },
 
-      // ===== FAMILLE HENDERSON =====
+      // HENDERSON
       {
-        id: 'henderson',
-        name: 'FAMILLE HENDERSON',
-        mood: '😊',
-        demande: '"Quelque chose pour toute la famille. Rien de violent, hein !"',
-        aime:    ['roi_lion','aladdin','home_alone','little_mermaid','forrest'],
-        deteste: ['halloween','alien','exorciste','suspiria','shining',
-                  'noir_01','noir_02','blow_out','blue_velvet'],
-        accepte: ['enfants'],
-        energie: 2,
+        id: 'henderson', name: 'FAMILLE HENDERSON', mood: '😊',
+        demande: '"Quelque chose pour toute la famille !"',
+        aime: ['roi_lion','aladdin','home_alone','little_mermaid','forrest'],
+        deteste: ['halloween','alien','exorciste','suspiria','shining','noir_01','noir_02'],
+        accepte: ['enfants'], energie: 2,
         thought: "Surtout ne pas laisser traîner les cassettes noires.",
         onServi: (gs, film) => {
           if (film.genre === 'enfants') {
             gs.stock.enfants = Math.max(0, gs.stock.enfants - 1);
             gs.reputation = Math.min(5, gs.reputation + 0.4);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Les Henderson sont ravis.`,
-              positif: true,
-              argent: 0
-            };
-          } else if (film.genre === 'drame'
-                  && !film.ambiance.includes('violence')) {
+            return { msg: `+${film.prix}$ — Les Henderson sont ravis.`, positif: true };
+          } else if (film.genre === 'drame') {
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Ça peut aller.`,
-              positif: true,
-              argent: 0
-            };
-          } else {
-            gs.reputation = Math.max(0, gs.reputation - 0.5);
-            return {
-              msg: 'Madame Henderson est scandalisée. Réputation --',
-              positif: false,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Ça peut aller.`, positif: true };
           }
+          gs.reputation = Math.max(0, gs.reputation - 0.5);
+          return { msg: 'Madame Henderson est scandalisée.', positif: false };
         }
       },
 
-      // ===== LE CINÉPHILE =====
+      // CINÉPHILE
       {
-        id: 'cinephile',
-        name: 'LE CINÉPHILE',
-        mood: '🧐',
-        demande: '"Blow Out de De Palma. Ou Short Cuts d\'Altman. Vous avez ?"',
-        aime:    ['blow_out','short_cuts','blue_velvet','boxcar',
-                  'suspiria','shining'],
+        id: 'cinephile', name: 'LE CINÉPHILE', mood: '🧐',
+        demande: '"Blow Out de De Palma. Ou Short Cuts d\'Altman ?"',
+        aime: ['blow_out','short_cuts','blue_velvet','boxcar','suspiria','shining'],
         deteste: ['roi_lion','aladdin','home_alone','arme_fatale','die_hard'],
-        accepte: ['rarites','horreur'],
-        energie: 2,
+        accepte: ['rarites','horreur'], energie: 2,
         thought: "Toujours un film introuvable. C'est son truc.",
         onServi: (gs, film) => {
           if (film.genre === 'rarites') {
             gs.stock.rarites = Math.max(0, gs.stock.rarites - 1);
-            gs.reputation = Math.min(5, gs.reputation + 0.5);
+            gs.reputation  = Math.min(5, gs.reputation + 0.5);
             gs.credibilite = Math.min(100, gs.credibilite + 1);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Le cinéphile est impressionné.`,
-              positif: true,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Le cinéphile est impressionné.`, positif: true };
           } else if (film.genre === 'horreur'
                   && (film.id === 'shining' || film.id === 'suspiria')) {
             gs.stock.horreur = Math.max(0, gs.stock.horreur - 1);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Pas une rareté mais il accepte.`,
-              positif: true,
-              argent: 0
-            };
-          } else {
-            gs.reputation = Math.max(0, gs.reputation - 0.3);
-            return {
-              msg: 'Il repart déçu. Il repassera peut-être.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Pas une rareté mais il accepte.`, positif: true };
           }
+          gs.reputation = Math.max(0, gs.reputation - 0.3);
+          return { msg: 'Il repart déçu.', positif: false };
         }
       },
 
-      // ===== L'ÉTUDIANT =====
+      // ÉTUDIANT
       {
-        id: 'etudiant',
-        name: 'L\'ÉTUDIANT',
-        mood: '😤',
+        id: 'etudiant', name: 'L\'ÉTUDIANT', mood: '😤',
         demande: '"Un truc bien. Du fun ou quelque chose qui claque."',
-        aime:    ['die_hard','arme_fatale','terminator',
-                  'predator','maverick','home_alone'],
+        aime: ['die_hard','arme_fatale','terminator','predator','maverick','home_alone'],
         deteste: ['kramer','rain_man','thelma','short_cuts'],
-        accepte: ['action','horreur'],
-        energie: 1,
+        accepte: ['action','horreur'], energie: 1,
         thought: "Pressé. Toujours pressé.",
         onServi: (gs, film) => {
-          if (film.ambiance.includes('fun')
-           || film.ambiance.includes('violent')) {
-            gs.stock[film.genre] = Math.max(
-              0, gs.stock[film.genre] - 1
-            );
+          if (film.ambiance.includes('fun') || film.ambiance.includes('violent')) {
+            gs.stock[film.genre] = Math.max(0, (gs.stock[film.genre] || 0) - 1);
             gs.reputation = Math.min(5, gs.reputation + 0.2);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Il est content.`,
-              positif: true,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Il est content.`, positif: true };
           } else if (film.genre === 'action') {
             gs.stock.action = Math.max(0, gs.stock.action - 1);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Pas son préféré mais OK.`,
-              positif: true,
-              argent: 0
-            };
-          } else {
-            return {
-              msg: 'Pas ce qu\'il cherchait. Repart vide.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Pas son préféré mais OK.`, positif: true };
           }
+          return { msg: 'Pas ce qu\'il cherchait.', positif: false };
         }
       },
 
-      // ===== MARIE =====
+      // MARIE
       {
-        id: 'femme_seule',
-        name: 'MARIE',
-        mood: '😐',
-        demande: '"Quelque chose d\'émouvant. Qui fait pleurer un peu."',
-        aime:    ['ghost','forrest','thelma','kramer','rain_man'],
+        id: 'femme_seule', name: 'MARIE', mood: '😐',
+        demande: '"Quelque chose d\'émouvant. Qui fait pleurer."',
+        aime: ['ghost','forrest','thelma','kramer','rain_man'],
         deteste: ['predator','terminator','halloween','alien','suspiria'],
-        accepte: ['drame'],
-        energie: 1,
+        accepte: ['drame'], energie: 1,
         thought: "Elle revient souvent le mardi. Jamais le week-end.",
         onServi: (gs, film) => {
-          if (film.ambiance.includes('romance')
-           || film.ambiance.includes('emotion')
-           || film.ambiance.includes('deuil')) {
-            // Fix : vérifier que ce n'est pas Ghost déjà loué
-            if (film.id === 'ghost' && gs.ghost_loue_aujourd_hui) {
-              return {
-                msg: 'Ghost est déjà sorti aujourd\'hui.',
-                positif: false,
-                argent: 0
-              };
-            }
+          if (film.id === 'ghost' && gs.ghost_loue_aujourd_hui) {
+            return { msg: 'Ghost est déjà sorti aujourd\'hui.', positif: false };
+          }
+          if (film.ambiance.includes('romance') || film.ambiance.includes('emotion')) {
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
             gs.reputation = Math.min(5, gs.reputation + 0.3);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — "Merci." Elle repart vite.`,
-              positif: true,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — "Merci."`, positif: true };
           } else if (film.genre === 'drame') {
             gs.stock.drame = Math.max(0, gs.stock.drame - 1);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Pas exactement mais ça ira.`,
-              positif: true,
-              argent: 0
-            };
-          } else {
-            return {
-              msg: 'Elle repart sans rien. Poliment.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Pas exactement mais ça ira.`, positif: true };
           }
+          return { msg: 'Elle repart sans rien.', positif: false };
         }
       },
 
-      // ===== THÉO =====
+      // THÉO
       {
-        id: 'gamin_horreur',
-        name: 'THÉO (14 ANS)',
-        mood: '😈',
+        id: 'gamin_horreur', name: 'THÉO (14 ANS)', mood: '😈',
         demande: '"Le truc le plus flippant que vous avez."',
-        aime:    ['halloween','alien','exorciste','shining'],
+        aime: ['halloween','alien','exorciste','shining'],
         deteste: ['roi_lion','aladdin','forrest','ghost'],
-        accepte: ['horreur'],
-        energie: 1,
+        accepte: ['horreur'], energie: 1,
         thought: "Il a clairement pas l'âge. Mais il est là.",
         onServi: (gs, film) => {
           if (film.genre === 'horreur') {
             gs.stock.horreur = Math.max(0, gs.stock.horreur - 1);
-            gs.reputation = Math.min(5, gs.reputation + 0.1);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Théo est ravi. Légèrement inquiétant.`,
-              positif: true,
-              argent: 0
-            };
-          } else {
-            return {
-              msg: 'Théo fait la grimace. Repart vide.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Théo est ravi.`, positif: true };
           }
+          return { msg: 'Théo fait la grimace.', positif: false };
         }
       },
 
-      // ===== L'INCONNU =====
+      // L'INCONNU
       {
-        id: 'inconnu',
-        name: 'L\'INCONNU',
-        mood: '🧐',
+        id: 'inconnu', name: 'L\'INCONNU', mood: '🧐',
         demande: '"Quelque chose de différent. Pas dans le catalogue habituel."',
-        aime:    ['noir_01','noir_02','blue_velvet','suspiria','blow_out'],
-        deteste: [],
-        accepte: ['noires','rarites'],
-        energie: 2,
+        aime: ['noir_01','noir_02','blue_velvet','suspiria','blow_out'],
+        deteste: [], accepte: ['noires','rarites'], energie: 2,
         thought: "Je l'ai jamais vu avant. Mauvais signe, peut-être.",
         onServi: (gs, film) => {
           if (film.genre === 'noires') {
             gs.stock.noires = Math.max(0, gs.stock.noires - 1);
-            gs.exposition = Math.min(100, gs.exposition + 3);
+            gs.exposition  = Math.min(100, gs.exposition + 3);
             gs.credibilite = Math.min(100, gs.credibilite + 2);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Il repart vite. Qui c'est ?`,
-              positif: true,
-              argent: 0
-            };
+            gs.noires_distribuees = (gs.noires_distribuees || 0) + 1;
+            return { msg: `+${film.prix}$ — Il repart vite.`, positif: true };
           } else if (film.genre === 'rarites') {
             gs.stock.rarites = Math.max(0, gs.stock.rarites - 1);
             gs.argent += film.prix;
-            return {
-              msg: `+${film.prix}$ — Pas tout à fait ça. Il reviendra.`,
-              positif: true,
-              argent: 0
-            };
-          } else {
-            return {
-              msg: 'Il repart sans rien. Il reviendra quand même.',
-              positif: false,
-              argent: 0
-            };
+            return { msg: `+${film.prix}$ — Il reviendra.`, positif: true };
+          }
+          return { msg: 'Il repart sans rien.', positif: false };
+        }
+      },
+
+      // ===================================================
+      // NOUVEAU — LE CONCURRENT
+      // ===================================================
+      {
+        id: 'concurrent', name: 'LE CONCURRENT', mood: '😒',
+        demande: '"Je regardais juste... votre sélection."',
+        aime: ['blow_out','short_cuts','blue_velvet'],
+        deteste: [],
+        accepte: ['rarites'], energie: 1,
+        isConcurrent: true,
+        thought: "Il gère le Galaxy Video à deux rues d'ici. Il espionne.",
+        badge: 'concurrent',
+        onServi: (gs, film) => {
+          // Il loue rarement — il vient surtout observer
+          if (film.genre === 'rarites') {
+            gs.stock.rarites = Math.max(0, gs.stock.rarites - 1);
+            gs.argent += film.prix;
+            gs.reputation = Math.min(5, gs.reputation + 0.1);
+            return { msg: `+${film.prix}$ — Il repart avec la rareté. Suspicieux.`, positif: true };
+          }
+          // S'il repart sans rien — il a quand même observé
+          gs.concurrent_visite = (gs.concurrent_visite || 0) + 1;
+          if (gs.concurrent_visite >= 3) {
+            gs.reputation = Math.max(0, gs.reputation - 0.3);
+          }
+          return { msg: 'Il repart en notant quelque chose. Galaxy Video.', positif: false };
+        },
+        // Action spéciale — lui proposer un accord
+        actionSpeciale: {
+          titre: '🤝 PROPOSER UN ACCORD',
+          detail: 'Partager le catalogue contre de l\'info sur ses clients.',
+          effet: (gs) => {
+            gs.accord_concurrent = true;
+            gs.reputation = Math.min(5, gs.reputation + 0.5);
+            gs.argent += 20;
+            return { msg: '+20$ — Accord Galaxy Video. Réputation +', positif: true };
+          }
+        }
+      },
+
+      // ===================================================
+      // NOUVEAU — LA JOURNALISTE
+      // ===================================================
+      {
+        id: 'journaliste', name: 'SOPHIE MARCHAIS', mood: '📝',
+        demande: '"Je prépare un article sur les vidéoclubs indépendants."',
+        aime: ['thelma','blow_out','short_cuts','forrest'],
+        deteste: ['noir_01','noir_02'],
+        accepte: ['drame','rarites'], energie: 2,
+        isJournaliste: true,
+        thought: "Elle pose des questions sur Celluloïd Scalpel. Fais attention à ce que tu dis.",
+        badge: 'journaliste',
+        onServi: (gs, film) => {
+          if (film.genre === 'drame' || film.genre === 'rarites') {
+            gs.stock[film.genre] = Math.max(0, (gs.stock[film.genre] || 0) - 1);
+            gs.argent += film.prix;
+            gs.exposition = Math.min(100, gs.exposition + 3);
+            return { msg: `+${film.prix}$ — Elle prend des notes. Exposition +3.`, positif: true };
+          }
+          return { msg: 'Elle repart. Elle reviendra avec des questions.', positif: false };
+        },
+        // Action spéciale — répondre à ses questions
+        actionSpeciale: {
+          titre: '🎙 RÉPONDRE À SES QUESTIONS',
+          detail: 'Interview sur le Rewind Paradise. Exposition ++ mais Crédibilité +.',
+          effet: (gs) => {
+            gs.exposition  = Math.min(100, gs.exposition + 8);
+            gs.credibilite = Math.min(100, gs.credibilite + 5);
+            gs.reputation  = Math.min(5, gs.reputation + 0.8);
+            return { msg: 'Interview accordée. Exposition +8 / Crédibilité +5.', positif: true };
+          }
+        }
+      },
+
+      // ===================================================
+      // NOUVEAU — LE COLLECTIONNEUR
+      // ===================================================
+      {
+        id: 'collectionneur', name: 'M. BEAUMONT', mood: '🎩',
+        demande: '"Je n\'achète pas. Je rachète. Vos raretés ont un prix ?"',
+        aime: ['blow_out','boxcar','short_cuts','blue_velvet','noir_01','noir_02'],
+        deteste: ['roi_lion','aladdin','home_alone'],
+        accepte: ['rarites','noires'], energie: 2,
+        isCollectionneur: true,
+        thought: "Il veut acheter, pas louer. C'est différent.",
+        badge: 'collectionneur',
+        onServi: (gs, film) => {
+          // Il loue pas — il veut acheter
+          return { msg: 'M. Beaumont loue exceptionnellement.', positif: true };
+        },
+        // Action spéciale — lui vendre une rareté
+        actionSpeciale: {
+          titre: '💎 LUI VENDRE UNE RARETÉ',
+          detail: '+35$ mais vous perdez définitivement la cassette.',
+          effet: (gs) => {
+            if ((gs.stock.rarites || 0) <= 0) {
+              return { msg: 'Plus de raretés en stock.', positif: false };
+            }
+            gs.stock.rarites = Math.max(0, gs.stock.rarites - 1);
+            gs.argent += 35;
+            gs.credibilite = Math.min(100, gs.credibilite + 3);
+            return { msg: '+35$ — M. Beaumont repart satisfait.', positif: true };
           }
         }
       }
@@ -1108,14 +1051,11 @@
       }
       gameState = JSON.parse(save);
 
-      // Init stock comédie romantique si absent
       if (!gameState.stock.comedie_romantique) {
         gameState.stock.comedie_romantique = 5;
       }
 
-      // Réinitialiser flags journée
       gameState.ghost_loue_aujourd_hui = false;
-
       window.gameStateRef = gameState;
       updateUI();
       updateDayInfo();
@@ -1142,51 +1082,56 @@
           }, 3000);
         }
       }
+
+      // Néons d'ambiance
+      if (typeof SOUNDS !== 'undefined') {
+        setTimeout(() => SOUNDS.neons(4), 1000);
+      }
     }
 
     function generateClients() {
       currentClients = [];
 
       // Canopi toujours présent
-      currentClients.push({
-        ...CLIENT_TYPES.find(c => c.id === 'canopi'),
-        timer: 5
-      });
+      currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'canopi'), timer: 5 });
 
-      // Ramon — apparaît selon la semaine
-      // S1 : rare (20%), S2+ : régulier (60%), S4+ : toujours
+      // Ramon selon semaine
       const ramonChance =
         gameState.semaine >= 4 ? 1.0 :
         gameState.semaine >= 2 ? 0.6 : 0.2;
-
       if (Math.random() < ramonChance) {
-        currentClients.push({
-          ...CLIENT_TYPES.find(c => c.id === 'ramon'),
-          timer: 4
-        });
+        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'ramon'), timer: 4 });
       }
 
-      // Miguel dès semaine 2
+      // Miguel dès S2
       if (gameState.semaine >= 2 && Math.random() > 0.5) {
-        currentClients.push({
-          ...CLIENT_TYPES.find(c => c.id === 'miguel'),
-          timer: 3
-        });
+        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'miguel'), timer: 3 });
       }
 
-      // 3 clients aléatoires parmi les autres
+      // Concurrent dès S2 (30%)
+      if (gameState.semaine >= 2 && Math.random() > 0.7) {
+        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'concurrent'), timer: 3 });
+      }
+
+      // Journaliste dès S3 (25%)
+      if (gameState.semaine >= 3 && Math.random() > 0.75) {
+        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'journaliste'), timer: 4 });
+      }
+
+      // Collectionneur dès S3 (20%)
+      if (gameState.semaine >= 3 && Math.random() > 0.8) {
+        currentClients.push({ ...CLIENT_TYPES.find(c => c.id === 'collectionneur'), timer: 4 });
+      }
+
+      // Clients aléatoires
       const autres = CLIENT_TYPES.filter(
-        c => c.id !== 'canopi'
-          && c.id !== 'ramon'
-          && c.id !== 'miguel'
+        c => !['canopi','ramon','miguel','concurrent','journaliste','collectionneur']
+              .includes(c.id)
       );
       const nb = gameState.semaine >= 3 ? 4 : 3;
       for (let i = 0; i < nb; i++) {
         const r = Math.floor(Math.random() * autres.length);
-        currentClients.push({
-          ...autres[r],
-          timer: Math.floor(Math.random() * 2) + 3
-        });
+        currentClients.push({ ...autres[r], timer: Math.floor(Math.random() * 2) + 3 });
       }
 
       renderQueue();
@@ -1194,10 +1139,8 @@
 
     function renderQueue() {
       const queue = document.getElementById('client-queue');
-
       if (currentClients.length === 0) {
-        queue.innerHTML =
-          `<div class="no-clients">░ PLUS DE CLIENTS ░</div>`;
+        queue.innerHTML = `<div class="no-clients">░ PLUS DE CLIENTS ░</div>`;
         return;
       }
 
@@ -1208,12 +1151,11 @@
              onclick="selectClient(${i})">
           <span class="client-mood">${client.mood}</span>
           <div class="client-info">
-            <div class="client-name
-                 ${client.isRamon ? 'ramon' : ''}">
+            <div class="client-name ${client.isRamon ? 'ramon' : ''}">
               ${client.name}
             </div>
             <div class="client-demand">
-              ${client.demande.substring(0, 40)}${client.demande.length > 40 ? '...' : ''}
+              ${client.demande.substring(0,42)}${client.demande.length > 42 ? '...' : ''}
             </div>
           </div>
           <div class="client-timer">
@@ -1231,31 +1173,20 @@
 
     function selectClient(index) {
       activeClientIndex = index;
-      const client = currentClients[index];
+      const client  = currentClients[index];
       const visites = gameState['client_' + client.id + '_count'] || 0;
 
       // Pensée de Fred
-      if (typeof DIALOGUES !== 'undefined' && !client.isRamon) {
-        const pool = client.id === 'canopi'
-          ? DIALOGUES.fred.canopi_arrive
-          : DIALOGUES.fred.matin;
-        const thought = pool[Math.floor(Math.random() * pool.length)];
-        document.getElementById('fred-thought').textContent =
-          `"${thought}"`;
-      } else {
-        document.getElementById('fred-thought').textContent =
-          `"${client.thought}"`;
-      }
+      document.getElementById('fred-thought').textContent =
+        `"${client.thought}"`;
 
       // Panneau
-      const panel = document.getElementById('client-panel');
-      const nameEl = document.getElementById('panel-name');
-
+      const panel   = document.getElementById('client-panel');
+      const nameEl  = document.getElementById('panel-name');
       nameEl.textContent = client.name;
-      nameEl.className = 'panel-client-name' +
-        (client.isRamon ? ' ramon' : '');
+      nameEl.className   = 'panel-client-name' + (client.isRamon ? ' ramon' : '');
 
-      // Demande selon visite pour Ramon
+      // Demande Ramon selon visite
       let demande = client.demande;
       if (client.isRamon && client.dialogues) {
         const visitKey = 'visite' + Math.min(visites + 1, 5);
@@ -1263,26 +1194,52 @@
       }
       document.getElementById('panel-demand').textContent = demande;
 
-      // Note d'ambiance Ramon
+      // Note ambiance Ramon
       const ramonNote = document.getElementById('panel-ramon-note');
       if (client.isRamon && client.notes_ambiance) {
         const visitKey = 'visite' + Math.min(visites + 1, 5);
         const note = client.notes_ambiance[visitKey];
-        if (note) {
-          ramonNote.textContent = note;
-          ramonNote.style.display = 'block';
-        } else {
-          ramonNote.style.display = 'none';
-        }
+        if (note) { ramonNote.textContent = note; ramonNote.style.display = 'block'; }
+        else ramonNote.style.display = 'none';
       } else {
         ramonNote.style.display = 'none';
       }
 
-      // Bordure spéciale Ramon
+      // Badge nouveaux clients
+      const badgeZone = document.getElementById('panel-badge');
+      if (client.isConcurrent) {
+        badgeZone.innerHTML = `<span class="panel-client-badge badge-concurrent">GALAXY VIDEO</span>`;
+      } else if (client.isJournaliste) {
+        badgeZone.innerHTML = `<span class="panel-client-badge badge-journaliste">PRESSE</span>`;
+      } else if (client.isCollectionneur) {
+        badgeZone.innerHTML = `<span class="panel-client-badge badge-collectionneur">COLLECTIONNEUR</span>`;
+      } else {
+        badgeZone.innerHTML = '';
+      }
+
+      // Action spéciale
+      const actionZone = document.getElementById('action-speciale-zone');
+      if (client.actionSpeciale) {
+        actionZone.innerHTML = `
+          <div class="action-speciale"
+               onclick="doActionSpeciale()">
+            <div class="action-speciale-titre">
+              ${client.actionSpeciale.titre}
+            </div>
+            <div class="action-speciale-detail">
+              ${client.actionSpeciale.detail}
+            </div>
+          </div>
+        `;
+      } else {
+        actionZone.innerHTML = '';
+      }
+
+      // Bordure panneau
       panel.className = 'client-panel visible' +
         (client.isRamon ? ' ramon-panel' : '');
 
-      // Tension overlay pour Ramon
+      // Tension Ramon
       const tension = document.getElementById('tension-overlay');
       if (client.isRamon && gameState.semaine >= 3) {
         tension.classList.add('visible');
@@ -1290,89 +1247,77 @@
         tension.classList.remove('visible');
       }
 
-      // Préférences
       renderPrefs(client, visites);
-
-      // Films
       renderFilmsList(client);
-
-      // Alts
       renderAlts(client);
-
       renderQueue();
     }
 
-    // ===== PRÉFÉRENCES =====
+    function doActionSpeciale() {
+      if (activeClientIndex < 0) return;
+      const client = currentClients[activeClientIndex];
+      if (!client.actionSpeciale) return;
+
+      const resultat = client.actionSpeciale.effet(gameState);
+      const key = 'client_' + client.id + '_count';
+      gameState[key] = (gameState[key] || 0) + 1;
+
+      currentClients.splice(activeClientIndex, 1);
+      activeClientIndex = -1;
+
+      document.getElementById('tension-overlay').classList.remove('visible');
+      closePanel();
+      showNotif(resultat.msg, resultat.positif);
+      updateUI();
+      saveGame();
+      renderQueue();
+    }
+
     function renderPrefs(client, visites) {
       const prefs = document.getElementById('client-prefs');
-
       if (visites === 0) {
-        prefs.innerHTML = `
-          <div class="prefs-label">
-            PREMIÈRE VISITE — Apprenez ses goûts.
-          </div>
-        `;
+        prefs.innerHTML = `<div class="prefs-label">PREMIÈRE VISITE — Apprenez ses goûts.</div>`;
         return;
       }
-
       const tags = [];
-      client.aime.slice(0, 3).forEach(id => {
+      client.aime.slice(0,3).forEach(id => {
         const film = CATALOGUE.find(f => f.id === id);
-        if (film) tags.push(
-          `<span class="pref-tag aime">♥ ${film.titre}</span>`
-        );
+        if (film) tags.push(`<span class="pref-tag aime">♥ ${film.titre}</span>`);
       });
-      client.deteste.slice(0, 2).forEach(id => {
+      client.deteste.slice(0,2).forEach(id => {
         const film = CATALOGUE.find(f => f.id === id);
-        if (film) tags.push(
-          `<span class="pref-tag deteste">✗ ${film.titre}</span>`
-        );
+        if (film) tags.push(`<span class="pref-tag deteste">✗ ${film.titre}</span>`);
       });
-
       prefs.innerHTML = `
-        <div class="prefs-label">
-          SES GOÛTS (${visites} visite${visites > 1 ? 's' : ''}) :
-        </div>
+        <div class="prefs-label">SES GOÛTS (${visites} visite${visites > 1 ? 's' : ''}) :</div>
         ${tags.join('')}
       `;
     }
 
-    // ===== LISTE DE FILMS =====
     function renderFilmsList(client) {
-      const list = document.getElementById('films-list');
+      const list  = document.getElementById('films-list');
       const stock = gameState.stock;
 
-      // Films disponibles
       const dispo = CATALOGUE.filter(film => {
-        // Ghost déjà loué aujourd'hui
-        if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) {
-          return false;
-        }
-        // Vérifier stock
-        if (film.genre === 'noires') return (stock.noires || 0) > 0;
-        if (film.genre === 'rarites') return (stock.rarites || 0) > 0;
-        if (film.genre === 'comedie_romantique') {
-          return (stock.comedie_romantique || 0) > 0;
-        }
+        if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) return false;
+        if (film.genre === 'noires')             return (stock.noires || 0) > 0;
+        if (film.genre === 'rarites')            return (stock.rarites || 0) > 0;
+        if (film.genre === 'comedie_romantique') return (stock.comedie_romantique || 0) > 0;
         return (stock[film.genre] || 0) > 0;
       });
 
-      // Trier selon les préférences du client
-      const tris = dispo.sort((a, b) => {
-        return getFilmScore(client, b) - getFilmScore(client, a);
-      });
+      const tris = dispo.sort((a, b) =>
+        getFilmScore(client, b) - getFilmScore(client, a)
+      );
 
-      // Limiter à 8
       const affiches = tris.slice(0, 8);
 
       if (affiches.length === 0) {
-        list.innerHTML =
-          `<div class="no-clients">Stock épuisé.</div>`;
+        list.innerHTML = `<div class="no-clients">Stock épuisé.</div>`;
         return;
       }
 
       list.innerHTML = affiches.map(film => {
-        const score = getFilmScore(client, film);
         let classe = 'correct';
         let match  = '~';
         let prix   = film.prix;
@@ -1380,7 +1325,7 @@
         if (client.aime.includes(film.id)) {
           classe = client.isRamon ? 'meilleur-ramon' : 'meilleur';
           match  = client.isRamon ? '♥' : '★';
-          prix   += 1;
+          prix++;
         } else if (client.deteste.includes(film.id)) {
           classe = 'mauvais';
           match  = '✗';
@@ -1404,21 +1349,16 @@
     }
 
     function getFilmScore(client, film) {
-      if (client.aime.includes(film.id))    return 3;
-      if (client.deteste.includes(film.id)) return -1;
+      if (client.aime.includes(film.id))       return 3;
+      if (client.deteste.includes(film.id))    return -1;
       if (client.accepte.includes(film.genre)) return 2;
       return 0;
     }
 
-    // ===== ACTIONS ALTERNATIVES =====
     function renderAlts(client) {
       document.getElementById('panel-alts').innerHTML = `
-        <div class="panel-alt" onclick="servirAleatoire()">
-          🎲 AU HASARD
-        </div>
-        <div class="panel-alt danger" onclick="renvoyerClient()">
-          ✕ RENVOYER
-        </div>
+        <div class="panel-alt" onclick="servirAleatoire()">🎲 AU HASARD</div>
+        <div class="panel-alt danger" onclick="renvoyerClient()">✕ RENVOYER</div>
       `;
     }
 
@@ -1433,29 +1373,24 @@
       const film   = CATALOGUE.find(f => f.id === filmId);
       if (!film) return;
 
-      // Vérifier Ghost déjà loué
       if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) {
         showNotif('Ghost est déjà sorti aujourd\'hui.', false);
         return;
       }
 
-      // Énergie
-      gameState.energie = Math.max(
-        0, gameState.energie - client.energie
-      );
+      gameState.energie = Math.max(0, gameState.energie - client.energie);
 
-      // Appliquer le service
       const resultat = client.onServi(gameState, film);
 
-      // Compter les visites
+      // Son caisse si positif
+      if (resultat.positif && typeof SOUNDS !== 'undefined') {
+        SOUNDS.caisse();
+      }
+
       const key = 'client_' + client.id + '_count';
       gameState[key] = (gameState[key] || 0) + 1;
 
-      // Fermer tension overlay
-      document.getElementById('tension-overlay')
-              .classList.remove('visible');
-
-      // Retirer le client
+      document.getElementById('tension-overlay').classList.remove('visible');
       currentClients.splice(activeClientIndex, 1);
       activeClientIndex = -1;
 
@@ -1465,35 +1400,26 @@
       renderQueue();
       saveGame();
 
-      if (gameState.energie <= 0) {
-        updateFredThought('tired');
-      }
+      if (gameState.energie <= 0) updateFredThought('tired');
     }
 
     function servirAleatoire() {
       const stock = gameState.stock;
       const dispo = CATALOGUE.filter(f => {
-        if (f.id === 'ghost' && gameState.ghost_loue_aujourd_hui)
-          return false;
-        if (f.genre === 'noires') return (stock.noires || 0) > 0;
-        if (f.genre === 'rarites') return (stock.rarites || 0) > 0;
-        if (f.genre === 'comedie_romantique')
-          return (stock.comedie_romantique || 0) > 0;
+        if (f.id === 'ghost' && gameState.ghost_loue_aujourd_hui) return false;
+        if (f.genre === 'noires')             return (stock.noires || 0) > 0;
+        if (f.genre === 'rarites')            return (stock.rarites || 0) > 0;
+        if (f.genre === 'comedie_romantique') return (stock.comedie_romantique || 0) > 0;
         return (stock[f.genre] || 0) > 0;
       });
-      if (dispo.length === 0) {
-        showNotif('Plus rien en stock.', false);
-        return;
-      }
-      const film = dispo[Math.floor(Math.random() * dispo.length)];
-      servirFilm(film.id);
+      if (dispo.length === 0) { showNotif('Plus rien en stock.', false); return; }
+      servirFilm(dispo[Math.floor(Math.random() * dispo.length)].id);
     }
 
     function renvoyerClient() {
       if (activeClientIndex < 0) return;
       gameState.reputation = Math.max(0, gameState.reputation - 0.3);
-      document.getElementById('tension-overlay')
-              .classList.remove('visible');
+      document.getElementById('tension-overlay').classList.remove('visible');
       currentClients.splice(activeClientIndex, 1);
       activeClientIndex = -1;
       closePanel();
@@ -1504,45 +1430,35 @@
     }
 
     function closePanel() {
-      document.getElementById('client-panel')
-              .classList.remove('visible');
-      document.getElementById('client-panel')
-              .classList.remove('ramon-panel');
-      document.getElementById('tension-overlay')
-              .classList.remove('visible');
+      document.getElementById('client-panel').className = 'client-panel';
+      document.getElementById('tension-overlay').classList.remove('visible');
       activeClientIndex = -1;
       renderQueue();
     }
 
     // ===================================================
-    // FERMER LE VIDÉOCLUB
+    // FERMER LE RIDEAU
     // ===================================================
 
     function closingTime() {
+      // Son rideau de fer
+      if (typeof SOUNDS !== 'undefined') SOUNDS.rideauFer();
+
       if (currentClients.length > 0) {
         const lost = currentClients.length;
-        gameState.reputation = Math.max(
-          0, gameState.reputation - lost * 0.2
-        );
+        gameState.reputation = Math.max(0, gameState.reputation - lost * 0.2);
         currentClients = [];
-        showNotif(
-          `${lost} client(s) reparti(s). Réputation -`,
-          false
-        );
+        showNotif(`${lost} client(s) reparti(s). Réputation -`, false);
       }
 
       updateFredThought('fermeture');
-
-      // Réinitialiser flags journée avant de partir
       gameState.ghost_loue_aujourd_hui = false;
       saveGame();
 
       setTimeout(() => {
         document.body.classList.add('fade-out');
-        setTimeout(() => {
-          window.location.href = 'evening.html';
-        }, 500);
-      }, 800);
+        setTimeout(() => { window.location.href = 'evening.html'; }, 500);
+      }, 600);
     }
 
     // ===================================================
@@ -1551,17 +1467,9 @@
 
     function checkDailyEvent() {
       if (typeof EVENTS === 'undefined') return;
-
       const jourDansSemaine = ((gameState.jour - 1) % 7) + 1;
-      const narratif = EVENTS.getNarratif(
-        gameState.semaine, jourDansSemaine
-      );
-
-      if (narratif) {
-        setTimeout(() => showEvent(narratif), 1500);
-        return;
-      }
-
+      const narratif = EVENTS.getNarratif(gameState.semaine, jourDansSemaine);
+      if (narratif) { setTimeout(() => showEvent(narratif), 1500); return; }
       if (Math.random() > 0.5) {
         const evt = EVENTS.getEvent(gameState);
         if (evt) setTimeout(() => showEvent(evt), 2000);
@@ -1570,52 +1478,37 @@
 
     function showEvent(event) {
       if (!event) return;
-
       const panel = document.createElement('div');
       panel.id = 'event-panel';
       panel.style.cssText = `
         position:fixed;top:0;left:0;right:0;bottom:0;
-        background:rgba(0,0,0,0.88);z-index:300;
-        display:flex;align-items:center;
-        justify-content:center;padding:16px;
-        font-family:'Courier New',monospace;
+        background:rgba(0,0,0,0.92);z-index:300;
+        display:flex;align-items:center;justify-content:center;
+        padding:16px;font-family:'Courier New',monospace;
       `;
-
       panel.innerHTML = `
-        <div style="
-          background:#0f0f22;
-          border:1px solid #2a2a4a;
-          border-top:2px solid #ff8855;
-          border-radius:8px;
-          padding:16px;width:100%;max-width:400px;">
-
-          <div style="font-size:9px;color:#ff8855;
-               letter-spacing:3px;margin-bottom:4px;">
+        <div style="background:#080818;border:1px solid #2e2e50;
+             border-top:2px solid #ff8855;border-radius:8px;
+             padding:16px;width:100%;max-width:400px;">
+          <div style="font-size:9px;color:#ff8855;letter-spacing:3px;margin-bottom:4px;">
             ÉVÉNEMENT ${event.icon}
           </div>
-          <div style="font-size:13px;color:#f0f0ff;
-               letter-spacing:1px;margin-bottom:10px;">
+          <div style="font-size:13px;color:#f0f0ff;letter-spacing:1px;margin-bottom:10px;">
             ${event.titre}
           </div>
-          <div style="font-size:10px;color:#aaaacc;
-               line-height:1.6;margin-bottom:14px;
-               font-style:italic;">
+          <div style="font-size:10px;color:#9090bb;line-height:1.6;
+               margin-bottom:14px;font-style:italic;">
             ${event.texte}
           </div>
-
           <div style="display:flex;flex-direction:column;gap:6px;">
             ${event.choix.map((choix, i) => `
               <div onclick="resolveEvent(${i})"
-                   style="background:#141428;
-                          border:1px solid #2a2a4a;
-                          border-radius:4px;
-                          padding:10px 12px;cursor:pointer;">
-                <div style="font-size:10px;color:#f0f0ff;
-                     letter-spacing:1px;margin-bottom:2px;">
+                   style="background:#0f0f22;border:1px solid #2e2e50;
+                          border-radius:4px;padding:10px 12px;cursor:pointer;">
+                <div style="font-size:10px;color:#f0f0ff;letter-spacing:1px;margin-bottom:2px;">
                   ▶ ${choix.texte}
                 </div>
-                <div style="font-size:8px;color:#666688;
-                     letter-spacing:1px;">
+                <div style="font-size:8px;color:#444466;letter-spacing:1px;">
                   ${choix.detail}
                 </div>
               </div>
@@ -1623,7 +1516,6 @@
           </div>
         </div>
       `;
-
       document.body.appendChild(panel);
       window.currentEvent = event;
     }
@@ -1631,13 +1523,9 @@
     function resolveEvent(i) {
       const event = window.currentEvent;
       if (!event) return;
-
-      const choix    = event.choix[i];
-      const resultat = choix.effet(gameState);
-
+      const resultat = event.choix[i].effet(gameState);
       const panel = document.getElementById('event-panel');
       if (panel) panel.remove();
-
       showNotif(resultat.msg, resultat.positif);
       updateUI();
       saveGame();
@@ -1653,61 +1541,36 @@
         showNotif('Journal — chargement...', true);
         return;
       }
-
       const gs      = gameState;
       const entrees = CANOPI.getCarnet(gs.semaine, gs.jour) || [];
-      const score   = CANOPI.interrogatoire.evaluerCoherence(
-        gs.choicesHistory
-      );
-
-      const entreesHTML = entrees.length > 0
-        ? entrees.map(e => `
-            <div style="padding:8px 0;border-bottom:1px solid #0d0d20;">
-              <div style="font-size:8px;color:#444466;
-                   letter-spacing:1px;margin-bottom:3px;">
-                Jour ${e.jour} — Suspicion +${e.suspicion}
-              </div>
-              <div style="font-size:10px;color:#8888aa;
-                   font-style:italic;line-height:1.5;">
-                ${e.texte}
-              </div>
-            </div>
-          `).join('')
-        : '<div style="font-size:9px;color:#333355;letter-spacing:1px;">Aucune entrée cette semaine.</div>';
+      const score   = CANOPI.interrogatoire.evaluerCoherence(gs.choicesHistory);
 
       const panel = document.createElement('div');
       panel.id = 'journal-panel';
       panel.style.cssText = `
         position:fixed;top:0;left:0;right:0;bottom:0;
-        background:#080812;z-index:300;
+        background:#050510;z-index:300;
         font-family:'Courier New',monospace;overflow-y:auto;
       `;
 
       panel.innerHTML = `
-        <div style="
-          background:#0d0d1e;border-bottom:1px solid #2a2a4a;
-          padding:12px 14px;display:flex;
-          justify-content:space-between;align-items:center;
-          position:sticky;top:0;z-index:10;">
+        <div style="background:#080818;border-bottom:1px solid #1e1e3a;
+             padding:12px 14px;display:flex;justify-content:space-between;
+             align-items:center;position:sticky;top:0;z-index:10;">
           <span style="font-size:11px;color:#00ffc8;letter-spacing:2px;">
             JOURNAL & CARNET
           </span>
           <span onclick="document.getElementById('journal-panel').remove()"
-                style="font-size:10px;color:#666688;
-                       cursor:pointer;padding:4px 8px;">✕</span>
+                style="font-size:10px;color:#444466;cursor:pointer;padding:4px 8px;">✕</span>
         </div>
-
-        <div style="padding:14px;display:flex;
-             flex-direction:column;gap:16px;">
+        <div style="padding:14px;display:flex;flex-direction:column;gap:16px;">
 
           <div>
-            <div style="font-size:8px;color:#ff8855;
-                 letter-spacing:2px;margin-bottom:8px;">
+            <div style="font-size:8px;color:#ff8855;letter-spacing:2px;margin-bottom:8px;">
               LE PROJECTEUR DU QUARTIER — S${gs.semaine}J${gs.jour}
             </div>
-            <div style="font-size:10px;color:#9999bb;
-                 font-style:italic;line-height:1.6;
-                 border-left:1px solid #2a2a4a;padding-left:10px;">
+            <div style="font-size:10px;color:#7777aa;font-style:italic;
+                 line-height:1.6;border-left:1px solid #1e1e3a;padding-left:10px;">
               ${gs.legalite >= 30
                 ? '"Des courts-métrages non identifiés continuent de circuler. La police enquête."'
                 : '"Faits divers habituels. Rien de notable cette semaine."'
@@ -1717,41 +1580,59 @@
 
           ${gs.semaine >= 2 ? `
           <div>
-            <div style="font-size:8px;color:#8855aa;
-                 letter-spacing:2px;margin-bottom:8px;">
+            <div style="font-size:8px;color:#8855aa;letter-spacing:2px;margin-bottom:6px;">
               NOTE — RAMON
             </div>
-            <div style="font-size:10px;color:#7755aa;
-                 font-style:italic;line-height:1.6;
-                 border-left:1px solid #4a2a4a;padding-left:10px;">
+            <div style="font-size:10px;color:#6644aa;font-style:italic;
+                 line-height:1.6;border-left:1px solid #3a1a3a;padding-left:10px;">
               ${getRamonNote(gs)}
             </div>
           </div>
           ` : ''}
 
+          ${gs.accord_concurrent ? `
           <div>
-            <div style="font-size:8px;color:#555577;
-                 letter-spacing:2px;margin-bottom:8px;">
+            <div style="font-size:8px;color:#aa8800;letter-spacing:2px;margin-bottom:6px;">
+              ACCORD GALAXY VIDEO
+            </div>
+            <div style="font-size:10px;color:#887700;font-style:italic;
+                 line-height:1.6;border-left:1px solid #443300;padding-left:10px;">
+              Accord passé avec le concurrent. Partage d'infos clients.
+            </div>
+          </div>
+          ` : ''}
+
+          <div>
+            <div style="font-size:8px;color:#444466;letter-spacing:2px;margin-bottom:8px;">
               CARNET DE CANOPI
             </div>
-            ${entreesHTML}
+            ${entrees.length > 0
+              ? entrees.map(e => `
+                  <div style="padding:8px 0;border-bottom:1px solid #0a0a18;">
+                    <div style="font-size:8px;color:#333355;letter-spacing:1px;margin-bottom:3px;">
+                      Jour ${e.jour}
+                    </div>
+                    <div style="font-size:10px;color:#6060aa;font-style:italic;line-height:1.5;">
+                      ${e.texte}
+                    </div>
+                  </div>
+                `).join('')
+              : '<div style="font-size:9px;color:#222244;">Aucune entrée.</div>'
+            }
           </div>
 
-          <div style="background:#0a0a18;border:1px solid #1a1a3a;
+          <div style="background:#080818;border:1px solid #1e1e3a;
                border-radius:6px;padding:10px 12px;">
-            <div style="font-size:8px;color:#444466;
-                 letter-spacing:2px;margin-bottom:6px;">
-              VOS RÉPONSES — COHÉRENCE
+            <div style="font-size:8px;color:#333355;letter-spacing:2px;margin-bottom:6px;">
+              COHÉRENCE — CANOPI
             </div>
             <div style="font-size:11px;letter-spacing:1px;color:${
-              score >= 80 ? '#00ffc8'
-              : score >= 50 ? '#ff8855'
-              : '#ff3355'
+              score >= 80 ? '#00ffc8' : score >= 50 ? '#ff8855' : '#ff4466'
             };">
               ${score}% — ${
                 score >= 80 ? 'Canopi a peu de preuves.'
                 : score >= 50 ? 'Canopi a des doutes.'
-                : 'Canopi a des preuves de contradiction.'
+                : 'Canopi a des preuves.'
               }
             </div>
           </div>
@@ -1763,11 +1644,11 @@
     }
 
     function getRamonNote(gs) {
-      const visites = gs['client_ramon_count'] || 0;
-      if (visites === 0) return 'Un homme en costume. Loue des comédies romantiques. Première et unique observation.';
-      if (visites === 1) return 'Il revient. Pretty Woman encore. Il regarde les étagères longuement.';
-      if (visites === 2) return 'Il a mentionné DiMaggio. Comme si c\'était anodin.';
-      if (visites === 3) return 'Ses yeux s\'arrêtent sur la porte de la réserve. Il sait.';
+      const v = gs['client_ramon_count'] || 0;
+      if (v === 0) return 'Un homme en costume. Comédies romantiques. Première observation.';
+      if (v === 1) return 'Il revient. Il regarde les étagères longuement.';
+      if (v === 2) return 'Il a mentionné DiMaggio. Comme si c\'était anodin.';
+      if (v === 3) return 'Ses yeux s\'arrêtent sur la porte de la réserve.';
       return 'Il vient plus pour les films.';
     }
 
@@ -1777,46 +1658,36 @@
 
     function openStock() {
       const gs = gameState;
-
       const genres = [
-        { id:'action',             label:'ACTION',             max:10, prix:12 },
-        { id:'horreur',            label:'HORREUR',            max:10, prix:8  },
-        { id:'drame',              label:'DRAME',              max:10, prix:6  },
-        { id:'enfants',            label:'ENFANTS',            max:10, prix:5  },
-        { id:'comedie_romantique', label:'COM. ROMANTIQUE',    max:8,  prix:7  },
-        { id:'rarites',            label:'RARETÉS',            max:3,  prix:25 }
+        { id:'action',             label:'ACTION',          max:10, prix:12 },
+        { id:'horreur',            label:'HORREUR',         max:10, prix:8  },
+        { id:'drame',              label:'DRAME',           max:10, prix:6  },
+        { id:'enfants',            label:'ENFANTS',         max:10, prix:5  },
+        { id:'comedie_romantique', label:'COM. ROMANTIQUE', max:8,  prix:7  },
+        { id:'rarites',            label:'RARETÉS',         max:3,  prix:25 }
       ];
 
       const stockHTML = genres.map(g => {
         const val   = gs.stock[g.id] || 0;
         const pct   = (val / g.max) * 100;
-        const color = val === 0 ? '#ff3355'
-                    : val <= g.max * 0.3 ? '#ff8855'
-                    : '#00ffc8';
-
+        const color = val === 0 ? '#ff4466' : val <= g.max * 0.3 ? '#ff8855' : '#00ffc8';
         return `
-          <div style="background:#0f0f20;border:1px solid #2a2a4a;
-               border-radius:6px;padding:10px 12px;
-               display:flex;align-items:center;gap:10px;">
+          <div style="background:#0a0a18;border:1px solid #1e1e3a;border-radius:6px;
+               padding:10px 12px;display:flex;align-items:center;gap:10px;">
             <div style="flex:1;">
-              <div style="font-size:10px;color:#aaaacc;
-                   letter-spacing:1px;margin-bottom:5px;">
+              <div style="font-size:10px;color:#9090bb;letter-spacing:1px;margin-bottom:5px;">
                 ${g.label}
               </div>
-              <div style="width:100%;height:5px;
-                   background:#0a0a18;border-radius:2px;overflow:hidden;">
-                <div style="width:${pct}%;height:100%;
-                     background:${color};border-radius:2px;"></div>
+              <div style="width:100%;height:4px;background:#050510;border-radius:2px;overflow:hidden;">
+                <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;"></div>
               </div>
             </div>
-            <div style="font-size:13px;color:${color};
-                 font-weight:bold;width:24px;text-align:right;">
+            <div style="font-size:13px;color:${color};font-weight:bold;width:24px;text-align:right;">
               ${val}
             </div>
             <div onclick="commanderStock('${g.id}', ${g.prix})"
-                 style="background:#141428;border:1px solid #2a2a4a;
-                        border-radius:4px;padding:5px 8px;
-                        font-size:8px;color:#00ffc8;
+                 style="background:#0f0f1e;border:1px solid #2e2e50;border-radius:4px;
+                        padding:5px 8px;font-size:8px;color:#00ffc8;
                         letter-spacing:1px;cursor:pointer;">
               +${g.prix}$
             </div>
@@ -1828,63 +1699,39 @@
       panel.id = 'stock-panel';
       panel.style.cssText = `
         position:fixed;top:0;left:0;right:0;bottom:0;
-        background:#080812;z-index:300;
+        background:#050510;z-index:300;
         font-family:'Courier New',monospace;overflow-y:auto;
       `;
-
       panel.innerHTML = `
-        <div style="
-          background:#0d0d1e;border-bottom:1px solid #2a2a4a;
-          padding:12px 14px;display:flex;
-          justify-content:space-between;align-items:center;
-          position:sticky;top:0;z-index:10;">
-          <span style="font-size:11px;color:#00ffc8;letter-spacing:2px;">
-            GESTION DU STOCK
-          </span>
+        <div style="background:#080818;border-bottom:1px solid #1e1e3a;
+             padding:12px 14px;display:flex;justify-content:space-between;
+             align-items:center;position:sticky;top:0;z-index:10;">
+          <span style="font-size:11px;color:#00ffc8;letter-spacing:2px;">GESTION DU STOCK</span>
           <span onclick="document.getElementById('stock-panel').remove()"
-                style="font-size:10px;color:#666688;
-                       cursor:pointer;padding:4px 8px;">✕</span>
+                style="font-size:10px;color:#444466;cursor:pointer;padding:4px 8px;">✕</span>
         </div>
-
-        <div style="padding:14px;display:flex;
-             flex-direction:column;gap:8px;">
-          <div style="font-size:10px;color:#9999bb;
-               letter-spacing:1px;margin-bottom:4px;">
-            Budget disponible :
-            <span style="color:#00ffc8;font-weight:bold;">
-              ${gs.argent}$
-            </span>
+        <div style="padding:14px;display:flex;flex-direction:column;gap:8px;">
+          <div style="font-size:10px;color:#7777aa;letter-spacing:1px;margin-bottom:4px;">
+            Budget : <span style="color:#00ffc8;font-weight:bold;">${gs.argent}$</span>
           </div>
           ${stockHTML}
-          <div style="font-size:8px;color:#444466;letter-spacing:1px;
+          <div style="font-size:8px;color:#333355;letter-spacing:1px;
                text-align:center;margin-top:8px;">
             Livraison le lendemain matin.
           </div>
         </div>
       `;
-
       document.body.appendChild(panel);
     }
 
     function commanderStock(genre, prix) {
-      if (gameState.argent < prix) {
-        showNotif('Pas assez d\'argent.', false);
-        return;
-      }
+      if (gameState.argent < prix) { showNotif('Pas assez d\'argent.', false); return; }
       gameState.argent -= prix;
-      const maxes = {
-        action:20, horreur:10, drame:10,
-        enfants:10, comedie_romantique:8, rarites:3
-      };
-      const ajouts = {
-        action:2, horreur:2, drame:2,
-        enfants:2, comedie_romantique:2, rarites:1
-      };
-      const max  = maxes[genre]  || 10;
-      const ajout = ajouts[genre] || 2;
+      const maxes  = { action:10, horreur:10, drame:10, enfants:10, comedie_romantique:8, rarites:3 };
+      const ajouts = { action:2,  horreur:2,  drame:2,  enfants:2,  comedie_romantique:2, rarites:1 };
       gameState.stock[genre] = Math.min(
-        max,
-        (gameState.stock[genre] || 0) + ajout
+        maxes[genre] || 10,
+        (gameState.stock[genre] || 0) + (ajouts[genre] || 2)
       );
       updateUI();
       saveGame();
@@ -1900,32 +1747,22 @@
 
     function updateFredThought(context) {
       if (typeof DIALOGUES === 'undefined') return;
-
       let pool = [];
       const gs = gameState;
-
       if (context === 'matin') {
         if      (gs.semaine === 4) pool = DIALOGUES.fred.semaine4;
         else if (gs.semaine === 3) pool = DIALOGUES.fred.semaine3;
         else if (gs.semaine === 2) pool = DIALOGUES.fred.semaine2;
         else                       pool = DIALOGUES.fred.matin;
-
-        if (gs.legalite  >= 60)
-          pool = [...pool, ...DIALOGUES.fred.legalite_haute];
-        if (gs.exposition >= 50)
-          pool = [...pool, ...DIALOGUES.fred.exposition_haute];
-        if (gs.argent < 100)
-          pool = [...pool, ...DIALOGUES.fred.argent_serre];
+        if (gs.legalite  >= 60) pool = [...pool, ...DIALOGUES.fred.legalite_haute];
+        if (gs.exposition >= 50) pool = [...pool, ...DIALOGUES.fred.exposition_haute];
+        if (gs.argent < 100)     pool = [...pool, ...DIALOGUES.fred.argent_serre];
       } else if (context === 'tired') {
-        pool = [
-          "Je suis à plat. Faut fermer.",
-          "Plus d'énergie. La réserve attend."
-        ];
+        pool = ["Je suis à plat. Faut fermer.", "Plus d'énergie. La réserve attend."];
       } else if (context === 'fermeture') {
         pool = DIALOGUES.fred.fermeture;
       }
-
-      if (pool.length > 0) {
+      if (pool && pool.length > 0) {
         const t = pool[Math.floor(Math.random() * pool.length)];
         document.getElementById('fred-thought').textContent = `"${t}"`;
       }
@@ -1937,7 +1774,6 @@
 
     function updateUI() {
       const gs = gameState;
-
       document.getElementById('bar-money').style.width =
         Math.min(100, (gs.argent / 500) * 100) + '%';
       document.getElementById('val-money').textContent = gs.argent + '$';
@@ -1945,14 +1781,13 @@
       document.getElementById('val-legal').textContent = gs.legalite + '%';
       document.getElementById('bar-expo').style.width  = gs.exposition + '%';
       document.getElementById('val-expo').textContent  = gs.exposition + '%';
-      const ePct = (gs.energie / gs.energieMax) * 100;
+      const ePct = (gs.energie / (gs.energieMax || 15)) * 100;
       document.getElementById('bar-energy').style.width = ePct + '%';
       document.getElementById('val-energy').textContent =
-        gs.energie + '/' + gs.energieMax;
+        gs.energie + '/' + (gs.energieMax || 15);
 
-      // Stock étagères
       ['action','horreur','drame','enfants','rarites'].forEach(g => {
-        const el  = document.getElementById('stock-' + g);
+        const el = document.getElementById('stock-' + g);
         if (!el) return;
         const max = g === 'rarites' ? 3 : 10;
         const val = gs.stock[g] || 0;
@@ -1971,17 +1806,16 @@
     function showTooltip(type) {
       const gs = gameState;
       const messages = {
-        money:              `Caisse : ${gs.argent}$ — Collecte Jackson : Mercredi`,
-        legal:              `Légalité : ${gs.legalite}% — L'œil de Canopi`,
-        expo:               `Exposition : ${gs.exposition}% — Le radar de DiMaggio`,
-        energy:             `Énergie : ${gs.energie}/${gs.energieMax}`,
-        stock_action:       `Action en stock : ${gs.stock.action || 0}/10`,
-        stock_horreur:      `Horreur en stock : ${gs.stock.horreur || 0}/10`,
-        stock_drame:        `Drame en stock : ${gs.stock.drame || 0}/10`,
-        stock_enfants:      `Enfants en stock : ${gs.stock.enfants || 0}/10`,
-        stock_rarites:      `Raretés en stock : ${gs.stock.rarites || 0}/3`
+        money:        `Caisse : ${gs.argent}$ — Collecte Jackson mercredi`,
+        legal:        `Légalité : ${gs.legalite}% — L'œil de Canopi`,
+        expo:         `Exposition : ${gs.exposition}% — Le radar de DiMaggio`,
+        energy:       `Énergie : ${gs.energie}/${gs.energieMax || 15}`,
+        stock_action: `Action : ${gs.stock.action || 0}/10`,
+        stock_horreur:`Horreur : ${gs.stock.horreur || 0}/10`,
+        stock_drame:  `Drame : ${gs.stock.drame || 0}/10`,
+        stock_enfants:`Enfants : ${gs.stock.enfants || 0}/10`,
+        stock_rarites:`Raretés : ${gs.stock.rarites || 0}/3`
       };
-
       const tooltip = document.getElementById('gauge-tooltip');
       tooltip.textContent = messages[type] || '';
       tooltip.classList.add('visible');
@@ -1996,6 +1830,10 @@
     }
 
     function saveGame() {
+      // Vérifier les achievements
+      if (typeof ACHIEVEMENTS !== 'undefined') {
+        ACHIEVEMENTS.checkAndNotify(gameState);
+      }
       window.gameStateRef = gameState;
       localStorage.setItem(
         'rewindParadise_save',
