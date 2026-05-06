@@ -7,82 +7,144 @@
         user-scalable=no">
   <title>Rewind Paradise — La Réserve</title>
   <link rel="stylesheet" href="data/style.css">
-  <script src="data/jessica_lucious.js"></script>
   <script src="data/cassettes.js"></script>
   <script src="data/sounds.js"></script>
   <script src="data/achievements.js"></script>
   <style>
 
+    * { box-sizing: border-box; }
+
     body {
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      background: #030306;
+      font-family: 'Courier New', monospace;
+      color: #f0f0ff;
     }
 
+    /* TOP */
     .top-bar {
-      padding: 8px 12px;
+      padding: 8px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
-      background: #080810;
-      border-bottom: 1px solid #1e1e3a;
+      background: #050508;
+      border-bottom: 1px solid #0d0d1a;
     }
 
     .reserve-title {
-      font-size: 11px;
+      font-size: 10px;
       color: #ff8855;
       letter-spacing: 3px;
-      text-shadow: 0 0 8px #ff8855;
+      text-shadow: 0 0 8px #ff885540;
     }
 
     .night-info {
       font-size: 9px;
-      color: #444466;
+      color: #333355;
       letter-spacing: 1px;
     }
 
+    /* MAIN */
     .main-area {
       flex: 1;
-      overflow-y: auto;
-      padding: 8px 12px 16px;
+      padding: 10px 12px 100px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      width: 100%;
-      box-sizing: border-box;
+      gap: 10px;
     }
 
-    /* CASSETTE */
+    /* HERO RÉSERVE */
+    .reserve-hero {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+      display: none;
+    }
+
+    .reserve-hero.visible { display: block; }
+
+    .reserve-hero-img {
+      width: 100%;
+      max-height: 160px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: brightness(0.6) saturate(0.8);
+    }
+
+    .reserve-hero-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(3,3,6,0.2) 0%,
+        rgba(3,3,6,0.7) 100%
+      );
+    }
+
+    .reserve-hero-label {
+      position: absolute;
+      bottom: 10px; left: 14px;
+      font-size: 9px;
+      color: #ff885560;
+      letter-spacing: 3px;
+    }
+
+    /* CASSETTE SOURCE */
     .cassette-source {
-      background: #0a0a18;
+      background: #080810;
       border: 1px solid #ff885520;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
-      width: 100%;
-      box-sizing: border-box;
     }
 
     .cassette-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
+      gap: 12px;
+      margin-bottom: 8px;
     }
+
+    /* CASSETTE NOIRE — illustration */
+    .cassette-illustration {
+      width: 56px;
+      height: 56px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+      filter: brightness(0.8);
+      background: #0a0a18;
+      display: none;
+    }
+
+    .cassette-illustration.visible { display: block; }
+
+    /* Fallback emoji */
+    .cassette-emoji {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .cassette-info { flex: 1; }
 
     .cassette-label {
       font-size: 8px;
       color: #ff8855;
       letter-spacing: 2px;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .cassette-title {
-      font-size: 14px;
+      font-size: 13px;
       color: #f0f0ff;
       letter-spacing: 1px;
+      margin-bottom: 3px;
     }
 
     .cassette-meta {
@@ -91,14 +153,28 @@
       letter-spacing: 1px;
     }
 
-    .cassette-icon { font-size: 24px; }
-
     .corey-avant {
       background: #060610;
       border-left: 3px solid #ff8855;
       padding: 6px 10px;
       border-radius: 0 4px 4px 0;
-      margin-top: 6px;
+    }
+
+    /* Corey dans la réserve */
+    .corey-reserve-zone {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .corey-reserve-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid #ff885530;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #0a0a18;
     }
 
     .corey-avant-text {
@@ -106,16 +182,19 @@
       color: #c0c0dd;
       font-style: italic;
       line-height: 1.4;
+      flex: 1;
     }
 
-    /* AFFICHE */
+    /* AFFICHE VHS */
     .affiche-container {
-      margin-top: 8px;
       border-radius: 6px;
       overflow: hidden;
       position: relative;
       display: none;
+      margin-top: 8px;
     }
+
+    .affiche-container.visible { display: block; }
 
     .affiche-img {
       width: 100%;
@@ -145,8 +224,6 @@
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
-      width: 100%;
-      box-sizing: border-box;
     }
 
     .monitor-label {
@@ -252,7 +329,6 @@
       color: rgba(255,255,255,0.4);
       letter-spacing: 2px;
       z-index: 11;
-      font-family: 'Courier New', monospace;
     }
 
     .scene-timecode {
@@ -262,7 +338,6 @@
       color: rgba(255,255,255,0.3);
       letter-spacing: 1px;
       z-index: 11;
-      font-family: 'Courier New', monospace;
     }
 
     .scene-icon-big { font-size: 40px; opacity: 0.5; }
@@ -274,8 +349,6 @@
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
-      width: 100%;
-      box-sizing: border-box;
     }
 
     .timeline-label {
@@ -306,12 +379,18 @@
       transition: filter 0.3s;
     }
 
+    .tl-zone.bleu   { background: #020810; }
+    .tl-zone.orange { background: #100400; }
+    .tl-zone.rouge  { background: #100205; }
+    .tl-zone.vert   { background: #020a03; }
+
     .timeline-cursor {
       position: absolute;
       top: 0; width: 4px; height: 100%;
       background: #ffffff;
       box-shadow: 0 0 8px #ffffff;
       left: 0%;
+      transition: left 0.1s;
     }
 
     .timeline-cursor.bascule {
@@ -343,8 +422,6 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      width: 100%;
-      box-sizing: border-box;
     }
 
     .cut-instruction {
@@ -352,9 +429,6 @@
       padding: 8px;
       border: 1px solid #1e1e3a;
       border-radius: 6px;
-      transition: border-color 0.3s;
-      width: 100%;
-      box-sizing: border-box;
       min-height: 54px;
       display: flex;
       flex-direction: column;
@@ -376,8 +450,6 @@
       font-weight: bold;
       font-family: 'Courier New', monospace;
       text-shadow: 0 0 10px #ff8855;
-      box-sizing: border-box;
-      display: block;
     }
 
     .btn-lancer:active { transform: scale(0.97); }
@@ -396,7 +468,6 @@
       font-weight: bold;
       font-family: 'Courier New', monospace;
       display: none;
-      box-sizing: border-box;
     }
 
     .btn-rembobiner:active { transform: scale(0.97); }
@@ -412,9 +483,6 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: box-shadow 0.2s, border-color 0.2s;
-      box-sizing: border-box;
-      display: block;
     }
 
     .cut-btn:active { transform: scale(0.97); }
@@ -447,7 +515,7 @@
     .cut-text { font-size: 14px; color: #ff4466; letter-spacing: 4px; font-weight: bold; text-shadow: 0 0 12px #ff4466; }
     .cut-hint { font-size: 8px; color: #444466; letter-spacing: 2px; margin-top: 4px; }
 
-    /* COREY */
+    /* COREY RÉACTION */
     .corey-reaction {
       background: #0a0a18;
       border: 1px solid #1e1e3a;
@@ -456,11 +524,21 @@
       padding: 10px 12px;
       display: none;
       flex-shrink: 0;
-      width: 100%;
-      box-sizing: border-box;
     }
 
-    .corey-reaction.visible { display: block; }
+    .corey-reaction.visible { display: flex; align-items: center; gap: 10px; }
+
+    .corey-reaction-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #ff885530;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #0a0a18;
+    }
+
+    .corey-reaction-content { flex: 1; }
     .corey-label { font-size: 8px; color: #ff8855; letter-spacing: 2px; margin-bottom: 4px; }
     .corey-text  { font-size: 12px; color: #f0f0ff; font-style: italic; line-height: 1.5; }
 
@@ -472,8 +550,6 @@
       border-radius: 8px;
       overflow: hidden;
       flex-shrink: 0;
-      width: 100%;
-      box-sizing: border-box;
     }
 
     .cutter-panel.visible {
@@ -492,6 +568,22 @@
       border-bottom: 1px solid #2e2e50;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+    }
+
+    .cutter-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cutter-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #4444aa40;
+      background: #0a0a18;
     }
 
     .cutter-fanzine { font-size: 11px; color: #f0f0ff; letter-spacing: 2px; }
@@ -513,6 +605,14 @@
       display: none;
     }
 
+    .cutter-critique {
+      font-size: 11px;
+      color: #8080aa;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
     .cutter-note {
       display: flex;
       align-items: baseline;
@@ -522,6 +622,12 @@
 
     .note-label { font-size: 10px; color: #444466; letter-spacing: 2px; }
     .note-max   { font-size: 13px; color: #444466; }
+
+    .note-value {
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
 
     @keyframes noteReveal {
       from { opacity: 0; transform: scale(0.5); }
@@ -538,10 +644,16 @@
     }
 
     /* DISTRIBUTION */
-    .distrib-section { display: none; flex-shrink: 0; width: 100%; box-sizing: border-box; }
+    .distrib-section { display: none; flex-shrink: 0; }
     .distrib-section.visible { display: block; }
 
-    .distrib-title { font-size: 9px; color: #ff8855; letter-spacing: 2px; margin-bottom: 8px; }
+    .distrib-title {
+      font-size: 9px;
+      color: #ff8855;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
     .distrib-options { display: flex; flex-direction: column; gap: 6px; }
 
     .distrib-option {
@@ -550,8 +662,6 @@
       border-radius: 6px;
       padding: 12px 14px;
       cursor: pointer;
-      width: 100%;
-      box-sizing: border-box;
     }
 
     .distrib-option:active  { background: #0f0f22; border-color: #00ffc8; }
@@ -563,6 +673,43 @@
     .distrib-effect.positive { color: #00ffc8; }
     .distrib-effect.negative { color: #ff4466; }
     .distrib-effect.warning  { color: #ff8855; }
+
+    /* JAUGES */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #030306;
+      border-top: 1px solid #0d0d1a;
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 6px;
+      z-index: 100;
+    }
+
+    .gauge-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .gauge-icon { font-size: 14px; }
+
+    .gauge-bar-container {
+      width: 100%; height: 4px;
+      background: #0f0f20;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .gauge-bar { height: 100%; border-radius: 2px; transition: width 0.3s; }
+    .gauge-bar.money  { background: #00ffc8; }
+    .gauge-bar.legal  { background: #ff8855; }
+    .gauge-bar.expo   { background: #ff4466; }
+    .gauge-bar.energy { background: #ffdd44; }
+
+    .gauge-value { font-size: 8px; color: #6060aa; letter-spacing: 1px; }
 
     .fade-out { animation: fadeOut 0.5s forwards; }
 
@@ -582,26 +729,50 @@
 
   <div class="main-area">
 
-    <!-- CASSETTE -->
+    <!-- HERO RÉSERVE -->
+    <div class="reserve-hero" id="reserve-hero">
+      <img class="reserve-hero-img"
+           src="posters/reserve.png"
+           alt="La Réserve"
+           onerror="this.parentElement.style.display='none'">
+      <div class="reserve-hero-overlay"></div>
+      <div class="reserve-hero-label">▓ RÉSERVE — ACCÈS RESTREINT</div>
+    </div>
+
+    <!-- CASSETTE SOURCE -->
     <div class="cassette-source">
       <div class="cassette-header">
-        <div>
+        <!-- Illustration cassette noire -->
+        <img class="cassette-illustration" id="cassette-illustration"
+             src="posters/cassette_noire.png"
+             alt="Cassette"
+             onerror="this.style.display='none'">
+        <!-- Fallback emoji -->
+        <span class="cassette-emoji" id="cassette-emoji">📼</span>
+        <div class="cassette-info">
           <div class="cassette-label">CASSETTE SOURCE</div>
-          <div class="cassette-title" id="cassette-title">Chargement...</div>
+          <div class="cassette-title" id="cassette-title">
+            Chargement...
+          </div>
           <div class="cassette-meta">
             <span id="cassette-type">—</span>
             &nbsp;·&nbsp;
             <span id="cassette-diff">—</span>
           </div>
         </div>
-        <div class="cassette-icon">📼</div>
       </div>
+      <!-- Corey avant -->
       <div class="corey-avant">
-        <div class="corey-avant-text" id="corey-avant-text">
-          Corey prépare le magnéto...
+        <div class="corey-reserve-zone">
+          <img class="corey-reserve-avatar" id="corey-avant-avatar"
+               src="posters/joie.png" alt="Corey"
+               onerror="this.style.display='none'">
+          <div class="corey-avant-text" id="corey-avant-text">
+            Corey prépare le magnéto...
+          </div>
         </div>
       </div>
-      <!-- AFFICHE VHS -->
+      <!-- Affiche VHS si dispo -->
       <div class="affiche-container" id="affiche-container">
         <img class="affiche-img" id="affiche-img" src="" alt="">
         <div class="affiche-scanlines"></div>
@@ -669,16 +840,26 @@
 
     </div>
 
-    <!-- COREY -->
+    <!-- COREY RÉACTION -->
     <div class="corey-reaction" id="corey-reaction">
-      <div class="corey-label">COREY —</div>
-      <div class="corey-text" id="corey-text">...</div>
+      <img class="corey-reaction-avatar" id="corey-reaction-avatar"
+           src="posters/joie.png" alt="Corey"
+           onerror="this.style.display='none'">
+      <div class="corey-reaction-content">
+        <div class="corey-label">COREY —</div>
+        <div class="corey-text" id="corey-text">...</div>
+      </div>
     </div>
 
     <!-- CUTTER -->
     <div class="cutter-panel" id="cutter-panel">
       <div class="cutter-header">
-        <span class="cutter-fanzine">CELLULOÏD SCALPEL</span>
+        <div class="cutter-header-left">
+          <img class="cutter-avatar"
+               src="posters/cuter.png" alt="Cutter"
+               onerror="this.style.display='none'">
+          <span class="cutter-fanzine">CELLULOÏD SCALPEL</span>
+        </div>
         <span class="cutter-num">The Glitch</span>
       </div>
       <div class="cutter-body">
@@ -762,21 +943,21 @@
       ],
       tension: [
         "Mmh. Pas mal. Ça dépend de ce que Cutter en pense.",
-        "C'est dans la zone. Correct. Mais correct c'est pas toujours bien.",
+        "C'est dans la zone. Correct.",
         "Ouais... je vois ce que tu voulais faire."
       ],
       bascule: [
         "Oh putain. Ouais. C'est ça.",
-        "Tu l'as vu. Le moment exact. C'est ça le truc.",
+        "Tu l'as vu. Le moment exact.",
         "Je dirai rien de plus. C'est bien."
       ],
       resolution: [
-        "Fred. T'aurais pu t'arrêter avant. C'était fini.",
+        "Fred. T'aurais pu t'arrêter avant.",
         "Tu pouvais pas lâcher le bouton deux secondes plus tôt ?",
         "C'est trop tard là."
       ],
       audacieux_reussi: [
-        "Comment t'as trouvé ça ? Personne coupe là d'habitude.",
+        "Comment t'as trouvé ça ? Personne coupe là.",
         "Je comprends pas encore. Mais ça marche.",
         "Bien joué. Vraiment."
       ],
@@ -795,61 +976,88 @@
       const save = localStorage.getItem('rewindParadise_save');
       if (!save) { window.location.href = 'index.html'; return; }
       gameState = JSON.parse(save);
+
       updateUI();
       updateNightInfo();
 
+      // Image réserve — afficher si dispo
+      const reserveHero = document.getElementById('reserve-hero');
+      if (reserveHero) reserveHero.classList.add('visible');
+
+      // Cassette
       if (typeof choisirCassette !== 'undefined') {
         currentCassette = choisirCassette(gameState);
         gameState.derniereCassette = currentCassette.id;
       } else {
-        currentCassette = {
-          id:'fallback', titre:'LE DERNIER RECOURS',
-          type:'ACTION', difficulte:2,
-          synopsis:'Un homme. Une porte.',
-          segments:[
-            { zone:'bleu',   icon:'🚗', personnage:'UN HOMME', lieu:'Rue',        texte:'Un homme sort d\'une voiture.', label:'MISE EN PLACE' },
-            { zone:'orange', icon:'🔫', personnage:'UN HOMME', lieu:'Escaliers',  texte:'Il monte. Tension.',            label:'TENSION' },
-            { zone:'rouge',  icon:'🚪', personnage:'UN HOMME', lieu:'Couloir',    texte:'Il frappe. Silence.',           label:'BASCULE' },
-            { zone:'vert',   icon:'💥', personnage:'UN HOMME', lieu:'Appartement',texte:'La porte s\'ouvre.',            label:'RÉSOLUTION' }
-          ],
-          coupeAudacieuse:0, coupesIdeal:[2],
-          critiques_par_zone: {
-            bleu:   "Vous avez coupé avant que rien se passe.",
-            orange: "Dans la tension. Pas encore la bascule.",
-            rouge:  "La porte. Le silence. C'est là.",
-            vert:   "Trop tard. La réponse était dans la question."
-          },
-          corey_avant:"Action ce soir. Coupe avant le premier coup de feu.",
-          cutter_special:null
-        };
+        currentCassette = getFallbackCassette();
       }
 
-      document.getElementById('cassette-title').textContent = currentCassette.titre;
-      document.getElementById('cassette-type').textContent  = currentCassette.type;
-      document.getElementById('cassette-diff').textContent  =
-        currentCassette.difficulte
-          ? '★'.repeat(currentCassette.difficulte) + '☆'.repeat(5 - currentCassette.difficulte)
-          : '';
-      document.getElementById('corey-avant-text').textContent =
-        currentCassette.corey_avant || 'Corey charge la cassette.';
+      afficherCassette();
+      renderTimeline();
+    };
 
-      // Affiche VHS
+    // ===================================================
+    // AFFICHER CASSETTE
+    // ===================================================
+
+    function afficherCassette() {
+      const c = currentCassette;
+
+      document.getElementById('cassette-title').textContent = c.titre;
+      document.getElementById('cassette-type').textContent  = c.type;
+      document.getElementById('cassette-diff').textContent  =
+        c.difficulte
+          ? '★'.repeat(c.difficulte) + '☆'.repeat(5 - c.difficulte)
+          : '';
+
+      // Corey avant
+      document.getElementById('corey-avant-text').textContent =
+        c.corey_avant || 'Corey charge la cassette.';
+
+      // Illustration cassette — toujours visible
+      const illus = document.getElementById('cassette-illustration');
+      const emoji = document.getElementById('cassette-emoji');
+      illus.classList.add('visible');
+      emoji.style.display = 'none';
+
+      // Affiche VHS si dispo
       const AFFICHES = {
         'john_hammond': 'posters/poster1.png',
-        // Ajouter au fur et à mesure :
-        // 'derniere_course': 'posters/poster2.png',
       };
-      const afficheUrl = AFFICHES[currentCassette.id];
+      const afficheUrl = AFFICHES[c.id];
       if (afficheUrl) {
         const img       = document.getElementById('affiche-img');
         const container = document.getElementById('affiche-container');
         img.src = afficheUrl;
-        img.onload = () => { container.style.display = 'block'; };
+        img.onload = () => { container.classList.add('visible'); };
       }
+    }
 
-      renderTimeline();
-      setTimeout(checkSoirMiniJeux, 40000);
-    };
+    // ===================================================
+    // FALLBACK CASSETTE
+    // ===================================================
+
+    function getFallbackCassette() {
+      return {
+        id:'fallback', titre:'LE DERNIER RECOURS',
+        type:'DRAME', difficulte:2,
+        segments:[
+          {zone:'bleu',   icon:'🚗', personnage:'UN HOMME', lieu:'Rue',      texte:'Un homme sort d\'une voiture.',  label:'MISE EN PLACE'},
+          {zone:'orange', icon:'🔫', personnage:'UN HOMME', lieu:'Escaliers',texte:'Il monte. Tension.',             label:'TENSION'},
+          {zone:'rouge',  icon:'🚪', personnage:'UN HOMME', lieu:'Couloir',  texte:'Il frappe. Silence.',            label:'BASCULE'},
+          {zone:'vert',   icon:'💥', personnage:'UN HOMME', lieu:'Appart',   texte:'La porte s\'ouvre.',             label:'RÉSOLUTION'}
+        ],
+        coupeAudacieuse:0, coupesIdeal:[2],
+        critiques_par_zone:{
+          bleu:'Vous avez coupé avant que rien se passe.',
+          orange:'Dans la tension. Pas encore la bascule.',
+          rouge:'La porte. Le silence. C\'est là.',
+          vert:'Trop tard.'
+        },
+        corey_avant:'Action ce soir. Coupe avant le premier coup de feu.',
+        cutter_special:null
+      };
+    }
 
     // ===================================================
     // TIMELINE
@@ -867,10 +1075,10 @@
 
     function updateTimelineCursor(index, total) {
       const pct = ((index + 1) / total) * 100;
-      const cursor = document.getElementById('timeline-cursor');
-      cursor.style.left = Math.min(pct, 98) + '%';
+      document.getElementById('timeline-cursor').style.left =
+        Math.min(pct, 98) + '%';
       document.querySelectorAll('.tl-zone').forEach((z, i) => {
-        z.classList.toggle('active', i === index);
+        z.style.opacity = i === index ? '1' : '0.5';
       });
     }
 
@@ -930,12 +1138,13 @@
     // ===================================================
 
     function lancerFilm() {
-      // SON magnéto
       if (typeof SOUNDS !== 'undefined') SOUNDS.magneto();
 
       document.getElementById('btn-lancer').style.display = 'none';
       document.getElementById('monitor-rec').classList.add('visible');
 
+      // Corey — joie avant le film
+      setCoreyAvant('joie');
       setInstruction('👁 Observez le film.', 'Rembobinez ensuite pour couper.', '#7070aa');
 
       const vitesse  = VITESSES[currentCassette.difficulte || 3];
@@ -959,7 +1168,7 @@
       document.getElementById('monitor-rec').classList.remove('visible');
       clearMonitor();
       document.getElementById('scene-label').textContent = 'FIN';
-      setInstruction('◀◀ Rembobinez pour couper.', 'COUPER s\'activera au rembobinage.', '#ffcc00');
+      setInstruction('◀◀ Rembobinez pour couper.', '', '#ffcc00');
       document.getElementById('btn-rembobiner').classList.add('visible');
     }
 
@@ -968,7 +1177,6 @@
     // ===================================================
 
     function rembobiner() {
-      // SON rembobinage
       if (typeof SOUNDS !== 'undefined') SOUNDS.rembobinage();
 
       document.getElementById('btn-rembobiner').classList.remove('visible');
@@ -983,9 +1191,10 @@
       document.getElementById('scene-label').textContent = 'REMBOBINAGE...';
       document.getElementById('tracking-line').classList.add('visible');
 
+      // Corey — joie pendant le rembobinage
+      setCoreyAvant('joie');
       setInstruction('⏪ Rembobinage...', '', '#ffcc00');
-
-      document.querySelectorAll('.tl-zone').forEach(z => z.classList.remove('active'));
+      document.querySelectorAll('.tl-zone').forEach(z => z.style.opacity = '0.5');
 
       setTimeout(() => {
         cursor.style.transition = 'left 0.1s';
@@ -1009,7 +1218,11 @@
       function nextSeg() {
         if (cutMade) return;
         if (idx >= segments.length) {
-          if (!cutMade) { cutMade = true; cutSegIndex = segments.length - 1; finaliserCoupe(); }
+          if (!cutMade) {
+            cutMade = true;
+            cutSegIndex = segments.length - 1;
+            finaliserCoupe();
+          }
           return;
         }
 
@@ -1022,15 +1235,19 @@
         if (segments[idx].zone === 'rouge') {
           btn.classList.add('bascule-active');
           setInstruction('⚡ BASCULE — C\'est maintenant !', 'Appuyez sur COUPER', '#ff4466');
+          setCoreyAvant('peur');
         } else if (segments[idx].zone === 'orange') {
           btn.classList.remove('bascule-active');
           setInstruction('Tension en cours...', 'La bascule approche', '#ff8855');
+          setCoreyAvant('joie');
         } else if (segments[idx].zone === 'vert') {
           btn.classList.remove('bascule-active');
           setInstruction('Résolution — trop tard.', 'Coupez quand même ?', '#333355');
+          setCoreyAvant('colere');
         } else {
           btn.classList.remove('bascule-active');
           setInstruction('Mise en place — attendez...', 'La tension arrive', '#223366');
+          setCoreyAvant('joie');
         }
 
         idx++;
@@ -1048,10 +1265,7 @@
       if (cutMade) return;
       cutMade = true;
       clearTimeout(timelineInterval);
-
-      // SON ciseaux
       if (typeof SOUNDS !== 'undefined') SOUNDS.ciseaux();
-
       finaliserCoupe();
     }
 
@@ -1067,10 +1281,11 @@
       document.getElementById('timeline-cursor').classList.remove('bascule');
 
       updateMonitorScene(cutSeg, idx, segments.length);
-      document.getElementById('scene-label').textContent = '✂ COUPE — ' + cutSeg.label;
+      document.getElementById('scene-label').textContent =
+        '✂ COUPE — ' + cutSeg.label;
       document.getElementById('tracking-line').classList.remove('visible');
 
-      // Calculer la note
+      // Calculer note
       let note;
       if (typeof calculerNote !== 'undefined') {
         note = calculerNote(currentCassette, idx);
@@ -1081,22 +1296,19 @@
       }
 
       // Flags achievements
-      if (cutSeg.zone === 'rouge') {
+      if (cutSeg.zone === 'rouge')
         gameState.coupe_bascule_reussie = true;
-      }
-
       const ideal = currentCassette.coupesIdeal || [];
       const audacieux = currentCassette.coupeAudacieuse;
-      if (idx === audacieux && !ideal.includes(audacieux) && note >= 8) {
+      if (idx === audacieux && !ideal.includes(audacieux) && note >= 8)
         gameState.coupe_audacieuse_reussie = true;
-      }
 
-      // Feedback zone
+      // Zones
       const zones = {
-        bleu:   { label:'MISE EN PLACE', desc:'Trop tôt — rien ne s\'était passé.',         color:'#3366cc' },
-        orange: { label:'TENSION',       desc:'Dans la tension — pas encore la bascule.',    color:'#cc8833' },
-        rouge:  { label:'BASCULE ✓',     desc:'Le bon moment — c\'est là que tout se joue.', color:'#cc3355' },
-        vert:   { label:'RÉSOLUTION',    desc:'Trop tard — le film était déjà terminé.',     color:'#338833' }
+        bleu:   { label:'MISE EN PLACE', desc:'Trop tôt.',          color:'#3366cc' },
+        orange: { label:'TENSION',       desc:'Pas encore la bascule.', color:'#cc8833' },
+        rouge:  { label:'BASCULE ✓',     desc:'Le bon moment.',     color:'#cc3355' },
+        vert:   { label:'RÉSOLUTION',    desc:'Trop tard.',         color:'#338833' }
       };
       const z = zones[cutSeg.zone] || zones.bleu;
 
@@ -1110,20 +1322,44 @@
         </div>
       `, z.color);
 
+      // Corey réagit selon la note
+      setCoreyReaction(note);
       showCoreyReaction(idx, segments.length, note);
       setTimeout(() => showCutterJudgement(note, cutSeg, idx), 1800);
     }
 
     // ===================================================
-    // COREY
+    // COREY AVATAR
+    // ===================================================
+
+    function setCoreyAvant(humeur) {
+      const avatars = {
+        joie:   'posters/joie.png',
+        peur:   'posters/peur.png',
+        colere: 'posters/colere.png'
+      };
+      const el = document.getElementById('corey-avant-avatar');
+      if (el && avatars[humeur]) el.src = avatars[humeur];
+    }
+
+    function setCoreyReaction(note) {
+      const el = document.getElementById('corey-reaction-avatar');
+      if (!el) return;
+      if (note >= 8) el.src = 'posters/joie.png';
+      else if (note <= 3) el.src = 'posters/colere.png';
+      else el.src = 'posters/peur.png';
+    }
+
+    // ===================================================
+    // COREY RÉACTION TEXTE
     // ===================================================
 
     function showCoreyReaction(cutIndex, total, note) {
       let cat = 'tension';
-      if (cutIndex === 0)                 cat = 'trop_tot';
-      else if (cutIndex >= total - 1)     cat = 'resolution';
-      else if (note >= 8)                 cat = 'bascule';
-      else if (note <= 2 && cutIndex < 2) cat = 'audacieux_rate';
+      if (cutIndex === 0)             cat = 'trop_tot';
+      else if (cutIndex >= total - 1) cat = 'resolution';
+      else if (note >= 8)             cat = 'bascule';
+      else if (note <= 2)             cat = 'audacieux_rate';
       else if (note >= 9 && cutIndex < 2) cat = 'audacieux_reussi';
 
       const r = COREY_REACTIONS[cat];
@@ -1137,7 +1373,6 @@
     // ===================================================
 
     function showCutterJudgement(note, cutSeg, cutIndex) {
-
       // Critique par zone
       const zoneEl = document.getElementById('cutter-zone-critique');
       if (currentCassette.critiques_par_zone
@@ -1153,30 +1388,29 @@
       if (typeof getCutterCritique !== 'undefined') {
         critique = getCutterCritique(note, currentCassette);
       } else {
-        const critiques = {
-          1:  { texte:"Vous avez appuyé sur stop au hasard.",          corey:"\"C'est ce que je t'avais dit.\"" },
-          2:  { texte:"Coupé avant d'avoir quelque chose à couper.",   corey:"\"Deux sur dix c'est dur.\"" },
-          3:  { texte:"Prudent. La sécurité au lieu du risque.",       corey:"\"Cutter est déçu. Moi aussi un peu.\"" },
-          4:  { texte:"Au bon endroit mais trop tard.",                corey:"\"Quatre. On recommence demain.\"" },
-          5:  { texte:"L'instinct était là. L'audace, non.",           corey:"\"Cinq sur dix. On peut faire mieux.\"" },
-          6:  { texte:"Vous avez vu juste mais pas loin.",             corey:"\"Six. Ouais.\"" },
-          7:  { texte:"Vous avez vu où ça bascule.",                   corey:"\"Sept c'est bien. Pas dix.\"" },
-          8:  { texte:"Vous avez compris ce que ce film avait à dire.",corey:"\"Cutter commence à s'intéresser.\"" },
-          9:  { texte:"Exactement où ça bascule. C'est tout.",         corey:"\"Je savais que t'avais ça en toi.\"" },
-          10: { texte:"Je ne comprends pas encore. Mais ça marche.",   corey:"\"Dix sur dix. Repose-toi.\"" }
-        };
-        critique = critiques[note] || critiques[6];
+        critique = getCutterFallback(note);
       }
 
-      document.getElementById('cutter-title').textContent    = `"${currentCassette.titre}"`;
-      document.getElementById('cutter-meta').textContent     = `Zone : ${cutSeg.label} · ${currentCassette.type}`;
-      document.getElementById('cutter-critique').textContent = critique.texte;
-      document.getElementById('note-value').textContent      = note;
-      document.getElementById('corey-after').textContent     = critique.corey;
+      document.getElementById('cutter-title').textContent =
+        `"${currentCassette.titre}"`;
+      document.getElementById('cutter-meta').textContent =
+        `Zone : ${cutSeg.label} · ${currentCassette.type}`;
+      document.getElementById('cutter-critique').textContent =
+        critique.texte;
 
+      // Note avec couleur
+      const noteEl = document.getElementById('note-value');
+      noteEl.textContent = note;
+      noteEl.style.color = note >= 8 ? '#00ffc8'
+                         : note >= 5 ? '#ff8855'
+                         : '#ff4466';
+      noteEl.style.animation = 'noteReveal 0.5s ease';
+
+      document.getElementById('corey-after').textContent =
+        critique.corey;
       document.getElementById('cutter-panel').classList.add('visible');
 
-      // Impact ressources
+      // Impact
       if (note >= 8) {
         gameState.credibilite = Math.min(100, gameState.credibilite + 5);
         if (note === 10) gameState.cutterInteret = 'investi';
@@ -1195,9 +1429,25 @@
         showDistribution(note);
         setTimeout(() => {
           document.getElementById('distrib-section')
-                  .scrollIntoView({ behavior:'smooth' });
+                  .scrollIntoView({ behavior: 'smooth' });
         }, 300);
       }, 1000);
+    }
+
+    function getCutterFallback(note) {
+      const c = {
+        1:  {texte:"Vous avez appuyé sur stop au hasard.",          corey:'"C\'est ce que je t\'avais dit."'},
+        2:  {texte:"Vous avez coupé avant d\'avoir quelque chose.",  corey:'"Deux sur dix c\'est dur."'},
+        3:  {texte:"Prudent. Sécurité au lieu du risque.",           corey:'"Cutter est déçu. Moi aussi un peu."'},
+        4:  {texte:"Au bon endroit mais trop tard.",                  corey:'"Quatre. On recommence demain."'},
+        5:  {texte:"L\'instinct était là. L\'audace, non.",           corey:'"Cinq sur dix."'},
+        6:  {texte:"Vous avez vu juste mais pas loin.",               corey:'"Six. Ouais."'},
+        7:  {texte:"Vous avez vu où ça bascule.",                     corey:'"Sept c\'est bien. Pas dix."'},
+        8:  {texte:"Vous avez compris ce que ce film avait à dire.",  corey:'"Huit sur dix."'},
+        9:  {texte:"Exactement où ça bascule.",                       corey:'"Je savais que t\'avais ça en toi."'},
+        10: {texte:"Je ne comprends pas encore. Mais ça marche.",     corey:'"Dix sur dix. Repose-toi."'}
+      };
+      return c[note] || c[6];
     }
 
     // ===================================================
@@ -1214,27 +1464,27 @@
              onclick="distribute('jackson')">
           <div class="distrib-name">▶ VIA JACKSON</div>
           <div class="distrib-effects">
-            <div class="distrib-effect positive">+${Math.round(note * 4)}$ argent</div>
+            <div class="distrib-effect positive">+${Math.round(note * 4)}$</div>
             <div class="distrib-effect positive">Crédibilité +2</div>
-            <div class="distrib-effect warning">Légalité +1 · Exposition -2</div>
-            ${jacksonDisabled ? '<div class="distrib-effect negative">Note trop faible — Jackson refuse</div>' : ''}
+            <div class="distrib-effect warning">Légalité +1</div>
+            ${jacksonDisabled
+              ? '<div class="distrib-effect negative">Note trop faible</div>'
+              : ''}
           </div>
         </div>
-
         <div class="distrib-option" onclick="distribute('gamins')">
           <div class="distrib-name">▶ VIA LES GAMINS</div>
           <div class="distrib-effects">
-            <div class="distrib-effect positive">+${Math.round(note * 1.5)}$ argent</div>
+            <div class="distrib-effect positive">+${Math.round(note * 1.5)}$</div>
             <div class="distrib-effect positive">Crédibilité +3</div>
             <div class="distrib-effect warning">Exposition +${note >= 7 ? 4 : 2}</div>
           </div>
         </div>
-
         <div class="distrib-option" onclick="distribute('garder')">
           <div class="distrib-name">▷ GARDER — FLASH-CUT</div>
           <div class="distrib-effects">
             <div class="distrib-effect">Stock flash-cut +1</div>
-            <div class="distrib-effect positive">Légalité -1 · Exposition -1</div>
+            <div class="distrib-effect positive">Légalité -1</div>
             ${note < 7
               ? '<div class="distrib-effect negative">Crédibilité -1</div>'
               : '<div class="distrib-effect positive">Crédibilité neutre</div>'
@@ -1260,57 +1510,23 @@
         gameState.credibilite = Math.min(100, gameState.credibilite + 3);
         gameState.exposition  = Math.min(100,
           gameState.exposition + (note >= 7 ? 4 : 2));
-        gameState.noires_distribuees = (gameState.noires_distribuees || 0) + 1;
+        gameState.noires_distribuees =
+          (gameState.noires_distribuees || 0) + 1;
         showNotif(`+${Math.round(note * 1.5)}$ via les gamins`, true);
       } else {
         if (!gameState.flashCutStock) gameState.flashCutStock = 0;
         gameState.flashCutStock++;
         gameState.legalite   = Math.max(0, gameState.legalite - 1);
         gameState.exposition = Math.max(0, gameState.exposition - 1);
-        if (note < 7) gameState.credibilite = Math.max(0, gameState.credibilite - 1);
-        showNotif(`Cassette gardée. Flash-cut : ${gameState.flashCutStock}`, true);
+        if (note < 7)
+          gameState.credibilite = Math.max(0, gameState.credibilite - 1);
+        showNotif(`Flash-cut : ${gameState.flashCutStock}`, true);
       }
 
       gameState.energieBonusTomorrow = note >= 8 ? 3 : note <= 3 ? -3 : 0;
       updateUI();
       saveGame();
       setTimeout(goToNight, 1500);
-    }
-
-    // ===================================================
-    // MINI-JEUX
-    // ===================================================
-
-    function checkSoirMiniJeux() {
-      if (cutMade) return;
-      const gs = gameState;
-
-      if (typeof JESSICA !== 'undefined') {
-        const serrure = JESSICA.getSerrure(gs);
-        if (serrure && Math.random() > 0.4) {
-          JESSICA.showCrochetage(serrure, null);
-          window.crochetageCallback = (reussi) => {
-            gs['jessica_' + serrure.id + '_fait'] = true;
-            if (reussi) serrure.effet_reussi(gs);
-            else        serrure.effet_rate(gs);
-            saveGame();
-          };
-          return;
-        }
-      }
-
-      if (typeof LUCIOUS !== 'undefined') {
-        const combat = LUCIOUS.getCombat(gs);
-        if (combat && Math.random() > 0.4) {
-          LUCIOUS.showCombat(combat, null);
-          window.combatCallback = (reussi) => {
-            gs['lucious_' + combat.id + '_fait'] = true;
-            if (reussi) combat.effet_reussi(gs);
-            else        combat.effet_rate(gs);
-            saveGame();
-          };
-        }
-      }
     }
 
     // ===================================================
@@ -1322,7 +1538,7 @@
       if (!instr) return;
       instr.style.borderColor = color || '#1e1e3a';
       instr.innerHTML = `
-        <div style="font-size:12px;color:${color || '#c0c0dd'};
+        <div style="font-size:12px;color:${color||'#c0c0dd'};
              font-weight:bold;line-height:1.4;margin-bottom:3px;">
           ${titre}
         </div>
@@ -1374,12 +1590,13 @@
       notif.style.cssText = `
         position:fixed;top:60px;left:50%;
         transform:translateX(-50%);
-        background:${positive ? '#051510' : '#150510'};
-        border:2px solid ${positive ? '#00ffc8' : '#ff4466'};
+        background:${positive?'#051510':'#150510'};
+        border:2px solid ${positive?'#00ffc8':'#ff4466'};
         border-radius:6px;padding:10px 18px;
-        font-size:11px;color:${positive ? '#00ffc8' : '#ff4466'};
+        font-size:11px;color:${positive?'#00ffc8':'#ff4466'};
         letter-spacing:1px;z-index:500;text-align:center;
-        max-width:85vw;font-family:'Courier New',monospace;font-weight:bold;
+        max-width:85vw;font-family:'Courier New',monospace;
+        font-weight:bold;
       `;
       notif.textContent = message;
       document.body.appendChild(notif);
@@ -1391,11 +1608,12 @@
     }
 
     function saveGame() {
-      // Vérifier les achievements
-      if (typeof ACHIEVEMENTS !== 'undefined') {
+      if (typeof ACHIEVEMENTS !== 'undefined')
         ACHIEVEMENTS.checkAndNotify(gameState);
-      }
-      localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
+      localStorage.setItem(
+        'rewindParadise_save',
+        JSON.stringify(gameState)
+      );
     }
 
   </script>
