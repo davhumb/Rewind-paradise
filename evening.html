@@ -6,9 +6,11 @@
         initial-scale=1.0, maximum-scale=1.0, 
         user-scalable=no">
   <title>Rewind Paradise — La Réserve</title>
-  <link rel="stylesheet" href="data/theme.css">
+  <link rel="stylesheet" href="data/style.css">
   <script src="data/jessica_lucious.js"></script>
   <script src="data/cassettes.js"></script>
+  <script src="data/sounds.js"></script>
+  <script src="data/achievements.js"></script>
   <style>
 
     body {
@@ -24,6 +26,8 @@
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
+      background: #080810;
+      border-bottom: 1px solid #1e1e3a;
     }
 
     .reserve-title {
@@ -35,7 +39,7 @@
 
     .night-info {
       font-size: 9px;
-      color: #6060aa;
+      color: #444466;
       letter-spacing: 1px;
     }
 
@@ -46,15 +50,19 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    /* ===== CASSETTE ===== */
+    /* CASSETTE */
     .cassette-source {
-      background: #1a1a2e;
-      border: 1px solid #ff885540;
+      background: #0a0a18;
+      border: 1px solid #ff885520;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .cassette-header {
@@ -79,17 +87,18 @@
 
     .cassette-meta {
       font-size: 9px;
-      color: #9090bb;
+      color: #6060aa;
       letter-spacing: 1px;
     }
 
     .cassette-icon { font-size: 24px; }
 
     .corey-avant {
-      background: #0e0e20;
+      background: #060610;
       border-left: 3px solid #ff8855;
       padding: 6px 10px;
       border-radius: 0 4px 4px 0;
+      margin-top: 6px;
     }
 
     .corey-avant-text {
@@ -99,18 +108,50 @@
       line-height: 1.4;
     }
 
-    /* ===== MONITEUR VHS ===== */
+    /* AFFICHE */
+    .affiche-container {
+      margin-top: 8px;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      display: none;
+    }
+
+    .affiche-img {
+      width: 100%;
+      display: block;
+      filter: sepia(20%) contrast(110%) saturate(85%) brightness(0.88);
+      border-radius: 6px;
+    }
+
+    .affiche-scanlines {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 3px,
+        rgba(0,0,0,0.1) 3px,
+        rgba(0,0,0,0.1) 4px
+      );
+      pointer-events: none;
+      border-radius: 6px;
+    }
+
+    /* MONITEUR VHS */
     .monitor-wrapper {
-      background: #1a1a2e;
-      border: 1px solid #2e2e50;
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .monitor-label {
       font-size: 8px;
-      color: #6060aa;
+      color: #444466;
       letter-spacing: 2px;
       margin-bottom: 6px;
       display: flex;
@@ -121,7 +162,6 @@
     .monitor-rec {
       font-size: 8px;
       color: #ff0000;
-      letter-spacing: 1px;
       display: none;
     }
 
@@ -135,46 +175,28 @@
       50%       { opacity: 0; }
     }
 
-    /* Écran VHS */
     .monitor-screen {
-      background: #050510;
-      border: 2px solid #2e2e50;
+      background: #020205;
+      border: 2px solid #1e1e3a;
       border-radius: 6px;
-      height: 160px;
+      height: 150px;
       position: relative;
       overflow: hidden;
     }
 
-    /* Scanlines sur le moniteur */
     .monitor-screen::before {
       content: '';
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 3px,
-        rgba(0,0,0,0.3) 3px,
-        rgba(0,0,0,0.3) 4px
+        0deg, transparent, transparent 3px,
+        rgba(0,0,0,0.2) 3px, rgba(0,0,0,0.2) 4px
       );
       pointer-events: none;
       z-index: 10;
     }
 
-    /* Grain VHS */
-    .monitor-screen::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      opacity: 0.08;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9;
-    }
-
-    /* Image de scène CSS */
     .scene-image {
       position: absolute;
       top: 0; left: 0;
@@ -182,18 +204,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s;
       z-index: 1;
     }
 
-    /* Ligne de tracking VHS */
     .tracking-line {
       position: absolute;
-      width: 100%;
-      height: 3px;
-      background: rgba(255,255,255,0.15);
-      left: 0;
-      z-index: 8;
+      width: 100%; height: 3px;
+      background: rgba(255,255,255,0.1);
+      left: 0; z-index: 8;
       animation: trackingMove 4s linear infinite;
       display: none;
     }
@@ -203,18 +221,15 @@
     @keyframes trackingMove {
       0%   { top: -5%; opacity: 0; }
       5%   { opacity: 1; }
-      95%  { opacity: 0.8; }
+      95%  { opacity: 0.5; }
       100% { top: 105%; opacity: 0; }
     }
 
-    /* Glitch de bascule */
     .glitch-overlay {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      z-index: 7;
-      pointer-events: none;
-      display: none;
+      z-index: 7; pointer-events: none; display: none;
     }
 
     .glitch-overlay.active {
@@ -223,20 +238,18 @@
     }
 
     @keyframes glitchPulse {
-      0%   { background: rgba(255,68,102,0.15); transform: translateX(0); }
-      25%  { background: rgba(0,255,200,0.1);   transform: translateX(-3px); }
-      50%  { background: rgba(255,68,102,0.1);  transform: translateX(3px); }
+      0%   { background: rgba(255,68,102,0.1);  transform: translateX(0); }
+      25%  { background: rgba(0,255,200,0.06);  transform: translateX(-3px); }
+      50%  { background: rgba(255,68,102,0.06); transform: translateX(3px); }
       75%  { background: transparent;            transform: translateX(-1px); }
-      100% { background: rgba(255,68,102,0.05); transform: translateX(0); }
+      100% { background: rgba(255,68,102,0.03); transform: translateX(0); }
     }
 
-    /* Texte sur l'écran */
     .scene-label {
       position: absolute;
-      bottom: 8px;
-      left: 8px;
+      bottom: 8px; left: 8px;
       font-size: 8px;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.4);
       letter-spacing: 2px;
       z-index: 11;
       font-family: 'Courier New', monospace;
@@ -244,28 +257,25 @@
 
     .scene-timecode {
       position: absolute;
-      bottom: 8px;
-      right: 8px;
+      bottom: 8px; right: 8px;
       font-size: 8px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.3);
       letter-spacing: 1px;
       z-index: 11;
       font-family: 'Courier New', monospace;
     }
 
-    .scene-icon-big {
-      font-size: 40px;
-      opacity: 0.6;
-      filter: drop-shadow(0 0 10px currentColor);
-    }
+    .scene-icon-big { font-size: 40px; opacity: 0.5; }
 
-    /* ===== TIMELINE ===== */
+    /* TIMELINE */
     .timeline-section {
-      background: #1a1a2e;
-      border: 1px solid #2e2e50;
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .timeline-label {
@@ -276,10 +286,9 @@
     }
 
     .timeline-bar {
-      width: 100%;
-      height: 26px;
-      background: #0a0a18;
-      border: 1px solid #2e2e50;
+      width: 100%; height: 22px;
+      background: #020205;
+      border: 1px solid #1e1e3a;
       border-radius: 4px;
       overflow: hidden;
       position: relative;
@@ -297,28 +306,22 @@
       transition: filter 0.3s;
     }
 
-    .tl-zone.active { filter: brightness(2.5); }
-
-    /* Curseur */
     .timeline-cursor {
       position: absolute;
-      top: 0;
-      width: 4px;
-      height: 100%;
+      top: 0; width: 4px; height: 100%;
       background: #ffffff;
       box-shadow: 0 0 8px #ffffff;
       left: 0%;
     }
 
-    /* Scintillement de bascule sur la timeline */
     .timeline-cursor.bascule {
       background: #ff4466;
-      box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446680;
+      box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446660;
       animation: cursorPulse 0.3s infinite;
     }
 
     @keyframes cursorPulse {
-      0%, 100% { box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446680; }
+      0%, 100% { box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446660; }
       50%       { box-shadow: 0 0 25px #ff4466, 0 0 50px #ff4466; }
     }
 
@@ -328,60 +331,63 @@
       margin-top: 3px;
     }
 
-    .tl-label { font-size: 7px; color: #6060aa; }
+    .tl-label { font-size: 7px; color: #444466; }
 
-    /* ===== ZONE COUPE ===== */
+    /* ZONE COUPE */
     .cut-zone {
-      background: #1a1a2e;
-      border: 1px solid #2e2e50;
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .cut-instruction {
       text-align: center;
       padding: 8px;
-      border: 1px solid #2e2e50;
+      border: 1px solid #1e1e3a;
       border-radius: 6px;
       transition: border-color 0.3s;
-      min-height: 60px;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 54px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
     }
 
-    /* Bouton lancer */
     .btn-lancer {
       width: 100%;
-      background: #0e1a0a;
+      background: #080f06;
       border: 2px solid #ff8855;
       border-radius: 8px;
-      padding: 14px;
+      padding: 13px 8px;
       text-align: center;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       color: #ff8855;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       font-weight: bold;
       font-family: 'Courier New', monospace;
       text-shadow: 0 0 10px #ff8855;
-      transition: all 0.2s;
+      box-sizing: border-box;
+      display: block;
     }
 
-    .btn-lancer:active { transform: scale(0.97); background: #152208; }
+    .btn-lancer:active { transform: scale(0.97); }
 
-    /* Bouton rembobiner */
     .btn-rembobiner {
       width: 100%;
-      background: #1a1a08;
+      background: #100f00;
       border: 2px solid #ffcc00;
       border-radius: 8px;
-      padding: 12px;
+      padding: 12px 8px;
       text-align: center;
       cursor: pointer;
       font-size: 13px;
@@ -389,48 +395,38 @@
       letter-spacing: 3px;
       font-weight: bold;
       font-family: 'Courier New', monospace;
-      text-shadow: 0 0 8px #ffcc00;
       display: none;
+      box-sizing: border-box;
     }
 
     .btn-rembobiner:active { transform: scale(0.97); }
     .btn-rembobiner.visible { display: block; }
 
-    /* Bouton couper */
     .cut-btn {
       width: 100%;
-      background: #1a0a0e;
+      background: #100508;
       border: 2px solid #ff4466;
       border-radius: 8px;
-      padding: 14px;
+      padding: 13px 8px;
       text-align: center;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       transition: box-shadow 0.2s, border-color 0.2s;
+      box-sizing: border-box;
+      display: block;
     }
 
     .cut-btn:active { transform: scale(0.97); }
+    .cut-btn.disabled { opacity: 0.3; pointer-events: none; }
 
-    .cut-btn.disabled {
-      opacity: 0.3;
-      pointer-events: none;
-    }
-
-    /* Scintillement bouton pendant bascule */
     .cut-btn.bascule-active {
       animation: btnScintille 0.4s infinite;
     }
 
     @keyframes btnScintille {
-      0%, 100% {
-        box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446660;
-        border-color: #ff4466;
-      }
-      50% {
-        box-shadow: 0 0 30px #ff4466, 0 0 60px #ff4466;
-        border-color: #ff8899;
-      }
+      0%, 100% { box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446650; border-color: #ff4466; }
+      50%       { box-shadow: 0 0 30px #ff4466, 0 0 60px #ff4466;   border-color: #ff8899; }
     }
 
     .cut-btn::before {
@@ -438,10 +434,7 @@
       position: absolute;
       top: 0; left: -100%;
       width: 100%; height: 100%;
-      background: linear-gradient(
-        90deg, transparent,
-        rgba(255,68,102,0.2), transparent
-      );
+      background: linear-gradient(90deg, transparent, rgba(255,68,102,0.12), transparent);
       animation: shimmer 2s infinite;
     }
 
@@ -450,39 +443,37 @@
       100% { left:  100%; }
     }
 
-    .cut-icon { font-size: 22px; display: block; margin-bottom: 4px; }
-    .cut-text {
-      font-size: 14px;
-      color: #ff4466;
-      letter-spacing: 5px;
-      font-weight: bold;
-      text-shadow: 0 0 12px #ff4466;
-    }
-    .cut-hint { font-size: 8px; color: #6060aa; letter-spacing: 2px; margin-top: 4px; }
+    .cut-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .cut-text { font-size: 14px; color: #ff4466; letter-spacing: 4px; font-weight: bold; text-shadow: 0 0 12px #ff4466; }
+    .cut-hint { font-size: 8px; color: #444466; letter-spacing: 2px; margin-top: 4px; }
 
-    /* ===== COREY ===== */
+    /* COREY */
     .corey-reaction {
-      background: #1a1a2e;
-      border: 1px solid #2e2e50;
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
       border-left: 3px solid #ff8855;
       border-radius: 6px;
       padding: 10px 12px;
       display: none;
       flex-shrink: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .corey-reaction.visible { display: block; }
     .corey-label { font-size: 8px; color: #ff8855; letter-spacing: 2px; margin-bottom: 4px; }
     .corey-text  { font-size: 12px; color: #f0f0ff; font-style: italic; line-height: 1.5; }
 
-    /* ===== CUTTER ===== */
+    /* CUTTER */
     .cutter-panel {
       display: none;
-      background: #0e0e1e;
-      border: 1px solid #4a4a70;
+      background: #060612;
+      border: 1px solid #2e2e50;
       border-radius: 8px;
       overflow: hidden;
       flex-shrink: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .cutter-panel.visible {
@@ -496,7 +487,7 @@
     }
 
     .cutter-header {
-      background: #1a1a2e;
+      background: #0a0a1e;
       padding: 8px 14px;
       border-bottom: 1px solid #2e2e50;
       display: flex;
@@ -504,10 +495,23 @@
     }
 
     .cutter-fanzine { font-size: 11px; color: #f0f0ff; letter-spacing: 2px; }
-    .cutter-num     { font-size: 9px;  color: #6060aa; letter-spacing: 1px; }
+    .cutter-num     { font-size: 9px;  color: #444466; letter-spacing: 1px; }
     .cutter-body    { padding: 12px 14px; }
     .cutter-title   { font-size: 13px; color: #f0f0ff; letter-spacing: 1px; margin-bottom: 4px; }
-    .cutter-meta    { font-size: 9px;  color: #6060aa; letter-spacing: 1px; margin-bottom: 10px; }
+    .cutter-meta    { font-size: 9px;  color: #444466; letter-spacing: 1px; margin-bottom: 10px; }
+
+    .cutter-zone-critique {
+      font-size: 11px;
+      color: #b0b0cc;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      background: #080818;
+      border-left: 2px solid #444466;
+      border-radius: 0 4px 4px 0;
+      display: none;
+    }
 
     .cutter-note {
       display: flex;
@@ -516,8 +520,8 @@
       margin-bottom: 8px;
     }
 
-    .note-label { font-size: 10px; color: #6060aa; letter-spacing: 2px; }
-    .note-max   { font-size: 13px; color: #6060aa; }
+    .note-label { font-size: 10px; color: #444466; letter-spacing: 2px; }
+    .note-max   { font-size: 13px; color: #444466; }
 
     @keyframes noteReveal {
       from { opacity: 0; transform: scale(0.5); }
@@ -527,44 +531,39 @@
     .corey-after {
       margin-top: 10px;
       font-size: 10px;
-      color: #9090bb;
+      color: #7070aa;
       font-style: italic;
-      border-top: 1px solid #2e2e50;
+      border-top: 1px solid #1e1e3a;
       padding-top: 8px;
     }
 
-    /* ===== DISTRIBUTION ===== */
-    .distrib-section { display: none; flex-shrink: 0; }
+    /* DISTRIBUTION */
+    .distrib-section { display: none; flex-shrink: 0; width: 100%; box-sizing: border-box; }
     .distrib-section.visible { display: block; }
 
-    .distrib-title {
-      font-size: 9px;
-      color: #ff8855;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-    }
-
+    .distrib-title { font-size: 9px; color: #ff8855; letter-spacing: 2px; margin-bottom: 8px; }
     .distrib-options { display: flex; flex-direction: column; gap: 6px; }
 
     .distrib-option {
-      background: #1a1a2e;
-      border: 1px solid #2e2e50;
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
       border-radius: 6px;
       padding: 12px 14px;
       cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
     }
 
-    .distrib-option:active  { background: #222240; border-color: #00ffc8; }
+    .distrib-option:active  { background: #0f0f22; border-color: #00ffc8; }
     .distrib-option.disabled { opacity: 0.3; pointer-events: none; }
 
     .distrib-name    { font-size: 11px; color: #f0f0ff; letter-spacing: 1px; margin-bottom: 5px; }
     .distrib-effects { display: flex; flex-direction: column; gap: 3px; }
-    .distrib-effect  { font-size: 9px; color: #6060aa; letter-spacing: 1px; }
+    .distrib-effect  { font-size: 9px; color: #444466; letter-spacing: 1px; }
     .distrib-effect.positive { color: #00ffc8; }
     .distrib-effect.negative { color: #ff4466; }
     .distrib-effect.warning  { color: #ff8855; }
 
-    /* ===== FADE ===== */
     .fade-out { animation: fadeOut 0.5s forwards; }
 
     @keyframes fadeOut {
@@ -581,16 +580,14 @@
     <div class="night-info" id="night-info">Soir — Jour 1</div>
   </div>
 
-  <div class="main-area" id="main-area">
+  <div class="main-area">
 
     <!-- CASSETTE -->
     <div class="cassette-source">
       <div class="cassette-header">
         <div>
           <div class="cassette-label">CASSETTE SOURCE</div>
-          <div class="cassette-title" id="cassette-title">
-            Chargement...
-          </div>
+          <div class="cassette-title" id="cassette-title">Chargement...</div>
           <div class="cassette-meta">
             <span id="cassette-type">—</span>
             &nbsp;·&nbsp;
@@ -604,57 +601,26 @@
           Corey prépare le magnéto...
         </div>
       </div>
+      <!-- AFFICHE VHS -->
+      <div class="affiche-container" id="affiche-container">
+        <img class="affiche-img" id="affiche-img" src="" alt="">
+        <div class="affiche-scanlines"></div>
+      </div>
     </div>
-    <!-- AFFICHE VHS -->
-<div id="affiche-container" style="
-  margin-top: 8px;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-  display: none;
-">
-  <img id="affiche-img" src="" alt=""
-    style="
-      width: 100%;
-      display: block;
-      filter: sepia(20%) contrast(110%)
-              saturate(85%) brightness(0.9);
-      border-radius: 6px;
-    "
-  >
-  <!-- Scanlines sur l'affiche -->
-  <div style="
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent, transparent 3px,
-      rgba(0,0,0,0.12) 3px,
-      rgba(0,0,0,0.12) 4px
-    );
-    pointer-events: none;
-    border-radius: 6px;
-  "></div>
-</div>
 
-    <!-- MONITEUR VHS -->
+    <!-- MONITEUR -->
     <div class="monitor-wrapper">
       <div class="monitor-label">
         <span>▶ MONITEUR</span>
         <span class="monitor-rec" id="monitor-rec">● REC</span>
       </div>
       <div class="monitor-screen" id="monitor-screen">
-        <!-- Image de scène générée en CSS -->
         <div class="scene-image" id="scene-image">
           <span class="scene-icon-big" id="scene-icon">📼</span>
         </div>
-        <!-- Ligne de tracking -->
-        <div class="tracking-line" id="tracking-line"></div>
-        <!-- Glitch overlay -->
+        <div class="tracking-line"  id="tracking-line"></div>
         <div class="glitch-overlay" id="glitch-overlay"></div>
-        <!-- Labels -->
-        <div class="scene-label" id="scene-label">EN ATTENTE</div>
+        <div class="scene-label"    id="scene-label">EN ATTENTE</div>
         <div class="scene-timecode" id="scene-timecode">00:00</div>
       </div>
     </div>
@@ -678,27 +644,23 @@
     <div class="cut-zone">
 
       <div class="cut-instruction" id="cut-instruction">
-        <div style="font-size:11px;color:#c0c0dd;line-height:1.5;
-             margin-bottom:8px;">
+        <div style="font-size:11px;color:#c0c0dd;line-height:1.5;">
           Observez le film. Rembobinez.<br>
-          <span style="font-size:9px;color:#6060aa;">
+          <span style="font-size:9px;color:#444466;">
             Puis coupez au bon moment.
           </span>
         </div>
       </div>
 
-      <!-- Bouton lancer -->
       <div class="btn-lancer" id="btn-lancer" onclick="lancerFilm()">
         ▶ LANCER LE FILM
       </div>
 
-      <!-- Bouton rembobiner -->
       <div class="btn-rembobiner" id="btn-rembobiner"
            onclick="rembobiner()">
         ◀◀ REMBOBINER
       </div>
 
-      <!-- Bouton couper -->
       <div class="cut-btn disabled" id="cut-btn" onclick="makeCut()">
         <span class="cut-icon">✂</span>
         <span class="cut-text">COUPER</span>
@@ -720,9 +682,10 @@
         <span class="cutter-num">The Glitch</span>
       </div>
       <div class="cutter-body">
-        <div class="cutter-title"    id="cutter-title">—</div>
-        <div class="cutter-meta"     id="cutter-meta">—</div>
-        <div class="cutter-critique" id="cutter-critique">—</div>
+        <div class="cutter-title"         id="cutter-title">—</div>
+        <div class="cutter-meta"          id="cutter-meta">—</div>
+        <div class="cutter-zone-critique" id="cutter-zone-critique">—</div>
+        <div class="cutter-critique"      id="cutter-critique">—</div>
         <div class="cutter-note">
           <span class="note-label">NOTE :</span>
           <span class="note-value" id="note-value"
@@ -746,32 +709,28 @@
     <div class="gauge-item">
       <span class="gauge-icon">💰</span>
       <div class="gauge-bar-container">
-        <div class="gauge-bar money" id="bar-money"
-             style="width:40%"></div>
+        <div class="gauge-bar money" id="bar-money" style="width:40%"></div>
       </div>
       <span class="gauge-value" id="val-money">—</span>
     </div>
     <div class="gauge-item">
       <span class="gauge-icon">🎬</span>
       <div class="gauge-bar-container">
-        <div class="gauge-bar legal" id="bar-legal"
-             style="width:0%"></div>
+        <div class="gauge-bar legal" id="bar-legal" style="width:0%"></div>
       </div>
       <span class="gauge-value" id="val-legal">—</span>
     </div>
     <div class="gauge-item">
       <span class="gauge-icon">👁</span>
       <div class="gauge-bar-container">
-        <div class="gauge-bar expo" id="bar-expo"
-             style="width:0%"></div>
+        <div class="gauge-bar expo" id="bar-expo" style="width:0%"></div>
       </div>
       <span class="gauge-value" id="val-expo">—</span>
     </div>
     <div class="gauge-item">
       <span class="gauge-icon">⚡</span>
       <div class="gauge-bar-container">
-        <div class="gauge-bar energy" id="bar-energy"
-             style="width:100%"></div>
+        <div class="gauge-bar energy" id="bar-energy" style="width:100%"></div>
       </div>
       <span class="gauge-value" id="val-energy">—</span>
     </div>
@@ -779,35 +738,26 @@
 
   <script>
 
-    let gameState          = {};
-    let currentCassette    = null;
-    let cutMade            = false;
-    let visionnageComplete = false;
-    let currentSegIndex    = 0;
-    let timelineInterval   = null;
-    let cutSegIndex        = 0; // position au moment du clic COUPER
+    let gameState       = {};
+    let currentCassette = null;
+    let cutMade         = false;
+    let currentSegIndex = 0;
+    let cutSegIndex     = 0;
+    let timelineInterval= null;
 
-    // Vitesse selon difficulté (ms par segment)
-    const VITESSES = {
-      1: 2200, // très lent — facile
-      2: 1800,
-      3: 1400, // normal
-      4: 1000,
-      5: 700   // très rapide — difficile
-    };
+    const VITESSES = { 1:2200, 2:1800, 3:1400, 4:1000, 5:700 };
 
-    // Couleurs de fond selon la zone
     const ZONE_STYLES = {
-      bleu:   { bg:'#050a20', accent:'#2244aa', label:'MISE EN PLACE' },
-      orange: { bg:'#1a0800', accent:'#884400', label:'TENSION' },
-      rouge:  { bg:'#200008', accent:'#aa0022', label:'BASCULE' },
-      vert:   { bg:'#041208', accent:'#226622', label:'RÉSOLUTION' }
+      bleu:   { bg:'#020810', accent:'#1a3080' },
+      orange: { bg:'#100400', accent:'#602800' },
+      rouge:  { bg:'#100205', accent:'#800015' },
+      vert:   { bg:'#020a03', accent:'#185015' }
     };
 
     const COREY_REACTIONS = {
       trop_tot: [
         "T'as même pas attendu que ça commence, Fred.",
-        "Là c'est juste un générique. C'est pas un micro-métrage.",
+        "Là c'est juste un générique.",
         "Sérieusement ? On a rien là."
       ],
       tension: [
@@ -823,17 +773,17 @@
       resolution: [
         "Fred. T'aurais pu t'arrêter avant. C'était fini.",
         "Tu pouvais pas lâcher le bouton deux secondes plus tôt ?",
-        "C'est trop tard là. Le film est terminé."
+        "C'est trop tard là."
       ],
       audacieux_reussi: [
         "Comment t'as trouvé ça ? Personne coupe là d'habitude.",
-        "Je comprends pas encore. Mais ça marche. C'est chiant.",
-        "Bien joué. Vraiment. Je veux pas le dire mais bien joué."
+        "Je comprends pas encore. Mais ça marche.",
+        "Bien joué. Vraiment."
       ],
       audacieux_rate: [
         "Non.",
         "Fred... non.",
-        "T'as essayé un truc. Ça a pas marché. On recommence demain."
+        "T'as essayé un truc. Ça a pas marché."
       ]
     };
 
@@ -843,66 +793,61 @@
 
     window.onload = function() {
       const save = localStorage.getItem('rewindParadise_save');
-      if (!save) {
-        window.location.href = 'index.html';
-        return;
-      }
+      if (!save) { window.location.href = 'index.html'; return; }
       gameState = JSON.parse(save);
       updateUI();
       updateNightInfo();
 
-      // Choisir cassette
       if (typeof choisirCassette !== 'undefined') {
         currentCassette = choisirCassette(gameState);
         gameState.derniereCassette = currentCassette.id;
       } else {
         currentCassette = {
           id:'fallback', titre:'LE DERNIER RECOURS',
-          type:'ACTION', difficulte: 2,
+          type:'ACTION', difficulte:2,
+          synopsis:'Un homme. Une porte.',
           segments:[
-            {zone:'bleu',   icon:'🚗', text:'Un homme sort d\'une voiture.', label:'MISE EN PLACE'},
-            {zone:'orange', icon:'🔫', text:'Il monte les escaliers. Tension.', label:'TENSION'},
-            {zone:'rouge',  icon:'🚪', text:'Il frappe. Silence. Il attend.', label:'BASCULE'},
-            {zone:'vert',   icon:'💥', text:'La porte s\'ouvre. Tout se règle.', label:'RÉSOLUTION'}
+            { zone:'bleu',   icon:'🚗', personnage:'UN HOMME', lieu:'Rue',        texte:'Un homme sort d\'une voiture.', label:'MISE EN PLACE' },
+            { zone:'orange', icon:'🔫', personnage:'UN HOMME', lieu:'Escaliers',  texte:'Il monte. Tension.',            label:'TENSION' },
+            { zone:'rouge',  icon:'🚪', personnage:'UN HOMME', lieu:'Couloir',    texte:'Il frappe. Silence.',           label:'BASCULE' },
+            { zone:'vert',   icon:'💥', personnage:'UN HOMME', lieu:'Appartement',texte:'La porte s\'ouvre.',            label:'RÉSOLUTION' }
           ],
           coupeAudacieuse:0, coupesIdeal:[2],
+          critiques_par_zone: {
+            bleu:   "Vous avez coupé avant que rien se passe.",
+            orange: "Dans la tension. Pas encore la bascule.",
+            rouge:  "La porte. Le silence. C'est là.",
+            vert:   "Trop tard. La réponse était dans la question."
+          },
           corey_avant:"Action ce soir. Coupe avant le premier coup de feu.",
           cutter_special:null
         };
       }
 
-      // Afficher infos
-      document.getElementById('cassette-title').textContent =
-        currentCassette.titre;
-      document.getElementById('cassette-type').textContent =
-        currentCassette.type;
-      document.getElementById('cassette-diff').textContent =
+      document.getElementById('cassette-title').textContent = currentCassette.titre;
+      document.getElementById('cassette-type').textContent  = currentCassette.type;
+      document.getElementById('cassette-diff').textContent  =
         currentCassette.difficulte
-          ? '★'.repeat(currentCassette.difficulte) +
-            '☆'.repeat(5 - currentCassette.difficulte)
+          ? '★'.repeat(currentCassette.difficulte) + '☆'.repeat(5 - currentCassette.difficulte)
           : '';
       document.getElementById('corey-avant-text').textContent =
         currentCassette.corey_avant || 'Corey charge la cassette.';
-        // Afficher l'affiche si disponible
-const affiches = {
-  'john_hammond':    'posters/poster1.png',
-  // Ajouter les suivantes ici au fur et à mesure :
-  // 'derniere_course': 'posters/poster2.png',
-  // 'mme_kowalski':    'posters/poster3.png',
-};
 
-const afficheUrl = affiches[currentCassette.id];
-if (afficheUrl) {
-  const img = document.getElementById('affiche-img');
-  const container = document.getElementById('affiche-container');
-  img.src = afficheUrl;
-  img.onload = () => { container.style.display = 'block'; };
-}
+      // Affiche VHS
+      const AFFICHES = {
+        'john_hammond': 'posters/poster1.png',
+        // Ajouter au fur et à mesure :
+        // 'derniere_course': 'posters/poster2.png',
+      };
+      const afficheUrl = AFFICHES[currentCassette.id];
+      if (afficheUrl) {
+        const img       = document.getElementById('affiche-img');
+        const container = document.getElementById('affiche-container');
+        img.src = afficheUrl;
+        img.onload = () => { container.style.display = 'block'; };
+      }
 
-      // Préparer timeline vide
       renderTimeline();
-
-      // Mini-jeux plus tard
       setTimeout(checkSoirMiniJeux, 40000);
     };
 
@@ -914,13 +859,9 @@ if (afficheUrl) {
       const zonesDiv = document.getElementById('timeline-zones');
       const segments = currentCassette.segments;
       const pct = 100 / segments.length;
-
-      zonesDiv.innerHTML = segments.map(seg => `
-        <div class="tl-zone ${seg.zone}"
-             style="width:${pct}%"></div>
-      `).join('');
-
-      // Curseur au début
+      zonesDiv.innerHTML = segments.map(seg =>
+        `<div class="tl-zone ${seg.zone}" style="width:${pct}%"></div>`
+      ).join('');
       document.getElementById('timeline-cursor').style.left = '0%';
     }
 
@@ -928,14 +869,13 @@ if (afficheUrl) {
       const pct = ((index + 1) / total) * 100;
       const cursor = document.getElementById('timeline-cursor');
       cursor.style.left = Math.min(pct, 98) + '%';
-
       document.querySelectorAll('.tl-zone').forEach((z, i) => {
         z.classList.toggle('active', i === index);
       });
     }
 
     // ===================================================
-    // MONITEUR VHS — IMAGE DE SCÈNE
+    // MONITEUR
     // ===================================================
 
     function updateMonitorScene(seg, index, total) {
@@ -946,48 +886,36 @@ if (afficheUrl) {
       const timecode  = document.getElementById('scene-timecode');
       const tracking  = document.getElementById('tracking-line');
       const glitch    = document.getElementById('glitch-overlay');
+      const cursor    = document.getElementById('timeline-cursor');
 
       const style = ZONE_STYLES[seg.zone] || ZONE_STYLES.bleu;
-
-      // Fond coloré selon la zone
       screen.style.background = style.bg;
-      sceneImg.style.background = `
-        radial-gradient(ellipse at center,
-          ${style.accent}40 0%,
-          transparent 70%)
-      `;
-
-      // Icône de scène
+      sceneImg.style.background =
+        `radial-gradient(ellipse at center, ${style.accent}55 0%, transparent 70%)`;
       sceneIcon.textContent = seg.icon;
-      sceneIcon.style.color = style.accent;
-      sceneIcon.style.filter =
-        `drop-shadow(0 0 20px ${style.accent})`;
 
-      // Label et timecode
-      sceneLabel.textContent = seg.label;
+      const lieu  = seg.lieu || seg.label;
+      const perso = seg.personnage || '';
+      sceneLabel.textContent = perso ? `${perso} — ${lieu}` : lieu;
+
       const mins = String(Math.floor(index * 30 / 60)).padStart(2,'0');
       const secs = String((index * 30) % 60).padStart(2,'0');
       timecode.textContent = `${mins}:${secs}`;
 
-      // Tracking line toujours visible pendant lecture
       tracking.classList.add('visible');
 
-      // Glitch sur la BASCULE
       if (seg.zone === 'rouge') {
         glitch.classList.add('active');
-        // Curseur rouge pulsant
-        document.getElementById('timeline-cursor')
-                .classList.add('bascule');
+        cursor.classList.add('bascule');
+        if (typeof SOUNDS !== 'undefined') SOUNDS.tracking();
       } else {
         glitch.classList.remove('active');
-        document.getElementById('timeline-cursor')
-                .classList.remove('bascule');
+        cursor.classList.remove('bascule');
       }
     }
 
     function clearMonitor() {
-      const screen = document.getElementById('monitor-screen');
-      screen.style.background = '#050510';
+      document.getElementById('monitor-screen').style.background = '#020205';
       document.getElementById('scene-image').style.background = '';
       document.getElementById('scene-icon').textContent = '📼';
       document.getElementById('scene-label').textContent = 'EN ATTENTE';
@@ -998,39 +926,28 @@ if (afficheUrl) {
     }
 
     // ===================================================
-    // PHASE 1 — LANCER LE FILM (observation)
+    // PHASE 1 — LANCER
     // ===================================================
 
     function lancerFilm() {
-      // Cacher le bouton lancer
-      document.getElementById('btn-lancer').style.display = 'none';
+      // SON magnéto
+      if (typeof SOUNDS !== 'undefined') SOUNDS.magneto();
 
-      // Afficher REC
+      document.getElementById('btn-lancer').style.display = 'none';
       document.getElementById('monitor-rec').classList.add('visible');
 
-      // Instruction
-      setInstruction(
-        '👁 Observez le film attentivement.',
-        'Vous pourrez couper après le rembobinage.',
-        '#9090bb'
-      );
+      setInstruction('👁 Observez le film.', 'Rembobinez ensuite pour couper.', '#7070aa');
 
-      // Vitesse selon difficulté
-      const vitesse = VITESSES[currentCassette.difficulte || 3];
+      const vitesse  = VITESSES[currentCassette.difficulte || 3];
       const segments = currentCassette.segments;
       let idx = 0;
 
       function nextSeg() {
-        if (idx >= segments.length) {
-          // Film terminé → montrer rembobiner
-          filmTermine();
-          return;
-        }
-
+        if (idx >= segments.length) { filmTermine(); return; }
         currentSegIndex = idx;
+        cutSegIndex     = idx;
         updateTimelineCursor(idx, segments.length);
         updateMonitorScene(segments[idx], idx, segments.length);
-
         idx++;
         timelineInterval = setTimeout(nextSeg, vitesse);
       }
@@ -1042,16 +959,8 @@ if (afficheUrl) {
       document.getElementById('monitor-rec').classList.remove('visible');
       clearMonitor();
       document.getElementById('scene-label').textContent = 'FIN';
-
-      setInstruction(
-        '◀◀ Rembobinez pour couper.',
-        'Le bouton COUPER s\'activera au rembobinage.',
-        '#ffcc00'
-      );
-
-      // Montrer rembobiner
-      document.getElementById('btn-rembobiner')
-              .classList.add('visible');
+      setInstruction('◀◀ Rembobinez pour couper.', 'COUPER s\'activera au rembobinage.', '#ffcc00');
+      document.getElementById('btn-rembobiner').classList.add('visible');
     }
 
     // ===================================================
@@ -1059,33 +968,25 @@ if (afficheUrl) {
     // ===================================================
 
     function rembobiner() {
-      document.getElementById('btn-rembobiner')
-              .classList.remove('visible');
+      // SON rembobinage
+      if (typeof SOUNDS !== 'undefined') SOUNDS.rembobinage();
 
-      // Animation rembobinage
+      document.getElementById('btn-rembobiner').classList.remove('visible');
+
       const cursor = document.getElementById('timeline-cursor');
       cursor.style.transition = 'left 1.5s ease-in-out';
       cursor.style.left = '0%';
 
-      // Son visuel de rembobinage sur le moniteur
       const screen = document.getElementById('monitor-screen');
-      screen.style.background = '#0a0510';
+      screen.style.background = '#060310';
       document.getElementById('scene-icon').textContent = '⏪';
       document.getElementById('scene-label').textContent = 'REMBOBINAGE...';
       document.getElementById('tracking-line').classList.add('visible');
 
-      setInstruction(
-        '⏪ Rembobinage en cours...',
-        '',
-        '#ffcc00'
-      );
+      setInstruction('⏪ Rembobinage...', '', '#ffcc00');
 
-      // Zones désactivées pendant rembobinage
-      document.querySelectorAll('.tl-zone').forEach(z => {
-        z.classList.remove('active');
-      });
+      document.querySelectorAll('.tl-zone').forEach(z => z.classList.remove('active'));
 
-      // Après rembobinage → phase de coupe
       setTimeout(() => {
         cursor.style.transition = 'left 0.1s';
         lancerPhaseCoupe();
@@ -1093,76 +994,43 @@ if (afficheUrl) {
     }
 
     // ===================================================
-    // PHASE 3 — PHASE DE COUPE (le vrai jeu)
+    // PHASE 3 — COUPER
     // ===================================================
 
     function lancerPhaseCoupe() {
-      // Activer le bouton COUPER
       document.getElementById('cut-btn').classList.remove('disabled');
+      document.getElementById('monitor-rec').classList.add('visible');
+      setInstruction('✂ Coupez au bon moment !', 'La BASCULE scintille en rouge.', '#ff4466');
 
-      setInstruction(
-        '✂ Appuyez sur COUPER au bon moment !',
-        'Le curseur défile — la BASCULE scintille en rouge.',
-        '#ff4466'
-      );
-
-      // Repartir depuis le début
-      const vitesse = VITESSES[currentCassette.difficulte || 3];
+      const vitesse  = VITESSES[currentCassette.difficulte || 3];
       const segments = currentCassette.segments;
       let idx = 0;
 
-      // REC allumé
-      document.getElementById('monitor-rec').classList.add('visible');
-
       function nextSeg() {
-        if (cutMade) return; // Arrêter si le joueur a coupé
-
+        if (cutMade) return;
         if (idx >= segments.length) {
-          // Film terminé sans couper — fin automatique
-          if (!cutMade) {
-            cutMade = true;
-            cutSegIndex = segments.length - 1;
-            finaliserCoupe();
-          }
+          if (!cutMade) { cutMade = true; cutSegIndex = segments.length - 1; finaliserCoupe(); }
           return;
         }
 
         currentSegIndex = idx;
-        cutSegIndex = idx; // Position courante = position de coupe si on clique
-
+        cutSegIndex     = idx;
         updateTimelineCursor(idx, segments.length);
         updateMonitorScene(segments[idx], idx, segments.length);
 
-        // Signal sur le bouton COUPER
         const btn = document.getElementById('cut-btn');
         if (segments[idx].zone === 'rouge') {
           btn.classList.add('bascule-active');
-          setInstruction(
-            '⚡ BASCULE — C\'est maintenant !',
-            'Appuyez sur COUPER',
-            '#ff4466'
-          );
+          setInstruction('⚡ BASCULE — C\'est maintenant !', 'Appuyez sur COUPER', '#ff4466');
         } else if (segments[idx].zone === 'orange') {
           btn.classList.remove('bascule-active');
-          setInstruction(
-            'Tension en cours...',
-            'La bascule approche',
-            '#ff8855'
-          );
+          setInstruction('Tension en cours...', 'La bascule approche', '#ff8855');
         } else if (segments[idx].zone === 'vert') {
           btn.classList.remove('bascule-active');
-          setInstruction(
-            'Résolution — trop tard pour une bonne coupe.',
-            'Coupez quand même ?',
-            '#6060aa'
-          );
+          setInstruction('Résolution — trop tard.', 'Coupez quand même ?', '#333355');
         } else {
           btn.classList.remove('bascule-active');
-          setInstruction(
-            'Mise en place — attendez...',
-            'La tension arrive',
-            '#4488ff'
-          );
+          setInstruction('Mise en place — attendez...', 'La tension arrive', '#223366');
         }
 
         idx++;
@@ -1179,31 +1047,27 @@ if (afficheUrl) {
     function makeCut() {
       if (cutMade) return;
       cutMade = true;
-
-      // Arrêter le défilement
       clearTimeout(timelineInterval);
 
-      // Position de coupe = segment courant
+      // SON ciseaux
+      if (typeof SOUNDS !== 'undefined') SOUNDS.ciseaux();
+
       finaliserCoupe();
     }
 
     function finaliserCoupe() {
       const segments = currentCassette.segments;
-      const idx = Math.min(cutSegIndex, segments.length - 1);
-      const cutSeg = segments[idx];
+      const idx      = Math.min(cutSegIndex, segments.length - 1);
+      const cutSeg   = segments[idx];
 
-      // Arrêter les animations
-      document.getElementById('monitor-rec')
-              .classList.remove('visible');
+      document.getElementById('monitor-rec').classList.remove('visible');
       document.getElementById('cut-btn').classList.add('disabled');
       document.getElementById('cut-btn').classList.remove('bascule-active');
       document.getElementById('glitch-overlay').classList.remove('active');
       document.getElementById('timeline-cursor').classList.remove('bascule');
 
-      // Figer l'image sur la coupe
       updateMonitorScene(cutSeg, idx, segments.length);
-      document.getElementById('scene-label').textContent =
-        '✂ COUPE — ' + cutSeg.label;
+      document.getElementById('scene-label').textContent = '✂ COUPE — ' + cutSeg.label;
       document.getElementById('tracking-line').classList.remove('visible');
 
       // Calculer la note
@@ -1216,12 +1080,23 @@ if (afficheUrl) {
         else note = 6;
       }
 
+      // Flags achievements
+      if (cutSeg.zone === 'rouge') {
+        gameState.coupe_bascule_reussie = true;
+      }
+
+      const ideal = currentCassette.coupesIdeal || [];
+      const audacieux = currentCassette.coupeAudacieuse;
+      if (idx === audacieux && !ideal.includes(audacieux) && note >= 8) {
+        gameState.coupe_audacieuse_reussie = true;
+      }
+
       // Feedback zone
       const zones = {
-        bleu:   { label:'MISE EN PLACE', desc:'Trop tôt — rien ne s\'était passé.',        color:'#4488ff' },
-        orange: { label:'TENSION',       desc:'Dans la tension — pas encore la bascule.',   color:'#ffaa44' },
-        rouge:  { label:'BASCULE ✓',     desc:'Le bon moment — c\'est là que tout se joue.',color:'#ff5577' },
-        vert:   { label:'RÉSOLUTION',    desc:'Trop tard — le film était déjà terminé.',    color:'#44cc66' }
+        bleu:   { label:'MISE EN PLACE', desc:'Trop tôt — rien ne s\'était passé.',         color:'#3366cc' },
+        orange: { label:'TENSION',       desc:'Dans la tension — pas encore la bascule.',    color:'#cc8833' },
+        rouge:  { label:'BASCULE ✓',     desc:'Le bon moment — c\'est là que tout se joue.', color:'#cc3355' },
+        vert:   { label:'RÉSOLUTION',    desc:'Trop tard — le film était déjà terminé.',     color:'#338833' }
       };
       const z = zones[cutSeg.zone] || zones.bleu;
 
@@ -1235,15 +1110,12 @@ if (afficheUrl) {
         </div>
       `, z.color);
 
-      // Réaction Corey
       showCoreyReaction(idx, segments.length, note);
-
-      // Jugement Cutter
-      setTimeout(() => showCutterJudgement(note, cutSeg), 1800);
+      setTimeout(() => showCutterJudgement(note, cutSeg, idx), 1800);
     }
 
     // ===================================================
-    // COREY + CUTTER
+    // COREY
     // ===================================================
 
     function showCoreyReaction(cutIndex, total, note) {
@@ -1260,32 +1132,47 @@ if (afficheUrl) {
       document.getElementById('corey-reaction').classList.add('visible');
     }
 
-    function showCutterJudgement(note, cutSeg) {
+    // ===================================================
+    // CUTTER
+    // ===================================================
+
+    function showCutterJudgement(note, cutSeg, cutIndex) {
+
+      // Critique par zone
+      const zoneEl = document.getElementById('cutter-zone-critique');
+      if (currentCassette.critiques_par_zone
+       && currentCassette.critiques_par_zone[cutSeg.zone]) {
+        zoneEl.textContent = currentCassette.critiques_par_zone[cutSeg.zone];
+        zoneEl.style.display = 'block';
+      } else {
+        zoneEl.style.display = 'none';
+      }
+
+      // Critique générale
       let critique;
       if (typeof getCutterCritique !== 'undefined') {
         critique = getCutterCritique(note, currentCassette);
       } else {
-        critique = {
-          texte: note >= 8
-            ? "Vous avez vu exactement où ça bascule. C'est tout ce qu'un micro-métrage doit faire."
-            : note >= 5
-            ? "Correct. L'instinct était là. L'audace, non."
-            : "Trop tôt ou trop tard. Revenez demain.",
-          corey: note >= 8
-            ? "\"Je savais que t'avais ça en toi, Fred.\""
-            : "\"On recommence demain.\""
+        const critiques = {
+          1:  { texte:"Vous avez appuyé sur stop au hasard.",          corey:"\"C'est ce que je t'avais dit.\"" },
+          2:  { texte:"Coupé avant d'avoir quelque chose à couper.",   corey:"\"Deux sur dix c'est dur.\"" },
+          3:  { texte:"Prudent. La sécurité au lieu du risque.",       corey:"\"Cutter est déçu. Moi aussi un peu.\"" },
+          4:  { texte:"Au bon endroit mais trop tard.",                corey:"\"Quatre. On recommence demain.\"" },
+          5:  { texte:"L'instinct était là. L'audace, non.",           corey:"\"Cinq sur dix. On peut faire mieux.\"" },
+          6:  { texte:"Vous avez vu juste mais pas loin.",             corey:"\"Six. Ouais.\"" },
+          7:  { texte:"Vous avez vu où ça bascule.",                   corey:"\"Sept c'est bien. Pas dix.\"" },
+          8:  { texte:"Vous avez compris ce que ce film avait à dire.",corey:"\"Cutter commence à s'intéresser.\"" },
+          9:  { texte:"Exactement où ça bascule. C'est tout.",         corey:"\"Je savais que t'avais ça en toi.\"" },
+          10: { texte:"Je ne comprends pas encore. Mais ça marche.",   corey:"\"Dix sur dix. Repose-toi.\"" }
         };
+        critique = critiques[note] || critiques[6];
       }
 
-      document.getElementById('cutter-title').textContent =
-        `"${currentCassette.titre}"`;
-      document.getElementById('cutter-meta').textContent =
-        `Zone : ${cutSeg.label} · ${currentCassette.type}`;
-      document.getElementById('cutter-critique').textContent =
-        critique.texte;
-      document.getElementById('note-value').textContent = note;
-      document.getElementById('corey-after').textContent =
-        critique.corey;
+      document.getElementById('cutter-title').textContent    = `"${currentCassette.titre}"`;
+      document.getElementById('cutter-meta').textContent     = `Zone : ${cutSeg.label} · ${currentCassette.type}`;
+      document.getElementById('cutter-critique').textContent = critique.texte;
+      document.getElementById('note-value').textContent      = note;
+      document.getElementById('corey-after').textContent     = critique.corey;
 
       document.getElementById('cutter-panel').classList.add('visible');
 
@@ -1308,7 +1195,7 @@ if (afficheUrl) {
         showDistribution(note);
         setTimeout(() => {
           document.getElementById('distrib-section')
-                  .scrollIntoView({ behavior: 'smooth' });
+                  .scrollIntoView({ behavior:'smooth' });
         }, 300);
       }, 1000);
     }
@@ -1323,46 +1210,31 @@ if (afficheUrl) {
       const jacksonDisabled = note < 4;
 
       options.innerHTML = `
-        <div class="distrib-option
-             ${jacksonDisabled ? 'disabled' : ''}"
+        <div class="distrib-option ${jacksonDisabled ? 'disabled' : ''}"
              onclick="distribute('jackson')">
           <div class="distrib-name">▶ VIA JACKSON</div>
           <div class="distrib-effects">
-            <div class="distrib-effect positive">
-              +${Math.round(note * 4)}$ argent
-            </div>
+            <div class="distrib-effect positive">+${Math.round(note * 4)}$ argent</div>
             <div class="distrib-effect positive">Crédibilité +2</div>
-            <div class="distrib-effect warning">
-              Légalité +1 · Exposition -2
-            </div>
-            ${jacksonDisabled
-              ? '<div class="distrib-effect negative">Note trop faible — Jackson refuse</div>'
-              : ''}
+            <div class="distrib-effect warning">Légalité +1 · Exposition -2</div>
+            ${jacksonDisabled ? '<div class="distrib-effect negative">Note trop faible — Jackson refuse</div>' : ''}
           </div>
         </div>
 
-        <div class="distrib-option"
-             onclick="distribute('gamins')">
+        <div class="distrib-option" onclick="distribute('gamins')">
           <div class="distrib-name">▶ VIA LES GAMINS</div>
           <div class="distrib-effects">
-            <div class="distrib-effect positive">
-              +${Math.round(note * 1.5)}$ argent
-            </div>
+            <div class="distrib-effect positive">+${Math.round(note * 1.5)}$ argent</div>
             <div class="distrib-effect positive">Crédibilité +3</div>
-            <div class="distrib-effect warning">
-              Exposition +${note >= 7 ? 4 : 2}
-            </div>
+            <div class="distrib-effect warning">Exposition +${note >= 7 ? 4 : 2}</div>
           </div>
         </div>
 
-        <div class="distrib-option"
-             onclick="distribute('garder')">
+        <div class="distrib-option" onclick="distribute('garder')">
           <div class="distrib-name">▷ GARDER — FLASH-CUT</div>
           <div class="distrib-effects">
             <div class="distrib-effect">Stock flash-cut +1</div>
-            <div class="distrib-effect positive">
-              Légalité -1 · Exposition -1
-            </div>
+            <div class="distrib-effect positive">Légalité -1 · Exposition -1</div>
             ${note < 7
               ? '<div class="distrib-effect negative">Crédibilité -1</div>'
               : '<div class="distrib-effect positive">Crédibilité neutre</div>'
@@ -1388,24 +1260,18 @@ if (afficheUrl) {
         gameState.credibilite = Math.min(100, gameState.credibilite + 3);
         gameState.exposition  = Math.min(100,
           gameState.exposition + (note >= 7 ? 4 : 2));
+        gameState.noires_distribuees = (gameState.noires_distribuees || 0) + 1;
         showNotif(`+${Math.round(note * 1.5)}$ via les gamins`, true);
       } else {
         if (!gameState.flashCutStock) gameState.flashCutStock = 0;
         gameState.flashCutStock++;
         gameState.legalite   = Math.max(0, gameState.legalite - 1);
         gameState.exposition = Math.max(0, gameState.exposition - 1);
-        if (note < 7) {
-          gameState.credibilite = Math.max(0, gameState.credibilite - 1);
-        }
-        showNotif(
-          `Cassette gardée. Flash-cut : ${gameState.flashCutStock}`,
-          true
-        );
+        if (note < 7) gameState.credibilite = Math.max(0, gameState.credibilite - 1);
+        showNotif(`Cassette gardée. Flash-cut : ${gameState.flashCutStock}`, true);
       }
 
-      gameState.energieBonusTomorrow =
-        note >= 8 ? 3 : note <= 3 ? -3 : 0;
-
+      gameState.energieBonusTomorrow = note >= 8 ? 3 : note <= 3 ? -3 : 0;
       updateUI();
       saveGame();
       setTimeout(goToNight, 1500);
@@ -1416,8 +1282,8 @@ if (afficheUrl) {
     // ===================================================
 
     function checkSoirMiniJeux() {
+      if (cutMade) return;
       const gs = gameState;
-      if (cutMade) return; // Pas de mini-jeux si déjà coupé
 
       if (typeof JESSICA !== 'undefined') {
         const serrure = JESSICA.getSerrure(gs);
@@ -1454,14 +1320,14 @@ if (afficheUrl) {
     function setInstruction(titre, soustitre, color) {
       const instr = document.getElementById('cut-instruction');
       if (!instr) return;
-      instr.style.borderColor = color || '#2e2e50';
+      instr.style.borderColor = color || '#1e1e3a';
       instr.innerHTML = `
         <div style="font-size:12px;color:${color || '#c0c0dd'};
              font-weight:bold;line-height:1.4;margin-bottom:3px;">
           ${titre}
         </div>
         ${soustitre ? `
-          <div style="font-size:9px;color:#6060aa;margin-top:2px;">
+          <div style="font-size:9px;color:#444466;margin-top:2px;">
             ${soustitre}
           </div>
         ` : ''}
@@ -1471,15 +1337,13 @@ if (afficheUrl) {
     function setInstructionHTML(html, borderColor) {
       const instr = document.getElementById('cut-instruction');
       if (!instr) return;
-      instr.style.borderColor = borderColor || '#2e2e50';
+      instr.style.borderColor = borderColor || '#1e1e3a';
       instr.innerHTML = html;
     }
 
     function goToNight() {
       document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = 'night.html';
-      }, 500);
+      setTimeout(() => { window.location.href = 'night.html'; }, 500);
     }
 
     function updateUI() {
@@ -1491,10 +1355,10 @@ if (afficheUrl) {
       document.getElementById('val-legal').textContent = gs.legalite + '%';
       document.getElementById('bar-expo').style.width  = gs.exposition + '%';
       document.getElementById('val-expo').textContent  = gs.exposition + '%';
-      const ePct = (gs.energie / gs.energieMax) * 100;
+      const ePct = (gs.energie / (gs.energieMax || 15)) * 100;
       document.getElementById('bar-energy').style.width = ePct + '%';
       document.getElementById('val-energy').textContent =
-        gs.energie + '/' + gs.energieMax;
+        gs.energie + '/' + (gs.energieMax || 15);
     }
 
     function updateNightInfo() {
@@ -1505,25 +1369,20 @@ if (afficheUrl) {
     function showNotif(message, positive = true) {
       const old = document.getElementById('notif-toast');
       if (old) old.remove();
-
       const notif = document.createElement('div');
       notif.id = 'notif-toast';
       notif.style.cssText = `
         position:fixed;top:60px;left:50%;
         transform:translateX(-50%);
-        background:${positive ? '#0d2820' : '#200d12'};
+        background:${positive ? '#051510' : '#150510'};
         border:2px solid ${positive ? '#00ffc8' : '#ff4466'};
         border-radius:6px;padding:10px 18px;
-        font-size:11px;
-        color:${positive ? '#00ffc8' : '#ff4466'};
-        letter-spacing:1px;z-index:500;
-        text-align:center;max-width:85vw;
-        font-family:'Courier New',monospace;
-        font-weight:bold;
+        font-size:11px;color:${positive ? '#00ffc8' : '#ff4466'};
+        letter-spacing:1px;z-index:500;text-align:center;
+        max-width:85vw;font-family:'Courier New',monospace;font-weight:bold;
       `;
       notif.textContent = message;
       document.body.appendChild(notif);
-
       setTimeout(() => {
         notif.style.transition = 'opacity 0.5s';
         notif.style.opacity = '0';
@@ -1532,10 +1391,11 @@ if (afficheUrl) {
     }
 
     function saveGame() {
-      localStorage.setItem(
-        'rewindParadise_save',
-        JSON.stringify(gameState)
-      );
+      // Vérifier les achievements
+      if (typeof ACHIEVEMENTS !== 'undefined') {
+        ACHIEVEMENTS.checkAndNotify(gameState);
+      }
+      localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
     }
 
   </script>
