@@ -18,8 +18,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      overflow-x: hidden;
       position: relative;
     }
 
@@ -39,133 +38,170 @@
       z-index: 10;
     }
 
-    /* GRAIN */
-    body::after {
-      content: '';
+    /* TRACKING LINE */
+    .tracking {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      opacity: 0.04;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9;
+      width: 100%; height: 2px;
+      background: rgba(255,255,255,0.05);
+      left: 0; z-index: 8;
+      animation: trackingMove 6s linear infinite;
     }
 
-    /* FOND AMBIANCE */
-    .bg-glow {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(
-        ellipse at center,
-        #ff885508 0%,
-        transparent 70%
-      );
-      pointer-events: none;
-      z-index: 1;
-      animation: glowPulse 4s ease-in-out infinite;
+    @keyframes trackingMove {
+      0%   { top: -2px; }
+      100% { top: 100vh; }
     }
 
-    @keyframes glowPulse {
-      0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-      50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.1); }
-    }
-
-    /* CONTENU PRINCIPAL */
-    .main {
-      position: relative;
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 20px;
+    /* HERO — image du vidéoclub */
+    .hero {
       width: 100%;
-      max-width: 400px;
-      gap: 0;
+      position: relative;
+      flex-shrink: 0;
     }
 
-    /* LOGO VHS */
-    .vhs-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.2s forwards;
+    .hero-img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: brightness(0.7) saturate(1.2) contrast(1.1);
     }
 
-    .vhs-icon {
-      font-size: 20px;
-      filter: drop-shadow(0 0 6px #ff8855);
+    /* Overlay dégradé sur l'image */
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(5,5,8,0.3) 0%,
+        rgba(5,5,8,0.0) 40%,
+        rgba(5,5,8,0.8) 80%,
+        rgba(5,5,8,1.0) 100%
+      );
     }
 
-    .vhs-text {
-      font-size: 9px;
-      color: #ff8855;
-      letter-spacing: 4px;
-      text-shadow: 0 0 8px #ff8855;
-    }
-
-    /* TITRE */
-    .titre-zone {
+    /* TITRE sur l'image */
+    .hero-titre {
+      position: absolute;
+      bottom: 20px; left: 0; right: 0;
       text-align: center;
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.4s forwards;
+      z-index: 5;
     }
 
     .titre-rewind {
-      font-size: 38px;
+      font-size: 36px;
       color: #f0f0ff;
-      letter-spacing: 4px;
+      letter-spacing: 5px;
       text-shadow:
-        0 0 20px rgba(255,255,255,0.3),
-        0 0 40px rgba(255,255,255,0.1);
+        0 0 20px rgba(255,255,255,0.4),
+        0 2px 4px rgba(0,0,0,0.8);
       line-height: 1;
-      margin-bottom: 4px;
+      display: block;
     }
 
     .titre-paradise {
-      font-size: 38px;
+      font-size: 36px;
       color: #00ffc8;
-      letter-spacing: 4px;
+      letter-spacing: 5px;
       text-shadow:
         0 0 20px #00ffc8,
-        0 0 40px #00ffc840;
+        0 0 40px #00ffc840,
+        0 2px 4px rgba(0,0,0,0.8);
       line-height: 1;
+      display: block;
+      animation: glitchTitle 12s infinite;
     }
 
-    .titre-separator {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #00ffc840, transparent);
-      margin: 14px auto;
+    @keyframes glitchTitle {
+      0%, 92%, 100% {
+        text-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc840, 0 2px 4px rgba(0,0,0,0.8);
+        transform: none;
+      }
+      93% {
+        text-shadow: -2px 0 #ff4466, 2px 0 #00ffc8, 0 2px 4px rgba(0,0,0,0.8);
+        transform: translateX(2px);
+      }
+      94% {
+        text-shadow: 2px 0 #ff4466, -2px 0 #00ffc8, 0 2px 4px rgba(0,0,0,0.8);
+        transform: translateX(-2px);
+      }
+      95% {
+        text-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc840, 0 2px 4px rgba(0,0,0,0.8);
+        transform: none;
+      }
     }
 
     .titre-sous {
       font-size: 9px;
-      color: #444466;
+      color: #ffffff60;
+      letter-spacing: 4px;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* CONTENU PRINCIPAL */
+    .main {
+      width: 100%;
+      max-width: 420px;
+      padding: 16px 18px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* VHS BADGE */
+    .vhs-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 6px 0;
+    }
+
+    .vhs-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #1e1e3a);
+    }
+
+    .vhs-line.right {
+      background: linear-gradient(90deg, #1e1e3a, transparent);
+    }
+
+    .vhs-text {
+      font-size: 8px;
+      color: #ff8855;
       letter-spacing: 3px;
+      text-shadow: 0 0 6px #ff8855;
+      animation: neonFlicker 8s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes neonFlicker {
+      0%, 95%, 100% { opacity: 1; }
+      96%            { opacity: 0.3; }
+      97%            { opacity: 1; }
+      98%            { opacity: 0.2; }
+      99%            { opacity: 1; }
     }
 
     /* SYNOPSIS */
     .synopsis {
-      text-align: center;
-      margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.6s forwards;
+      background: #080810;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 14px 16px;
     }
 
     .synopsis-text {
-      font-size: 11px;
+      font-size: 12px;
       color: #8888aa;
       line-height: 1.8;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       font-style: italic;
-      max-width: 320px;
-      margin: 0 auto;
     }
 
     .synopsis-text strong {
@@ -173,61 +209,125 @@
       font-style: normal;
     }
 
-    /* ÉLÉMENTS VHS */
-    .vhs-elements {
+    /* PERSONNAGES */
+    .personnages {
       display: flex;
-      gap: 16px;
-      margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.8s forwards;
+      gap: 10px;
+      justify-content: center;
     }
 
-    .vhs-element {
-      text-align: center;
+    .perso-card {
+      flex: 1;
+      background: #080810;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 10px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
+      max-width: 90px;
     }
 
-    .vhs-element-icon { font-size: 22px; }
+    .perso-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #aa880040;
+      box-shadow: 0 0 10px #aa880020;
+      background: #0a0a18;
+    }
 
-    .vhs-element-label {
+    .perso-name {
       font-size: 8px;
       color: #444466;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    /* ÉLÉMENTS VHS */
+    .vhs-elements {
+      display: flex;
+      justify-content: space-around;
+      padding: 4px 0;
+    }
+
+    .vhs-element {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .vhs-element-icon  { font-size: 20px; }
+    .vhs-element-label { font-size: 8px; color: #333355; letter-spacing: 2px; }
+
+    /* INFOS */
+    .infos {
+      background: #080810;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .info-ligne {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 14px;
+      border-bottom: 1px solid #0a0a18;
+    }
+
+    .info-ligne:last-child { border-bottom: none; }
+    .info-label { font-size: 8px; color: #222244; letter-spacing: 2px; }
+    .info-val   { font-size: 9px; color: #444466; letter-spacing: 1px; }
+
+    /* CRÉDITS */
+    .credits {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .credits-ligne {
+      font-size: 8px;
+      color: #1a1a2e;
       letter-spacing: 2px;
+      line-height: 1.8;
+    }
+
+    .credits-ligne.accent { color: #2a2a40; }
+
+    /* BOUTONS FIXES EN BAS */
+    .fixed-bottom {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, #050508 30%);
+      padding: 20px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 20;
     }
 
     /* BOUTON JOUER */
-    .btn-zone {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 1s forwards;
-    }
-
     .btn-jouer {
       width: 100%;
       background: #071a10;
       border: 2px solid #00ffc8;
       border-radius: 8px;
-      padding: 18px;
+      padding: 16px;
       text-align: center;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: all 0.2s;
       text-decoration: none;
       display: block;
     }
 
-    .btn-jouer:active {
-      transform: scale(0.98);
-      background: #0d2818;
-    }
+    .btn-jouer:active { transform: scale(0.98); background: #0d2818; }
 
     .btn-jouer::before {
       content: '';
@@ -263,186 +363,129 @@
       font-family: 'Courier New', monospace;
     }
 
-    /* SÉPARATEUR */
-    .sep {
+    /* BOUTON CONTINUER */
+    .btn-continuer {
       width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #1e1e3a, transparent);
-      margin: 4px 0;
-    }
-
-    /* INFOS */
-    .infos {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 1.2s forwards;
-    }
-
-    .info-ligne {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid #0a0a18;
-    }
-
-    .info-label {
-      font-size: 8px;
-      color: #333355;
-      letter-spacing: 2px;
-    }
-
-    .info-val {
-      font-size: 9px;
-      color: #555577;
-      letter-spacing: 1px;
-    }
-
-    /* CRÉDITS */
-    .credits {
-      margin-top: 28px;
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 12px;
       text-align: center;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 1.4s forwards;
+      cursor: pointer;
+      text-decoration: none;
+      display: none;
     }
 
-    .credits-ligne {
+    .btn-continuer.visible { display: block; }
+    .btn-continuer:active  { background: #0f0f22; }
+
+    .btn-continuer-text {
+      font-size: 11px;
+      color: #444466;
+      letter-spacing: 2px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .btn-continuer-sub {
       font-size: 8px;
       color: #222233;
-      letter-spacing: 2px;
-      margin-bottom: 4px;
-      line-height: 1.6;
+      letter-spacing: 1px;
+      margin-top: 3px;
+      font-family: 'Courier New', monospace;
     }
 
-    .credits-ligne.accent {
-      color: #333355;
-    }
-
-    /* STATUT EN BAS */
+    /* STATUT BAS */
     .statut-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: #030306;
-      border-top: 1px solid #0d0d1a;
-      padding: 8px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 20;
+      padding: 0 2px;
     }
 
     .statut-left {
       font-size: 7px;
-      color: #1a1a2e;
+      color: #111122;
       letter-spacing: 2px;
     }
 
     .statut-right {
       font-size: 7px;
-      color: #1a1a2e;
+      color: #111122;
       letter-spacing: 2px;
-    }
-
-    /* NÉON CLIGNOTANT */
-    .neon-label {
-      font-size: 7px;
-      color: #ff8855;
-      letter-spacing: 3px;
-      text-shadow: 0 0 6px #ff8855;
-      animation: neonFlicker 8s infinite;
-    }
-
-    @keyframes neonFlicker {
-      0%, 95%, 100% { opacity: 1; }
-      96%            { opacity: 0.3; }
-      97%            { opacity: 1; }
-      98%            { opacity: 0.2; }
-      99%            { opacity: 1; }
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* GLITCH TITRE */
-    .titre-paradise {
-      animation: glitchTitle 12s infinite;
-    }
-
-    @keyframes glitchTitle {
-      0%, 92%, 100% {
-        text-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc840;
-        transform: none;
-      }
-      93% {
-        text-shadow: -2px 0 #ff4466, 2px 0 #00ffc8;
-        transform: translateX(2px);
-      }
-      94% {
-        text-shadow: 2px 0 #ff4466, -2px 0 #00ffc8;
-        transform: translateX(-2px);
-      }
-      95% {
-        text-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc840;
-        transform: none;
-      }
-    }
-
-    /* LIGNE DE TRACKING */
-    .tracking {
-      position: fixed;
-      width: 100%; height: 2px;
-      background: rgba(255,255,255,0.06);
-      left: 0; z-index: 8;
-      animation: trackingMove 6s linear infinite;
-    }
-
-    @keyframes trackingMove {
-      0%   { top: -2px; }
-      100% { top: 100vh; }
     }
 
   </style>
 </head>
 <body>
 
-  <div class="bg-glow"></div>
   <div class="tracking"></div>
 
+  <!-- HERO — image du vidéoclub -->
+  <div class="hero">
+    <img class="hero-img"
+         src="posters/rewind_paradise.png"
+         alt="Rewind Paradise"
+         onerror="this.style.display='none'">
+    <div class="hero-overlay"></div>
+    <div class="hero-titre">
+      <span class="titre-rewind">REWIND</span>
+      <span class="titre-paradise">PARADISE</span>
+      <span class="titre-sous">UN JEU DE MICRO-MÉTRAGE</span>
+    </div>
+  </div>
+
+  <!-- CONTENU -->
   <div class="main">
 
     <!-- VHS BADGE -->
     <div class="vhs-badge">
-      <span class="vhs-icon">📼</span>
-      <span class="vhs-text">VHS · HI-FI STÉRÉO · COULEUR</span>
-    </div>
-
-    <!-- TITRE -->
-    <div class="titre-zone">
-      <div class="titre-rewind">REWIND</div>
-      <div class="titre-paradise">PARADISE</div>
-      <div class="titre-separator"></div>
-      <div class="titre-sous">UN JEU DE MICRO-MÉTRAGE</div>
+      <div class="vhs-line"></div>
+      <span class="vhs-text">📼 VHS · HI-FI STÉRÉO · COULEUR</span>
+      <div class="vhs-line right"></div>
     </div>
 
     <!-- SYNOPSIS -->
     <div class="synopsis">
       <div class="synopsis-text">
         Vous êtes <strong>Fred</strong>.<br>
-        Vous gérez le <strong>Rewind Paradise</strong> — 
+        Vous gérez le <strong>Rewind Paradise</strong> —
         un vidéoclub de quartier.<br>
         Le soir, dans la réserve, vous fabriquez
         des <strong>micro-métrages clandestins</strong>.<br>
-        Coupez au bon moment. Avant que tout s'effondre.
+        Coupez au bon moment.<br>
+        Avant que tout s'effondre.
       </div>
     </div>
 
-    <!-- ÉLÉMENTS VHS -->
+    <!-- PERSONNAGES -->
+    <div class="personnages">
+      <div class="perso-card">
+        <img class="perso-avatar"
+             src="posters/fred.png" alt="Fred"
+             onerror="this.style.display='none'">
+        <div class="perso-name">FRED</div>
+      </div>
+      <div class="perso-card">
+        <img class="perso-avatar"
+             src="posters/joie.png" alt="Corey"
+             onerror="this.style.display='none'">
+        <div class="perso-name">COREY</div>
+      </div>
+      <div class="perso-card">
+        <img class="perso-avatar"
+             src="posters/canopi.png" alt="Canopi"
+             onerror="this.style.display='none'">
+        <div class="perso-name">CANOPI</div>
+      </div>
+      <div class="perso-card">
+        <img class="perso-avatar"
+             src="posters/ramon.png" alt="Ramon"
+             onerror="this.style.display='none'">
+        <div class="perso-name">RAMON</div>
+      </div>
+    </div>
+
+    <!-- ICÔNES VHS -->
     <div class="vhs-elements">
       <div class="vhs-element">
         <span class="vhs-element-icon">✂</span>
@@ -460,16 +503,6 @@
         <span class="vhs-element-icon">🎬</span>
         <span class="vhs-element-label">SURVIVRE</span>
       </div>
-    </div>
-
-    <!-- BOUTONS -->
-    <div class="btn-zone">
-
-      <a class="btn-jouer" href="index.html">
-        <div class="btn-jouer-text">▶ JOUER</div>
-        <div class="btn-jouer-sub">APPUYEZ POUR LANCER</div>
-      </a>
-
     </div>
 
     <!-- INFOS -->
@@ -508,75 +541,71 @@
       <div class="credits-ligne">
         de David Humbert
       </div>
-      <div class="credits-ligne" style="margin-top:8px;">
+      <div class="credits-ligne" style="margin-top:6px;">
         ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
       </div>
-      <div class="credits-ligne" style="margin-top:8px;">
-        <span class="neon-label">REWIND PARADISE</span>
+    </div>
+
+    <!-- Espace pour les boutons fixes -->
+    <div style="height: 120px;"></div>
+
+  </div>
+
+  <!-- BOUTONS FIXES EN BAS -->
+  <div class="fixed-bottom">
+
+    <a class="btn-jouer" href="index.html">
+      <div class="btn-jouer-text">▶ JOUER</div>
+      <div class="btn-jouer-sub">APPUYEZ POUR LANCER</div>
+    </a>
+
+    <a class="btn-continuer" id="btn-continuer" href="game.html">
+      <div class="btn-continuer-text" id="btn-continuer-text">
+        ▶ CONTINUER
       </div>
-      <div class="credits-ligne" style="margin-top:4px;">
-        REMBOBINEZ AVANT DE RENDRE
-      </div>
+      <div class="btn-continuer-sub" id="btn-continuer-sub">—</div>
+    </a>
+
+    <div class="statut-bar">
+      <span class="statut-left">▶ PLAY</span>
+      <span class="statut-right" id="timecode">00:00:00</span>
     </div>
 
   </div>
 
-  <!-- BARRE STATUT -->
-  <div class="statut-bar">
-    <span class="statut-left">▶ PLAY</span>
-    <span class="statut-right">00:00:00</span>
-  </div>
-
   <script>
-    // Timecode qui défile
+
+    // Timecode VHS
     let secondes = 0;
     setInterval(() => {
       secondes++;
       const h = String(Math.floor(secondes / 3600)).padStart(2,'0');
       const m = String(Math.floor((secondes % 3600) / 60)).padStart(2,'0');
       const s = String(secondes % 60).padStart(2,'0');
-      const el = document.querySelector('.statut-right');
+      const el = document.getElementById('timecode');
       if (el) el.textContent = `${h}:${m}:${s}`;
     }, 1000);
 
-    // Vérifier si partie en cours
+    // Bouton continuer si partie en cours
     window.onload = function() {
       const save = localStorage.getItem('rewindParadise_save');
       if (save) {
         try {
           const gs = JSON.parse(save);
           if (gs.jour > 1) {
-            const btnZone = document.querySelector('.btn-zone');
-            const continuerBtn = document.createElement('a');
-            continuerBtn.href = 'game.html';
-            continuerBtn.style.cssText = `
-              width:100%;
-              background:#080818;
-              border:1px solid #2e2e50;
-              border-radius:8px;
-              padding:14px;
-              text-align:center;
-              cursor:pointer;
-              text-decoration:none;
-              display:block;
-            `;
-            continuerBtn.innerHTML = `
-              <div style="font-size:11px;color:#6060aa;
-                   letter-spacing:3px;font-family:'Courier New',monospace;">
-                ▶ CONTINUER — JOUR ${gs.jour}
-              </div>
-              <div style="font-size:8px;color:#333355;
-                   letter-spacing:2px;margin-top:3px;
-                   font-family:'Courier New',monospace;">
-                S${gs.semaine} · ${gs.argent}$ · 
-                LÉGALITÉ ${gs.legalite}%
-              </div>
-            `;
-            btnZone.appendChild(continuerBtn);
+            const btn    = document.getElementById('btn-continuer');
+            const texte  = document.getElementById('btn-continuer-text');
+            const sub    = document.getElementById('btn-continuer-sub');
+            btn.classList.add('visible');
+            texte.textContent =
+              `▶ CONTINUER — JOUR ${gs.jour} · S${gs.semaine}`;
+            sub.textContent =
+              `${gs.argent}$ · LÉGALITÉ ${gs.legalite}% · DISCRÉTION ${gs.discretion || 0}%`;
           }
         } catch(e) {}
       }
     };
+
   </script>
 
 </body>
