@@ -6,323 +6,430 @@
         initial-scale=1.0, maximum-scale=1.0, 
         user-scalable=no">
   <title>Rewind Paradise — La Nuit</title>
-  <link rel="stylesheet" href="data/theme.css">
+  <link rel="stylesheet" href="data/style.css">
   <script src="data/dialogues.js"></script>
   <style>
+
+    * { box-sizing: border-box; }
 
     body {
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      background: #030306;
+      font-family: 'Courier New', monospace;
+      color: #f0f0ff;
+      overflow-x: hidden;
     }
 
-    /* BARRE HAUT */
+    /* TOP */
     .top-bar {
-      padding: 8px 12px;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-shrink: 0;
-      background: #080810;
-      border-bottom: 1px solid #1e1e3a;
+      border-bottom: 1px solid #0d0d1a;
+      background: #050508;
     }
 
     .night-title {
-      font-size: 11px;
-      color: #6060aa;
+      font-size: 10px;
+      color: #333355;
       letter-spacing: 3px;
     }
 
-    .night-day {
+    .night-info {
       font-size: 9px;
-      color: #3a3a60;
+      color: #222233;
       letter-spacing: 1px;
     }
 
-    /* ZONE PRINCIPALE */
+    /* MAIN */
     .main-area {
       flex: 1;
-      overflow-y: auto;
-      padding: 10px 12px 16px;
+      padding: 16px 14px 100px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
+      max-width: 500px;
+      width: 100%;
+      margin: 0 auto;
     }
 
-    /* AMBIANCE NUIT */
-    .night-ambiance {
-      background: #080818;
-      border: 1px solid #1e1e3a;
-      border-radius: 8px;
-      padding: 10px 14px;
+    /* HEURE */
+    .time-display {
+      text-align: center;
+      padding: 12px 0 4px;
     }
 
-    .ambiance-label {
+    .time-val {
+      font-size: 36px;
+      color: #1a1a2e;
+      letter-spacing: 6px;
+      text-shadow: 0 0 20px #0d0d1a;
+    }
+
+    .time-label {
       font-size: 8px;
-      color: #3a3a60;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
+      color: #111122;
+      letter-spacing: 3px;
+      margin-top: 4px;
     }
 
-    .ambiance-text {
-      font-size: 11px;
-      color: #8080aa;
-      font-style: italic;
-      line-height: 1.6;
-      letter-spacing: 0.5px;
-    }
-
-    /* BILAN NUIT */
+    /* BILAN JOURNÉE */
     .bilan-section {
-      background: #0a0a1a;
-      border: 1px solid #1e1e3a;
+      background: #080810;
+      border: 1px solid #0f0f20;
       border-radius: 8px;
       padding: 12px 14px;
     }
 
     .bilan-label {
       font-size: 8px;
-      color: #ff8855;
-      letter-spacing: 2px;
+      color: #222244;
+      letter-spacing: 3px;
       margin-bottom: 10px;
     }
 
-    .bilan-row {
+    .bilan-ligne {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 0;
-      border-bottom: 1px solid #0f0f20;
+      padding: 5px 0;
+      border-bottom: 1px solid #0a0a15;
     }
 
-    .bilan-row:last-child { border-bottom: none; }
+    .bilan-ligne:last-child { border-bottom: none; }
 
     .bilan-nom {
       font-size: 10px;
-      color: #7070aa;
+      color: #333355;
       letter-spacing: 1px;
     }
 
     .bilan-val {
       font-size: 11px;
-      color: #f0f0ff;
-      letter-spacing: 1px;
       font-weight: bold;
+      letter-spacing: 1px;
     }
 
-    .bilan-val.bon  { color: #00ffc8; }
-    .bilan-val.mal  { color: #ff4466; }
-    .bilan-val.warn { color: #ff8855; }
+    .bilan-val.positif { color: #1a5a3a; }
+    .bilan-val.negatif { color: #5a1a1a; }
+    .bilan-val.neutre  { color: #222244; }
 
     /* MESSAGES */
     .messages-section {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .message-card {
-      background: #0a0a1a;
-      border: 1px solid #1e1e3a;
       border-radius: 8px;
-      overflow: hidden;
+      padding: 12px 14px;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: msgAppear 0.5s ease forwards;
     }
 
-    .message-header {
-      background: #0f0f22;
-      padding: 8px 12px;
+    @keyframes msgAppear {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Jackson */
+    .msg-jackson {
+      background: #080810;
+      border: 1px solid #1a1a30;
+      border-left: 3px solid #2a2a50;
+    }
+
+    .msg-jackson.tendu {
+      border-left-color: #503030;
+      background: #0a0808;
+    }
+
+    .msg-jackson.furieux {
+      border-left-color: #aa3333;
+      background: #0f0505;
+    }
+
+    /* Corey */
+    .msg-corey {
+      background: #080810;
+      border: 1px solid #1a1a30;
+      border-left: 3px solid #ff885530;
+    }
+
+    /* Cutter */
+    .msg-cutter {
+      background: #060612;
+      border: 1px solid #1e1e3a;
+      border-left: 3px solid #4444aa;
+    }
+
+    /* Jessica */
+    .msg-jessica {
+      background: #08080e;
+      border: 1px solid #1a1a2a;
+      border-left: 3px solid #aa4488;
+    }
+
+    /* Lucious */
+    .msg-lucious {
+      background: #080a08;
+      border: 1px solid #1a1e1a;
+      border-left: 3px solid #448844;
+    }
+
+    /* Anonyme */
+    .msg-anonyme {
+      background: #060608;
+      border: 1px solid #111118;
+      border-left: 3px solid #222233;
+    }
+
+    .msg-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #1e1e3a;
+      margin-bottom: 6px;
     }
 
-    .message-sender {
-      font-size: 10px;
-      letter-spacing: 1px;
+    .msg-expediteur {
+      font-size: 9px;
+      letter-spacing: 2px;
       font-weight: bold;
     }
 
-    .message-sender.jackson { color: #00ffc8; }
-    .message-sender.canopi  { color: #8888cc; }
-    .message-sender.cutter  { color: #cc8844; }
-    .message-sender.corey   { color: #ff8855; }
-    .message-sender.inconnu { color: #666688; }
-    .message-sender.warning { color: #ff8855; }
-    .message-sender.danger  { color: #ff4466; }
-
-    .message-heure {
+    .msg-heure {
       font-size: 8px;
-      color: #3a3a60;
+      color: #1a1a2e;
       letter-spacing: 1px;
     }
 
-    .message-body {
-      padding: 10px 12px;
-    }
-
-    .message-text {
+    .msg-texte {
       font-size: 11px;
-      color: #c0c0dd;
-      line-height: 1.7;
+      color: #555577;
+      line-height: 1.6;
       font-style: italic;
-      letter-spacing: 0.3px;
     }
 
-    /* Répondeur */
-    .repondeur {
+    .msg-texte.important { color: #7777aa; }
+    .msg-texte.urgent    { color: #aa5555; }
+    .msg-texte.cutter    { color: #6666aa; }
+    .msg-texte.jessica   { color: #aa6688; }
+    .msg-texte.lucious   { color: #668866; }
+
+    /* CHOIX DE NUIT */
+    .choix-nuit {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .choix-nuit-btn {
       background: #0a0a18;
       border: 1px solid #1e1e3a;
-      border-left: 3px solid #3a3a60;
-      border-radius: 0 8px 8px 0;
+      border-radius: 6px;
       padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .repondeur-label {
+    .choix-nuit-btn:active { background: #0f0f22; }
+
+    .choix-nuit-texte {
+      font-size: 10px;
+      color: #6666aa;
+      letter-spacing: 1px;
+    }
+
+    .choix-nuit-effet {
       font-size: 8px;
-      color: #3a3a60;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
+      color: #333355;
+      letter-spacing: 1px;
     }
 
-    .repondeur-text {
-      font-size: 11px;
-      color: #9090bb;
-      font-style: italic;
-      line-height: 1.6;
-    }
-
-    /* COLLECTE JACKSON */
-    .collecte-card {
-      background: #071a10;
-      border: 1px solid #00ffc830;
+    /* JACKSON COLLECTE */
+    .collecte-zone {
+      background: #080810;
+      border: 1px solid #1a1a30;
+      border-top: 2px solid #2a2a50;
       border-radius: 8px;
-      padding: 12px 14px;
+      padding: 14px;
+      display: none;
     }
+
+    .collecte-zone.visible { display: block; }
 
     .collecte-label {
-      font-size: 8px;
-      color: #00ffc8;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
+      font-size: 9px;
+      color: #333355;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
     }
 
     .collecte-montant {
-      font-size: 22px;
-      color: #00ffc8;
+      font-size: 28px;
+      color: #2a2a50;
       font-weight: bold;
-      letter-spacing: 2px;
-      text-shadow: 0 0 15px #00ffc8;
-      margin-bottom: 4px;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
     }
 
     .collecte-detail {
       font-size: 9px;
-      color: #4a9a7a;
+      color: #222233;
       letter-spacing: 1px;
+      margin-bottom: 12px;
+      line-height: 1.6;
     }
 
-    /* RÉCAP NOTE */
-    .note-recap {
-      background: #080818;
-      border: 1px solid #2e2e50;
-      border-radius: 8px;
-      padding: 12px 14px;
-      text-align: center;
-    }
-
-    .note-recap-label {
-      font-size: 8px;
-      color: #444466;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-    }
-
-    .note-recap-film {
-      font-size: 11px;
-      color: #8888aa;
-      font-style: italic;
-      margin-bottom: 6px;
-      letter-spacing: 0.5px;
-    }
-
-    .note-recap-val {
-      font-size: 28px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      text-shadow: 0 0 12px currentColor;
-    }
-
-    .note-recap-val.haute  { color: #00ffc8; }
-    .note-recap-val.moyenne{ color: #ff8855; }
-    .note-recap-val.basse  { color: #ff4466; }
-
-    .note-recap-commentaire {
-      font-size: 10px;
-      color: #666688;
-      margin-top: 6px;
-      font-style: italic;
-    }
-
-    /* ÉNERGIE */
-    .energie-section {
-      background: #0a0a1a;
-      border: 1px solid #1e1e3a;
-      border-radius: 8px;
-      padding: 12px 14px;
-    }
-
-    .energie-label {
-      font-size: 8px;
-      color: #444466;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-    }
-
-    .energie-bar-container {
+    .collecte-btn {
       width: 100%;
-      height: 8px;
-      background: #0f0f20;
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 6px;
-    }
-
-    .energie-bar {
-      height: 100%;
-      background: #ffdd44;
-      border-radius: 4px;
-      transition: width 1s ease;
-    }
-
-    .energie-texte {
-      font-size: 10px;
-      color: #8888aa;
-      letter-spacing: 1px;
-    }
-
-    /* BOUTON CONTINUER */
-    .continuer-btn {
-      background: #080818;
-      border: 1px solid #2e2e50;
-      border-radius: 8px;
-      padding: 14px;
+      background: #080810;
+      border: 1px solid #2a2a50;
+      border-radius: 6px;
+      padding: 12px;
       text-align: center;
       cursor: pointer;
-      margin-top: 4px;
+      font-size: 10px;
+      color: #333355;
+      letter-spacing: 2px;
     }
 
-    .continuer-btn:active { background: #0f0f22; }
+    .collecte-btn:active { background: #0d0d1e; }
+    .collecte-btn.manque { border-color: #502a2a; color: #553333; }
 
-    .continuer-text {
+    /* SCÈNE JESSICA */
+    .scene-card {
+      background: #060610;
+      border: 1px solid #1a1a2e;
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .scene-card.visible { display: block; }
+
+    .scene-header {
+      background: #0a0a1a;
+      padding: 8px 14px;
+      border-bottom: 1px solid #1a1a2e;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .scene-titre {
+      font-size: 9px;
+      color: #444466;
+      letter-spacing: 2px;
+    }
+
+    .scene-num {
+      font-size: 8px;
+      color: #222233;
+      letter-spacing: 1px;
+    }
+
+    .scene-body { padding: 14px; }
+
+    .scene-texte {
       font-size: 11px;
-      color: #4a4a70;
-      letter-spacing: 3px;
+      color: #555577;
+      line-height: 1.8;
+      margin-bottom: 12px;
+      font-style: italic;
     }
 
-    /* FADE */
-    .fade-out { animation: fadeOut 0.5s forwards; }
+    .scene-texte em {
+      color: #7777aa;
+      font-style: normal;
+    }
+
+    .scene-choix {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .scene-choix-btn {
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
+      border-radius: 6px;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .scene-choix-btn:active { background: #0f0f22; }
+
+    .scene-choix-texte {
+      font-size: 10px;
+      color: #6666aa;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .scene-choix-effet {
+      font-size: 8px;
+      color: #333355;
+      letter-spacing: 1px;
+    }
+
+    /* BOUTON DORMIR */
+    .sleep-btn {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #030306;
+      border-top: 1px solid #0d0d1a;
+      padding: 14px 16px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .sleep-btn:active { background: #050508; }
+
+    .sleep-btn-text {
+      font-size: 10px;
+      color: #1a1a2e;
+      letter-spacing: 4px;
+    }
+
+    .notif {
+      display: none;
+      position: fixed;
+      top: 58px; left: 50%;
+      transform: translateX(-50%);
+      background: #050510;
+      border: 1px solid #2a2a50;
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-size: 11px;
+      color: #555577;
+      letter-spacing: 1px;
+      z-index: 500;
+      text-align: center;
+      max-width: 85vw;
+      font-family: 'Courier New', monospace;
+    }
+
+    .notif.visible {
+      display: block;
+      animation: notifAnim 2.5s forwards;
+    }
+
+    @keyframes notifAnim {
+      0%   { opacity: 0; }
+      12%  { opacity: 1; }
+      75%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .fade-out { animation: fadeOut 0.8s forwards; }
 
     @keyframes fadeOut {
       from { opacity: 1; }
@@ -334,153 +441,420 @@
 <body>
 
   <div class="top-bar">
-    <div class="night-title">░ LA NUIT ░</div>
-    <div class="night-day" id="night-day">Nuit — Jour 1</div>
+    <div class="night-title">▓ LA NUIT ▓</div>
+    <div class="night-info" id="night-info">—</div>
   </div>
 
   <div class="main-area" id="main-area">
-    <!-- Rempli par JS -->
+
+    <!-- HEURE -->
+    <div class="time-display">
+      <div class="time-val" id="time-val">23:47</div>
+      <div class="time-label">REWIND PARADISE — FERMÉ</div>
+    </div>
+
+    <!-- BILAN -->
+    <div class="bilan-section" id="bilan-section">
+      <div class="bilan-label">BILAN DE LA JOURNÉE</div>
+      <div id="bilan-contenu"></div>
+    </div>
+
+    <!-- COLLECTE JACKSON -->
+    <div class="collecte-zone" id="collecte-zone">
+      <div class="collecte-label">COLLECTE — JACKSON</div>
+      <div class="collecte-montant" id="collecte-montant">—$</div>
+      <div class="collecte-detail" id="collecte-detail">—</div>
+      <div class="collecte-btn" id="collecte-btn"
+           onclick="payerJackson()">
+        REMETTRE LA COLLECTE
+      </div>
+    </div>
+
+    <!-- SCÈNE JESSICA -->
+    <div class="scene-card" id="scene-jessica">
+      <div class="scene-header">
+        <span class="scene-titre">JESSICA</span>
+        <span class="scene-num" id="scene-jessica-num">—</span>
+      </div>
+      <div class="scene-body">
+        <div class="scene-texte" id="scene-jessica-texte">—</div>
+        <div class="scene-choix" id="scene-jessica-choix"></div>
+      </div>
+    </div>
+
+    <!-- SCÈNE LUCIOUS -->
+    <div class="scene-card" id="scene-lucious">
+      <div class="scene-header">
+        <span class="scene-titre">LUCIOUS</span>
+        <span class="scene-num" id="scene-lucious-num">—</span>
+      </div>
+      <div class="scene-body">
+        <div class="scene-texte" id="scene-lucious-texte">—</div>
+        <div class="scene-choix" id="scene-lucious-choix"></div>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="messages-section" id="messages-section"></div>
+
   </div>
 
-  <!-- JAUGES -->
-  <div class="bottom-bar">
-    <div class="gauge-item">
-      <span class="gauge-icon">💰</span>
-      <div class="gauge-bar-container">
-        <div class="gauge-bar money" id="bar-money"
-             style="width:40%"></div>
-      </div>
-      <span class="gauge-value" id="val-money">—</span>
-    </div>
-    <div class="gauge-item">
-      <span class="gauge-icon">🎬</span>
-      <div class="gauge-bar-container">
-        <div class="gauge-bar legal" id="bar-legal"
-             style="width:0%"></div>
-      </div>
-      <span class="gauge-value" id="val-legal">—</span>
-    </div>
-    <div class="gauge-item">
-      <span class="gauge-icon">👁</span>
-      <div class="gauge-bar-container">
-        <div class="gauge-bar expo" id="bar-expo"
-             style="width:0%"></div>
-      </div>
-      <span class="gauge-value" id="val-expo">—</span>
-    </div>
-    <div class="gauge-item">
-      <span class="gauge-icon">⚡</span>
-      <div class="gauge-bar-container">
-        <div class="gauge-bar energy" id="bar-energy"
-             style="width:100%"></div>
-      </div>
-      <span class="gauge-value" id="val-energy">—</span>
-    </div>
+  <div class="sleep-btn" onclick="dormirJusquAuMatin()">
+    <div class="sleep-btn-text">▽ FERMER LES YEUX ▽</div>
   </div>
+
+  <div class="notif" id="notif"></div>
 
   <script>
 
     let gameState = {};
 
-    // Messages de nuit par semaine / personnage
-    const MESSAGES_NUIT = {
+    // ===================================================
+    // SCÈNES JESSICA
+    // ===================================================
 
-      jackson: {
-        1: [
-          "T'as fait quoi ce soir ? Je veux pas savoir. Je veux juste que ça continue à tourner.",
-          "Le Rewind Paradise c'est un investissement. Traite-le comme tel.",
-          "Collecte mercredi. Comme d'hab."
-        ],
-        2: [
-          "On me dit que t'as des trucs intéressants dans la réserve. C'est bien. Continue.",
-          "Certaines personnes posent des questions sur le vidéoclub. Réponds pas.",
-          "Collecte mercredi. 120$. Exact."
-        ],
-        3: [
-          "Le type en costume qui vient louer des films — laisse-le faire. Il fait partie des meubles.",
-          "Si quelqu'un te parle de DiMaggio tu m'appelles. Direct.",
-          "Collecte mercredi. 150$. On monte."
-        ],
-        4: [
-          "DiMaggio veut te voir. C'est pas une invitation que tu refuses.",
-          "Le vidéoclub peut continuer à tourner. Ou pas. C'est toi qui choisis.",
-          "Collecte mercredi. 180$. Dernière fois je l'augmente."
+    const SCENES_JESSICA = [
+      {
+        id: 'jessica_01',
+        semaine_min: 1,
+        titre: 'La Boîte à Musique',
+        texte: `Jessica entre dans un appartement vide. Elle cherche quelque chose de précis. Sur la table de nuit — une boîte à musique en marqueterie. Elle l'ouvre. <em>Une mélodie simple. Deux figurines qui tournent.</em> Elle reste figée. Une image d'enfance. La patinoire de Rockefeller. Son père. Elle referme brusquement. Un bruit dans la serrure.`,
+        choix: [
+          {
+            texte: 'Elle prend la boîte et plonge sous le lit.',
+            effet: 'jessica_cache',
+            detail: 'Discrétion. Elle attend.',
+            impact: (gs) => {
+              gs.jessica_boite = true;
+              gs.jessica_cache = true;
+            }
+          },
+          {
+            texte: 'Elle repose la boîte et sort par la fenêtre.',
+            effet: 'jessica_fuite',
+            detail: 'Rapide. Mais les mains vides.',
+            impact: (gs) => {
+              gs.jessica_fuite = true;
+            }
+          }
         ]
       },
-
-      canopi: {
-        1: [
-          "Ghost était excellent. Dommage pour la fin.",
-          "J'ai noté quelque chose dans mon carnet ce soir. Rien d'important encore."
-        ],
-        2: [
-          "Je reviens demain. J'ai des questions sur le stock.",
-          "Celluloïd Scalpel. Vous connaissez ?"
-        ],
-        3: [
-          "Les faits sont là. Je les rassemble.",
-          "Ce n'est pas personnel. C'est mon travail."
-        ],
-        4: [
-          "Dossier presque complet.",
-          "Une dernière visite suffira, je pense."
+      {
+        id: 'jessica_02',
+        semaine_min: 2,
+        titre: 'L\'Homme au Fauteuil',
+        texte: `Sous le lit. Jessica entend l'homme s'installer dans le fauteuil. <em>Ghost commence à la télévision.</em> Elle reconnaît la musique. Pathétique, pense-t-elle. Une crampe lui tire la cuisse. Elle voit ses chaussures — usées, lourdes. Il pose quelque chose sur le guéridon. Une arme.`,
+        choix: [
+          {
+            texte: 'Attendre. Ne pas bouger.',
+            effet: 'jessica_attend',
+            detail: 'La crampe empire. Mais il repart.',
+            impact: (gs) => {
+              gs.jessica_patience = (gs.jessica_patience || 0) + 1;
+            }
+          },
+          {
+            texte: 'Sortir son .38. Prête.',
+            effet: 'jessica_arme',
+            detail: 'Risqué. Le téléphone sonne.',
+            impact: (gs) => {
+              gs.jessica_arme_sortie = true;
+            }
+          }
         ]
       },
-
-      cutter: {
-        1: [
-          "Quelqu'un fait des micro-métrages dans ce quartier. Pas encore bons. Mais présents.",
-        ],
-        2: [
-          "La coupe de ce soir était... intéressante. Je reviendrai.",
-          "Celluloïd Scalpel numéro 18. Bientôt."
-        ],
-        3: [
-          "Je commence à comprendre ce que vous cherchez. Continue.",
-          "La bascule c'est pas un moment. C'est une décision."
-        ],
-        4: [
-          "Le meilleur micro-métrage que j'ai vu cette année. C'est vous.",
-          "Je prévoie d'écrire quelque chose. Pas encore sûr de quoi."
+      {
+        id: 'jessica_03',
+        semaine_min: 2,
+        titre: 'Canopi',
+        texte: `Le téléphone sonne. L'homme répond. <em>"Canopi."</em> Jessica retient son souffle. Il parle de Lucious. De John Wang. Il raccroche. Bruit d'un manteau, de clés. La porte claque. Jessica reste figée. John est mort. Ce flic enquête. Le monde vient de basculer sous le lit de quelqu'un d'autre.`,
+        choix: [
+          {
+            texte: 'Prendre la boîte et partir immédiatement.',
+            effet: 'jessica_part',
+            detail: 'Exposition +5. La boîte dans le sac.',
+            impact: (gs) => {
+              gs.jessica_boite_recuperee = true;
+              gs.exposition = Math.min(100, (gs.exposition || 0) + 5);
+            }
+          },
+          {
+            texte: 'Attendre encore. Être sûre.',
+            effet: 'jessica_prudente',
+            detail: 'Légalité -2. Plus sûre.',
+            impact: (gs) => {
+              gs.legalite = Math.max(0, (gs.legalite || 0) - 2);
+              gs.jessica_prudente = true;
+            }
+          }
         ]
       },
-
-      corey: {
-        1: [
-          "Fred. T'as oublié d'éteindre les néons. Encore.",
-          "La Beaulieu 16mm dans la vitrine. Je peux pas m'en empêcher de la regarder."
-        ],
-        2: [
-          "J'ai rembobiné les cassettes ce soir. Toutes. Même celles qui en avaient pas besoin.",
-          "Le gamin avec les cheveux rouges est revenu. Il a sonné longtemps."
-        ],
-        3: [
-          "Fred. Ramon. Je sais pas. Fais attention.",
-          "J'ai lu le Celluloïd Scalpel. Cutter parle de 'quelqu'un dans le quartier'."
-        ],
-        4: [
-          "Si DiMaggio dit quelque chose — tu me préviens. Promis ?",
-          "Les micro-métrages. On a fait quelque chose de bien, Fred."
+      {
+        id: 'jessica_04',
+        semaine_min: 3,
+        titre: 'La Rousse',
+        texte: `Jessica sort de l'appartement. Dans le couloir — une femme. Grande, rousse, cheveux comme une lame. <em>Yeux verts qui scrutent tout.</em> "John ?" demande-t-elle. Jessica improvise. "Il m'a demandé de rapporter ses films." La rousse regarde les cassettes dans ses mains. Puis Jessica. Elle sait. Jessica aussi.`,
+        choix: [
+          {
+            texte: '"On est du même côté je crois."',
+            effet: 'jessica_alliance',
+            detail: 'Alliance possible. Info sur John.',
+            impact: (gs) => {
+              gs.jessica_alliance_rousse = true;
+              gs.credibilite = Math.min(100, (gs.credibilite || 0) + 3);
+            }
+          },
+          {
+            texte: 'Partir sans rien ajouter.',
+            effet: 'jessica_esquive',
+            detail: 'Discret. Mais une piste perdue.',
+            impact: (gs) => {
+              gs.jessica_esquive_rousse = true;
+            }
+          }
         ]
-      },
-
-      inconnu: [
-        "Message de numéro inconnu : 'Continue.'",
-        "Numéro masqué : 'On regarde.'",
-        "SMS anonyme : 'Celluloïd Scalpel. Numéro 19.'"
-      ]
-
-    };
-
-    const AMBIANCES_NUIT = [
-      "Les néons bourdonnent. La ville se tait par étapes.",
-      "Quelqu'un a laissé une cassette dans la boîte de retour. Pas de reçu.",
-      "Il pleut sur la vitrine. Les reflets bougent.",
-      "Le répondeur clignote. Deux messages. Fred écoute pas encore.",
-      "La Beaulieu 16mm dans la vitrine du magasin d'en face. Toujours là.",
-      "3h du matin. Les camions de livraison. Le quartier qui recommence.",
-      "Les étagères dans le noir. L'odeur de plastique et de poussière."
+      }
     ];
+
+    // ===================================================
+    // SCÈNES LUCIOUS
+    // ===================================================
+
+    const SCENES_LUCIOUS = [
+      {
+        id: 'lucious_01',
+        semaine_min: 1,
+        titre: 'L\'Appartement de John Wang',
+        texte: `Lucious crochète la serrure en quelques secondes. L'appartement sent le renfermé, la naphtaline, l'encens éteint. Vingt mètres carrés. Costumes synthétiques, manuels de chimie, matelas au sol. Une tour de VHS. <em>La cassette dans le magnéto : Les Aventuriers de l'Arche Perdue.</em> Il allume. Il sourit malgré lui.`,
+        choix: [
+          {
+            texte: 'Fouiller méthodiquement.',
+            effet: 'lucious_fouille',
+            detail: 'Trouve les cassettes de location.',
+            impact: (gs) => {
+              gs.lucious_cassettes_trouvees = true;
+              gs.info_john_wang = true;
+            }
+          },
+          {
+            texte: 'Regarder le film d\'abord.',
+            effet: 'lucious_film',
+            detail: 'Indiana Jones meurt. Micro-métrage.',
+            impact: (gs) => {
+              gs.lucious_vu_micro = true;
+              gs.credibilite = Math.min(100, (gs.credibilite || 0) + 2);
+            }
+          }
+        ]
+      },
+      {
+        id: 'lucious_02',
+        semaine_min: 2,
+        titre: 'L\'Autel',
+        texte: `Près de la fenêtre — un autel bricolé. Statuette de Bouddha. Bâtons d'encens consumés. Des rouleaux de papier ligaturés de fil rouge. Lucious en déplie un. <em>"Que j'arrive à partir de mon boulot."</em> Un autre. <em>"Qu'elle ne me quitte jamais."</em> Prières de survie griffonnées à l'encre pâle. John Wang priait pour des choses simples.`,
+        choix: [
+          {
+            texte: 'Prendre les rouleaux comme preuve.',
+            effet: 'lucious_rouleaux',
+            detail: 'Info sur John. Piste vers la pépinière.',
+            impact: (gs) => {
+              gs.lucious_rouleaux = true;
+              gs.info_pepiniere = true;
+            }
+          },
+          {
+            texte: 'Les laisser. Ce sont des prières.',
+            effet: 'lucious_respect',
+            detail: 'Rien de concret. Mais quelque chose d\'autre.',
+            impact: (gs) => {
+              gs.lucious_respect = true;
+            }
+          }
+        ]
+      },
+      {
+        id: 'lucious_03',
+        semaine_min: 2,
+        titre: 'Blasphème',
+        texte: `À l'écran — la boule de pierre dévale. Lucious regarde malgré lui. Elle se rapproche. Indiana Jones court. <em>Écran noir brutal. KRUNCH. Froissement de chair.</em> Il reste bouche bée. Quelqu'un a osé modifier Les Aventuriers de l'Arche Perdue. Indiana Jones est mort. C'est une cassette noire. Un micro-métrage.`,
+        choix: [
+          {
+            texte: 'Emporter la cassette.',
+            effet: 'lucious_cassette_noire',
+            detail: 'Piste vers le Rewind Paradise.',
+            impact: (gs) => {
+              gs.lucious_cassette_noire = true;
+              gs.exposition = Math.min(100, (gs.exposition || 0) + 8);
+            }
+          },
+          {
+            texte: 'La laisser. Trop compromettant.',
+            effet: 'lucious_laisse',
+            detail: 'Légalité -3. Prudent.',
+            impact: (gs) => {
+              gs.legalite = Math.max(0, (gs.legalite || 0) - 3);
+            }
+          }
+        ]
+      },
+      {
+        id: 'lucious_04',
+        semaine_min: 3,
+        titre: 'Le Vidéoclub',
+        texte: `Lucious entre dans le Rewind Paradise. L'odeur — plastique chauffé, dépoussiérant, marijuana mal dissimulée. Il dépose deux cassettes sur le comptoir. L'employé derrière est avachi sur un tabouret. <em>Une doudoune bleue. Une coupe au bol indisciplinée.</em> Lucious attend. L'homme lève les yeux. "Ah !"`,
+        choix: [
+          {
+            texte: '"Ces cassettes viennent de l\'appartement de John Wang."',
+            effet: 'lucious_confronte',
+            detail: 'Confrontation directe. Exposition +10.',
+            impact: (gs) => {
+              gs.lucious_confronte_rewind = true;
+              gs.exposition = Math.min(100, (gs.exposition || 0) + 10);
+            }
+          },
+          {
+            texte: 'Observer d\'abord. Ne rien dire.',
+            effet: 'lucious_observe',
+            detail: 'Info sur le vidéoclub. Discret.',
+            impact: (gs) => {
+              gs.lucious_observe_rewind = true;
+              gs.info_dimaggio = (gs.info_dimaggio || 0) + 1;
+            }
+          }
+        ]
+      }
+    ];
+
+    // ===================================================
+    // MESSAGES JACKSON
+    // ===================================================
+
+    function getMessageJackson(gs) {
+      const semaine = gs.semaine || 1;
+      const humeur  = gs.jacksonHumeur || 'cool';
+      const note    = gs.currentNote || 5;
+      const discretion = gs.discretion || 0;
+      const estMercredi = ((gs.jour - 1) % 7) === 2;
+
+      let msg = '';
+      let classe = 'msg-jackson';
+
+      if (estMercredi) {
+        // Jour de collecte
+        const montant = getCollecteMontant(gs);
+        msg = `Mercredi. Je passe ce soir. ${montant}$ comme convenu.`;
+        classe = 'msg-jackson';
+      } else if (humeur === 'furieux' || discretion >= 70) {
+        msg = getMessageFurieux(gs);
+        classe = 'msg-jackson furieux';
+      } else if (humeur === 'tendu' || discretion >= 50) {
+        msg = getMessageTendu(gs);
+        classe = 'msg-jackson tendu';
+      } else {
+        msg = getMessageCool(gs);
+        classe = 'msg-jackson';
+      }
+
+      return { msg, classe };
+    }
+
+    function getCollecteMontant(gs) {
+      const base = 80;
+      const bonus = Math.floor((gs.credibilite || 0) / 20) * 10;
+      return base + bonus;
+    }
+
+    function getMessageCool(gs) {
+      const msgs = [
+        "Les affaires continuent. C'est bien.",
+        "T'as fait quoi ce soir ? Je veux pas savoir. Continue.",
+        "Le vidéoclub tourne. Garde ça comme ça.",
+        "Certaines personnes posent des questions. Réponds pas.",
+        "Je t'ai dit de rien faire d'inhabituel. T'as écouté. Bien."
+      ];
+      let msg = msgs[Math.floor(Math.random() * msgs.length)];
+
+      // Mention DiMaggio dès S3
+      if (gs.semaine >= 3 && Math.random() > 0.5) {
+        const dimaggio = [
+          "DiMaggio a demandé si le Rewind Paradise était fiable. J'ai dit oui.",
+          "DiMaggio sait que t'existes. C'est pas encore un problème.",
+          "M. DiMaggio voudrait te rencontrer. Pas encore une invitation officielle."
+        ];
+        msg += ' ' + dimaggio[Math.floor(Math.random() * dimaggio.length)];
+      }
+
+      return msg;
+    }
+
+    function getMessageTendu(gs) {
+      const msgs = [
+        "Fais profil bas cette semaine. Je dis pas pourquoi.",
+        "DiMaggio a entendu des choses. Je te dis ça pour que tu saches.",
+        "Le type en costume qui vient — laisse-le faire. Il fait partie des meubles.",
+        "J'ai eu des questions sur le Rewind Paradise. J'ai rien dit.",
+        "Reste tranquille. Pour l'instant."
+      ];
+      return msgs[Math.floor(Math.random() * msgs.length)];
+    }
+
+    function getMessageFurieux(gs) {
+      const msgs = [
+        "T'as un problème Fred. Et c'est mon problème aussi.",
+        "Le Rewind Paradise peut fermer aussi vite qu'il a ouvert.",
+        "DiMaggio est pas content. Moi non plus.",
+        "Dernière chance. Je dis ça rarement.",
+        "J'attends une explication. Courte. Claire."
+      ];
+      return msgs[Math.floor(Math.random() * msgs.length)];
+    }
+
+    // ===================================================
+    // MESSAGE COREY
+    // ===================================================
+
+    function getMessageCorey(gs) {
+      const note = gs.currentNote || 5;
+      const semaine = gs.semaine || 1;
+
+      if (note >= 9) {
+        return "Je savais que t'avais ça en toi. Repose-toi.";
+      } else if (note >= 7) {
+        return "Bonne coupe ce soir. Cutter va remarquer.";
+      } else if (note >= 5) {
+        return "Correct. La prochaine fois va plus loin.";
+      } else if (note >= 3) {
+        return "C'était pas ça. On recommence demain.";
+      } else {
+        return "Non. Juste... non. Dors.";
+      }
+    }
+
+    // ===================================================
+    // MESSAGE CUTTER
+    // ===================================================
+
+    function getMessageCutter(gs) {
+      const note      = gs.currentNote || 5;
+      const cassette  = gs.derniereCassette || '';
+      const semaine   = gs.semaine || 1;
+
+      if (semaine < 2) return null;
+      if (Math.random() > 0.4) return null; // Pas toujours
+
+      const citations = [
+        "Un micro-métrage c'est pas résumer un film. C'est trouver le moment où le film n'a plus besoin de continuer.",
+        "La bascule c'est pas un moment. C'est une décision.",
+        "Couper trop tôt c'est de la lâcheté déguisée en minimalisme.",
+        "Couper trop tard c'est vouloir expliquer. Le cinéma n'explique pas.",
+        "Le meilleur micro-métrage que j'ai vu cette année. Je donne pas le nom. Pas encore.",
+        "Quelqu'un dans ce quartier fait du cinéma sans le savoir. Ou en le sachant très bien.",
+        "Un bon micro-métrage ne change pas la fin. Il révèle que le début était déjà foutu.",
+        "Je ne comprends pas encore pourquoi cette coupe fonctionne. Mais elle fonctionne. Je déteste ça."
+      ];
+
+      return citations[Math.floor(Math.random() * citations.length)];
+    }
 
     // ===================================================
     // INIT
@@ -488,351 +862,399 @@
 
     window.onload = function() {
       const save = localStorage.getItem('rewindParadise_save');
-      if (!save) {
-        window.location.href = 'index.html';
-        return;
-      }
+      if (!save) { window.location.href = 'index.html'; return; }
       gameState = JSON.parse(save);
-      updateUI();
 
-      document.getElementById('night-day').textContent =
-        `Nuit — Jour ${gameState.jour}`;
-
-      buildNightScreen();
+      updateNightInfo();
+      afficherBilan();
+      afficherMessages();
+      afficherScenes();
+      afficherCollecte();
     };
 
     // ===================================================
-    // CONSTRUIRE L'ÉCRAN DE NUIT
+    // BILAN
     // ===================================================
 
-    function buildNightScreen() {
-      const gs      = gameState;
-      const area    = document.getElementById('main-area');
-      const semaine = gs.semaine || 1;
-      const jour    = gs.jour || 1;
-      const note    = gs.currentNote || null;
-      const estMercredi = (jour % 7 === 3);
+    function afficherBilan() {
+      const gs  = gameState;
+      const note = gs.currentNote || 0;
 
-      let html = '';
-
-      // 1. AMBIANCE
-      const ambiance = AMBIANCES_NUIT[
-        Math.floor(Math.random() * AMBIANCES_NUIT.length)
-      ];
-      html += `
-        <div class="night-ambiance">
-          <div class="ambiance-label">░ CETTE NUIT ░</div>
-          <div class="ambiance-text">${ambiance}</div>
-        </div>
-      `;
-
-      // 2. RÉCAP NOTE DU MICRO-MÉTRAGE
-      if (note !== null) {
-        const noteClass = note >= 7 ? 'haute' : note >= 5 ? 'moyenne' : 'basse';
-        const derniereCassette = gs.derniereCassette || 'inconnu';
-
-        const commentaires = {
-          haute:   "Cutter a remarqué quelque chose ce soir.",
-          moyenne: "Correct. Pas suffisant pour l'histoire.",
-          basse:   "On recommence demain."
-        };
-
-        html += `
-          <div class="note-recap">
-            <div class="note-recap-label">MICRO-MÉTRAGE — CE SOIR</div>
-            <div class="note-recap-film">${derniereCassette.replace(/_/g,' ').toUpperCase()}</div>
-            <div class="note-recap-val ${noteClass}">${note}/10</div>
-            <div class="note-recap-commentaire">
-              ${commentaires[noteClass]}
-            </div>
-          </div>
-        `;
-      }
-
-      // 3. COLLECTE JACKSON (mercredi)
-      if (estMercredi) {
-        const montants = { 1:120, 2:120, 3:150, 4:180 };
-        const montant  = montants[semaine] || 120;
-
-        if (gs.argent >= montant) {
-          gs.argent -= montant;
-          html += `
-            <div class="collecte-card">
-              <div class="collecte-label">COLLECTE JACKSON</div>
-              <div class="collecte-montant">-${montant}$</div>
-              <div class="collecte-detail">
-                Payé. Il repart sans un mot.
-              </div>
-            </div>
-          `;
-        } else {
-          gs.jacksonHumeur = 'furieux';
-          html += `
-            <div class="collecte-card" style="border-color:#ff446630;background:#180710;">
-              <div class="collecte-label" style="color:#ff4466;">
-                COLLECTE JACKSON — MANQUE
-              </div>
-              <div class="collecte-montant" style="color:#ff4466;">
-                ${montant}$ REQUIS
-              </div>
-              <div class="collecte-detail" style="color:#ff446480;">
-                Tu as ${gs.argent}$. Jackson est pas content.
-              </div>
-            </div>
-          `;
+      const lignes = [
+        {
+          nom: 'CAISSE',
+          val: gs.argent + '$',
+          classe: gs.argent >= 200 ? 'positif'
+                : gs.argent >= 80  ? 'neutre'
+                : 'negatif'
+        },
+        {
+          nom: 'NOTE CUTTER',
+          val: note > 0 ? note + '/10' : '—',
+          classe: note >= 7 ? 'positif'
+                : note >= 4 ? 'neutre'
+                : 'negatif'
+        },
+        {
+          nom: 'LÉGALITÉ',
+          val: gs.legalite + '%',
+          classe: gs.legalite < 30 ? 'positif'
+                : gs.legalite < 60 ? 'neutre'
+                : 'negatif'
+        },
+        {
+          nom: 'EXPOSITION',
+          val: gs.exposition + '%',
+          classe: gs.exposition < 30 ? 'positif'
+                : gs.exposition < 60 ? 'neutre'
+                : 'negatif'
+        },
+        {
+          nom: 'DISCRÉTION',
+          val: gs.discretion + '%',
+          classe: gs.discretion < 40 ? 'positif'
+                : gs.discretion < 70 ? 'neutre'
+                : 'negatif'
+        },
+        {
+          nom: 'RÉPUTATION',
+          val: '★'.repeat(Math.round(gs.reputation || 0)),
+          classe: gs.reputation >= 3 ? 'positif'
+                : gs.reputation >= 2 ? 'neutre'
+                : 'negatif'
         }
+      ];
+
+      document.getElementById('bilan-contenu').innerHTML =
+        lignes.map(l => `
+          <div class="bilan-ligne">
+            <span class="bilan-nom">${l.nom}</span>
+            <span class="bilan-val ${l.classe}">${l.val}</span>
+          </div>
+        `).join('');
+    }
+
+    // ===================================================
+    // COLLECTE JACKSON
+    // ===================================================
+
+    function afficherCollecte() {
+      const gs = gameState;
+      const estMercredi = ((gs.jour - 1) % 7) === 2;
+      if (!estMercredi) return;
+
+      const montant = getCollecteMontant(gs);
+      const zone    = document.getElementById('collecte-zone');
+      const btn     = document.getElementById('collecte-btn');
+
+      document.getElementById('collecte-montant').textContent =
+        montant + '$';
+
+      if (gs.argent >= montant) {
+        document.getElementById('collecte-detail').textContent =
+          'Jackson passe ce soir. La somme est prête.';
+        btn.className = 'collecte-btn';
+        btn.textContent = 'REMETTRE LA COLLECTE';
+      } else {
+        document.getElementById('collecte-detail').textContent =
+          `Il manque ${montant - gs.argent}$. Jackson va pas apprécier.`;
+        btn.className = 'collecte-btn manque';
+        btn.textContent = 'REMETTRE CE QU\'ON A';
       }
 
-      // 4. MESSAGES
-      html += `<div class="messages-section">`;
+      zone.classList.add('visible');
+    }
 
-      // Message Jackson
-      const jacksonMsgs = MESSAGES_NUIT.jackson[semaine] || MESSAGES_NUIT.jackson[1];
-      const jacksonMsg  = jacksonMsgs[Math.floor(Math.random() * jacksonMsgs.length)];
-      html += messageHTML(
-        'JACKSON',
-        'jackson',
-        getHeure(22, 23),
-        jacksonMsg,
-        null
-      );
+    function payerJackson() {
+      const gs      = gameState;
+      const montant = getCollecteMontant(gs);
 
-      // Message Corey
-      const coreyMsgs = MESSAGES_NUIT.corey[semaine] || MESSAGES_NUIT.corey[1];
-      const coreyMsg  = coreyMsgs[Math.floor(Math.random() * coreyMsgs.length)];
-      html += messageHTML(
-        'COREY',
-        'corey',
-        getHeure(23, 1),
-        coreyMsg,
-        null
-      );
-
-      // Message Canopi (semaine 2+, aléatoire)
-      if (semaine >= 2 && Math.random() > 0.5) {
-        const canopiMsgs = MESSAGES_NUIT.canopi[semaine] || MESSAGES_NUIT.canopi[2];
-        const canopiMsg  = canopiMsgs[Math.floor(Math.random() * canopiMsgs.length)];
-        html += messageHTML(
-          'INSPECTEUR CANOPI',
-          'canopi',
-          getHeure(20, 21),
-          canopiMsg,
-          'Répondeur du Rewind Paradise'
+      if (gs.argent >= montant) {
+        gs.argent -= montant;
+        gs.jacksonHumeur = 'cool';
+        showNotif('Collecte remise. Jackson repart sans un mot.');
+      } else {
+        const paye = gs.argent;
+        gs.argent  = 0;
+        gs.jacksonHumeur = 'tendu';
+        gs.legalite = Math.min(100, gs.legalite + 5);
+        showNotif(
+          `${paye}$ remis. Il manquait ${montant - paye}$. Jackson est pas content.`
         );
       }
 
-      // Message Cutter (selon crédibilité)
-      if (gs.credibilite >= 30 && Math.random() > 0.6) {
-        const cutterMsgs = MESSAGES_NUIT.cutter[semaine] || MESSAGES_NUIT.cutter[1];
-        const cutterMsg  = cutterMsgs[Math.floor(Math.random() * cutterMsgs.length)];
-        html += messageHTML(
-          'THE GLITCH / CUTTER',
-          'cutter',
-          getHeure(1, 3),
-          cutterMsg,
-          null
-        );
-      }
-
-      // Message inconnu (semaine 3+)
-      if (semaine >= 3 && Math.random() > 0.7) {
-        const inconnu = MESSAGES_NUIT.inconnu;
-        html += messageHTML(
-          'INCONNU',
-          'inconnu',
-          getHeure(2, 4),
-          inconnu[Math.floor(Math.random() * inconnu.length)],
-          null
-        );
-      }
-
-      html += `</div>`;
-
-      // 5. BILAN DE NUIT
-      const energieMax = gs.energieMax || 15;
-      let energieRecuperee = Math.min(5, energieMax - gs.energie);
-      if (gs.energieBonusTomorrow) {
-        energieRecuperee += gs.energieBonusTomorrow;
-        gs.energieBonusTomorrow = 0;
-      }
-      energieRecuperee = Math.max(0, energieRecuperee);
-      gs.energie = Math.min(energieMax, gs.energie + energieRecuperee);
-
-      const energiePct = (gs.energie / energieMax) * 100;
-
-      html += `
-        <div class="energie-section">
-          <div class="energie-label">ÉNERGIE — LENDEMAIN</div>
-          <div class="energie-bar-container">
-            <div class="energie-bar" style="width:${energiePct}%"></div>
-          </div>
-          <div class="energie-texte">
-            ${gs.energie}/${energieMax}
-            ${energieRecuperee > 0
-              ? `<span style="color:#00ffc8;margin-left:8px;">
-                   +${energieRecuperee} récupérés
-                 </span>`
-              : ''
-            }
-          </div>
-        </div>
-      `;
-
-      // 6. BILAN GÉNÉRAL
-      html += `
-        <div class="bilan-section">
-          <div class="bilan-label">BILAN — FIN DE JOURNÉE ${jour}</div>
-          <div class="bilan-row">
-            <span class="bilan-nom">ARGENT</span>
-            <span class="bilan-val ${gs.argent > 200 ? 'bon' : gs.argent > 50 ? '' : 'mal'}">
-              ${gs.argent}$
-            </span>
-          </div>
-          <div class="bilan-row">
-            <span class="bilan-nom">LÉGALITÉ</span>
-            <span class="bilan-val ${gs.legalite >= 70 ? 'mal' : gs.legalite >= 40 ? 'warn' : 'bon'}">
-              ${gs.legalite}%
-            </span>
-          </div>
-          <div class="bilan-row">
-            <span class="bilan-nom">EXPOSITION</span>
-            <span class="bilan-val ${gs.exposition >= 70 ? 'mal' : gs.exposition >= 40 ? 'warn' : 'bon'}">
-              ${gs.exposition}%
-            </span>
-          </div>
-          <div class="bilan-row">
-            <span class="bilan-nom">CRÉDIBILITÉ</span>
-            <span class="bilan-val ${gs.credibilite >= 70 ? 'bon' : gs.credibilite >= 40 ? '' : 'mal'}">
-              ${gs.credibilite}%
-            </span>
-          </div>
-          <div class="bilan-row">
-            <span class="bilan-nom">RÉPUTATION</span>
-            <span class="bilan-val">
-              ${'★'.repeat(Math.round(gs.reputation || 3))}${'☆'.repeat(5 - Math.round(gs.reputation || 3))}
-            </span>
-          </div>
-        </div>
-      `;
-
-      // 7. BOUTON CONTINUER
-      html += `
-        <div class="continuer-btn" onclick="passerAuLendemain()">
-          <div class="continuer-text">▶ LENDEMAIN</div>
-        </div>
-      `;
-
-      area.innerHTML = html;
-      updateUI();
+      document.getElementById('collecte-zone').classList.remove('visible');
       saveGame();
+    }
+
+    // ===================================================
+    // MESSAGES
+    // ===================================================
+
+    function afficherMessages() {
+      const gs       = gameState;
+      const section  = document.getElementById('messages-section');
+      const messages = [];
+      let delay      = 0;
+
+      // Jackson
+      const jackson = getMessageJackson(gs);
+      messages.push({
+        expediteur: 'JACKSON',
+        heure:      '23:' + String(Math.floor(Math.random()*30)+15).padStart(2,'0'),
+        texte:      jackson.msg,
+        classe:     jackson.classe,
+        important:  gs.jacksonHumeur !== 'cool'
+      });
+
+      // Corey
+      messages.push({
+        expediteur: 'COREY',
+        heure:      '23:' + String(Math.floor(Math.random()*20)+40).padStart(2,'0'),
+        texte:      getMessageCorey(gs),
+        classe:     'msg-corey',
+        important:  false
+      });
+
+      // Cutter (conditionnel)
+      const cutter = getMessageCutter(gs);
+      if (cutter) {
+        messages.push({
+          expediteur: 'CELLULOÏD SCALPEL',
+          heure:      '00:' + String(Math.floor(Math.random()*59)).padStart(2,'0'),
+          texte:      cutter,
+          classe:     'msg-cutter',
+          important:  true,
+          isCutter:   true
+        });
+      }
+
+      // Message anonyme si discrétion haute
+      if (gs.discretion >= 50) {
+        messages.push({
+          expediteur: '— ANONYME —',
+          heure:      '01:' + String(Math.floor(Math.random()*59)).padStart(2,'0'),
+          texte:      'Faites attention. Quelqu\'un pose des questions.',
+          classe:     'msg-anonyme',
+          important:  true
+        });
+      }
+
+      // Message DiMaggio indirect (S3+)
+      if (gs.semaine >= 3 && gs.ultimatum_dimaggio) {
+        messages.push({
+          expediteur: 'NUMÉRO INCONNU',
+          heure:      '02:13',
+          texte:      'M. DiMaggio vous attend. C\'est pas une suggestion.',
+          classe:     'msg-anonyme',
+          important:  true
+        });
+      }
+
+      // Afficher avec délai
+      section.innerHTML = '';
+      messages.forEach((msg, i) => {
+        setTimeout(() => {
+          const card = document.createElement('div');
+          card.className = `message-card ${msg.classe}`;
+          card.style.animationDelay = '0s';
+
+          const couleurExp =
+            msg.classe.includes('jackson')  ? '#2a2a50' :
+            msg.classe.includes('corey')    ? '#ff885560' :
+            msg.classe.includes('cutter')   ? '#4444aa' :
+            msg.classe.includes('jessica')  ? '#aa4488' :
+            msg.classe.includes('lucious')  ? '#448844' :
+                                              '#222233';
+
+          const classeTexte =
+            msg.important     ? 'important' :
+            msg.isCutter      ? 'cutter'    :
+            msg.classe.includes('furieux') ? 'urgent' : '';
+
+          card.innerHTML = `
+            <div class="msg-header">
+              <span class="msg-expediteur"
+                    style="color:${couleurExp}">
+                ${msg.expediteur}
+              </span>
+              <span class="msg-heure">${msg.heure}</span>
+            </div>
+            <div class="msg-texte ${classeTexte}">
+              "${msg.texte}"
+            </div>
+          `;
+
+          section.appendChild(card);
+        }, delay);
+        delay += 400;
+      });
+    }
+
+    // ===================================================
+    // SCÈNES JESSICA + LUCIOUS
+    // ===================================================
+
+    function afficherScenes() {
+      const gs = gameState;
+
+      // Jessica — prochaine scène non vue
+      const sceneJessica = SCENES_JESSICA.find(s =>
+        s.semaine_min <= gs.semaine &&
+        !gs['scene_' + s.id + '_vue']
+      );
+
+      if (sceneJessica && Math.random() > 0.4) {
+        afficherSceneJessica(sceneJessica);
+      }
+
+      // Lucious — prochaine scène non vue
+      const sceneLucious = SCENES_LUCIOUS.find(s =>
+        s.semaine_min <= gs.semaine &&
+        !gs['scene_' + s.id + '_vue']
+      );
+
+      if (sceneLucious && Math.random() > 0.4) {
+        setTimeout(() => afficherSceneLucious(sceneLucious), 600);
+      }
+    }
+
+    function afficherSceneJessica(scene) {
+      const card = document.getElementById('scene-jessica');
+      document.getElementById('scene-jessica-num').textContent =
+        scene.titre;
+      document.getElementById('scene-jessica-texte').innerHTML =
+        scene.texte;
+
+      const choixEl = document.getElementById('scene-jessica-choix');
+      choixEl.innerHTML = scene.choix.map((c, i) => `
+        <div class="scene-choix-btn"
+             onclick="resoudreJessica(${i})">
+          <div class="scene-choix-texte">▶ ${c.texte}</div>
+          <div class="scene-choix-effet">${c.detail}</div>
+        </div>
+      `).join('');
+
+      card.classList.add('visible');
+      window.sceneJessicaCourante = scene;
+    }
+
+    function resoudreJessica(index) {
+      const scene = window.sceneJessicaCourante;
+      if (!scene) return;
+
+      scene.choix[index].impact(gameState);
+      gameState['scene_' + scene.id + '_vue'] = true;
+
+      document.getElementById('scene-jessica').classList.remove('visible');
+      showNotif('Jessica — ' + scene.choix[index].effet);
+      saveGame();
+    }
+
+    function afficherSceneLucious(scene) {
+      const card = document.getElementById('scene-lucious');
+      document.getElementById('scene-lucious-num').textContent =
+        scene.titre;
+      document.getElementById('scene-lucious-texte').innerHTML =
+        scene.texte;
+
+      const choixEl = document.getElementById('scene-lucious-choix');
+      choixEl.innerHTML = scene.choix.map((c, i) => `
+        <div class="scene-choix-btn"
+             onclick="resoudreLucious(${i})">
+          <div class="scene-choix-texte">▶ ${c.texte}</div>
+          <div class="scene-choix-effet">${c.detail}</div>
+        </div>
+      `).join('');
+
+      card.classList.add('visible');
+      window.sceneLuciousCourante = scene;
+    }
+
+    function resoudreLucious(index) {
+      const scene = window.sceneLuciousCourante;
+      if (!scene) return;
+
+      scene.choix[index].impact(gameState);
+      gameState['scene_' + scene.id + '_vue'] = true;
+
+      document.getElementById('scene-lucious').classList.remove('visible');
+      showNotif('Lucious — ' + scene.choix[index].effet);
+      saveGame();
+    }
+
+    // ===================================================
+    // DORMIR
+    // ===================================================
+
+    function dormirJusquAuMatin() {
+      const gs = gameState;
+
+      // Avancer le jour
+      gs.jour++;
+
+      // Semaine
+      if (gs.jour > 1 && (gs.jour - 1) % 7 === 0) {
+        gs.semaine++;
+      }
+
+      // Récupération énergie
+      const bonusNote = gs.energieBonusTomorrow || 0;
+      gs.energie = Math.min(
+        gs.energieMax || 15,
+        (gs.energieMax || 15) * 0.7 + bonusNote
+      );
+      gs.energieBonusTomorrow = 0;
+
+      // Réinitialiser phase journée
+      gs.phase_journee = 'matin';
+
+      // Discrétion redescend légèrement la nuit
+      gs.discretion = Math.max(0, (gs.discretion || 0) - 5);
+
+      // Vérifier fin du jeu
+      if (gs.semaine > 4) {
+        saveGame();
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = 'ending.html';
+        }, 800);
+        return;
+      }
+
+      // Legalité monte légèrement si micro-métrages distribués
+      if ((gs.noires_distribuees || 0) > 3) {
+        gs.legalite = Math.min(100, gs.legalite + 2);
+      }
+
+      saveGame();
+
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = 'game.html';
+      }, 800);
     }
 
     // ===================================================
     // UTILITAIRES
     // ===================================================
 
-    function messageHTML(nom, classe, heure, texte, repondeur) {
-      return `
-        <div class="message-card">
-          <div class="message-header">
-            <span class="message-sender ${classe}">${nom}</span>
-            <span class="message-heure">${heure}</span>
-          </div>
-          <div class="message-body">
-            <div class="message-text">"${texte}"</div>
-          </div>
-          ${repondeur ? `
-            <div class="repondeur">
-              <div class="repondeur-label">${repondeur}</div>
-            </div>
-          ` : ''}
-        </div>
-      `;
+    function updateNightInfo() {
+      document.getElementById('night-info').textContent =
+        `Nuit — Jour ${gameState.jour}`;
+
+      // Heure aléatoire entre 23h et 2h
+      const h = Math.random() > 0.5
+        ? '23:' + String(Math.floor(Math.random()*59)).padStart(2,'0')
+        : '0' + Math.floor(Math.random()*3) + ':' + String(Math.floor(Math.random()*59)).padStart(2,'0');
+      document.getElementById('time-val').textContent = h;
     }
 
-    function getHeure(minH, maxH) {
-      const h = minH + Math.floor(Math.random() * (maxH - minH + 1));
-      const m = Math.floor(Math.random() * 60);
-      return `${String(h % 24).padStart(2,'0')}h${String(m).padStart(2,'0')}`;
-    }
-
-    function passerAuLendemain() {
-      const gs = gameState;
-
-      // Avancer le jour
-      gs.jour++;
-
-      // Avancer la semaine si nécessaire
-      if (gs.jour > gs.semaine * 7) {
-        gs.semaine++;
-      }
-
-      // Vérifier les fins
-      if (gs.argent <= 0 && gs.jacksonHumeur === 'furieux') {
-        gs.fin = 'mauvaise_reception_anticipee';
-        saveGame();
-        document.body.classList.add('fade-out');
-        setTimeout(() => {
-          window.location.href = 'ending.html';
-        }, 500);
-        return;
-      }
-
-      if (gs.legalite >= 100 || gs.exposition >= 100) {
-        gs.fin = 'mauvaise_reception';
-        saveGame();
-        document.body.classList.add('fade-out');
-        setTimeout(() => {
-          window.location.href = 'ending.html';
-        }, 500);
-        return;
-      }
-
-      if (gs.semaine > 5) {
-        // Calculer la fin
-        if (gs.credibilite >= 85 && noteMoyenne() >= 7.5) {
-          gs.fin = 'coupez';
-        } else if (gs.ultimatum_dimaggio) {
-          gs.fin = 'organisation_dimaggio';
-        } else if (gs.legalite < 70 && gs.exposition < 60) {
-          gs.fin = 'directors_cut';
-        } else {
-          gs.fin = 'mauvaise_reception';
-        }
-        saveGame();
-        document.body.classList.add('fade-out');
-        setTimeout(() => {
-          window.location.href = 'ending.html';
-        }, 500);
-        return;
-      }
-
-      saveGame();
-      document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = 'game.html';
-      }, 500);
-    }
-
-    function noteMoyenne() {
-      const notes = gameState.notesHistory || [];
-      if (notes.length === 0) return 0;
-      return notes.reduce((a, b) => a + b, 0) / notes.length;
-    }
-
-    function updateUI() {
-      const gs = gameState;
-      document.getElementById('bar-money').style.width =
-        Math.min(100, (gs.argent / 500) * 100) + '%';
-      document.getElementById('val-money').textContent = gs.argent + '$';
-      document.getElementById('bar-legal').style.width = gs.legalite + '%';
-      document.getElementById('val-legal').textContent = gs.legalite + '%';
-      document.getElementById('bar-expo').style.width  = gs.exposition + '%';
-      document.getElementById('val-expo').textContent  = gs.exposition + '%';
-      const ePct = (gs.energie / (gs.energieMax || 15)) * 100;
-      document.getElementById('bar-energy').style.width = ePct + '%';
-      document.getElementById('val-energy').textContent =
-        gs.energie + '/' + (gs.energieMax || 15);
+    function showNotif(message) {
+      const notif = document.getElementById('notif');
+      notif.textContent = message;
+      notif.classList.add('visible');
+      setTimeout(() => notif.classList.remove('visible'), 2500);
     }
 
     function saveGame() {
