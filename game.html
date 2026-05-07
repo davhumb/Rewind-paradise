@@ -8,6 +8,7 @@
   <title>Rewind Paradise — Le Vidéoclub</title>
   <link rel="stylesheet" href="data/style.css">
   <script src="data/dialogues.js"></script>
+  <script src="data/dialogues_bd.js"></script>
   <script src="data/events.js"></script>
   <script src="data/canopi.js"></script>
   <script src="data/sounds.js"></script>
@@ -174,15 +175,37 @@
     .client-card.active-client { border-color: #00ffc8; background: #071a14; }
     .client-card.ramon-card    { border-color: #2e1a2e; }
     .client-card.retour-card   { border-color: #1a2e1a; background: #0a0f0a; }
+    .client-card.vip-card      { border-color: #aa880040; background: #0f0f0a; }
 
     .client-mood   { font-size: 14px; width: 20px; }
     .client-info   { flex: 1; margin-left: 6px; }
     .client-name   { font-size: 10px; color: #00ffc8; letter-spacing: 1px; }
     .client-name.ramon  { color: #cc88cc; }
     .client-name.retour { color: #44aa44; }
+    .client-name.vip    { color: #aa8844; }
     .client-demand { font-size: 8px; color: #9090bb; margin-top: 1px; line-height: 1.3; }
 
-    .client-timer { display: flex; gap: 2px; }
+    /* TIMER BARRE */
+    .client-timer-bar {
+      width: 100%;
+      height: 2px;
+      background: #1e1e3a;
+      border-radius: 1px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .client-timer-fill {
+      height: 100%;
+      background: #00ffc8;
+      border-radius: 1px;
+      transition: width 1s linear, background 0.3s;
+    }
+
+    .client-timer-fill.urgent  { background: #ff8855; }
+    .client-timer-fill.critique { background: #ff4466; }
+
+    .client-timer-dots { display: flex; gap: 2px; }
     .timer-dot       { width: 5px; height: 5px; border-radius: 50%; background: #00ffc8; }
     .timer-dot.empty { background: #1e1e3a; }
 
@@ -246,6 +269,56 @@
       pointer-events: none;
     }
 
+    /* BULLES BD */
+    .bulles-zone {
+      flex: 1;
+      margin: 0 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 5px;
+      align-self: stretch;
+      padding-bottom: 4px;
+      overflow: hidden;
+    }
+
+    .bulle {
+      display: flex;
+      animation: bulleAppear 0.2s ease;
+    }
+
+    .bulle.fred   { justify-content: flex-start; }
+    .bulle.corey  { justify-content: flex-end; }
+
+    @keyframes bulleAppear {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .bulle-texte {
+      max-width: 85%;
+      padding: 6px 10px;
+      font-size: 10px;
+      font-style: italic;
+      line-height: 1.4;
+      letter-spacing: 0.3px;
+    }
+
+    .bulle.fred .bulle-texte {
+      background: #0f0f2a;
+      border: 1px solid #3a3a6a;
+      border-radius: 4px 12px 12px 12px;
+      color: #9090cc;
+    }
+
+    .bulle.corey .bulle-texte {
+      background: #1a0f05;
+      border: 1px solid #ff885530;
+      border-radius: 12px 4px 12px 12px;
+      color: #cc9966;
+    }
+
+    /* FRED + COREY portraits */
     .fred-portrait {
       display: flex;
       flex-direction: column;
@@ -270,46 +343,6 @@
       letter-spacing: 2px;
     }
 
-    .thought-bubble {
-      flex: 1;
-      margin: 0 10px;
-      background: #080818;
-      border: 1px solid #1e1e3a;
-      border-radius: 8px;
-      padding: 10px 12px;
-      position: relative;
-      align-self: center;
-    }
-
-    .thought-bubble::before {
-      content: '';
-      position: absolute;
-      left: -8px; top: 50%;
-      transform: translateY(-50%);
-      width: 0; height: 0;
-      border-top: 6px solid transparent;
-      border-bottom: 6px solid transparent;
-      border-right: 8px solid #1e1e3a;
-    }
-
-    .thought-bubble::after {
-      content: '';
-      position: absolute;
-      left: -6px; top: 50%;
-      transform: translateY(-50%);
-      width: 0; height: 0;
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
-      border-right: 7px solid #080818;
-    }
-
-    .thought-text {
-      font-size: 10px;
-      color: #8080aa;
-      font-style: italic;
-      line-height: 1.5;
-    }
-
     .corey-portrait {
       display: flex;
       flex-direction: column;
@@ -329,11 +362,7 @@
       transition: all 0.3s ease;
     }
 
-    .corey-avatar-big.peur {
-      border-color: #ff444660;
-      box-shadow: 0 0 20px #ff444630;
-    }
-
+    .corey-avatar-big.peur   { border-color: #ff444660; box-shadow: 0 0 20px #ff444630; }
     .corey-avatar-big.colere {
       border-color: #ff222260;
       box-shadow: 0 0 20px #ff222230;
@@ -346,11 +375,7 @@
       75%       { transform: translateX(4px); }
     }
 
-    .corey-name {
-      font-size: 8px;
-      color: #ff885560;
-      letter-spacing: 2px;
-    }
+    .corey-name { font-size: 8px; color: #ff885560; letter-spacing: 2px; }
 
     /* BOUTONS BAS */
     .bottom-buttons {
@@ -405,6 +430,7 @@
     .client-panel.visible      { display: block; }
     .client-panel.ramon-panel  { border-top-color: #cc88cc; }
     .client-panel.retour-panel { border-top-color: #44aa44; }
+    .client-panel.vip-panel    { border-top-color: #aa8844; }
 
     /* HEADER PANNEAU */
     .panel-header-row {
@@ -454,6 +480,7 @@
 
     .panel-client-name.ramon  { color: #cc88cc; }
     .panel-client-name.retour { color: #44aa44; }
+    .panel-client-name.vip    { color: #aa8844; }
 
     .panel-client-demand {
       font-size: 11px;
@@ -461,6 +488,26 @@
       line-height: 1.5;
       font-style: italic;
     }
+
+    /* TIMER PANNEAU */
+    .panel-timer-bar {
+      width: 100%;
+      height: 3px;
+      background: #1e1e3a;
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .panel-timer-fill {
+      height: 100%;
+      background: #00ffc8;
+      border-radius: 2px;
+      transition: width 1s linear, background 0.3s;
+    }
+
+    .panel-timer-fill.urgent   { background: #ff8855; }
+    .panel-timer-fill.critique { background: #ff4466; }
 
     .panel-ramon-note {
       background: #100810;
@@ -489,6 +536,7 @@
     .badge-collectionneur { background: #100018; color: #8844cc; border: 1px solid #8844cc30; }
     .badge-negociation    { background: #0a1a0a; color: #00ffc8; border: 1px solid #00ffc830; }
     .badge-retour         { background: #0a1a0a; color: #44aa44; border: 1px solid #44aa4430; }
+    .badge-vip            { background: #1a1000; color: #aa8844; border: 1px solid #aa884430; }
 
     /* WEED dans la liste */
     .weed-film-option {
@@ -514,7 +562,7 @@
 
     .weed-film-info   { flex: 1; }
     .weed-film-titre  { font-size: 11px; color: #44cc44; letter-spacing: 1px; margin-bottom: 2px; }
-    .weed-film-detail { font-size: 8px; color: #335533; letter-spacing: 0.5px; }
+    .weed-film-detail { font-size: 8px; color: #335533; }
     .weed-film-prix   { font-size: 11px; color: #44cc44; font-weight: bold; margin-left: 8px; }
 
     .weed-btn { display: none !important; }
@@ -567,7 +615,7 @@
     .film-match  { font-size: 9px; margin-left: 8px; flex-shrink: 0; }
     .film-prix   { font-size: 10px; color: #00ffc8; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
 
-    /* NÉGOCIATION */
+    /* NÉGOCIATION — sans feedback */
     .negociation-zone {
       background: #080818;
       border: 1px solid #2e2e50;
@@ -591,17 +639,12 @@
     .nego-prix-label { font-size: 9px; color: #666688; letter-spacing: 1px; }
 
     .nego-prix-val {
-      font-size: 20px;
+      font-size: 24px;
       color: #00ffc8;
       font-weight: bold;
       letter-spacing: 2px;
       text-shadow: 0 0 10px #00ffc8;
-      transition: color 0.2s;
     }
-
-    .nego-prix-val.trop-bas  { color: #ff4466; text-shadow: 0 0 10px #ff4466; }
-    .nego-prix-val.bon       { color: #00ffc8; text-shadow: 0 0 10px #00ffc8; }
-    .nego-prix-val.trop-haut { color: #ff8855; text-shadow: 0 0 10px #ff8855; }
 
     .nego-slider {
       width: 100%;
@@ -612,7 +655,7 @@
       border-radius: 3px;
       outline: none;
       cursor: pointer;
-      margin-bottom: 4px;
+      margin-bottom: 12px;
     }
 
     .nego-slider::-webkit-slider-thumb {
@@ -625,27 +668,30 @@
       box-shadow: 0 0 8px #00ffc8;
     }
 
+    /* Zones colorées sous le slider */
+    .nego-zones {
+      display: flex;
+      height: 4px;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 4px;
+      opacity: 0.4;
+    }
+
+    .nego-zone-bas    { background: #ff4466; }
+    .nego-zone-ok     { background: #00ffc8; }
+    .nego-zone-haut   { background: #ff8855; }
+    .nego-zone-refuse { background: #ff2200; }
+
     .nego-slider-labels {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .nego-slider-label { font-size: 8px; color: #333355; letter-spacing: 1px; }
 
-    .nego-reaction {
-      font-size: 10px;
-      color: #9090bb;
-      font-style: italic;
-      text-align: center;
-      padding: 6px;
-      min-height: 30px;
-    }
-
-    .nego-reaction.positif { color: #00ffc8; }
-    .nego-reaction.negatif { color: #ff4466; }
-
-    .nego-buttons { display: flex; gap: 6px; margin-top: 8px; }
+    .nego-buttons { display: flex; gap: 6px; }
 
     .nego-btn-confirmer {
       flex: 2;
@@ -764,8 +810,8 @@
       margin-top: 4px;
     }
 
-    /* DISCRÉTION */
-    .discretion-bar {
+    /* SUSPICION */
+    .suspicion-bar {
       position: fixed;
       top: 52px; left: 0; right: 0;
       height: 2px;
@@ -774,10 +820,41 @@
       pointer-events: none;
     }
 
-    .discretion-fill {
+    .suspicion-fill {
       height: 100%;
       background: linear-gradient(90deg, #44aa44, #ffdd44, #ff4466);
       transition: width 0.5s ease;
+    }
+
+    /* COMBO */
+    .combo-notif {
+      position: fixed;
+      top: 60px; left: 50%;
+      transform: translateX(-50%);
+      background: #0a1808;
+      border: 2px solid #ffdd44;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 12px;
+      color: #ffdd44;
+      letter-spacing: 2px;
+      z-index: 600;
+      display: none;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      text-shadow: 0 0 8px #ffdd44;
+    }
+
+    .combo-notif.visible {
+      display: block;
+      animation: comboAnim 2s forwards;
+    }
+
+    @keyframes comboAnim {
+      0%   { opacity: 0; transform: translateX(-50%) scale(0.8); }
+      20%  { opacity: 1; transform: translateX(-50%) scale(1.05); }
+      80%  { opacity: 1; }
+      100% { opacity: 0; transform: translateX(-50%) scale(1); }
     }
 
     /* TENSION RAMON */
@@ -796,6 +873,67 @@
     @keyframes tensionPulse {
       0%, 100% { opacity: 0.5; }
       50%       { opacity: 1; }
+    }
+
+    /* GAME OVER — CANOPI WEED */
+    .gameover-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .gameover-overlay.visible { display: flex; }
+
+    .gameover-titre {
+      font-size: 11px;
+      color: #ff4466;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+    }
+
+    .gameover-scene {
+      width: 100%;
+      max-width: 360px;
+      background: #080810;
+      border: 1px solid #ff446630;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .gameover-texte {
+      font-size: 11px;
+      color: #666688;
+      font-style: italic;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .gameover-bulles {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .gameover-btn {
+      width: 100%;
+      max-width: 360px;
+      background: #100508;
+      border: 1px solid #ff4466;
+      border-radius: 6px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px;
+      color: #ff4466;
+      letter-spacing: 2px;
     }
 
     /* JAUGES */
@@ -896,11 +1034,30 @@
 </head>
 <body>
 
-  <div class="discretion-bar">
-    <div class="discretion-fill" id="discretion-fill" style="width:0%"></div>
+  <div class="suspicion-bar">
+    <div class="suspicion-fill" id="suspicion-fill" style="width:0%"></div>
   </div>
 
   <div class="tension-overlay" id="tension-overlay"></div>
+  <div class="combo-notif"     id="combo-notif">⭐ COMBO ×3</div>
+
+  <!-- GAME OVER — CANOPI WEED -->
+  <div class="gameover-overlay" id="gameover-overlay">
+    <div class="gameover-titre">▓ FIN DU REWIND PARADISE ▓</div>
+    <div class="gameover-scene">
+      <div class="gameover-texte">
+        Canopi pose le boîtier sur le comptoir.<br>
+        Il l'ouvre.<br>
+        Il regarde Fred.<br>
+        Fred regarde Corey.<br>
+        Corey regarde le plafond.
+      </div>
+      <div class="gameover-bulles" id="gameover-bulles"></div>
+    </div>
+    <div class="gameover-btn" onclick="window.location.href='index.html'">
+      ▶ RECOMMENCER
+    </div>
+  </div>
 
   <div class="top-bar">
     <div class="top-bar-left">
@@ -964,25 +1121,25 @@
       </div>
     </div>
 
-    <!-- FRED + COREY -->
+    <!-- FRED + BULLES + COREY -->
     <div class="fred-corey-zone">
+
       <div class="fred-portrait">
         <img class="fred-avatar"
              src="posters/fred.png" alt="Fred"
              onerror="this.style.display='none'">
         <div class="fred-name">FRED</div>
       </div>
-      <div class="thought-bubble">
-        <div class="thought-text" id="fred-thought">
-          "Un autre jour. Corey arrive quand il veut."
-        </div>
-      </div>
+
+      <div class="bulles-zone" id="bulles-zone"></div>
+
       <div class="corey-portrait">
         <img class="corey-avatar-big joie" id="corey-avatar"
              src="posters/joie.png" alt="Corey"
              onerror="this.style.display='none'">
         <div class="corey-name">COREY</div>
       </div>
+
     </div>
 
     <div class="bottom-buttons">
@@ -1006,6 +1163,10 @@
       <div class="panel-header-info">
         <div class="panel-client-name" id="panel-name">—</div>
         <div class="panel-client-demand" id="panel-demand">—</div>
+        <div class="panel-timer-bar">
+          <div class="panel-timer-fill" id="panel-timer-fill"
+               style="width:100%"></div>
+        </div>
       </div>
     </div>
 
@@ -1017,7 +1178,7 @@
       <div class="nego-label">NÉGOCIATION</div>
       <div class="nego-film-titre" id="nego-film-titre">—</div>
       <div class="nego-prix-display">
-        <span class="nego-prix-label">PRIX PROPOSÉ :</span>
+        <span class="nego-prix-label">PRIX :</span>
         <span class="nego-prix-val" id="nego-prix-val">—$</span>
       </div>
       <input type="range" class="nego-slider" id="nego-slider"
@@ -1028,12 +1189,11 @@
         <span class="nego-slider-label">JUSTE</span>
         <span class="nego-slider-label">EXCESSIF</span>
       </div>
-      <div class="nego-reaction" id="nego-reaction">
-        Faites glisser pour ajuster.
-      </div>
       <div class="nego-buttons">
-        <div class="nego-btn-confirmer" onclick="confirmerNego()">▶ CONFIRMER</div>
-        <div class="nego-btn-annuler"   onclick="annulerNego()">✕</div>
+        <div class="nego-btn-confirmer" onclick="confirmerNego()">
+          ▶ CONFIRMER
+        </div>
+        <div class="nego-btn-annuler" onclick="annulerNego()">✕</div>
       </div>
     </div>
 
@@ -1087,10 +1247,12 @@
     let currentClients    = [];
     let activeClientIndex = -1;
     let clientsServis     = 0;
+    let comboCount        = 0;
     let weedAjoutee       = false;
     let pendingFilmId     = null;
     let negoFilmId        = null;
-    let negoAccepte       = false;
+    let clientTimers      = {};
+    let panelTimerInterval = null;
 
     // ===================================================
     // AVATARS
@@ -1107,7 +1269,8 @@
       'etudiant':       'posters/etudiant.png',
       'inconnu':        'posters/inconnu.png',
       'concurrent':     'posters/concurrent.png',
-      'journaliste':    'posters/journaliste.png'
+      'journaliste':    'posters/journaliste.png',
+      'sam_raimi':      'posters/inconnu.png'
     };
 
     const COREY_AVATARS = {
@@ -1121,6 +1284,50 @@
       if (!el) return;
       el.src = COREY_AVATARS[humeur] || COREY_AVATARS.joie;
       el.className = `corey-avatar-big ${humeur}`;
+    }
+
+    // ===================================================
+    // BULLES BD
+    // ===================================================
+
+    function afficherBulles(situation) {
+      if (typeof DIALOGUES_BD === 'undefined') return;
+      const zone = document.getElementById('bulles-zone');
+      if (!zone) return;
+
+      const dialogue = getDialogueBD(situation);
+      if (!dialogue) return;
+
+      zone.innerHTML = '';
+      let index = 0;
+
+      function afficherReplique() {
+        if (index >= dialogue.length) return;
+
+        const rep    = dialogue[index];
+        const isFred = rep.perso === 'fred';
+
+        const bulle = document.createElement('div');
+        bulle.className = `bulle ${rep.perso}`;
+
+        bulle.innerHTML = `
+          <div class="bulle-texte">${rep.texte}</div>
+        `;
+
+        zone.appendChild(bulle);
+
+        // Max 3 bulles visibles
+        const bulles = zone.querySelectorAll('.bulle');
+        if (bulles.length > 3) {
+          bulles[0].remove();
+        }
+
+        index++;
+        const delai = Math.min(rep.texte.length * 35 + 500, 2200);
+        setTimeout(afficherReplique, delai);
+      }
+
+      afficherReplique();
     }
 
     // ===================================================
@@ -1156,9 +1363,61 @@
       {id:'boxcar',         titre:'Boxcar Bertha (Scorsese)',     genre:'rarites',            ambiance:['violence','femme','route'],    prix:5},
       {id:'short_cuts',     titre:'Short Cuts (Altman)',          genre:'rarites',            ambiance:['chorale','lent','usa'],        prix:5},
       {id:'blue_velvet',    titre:'Blue Velvet (Lynch)',          genre:'rarites',            ambiance:['bizarre','sombre','usa'],      prix:5},
+      {id:'evil_dead',      titre:'Evil Dead (Raimi)',            genre:'rarites',            ambiance:['horreur','indie','foret'],     prix:6},
       {id:'noir_01',        titre:'[MICRO-MÉTRAGE #1]',           genre:'noires',             ambiance:['underground','court'],         prix:8},
       {id:'noir_02',        titre:'[MICRO-MÉTRAGE #2]',           genre:'noires',             ambiance:['underground','court'],         prix:8},
     ];
+
+    // ===================================================
+    // CLIENT SAM RAIMI
+    // ===================================================
+
+    const CLIENT_SAM_RAIMI = {
+      id:'sam_raimi', name:'L\'INCONNU', mood:'🎬',
+      demande:'"Evil Dead. Vous l\'avez ? Et... Blow Out aussi si possible."',
+      aime:['evil_dead','blow_out','blue_velvet','short_cuts'],
+      deteste:['roi_lion','aladdin','home_alone','little_mermaid'],
+      accepte:['rarites'], energie:1,
+      thought:"Il ressemble à quelqu'un. Je sais pas qui.",
+      isVIP:true,
+      timer_seconds: 45,
+      canNegociate:false, weedDemande:false,
+      dialogues_bd: [
+        [
+          {perso:'corey', texte:"C'est Sam Raimi."},
+          {perso:'fred',  texte:"C'est pas Sam Raimi."},
+          {perso:'corey', texte:"La mâchoire. Les yeux."},
+          {perso:'fred',  texte:"Beaucoup de gens ont une mâchoire."},
+          {perso:'corey', texte:"Pas comme ça."}
+        ],
+        [
+          {perso:'corey', texte:"Il a demandé Evil Dead."},
+          {perso:'fred',  texte:"Beaucoup de gens demandent Evil Dead."},
+          {perso:'corey', texte:"Pas de cette façon."},
+          {perso:'fred',  texte:"De quelle façon ?"},
+          {perso:'corey', texte:"Comme quelqu'un qui connaît le film de l'intérieur."}
+        ],
+        [
+          {perso:'corey', texte:"Si c'est lui je lui demande un autographe."},
+          {perso:'fred',  texte:"C'est pas lui."},
+          {perso:'corey', texte:"Et si c'est lui ?"},
+          {perso:'fred',  texte:"C'est pas lui."},
+          {perso:'corey', texte:"..."},
+          {perso:'fred',  texte:"C'est peut-être lui."}
+        ]
+      ],
+      onServi:(gs,film,prix) => {
+        if(film.id==='evil_dead'||film.id==='blow_out'||film.genre==='rarites'){
+          gs.stock.rarites=Math.max(0,(gs.stock.rarites||0)-1);
+          const p=prix||film.prix+3;
+          gs.argent+=p;
+          gs.credibilite=Math.min(100,gs.credibilite+5);
+          gs.sam_raimi_visite=true;
+          return{msg:`+${p}$ — Il repart sans un mot.`,positif:true};
+        }
+        return{msg:'Il secoue la tête. Il repart.',positif:false};
+      }
+    };
 
     // ===================================================
     // CLIENTS
@@ -1170,13 +1429,24 @@
         demande:'"Ghost, s\'il vous plaît. Comme d\'habitude."',
         aime:['ghost','kramer','rain_man'],
         deteste:['arme_fatale','predator','terminator','die_hard','halloween','alien','suspiria','exorciste'],
-        accepte:['drame'], energie:1,
+        accepte:['drame'], energie:1, timer_seconds:45,
         thought:"Il revient. Évidemment qu'il revient.",
         canNegociate:false, weedDemande:false,
         onServi:(gs,film,prix) => {
-          if(film.id==='ghost'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.ghost_loue_aujourd_hui=true;gs.legalite=Math.max(0,gs.legalite-2);gs.reputation=Math.min(5,gs.reputation+0.3);gs.argent+=2;return{msg:'+2$ — Ghost trouvé.',positif:true};}
-          else if(film.genre==='drame'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.argent+=2;return{msg:'+2$ — Il accepte.',positif:true};}
-          gs.legalite=Math.min(100,gs.legalite+2);return{msg:'Mauvais choix.',positif:false};
+          if(film.id==='ghost'){
+            gs.stock.drame=Math.max(0,gs.stock.drame-1);
+            gs.ghost_loue_aujourd_hui=true;
+            gs.legalite=Math.max(0,gs.legalite-2);
+            gs.reputation=Math.min(5,gs.reputation+0.3);
+            gs.argent+=2;
+            return{msg:'+2$ — Ghost trouvé.',positif:true};
+          } else if(film.genre==='drame'){
+            gs.stock.drame=Math.max(0,gs.stock.drame-1);
+            gs.argent+=2;
+            return{msg:'+2$ — Il accepte.',positif:true};
+          }
+          gs.legalite=Math.min(100,gs.legalite+2);
+          return{msg:'Mauvais choix.',positif:false};
         }
       },
       {
@@ -1184,7 +1454,7 @@
         demande:'"Pretty Woman. Vous l\'avez ?"',
         aime:['pretty_woman','dirty_dancing','quand_harry','nuits_blanches','officier'],
         deteste:['arme_fatale','predator','terminator','halloween','alien','exorciste'],
-        accepte:['comedie_romantique'], energie:2,
+        accepte:['comedie_romantique'], energie:2, timer_seconds:40,
         thought:"Cet homme a des mains qui ont réglé des problèmes.",
         isRamon:true, canNegociate:false, weedDemande:false,
         dialogues:{
@@ -1204,8 +1474,14 @@
         onServi:(gs,film,prix) => {
           const v=gs['client_ramon_count']||0;
           if(v>=4){gs.ultimatum_dimaggio=true;gs.exposition=Math.min(100,gs.exposition+5);return{msg:'Ramon repart sans la cassette.',positif:false};}
-          if(film.genre==='comedie_romantique'){gs.stock.comedie_romantique=Math.max(0,(gs.stock.comedie_romantique||5)-1);gs.argent+=prix||film.prix;if(v>=2)gs.exposition=Math.min(100,gs.exposition+1);return{msg:`+${prix||film.prix}$ — Ramon repart.`,positif:true};}
-          gs.exposition=Math.min(100,gs.exposition+2);return{msg:'Ramon repart sans rien.',positif:false};
+          if(film.genre==='comedie_romantique'){
+            gs.stock.comedie_romantique=Math.max(0,(gs.stock.comedie_romantique||5)-1);
+            gs.argent+=prix||film.prix;
+            if(v>=2)gs.exposition=Math.min(100,gs.exposition+1);
+            return{msg:`+${prix||film.prix}$ — Ramon repart.`,positif:true};
+          }
+          gs.exposition=Math.min(100,gs.exposition+2);
+          return{msg:'Ramon repart sans rien.',positif:false};
         }
       },
       {
@@ -1213,13 +1489,23 @@
         demande:'"Les cassettes spéciales. Vous avez... de quoi se détendre aussi ?"',
         aime:['noir_01','noir_02','halloween','alien'],
         deteste:['roi_lion','aladdin','home_alone','little_mermaid'],
-        accepte:['noires','horreur'], energie:1,
+        accepte:['noires','horreur'], energie:1, timer_seconds:25,
         thought:"Miguel grandit. Dans tous les sens du terme.",
         canNegociate:false, weedDemande:true,
         weedMessage:'"...et si Corey pouvait ajouter quelque chose dans le boîtier."',
         onServi:(gs,film,prix) => {
-          if(film.genre==='noires'){gs.stock.noires=Math.max(0,gs.stock.noires-1);gs.credibilite=Math.min(100,gs.credibilite+2);gs.exposition=Math.min(100,gs.exposition+2);gs.argent+=prix||film.prix;gs.noires_distribuees=(gs.noires_distribuees||0)+1;return{msg:`+${prix||film.prix}$ — Miguel repart content.`,positif:true};}
-          else if(film.genre==='horreur'){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il prend.`,positif:true};}
+          if(film.genre==='noires'){
+            gs.stock.noires=Math.max(0,gs.stock.noires-1);
+            gs.credibilite=Math.min(100,gs.credibilite+2);
+            gs.exposition=Math.min(100,gs.exposition+2);
+            gs.argent+=prix||film.prix;
+            gs.noires_distribuees=(gs.noires_distribuees||0)+1;
+            return{msg:`+${prix||film.prix}$ — Miguel repart content.`,positif:true};
+          } else if(film.genre==='horreur'){
+            gs.stock.horreur=Math.max(0,gs.stock.horreur-1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Il prend.`,positif:true};
+          }
           return{msg:'Miguel repart les mains vides.',positif:false};
         }
       },
@@ -1228,30 +1514,51 @@
         demande:'"Quelque chose pour toute la famille !"',
         aime:['roi_lion','aladdin','home_alone','little_mermaid','forrest'],
         deteste:['halloween','alien','exorciste','suspiria','shining','noir_01','noir_02'],
-        accepte:['enfants'], energie:2,
+        accepte:['enfants'], energie:2, timer_seconds:35,
         thought:"Surtout ne pas laisser traîner les cassettes noires.",
         canNegociate:false, weedDemande:false,
         onServi:(gs,film,prix) => {
-          if(film.genre==='enfants'){gs.stock.enfants=Math.max(0,gs.stock.enfants-1);gs.reputation=Math.min(5,gs.reputation+0.4);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Les Henderson sont ravis.`,positif:true};}
-          else if(film.genre==='drame'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Ça peut aller.`,positif:true};}
-          gs.reputation=Math.max(0,gs.reputation-0.5);return{msg:'Madame Henderson est scandalisée.',positif:false};
+          if(film.genre==='enfants'){
+            gs.stock.enfants=Math.max(0,gs.stock.enfants-1);
+            gs.reputation=Math.min(5,gs.reputation+0.4);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Les Henderson sont ravis.`,positif:true};
+          } else if(film.genre==='drame'){
+            gs.stock.drame=Math.max(0,gs.stock.drame-1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Ça peut aller.`,positif:true};
+          }
+          gs.reputation=Math.max(0,gs.reputation-0.5);
+          return{msg:'Madame Henderson est scandalisée.',positif:false};
         }
       },
       {
         id:'cinephile', name:'LE CINÉPHILE', mood:'🧐',
-        demande:'"Blow Out de De Palma. Et... vous auriez pas de quoi agrémenter le visionnage ?"',
-        aime:['blow_out','short_cuts','blue_velvet','boxcar','suspiria','shining'],
+        demande:'"Blow Out de De Palma. Et... vous auriez pas de quoi agrémenter ?"',
+        aime:['blow_out','short_cuts','blue_velvet','boxcar','suspiria','shining','evil_dead'],
         deteste:['roi_lion','aladdin','home_alone','arme_fatale','die_hard'],
-        accepte:['rarites','horreur'], energie:2,
+        accepte:['rarites','horreur'], energie:2, timer_seconds:50,
         thought:"Toujours un film introuvable. Et autre chose.",
         canNegociate:true, weedDemande:true,
         weedMessage:'"Vous avez compris ce que je voulais dire ?"',
-        negoConfig:{prixMin:3,prixMax:12,prixIdeal:6,tolerance:3,
-          reactions:{bas:'"C\'est cadeau."',juste:'"Prix correct."',haut:'"Vous pensez que je suis riche ?"',refuse:'"Trop cher."'}},
+        negoConfig:{
+          prixMin:3,prixMax:12,prixIdeal:6,tolerance:3,
+          zones:[25,50,75]
+        },
         onServi:(gs,film,prix) => {
-          if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.reputation=Math.min(5,gs.reputation+0.5);gs.credibilite=Math.min(100,gs.credibilite+1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Impressionné.`,positif:true};}
-          else if(film.genre==='horreur'&&(film.id==='shining'||film.id==='suspiria')){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il accepte.`,positif:true};}
-          gs.reputation=Math.max(0,gs.reputation-0.3);return{msg:'Il repart déçu.',positif:false};
+          if(film.genre==='rarites'){
+            gs.stock.rarites=Math.max(0,gs.stock.rarites-1);
+            gs.reputation=Math.min(5,gs.reputation+0.5);
+            gs.credibilite=Math.min(100,gs.credibilite+1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Impressionné.`,positif:true};
+          } else if(film.genre==='horreur'&&(film.id==='shining'||film.id==='suspiria')){
+            gs.stock.horreur=Math.max(0,gs.stock.horreur-1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Il accepte.`,positif:true};
+          }
+          gs.reputation=Math.max(0,gs.reputation-0.3);
+          return{msg:'Il repart déçu.',positif:false};
         }
       },
       {
@@ -1259,15 +1566,25 @@
         demande:'"Un truc qui claque. Et... vous auriez pas un truc pour accompagner ça ?"',
         aime:['die_hard','arme_fatale','terminator','predator','maverick','home_alone'],
         deteste:['kramer','rain_man','thelma','short_cuts'],
-        accepte:['action','horreur'], energie:1,
+        accepte:['action','horreur'], energie:1, timer_seconds:20,
         thought:"Pressé. Et défoncé peut-être.",
         canNegociate:true, weedDemande:true,
         weedMessage:'"Corey m\'a dit que vous aviez du bon truc."',
-        negoConfig:{prixMin:1,prixMax:6,prixIdeal:3,tolerance:2,
-          reactions:{bas:'"Sérieux ? Merci !"',juste:'"OK."',haut:'"C\'est cher."',refuse:'"Non merci."'}},
+        negoConfig:{
+          prixMin:1,prixMax:6,prixIdeal:3,tolerance:2,
+          zones:[30,55,80]
+        },
         onServi:(gs,film,prix) => {
-          if(film.ambiance.includes('fun')||film.ambiance.includes('violent')){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.reputation=Math.min(5,gs.reputation+0.2);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il est content.`,positif:true};}
-          else if(film.genre==='action'){gs.stock.action=Math.max(0,gs.stock.action-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — OK.`,positif:true};}
+          if(film.ambiance.includes('fun')||film.ambiance.includes('violent')){
+            gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);
+            gs.reputation=Math.min(5,gs.reputation+0.2);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Il est content.`,positif:true};
+          } else if(film.genre==='action'){
+            gs.stock.action=Math.max(0,gs.stock.action-1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — OK.`,positif:true};
+          }
           return{msg:'Pas ce qu\'il cherchait.',positif:false};
         }
       },
@@ -1276,28 +1593,42 @@
         demande:'"Quelque chose d\'émouvant. Qui fait pleurer."',
         aime:['ghost','forrest','thelma','kramer','rain_man'],
         deteste:['predator','terminator','halloween','alien','suspiria'],
-        accepte:['drame'], energie:1,
+        accepte:['drame'], energie:1, timer_seconds:40,
         thought:"Elle revient souvent le mardi. Jamais le week-end.",
         canNegociate:false, weedDemande:false,
         onServi:(gs,film,prix) => {
           if(film.id==='ghost'&&gs.ghost_loue_aujourd_hui)return{msg:'Ghost est déjà sorti.',positif:false};
-          if(film.ambiance.includes('romance')||film.ambiance.includes('emotion')){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.reputation=Math.min(5,gs.reputation+0.3);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Merci."`,positif:true};}
-          else if(film.genre==='drame'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Ça ira.`,positif:true};}
+          if(film.ambiance.includes('romance')||film.ambiance.includes('emotion')){
+            gs.stock.drame=Math.max(0,gs.stock.drame-1);
+            gs.reputation=Math.min(5,gs.reputation+0.3);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — "Merci."`,positif:true};
+          } else if(film.genre==='drame'){
+            gs.stock.drame=Math.max(0,gs.stock.drame-1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Ça ira.`,positif:true};
+          }
           return{msg:'Elle repart sans rien.',positif:false};
         }
       },
       {
         id:'gamin_horreur', name:'THÉO (14 ANS)', mood:'😈',
         demande:'"Le truc le plus flippant que vous avez."',
-        aime:['halloween','alien','exorciste','shining'],
+        aime:['halloween','alien','exorciste','shining','evil_dead'],
         deteste:['roi_lion','aladdin','forrest','ghost'],
-        accepte:['horreur'], energie:1,
+        accepte:['horreur'], energie:1, timer_seconds:20,
         thought:"Il a clairement pas l'âge. Mais il est là.",
         canNegociate:true, weedDemande:false,
-        negoConfig:{prixMin:1,prixMax:4,prixIdeal:2,tolerance:1,
-          reactions:{bas:'"Trop cool !"',juste:'"OK."',haut:'"J\'ai pas autant..."',refuse:'"C\'est trop."'}},
+        negoConfig:{
+          prixMin:1,prixMax:4,prixIdeal:2,tolerance:1,
+          zones:[35,60,85]
+        },
         onServi:(gs,film,prix) => {
-          if(film.genre==='horreur'){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Théo est ravi.`,positif:true};}
+          if(film.genre==='horreur'){
+            gs.stock.horreur=Math.max(0,gs.stock.horreur-1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Théo est ravi.`,positif:true};
+          }
           return{msg:'Théo fait la grimace.',positif:false};
         }
       },
@@ -1305,29 +1636,46 @@
         id:'inconnu', name:'L\'INCONNU', mood:'🧐',
         demande:'"Quelque chose de différent. Et... autre chose aussi."',
         aime:['noir_01','noir_02','blue_velvet','suspiria','blow_out'],
-        deteste:[], accepte:['noires','rarites'], energie:2,
+        deteste:[], accepte:['noires','rarites'], energie:2, timer_seconds:30,
         thought:"Je l'ai jamais vu avant. Il demande plusieurs choses.",
         canNegociate:false, weedDemande:true,
         weedMessage:'"Corey sait de quoi je parle."',
         onServi:(gs,film,prix) => {
-          if(film.genre==='noires'){gs.stock.noires=Math.max(0,gs.stock.noires-1);gs.exposition=Math.min(100,gs.exposition+3);gs.credibilite=Math.min(100,gs.credibilite+2);gs.argent+=prix||film.prix;gs.noires_distribuees=(gs.noires_distribuees||0)+1;return{msg:`+${prix||film.prix}$ — Il repart vite.`,positif:true};}
-          else if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il reviendra.`,positif:true};}
+          if(film.genre==='noires'){
+            gs.stock.noires=Math.max(0,gs.stock.noires-1);
+            gs.exposition=Math.min(100,gs.exposition+3);
+            gs.credibilite=Math.min(100,gs.credibilite+2);
+            gs.argent+=prix||film.prix;
+            gs.noires_distribuees=(gs.noires_distribuees||0)+1;
+            return{msg:`+${prix||film.prix}$ — Il repart vite.`,positif:true};
+          } else if(film.genre==='rarites'){
+            gs.stock.rarites=Math.max(0,gs.stock.rarites-1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Il reviendra.`,positif:true};
+          }
           return{msg:'Il repart sans rien.',positif:false};
         }
       },
       {
         id:'concurrent', name:'LE CONCURRENT', mood:'😒',
         demande:'"Je regardais juste... votre sélection."',
-        aime:['blow_out','short_cuts','blue_velvet'],
-        deteste:[], accepte:['rarites'], energie:1,
+        aime:['blow_out','short_cuts','blue_velvet','evil_dead'],
+        deteste:[], accepte:['rarites'], energie:1, timer_seconds:60,
         isConcurrent:true,
         thought:"Il gère le Galaxy Video. Il espionne.",
         canNegociate:true, weedDemande:false,
-        negoConfig:{prixMin:3,prixMax:15,prixIdeal:7,tolerance:4,
-          reactions:{bas:'"Vous bradez vos raretés ?"',juste:'"Prix du marché."',haut:'"Galaxy Video fait mieux."',refuse:'"Je repasserai."'}},
+        negoConfig:{
+          prixMin:3,prixMax:15,prixIdeal:7,tolerance:4,
+          zones:[20,45,70]
+        },
         onServi:(gs,film,prix) => {
-          if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il repart.`,positif:true};}
-          gs.concurrent_visite=(gs.concurrent_visite||0)+1;return{msg:'Il repart. Galaxy Video.',positif:false};
+          if(film.genre==='rarites'){
+            gs.stock.rarites=Math.max(0,gs.stock.rarites-1);
+            gs.argent+=prix||film.prix;
+            return{msg:`+${prix||film.prix}$ — Il repart.`,positif:true};
+          }
+          gs.concurrent_visite=(gs.concurrent_visite||0)+1;
+          return{msg:'Il repart. Galaxy Video.',positif:false};
         },
         actionSpeciale:{
           titre:'🤝 PROPOSER UN ACCORD',
@@ -1340,12 +1688,17 @@
         demande:'"Je prépare un article sur les vidéoclubs indépendants."',
         aime:['thelma','blow_out','short_cuts','forrest'],
         deteste:['noir_01','noir_02'],
-        accepte:['drame','rarites'], energie:2,
+        accepte:['drame','rarites'], energie:2, timer_seconds:45,
         isJournaliste:true,
         thought:"Elle pose des questions sur Celluloïd Scalpel.",
         canNegociate:false, weedDemande:false,
         onServi:(gs,film,prix) => {
-          if(film.genre==='drame'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;gs.exposition=Math.min(100,gs.exposition+3);return{msg:`+${prix||film.prix}$ — Elle prend des notes.`,positif:true};}
+          if(film.genre==='drame'||film.genre==='rarites'){
+            gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);
+            gs.argent+=prix||film.prix;
+            gs.exposition=Math.min(100,gs.exposition+3);
+            return{msg:`+${prix||film.prix}$ — Elle prend des notes.`,positif:true};
+          }
           return{msg:'Elle repart. Elle reviendra.',positif:false};
         },
         actionSpeciale:{
@@ -1357,22 +1710,34 @@
       {
         id:'collectionneur', name:'M. BEAUMONT', mood:'🎩',
         demande:'"Je n\'achète pas. Je rachète. Vos raretés ont un prix ?"',
-        aime:['blow_out','boxcar','short_cuts','blue_velvet','noir_01','noir_02'],
+        aime:['blow_out','boxcar','short_cuts','blue_velvet','noir_01','noir_02','evil_dead'],
         deteste:['roi_lion','aladdin','home_alone'],
-        accepte:['rarites','noires'], energie:2,
+        accepte:['rarites','noires'], energie:2, timer_seconds:50,
         isCollectionneur:true,
         thought:"Il veut acheter, pas louer.",
         canNegociate:true, weedDemande:false,
-        negoConfig:{prixMin:10,prixMax:60,prixIdeal:35,tolerance:15,
-          reactions:{bas:'"Vous sous-estimez vos cassettes."',juste:'"Marché conclu."',haut:'"Je suis pas milliardaire."',refuse:'"Je reviendrai."'}},
+        negoConfig:{
+          prixMin:10,prixMax:60,prixIdeal:35,tolerance:15,
+          zones:[15,40,65]
+        },
         onServi:(gs,film,prix) => {
-          if(film.genre==='rarites'||film.genre==='noires'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||35;gs.credibilite=Math.min(100,gs.credibilite+3);return{msg:`+${prix||35}$ — M. Beaumont repart satisfait.`,positif:true};}
+          if(film.genre==='rarites'||film.genre==='noires'){
+            gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);
+            gs.argent+=prix||35;
+            gs.credibilite=Math.min(100,gs.credibilite+3);
+            return{msg:`+${prix||35}$ — M. Beaumont repart satisfait.`,positif:true};
+          }
           return{msg:'M. Beaumont repart sans rien.',positif:false};
         },
         actionSpeciale:{
           titre:'💎 LUI VENDRE UNE RARETÉ',
           detail:'+35$ mais vous perdez la cassette.',
-          effet:(gs)=>{if((gs.stock.rarites||0)<=0)return{msg:'Plus de raretés.',positif:false};gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=35;gs.credibilite=Math.min(100,gs.credibilite+3);return{msg:'+35$ — M. Beaumont repart satisfait.',positif:true};}
+          effet:(gs)=>{
+            if((gs.stock.rarites||0)<=0)return{msg:'Plus de raretés.',positif:false};
+            gs.stock.rarites=Math.max(0,gs.stock.rarites-1);
+            gs.argent+=35;gs.credibilite=Math.min(100,gs.credibilite+3);
+            return{msg:'+35$ — M. Beaumont repart satisfait.',positif:true};
+          }
         }
       }
     ];
@@ -1388,7 +1753,7 @@
 
       if (!gameState.stock.comedie_romantique) gameState.stock.comedie_romantique = 5;
       if (!gameState.stock.weed)               gameState.stock.weed = 0;
-      if (!gameState.discretion)               gameState.discretion = 0;
+      if (!gameState.suspicion)                gameState.suspicion = 0;
 
       gameState.ghost_loue_aujourd_hui = false;
 
@@ -1418,6 +1783,7 @@
     }
 
     function pauseDejeuner() {
+      clearAllTimers();
       gameState.phase_journee = 'pause';
       saveGame();
       document.body.classList.add('fade-out');
@@ -1430,7 +1796,7 @@
 
     function startDay() {
       generateClients();
-      updateFredThought('matin');
+      afficherBulles('ouverture');
       checkDailyEvent();
       checkInterrogatoireCanopi();
       if (typeof SOUNDS !== 'undefined') setTimeout(() => SOUNDS.neons(4), 1000);
@@ -1441,12 +1807,12 @@
       if (phase === 'apres_midi') return false;
       if (gameState.semaine === 1) return Math.random() < 0.6;
       if (gameState.semaine === 2) return Math.random() < 0.5;
-      if (gameState.discretion >= 50) return Math.random() < 0.8;
+      if (gameState.suspicion >= 50) return Math.random() < 0.8;
       return Math.random() < 0.4;
     }
 
     function checkInterrogatoireCanopi() {
-      if (gameState.discretion >= 60 && typeof CANOPI !== 'undefined') {
+      if (gameState.suspicion >= 60 && typeof CANOPI !== 'undefined') {
         const question = CANOPI.getQuestion(gameState);
         if (question) {
           setTimeout(() => {
@@ -1457,40 +1823,164 @@
     }
 
     // ===================================================
+    // TIMERS CLIENTS
+    // ===================================================
+
+    function clearAllTimers() {
+      Object.values(clientTimers).forEach(t => clearInterval(t));
+      clientTimers = {};
+      if (panelTimerInterval) {
+        clearInterval(panelTimerInterval);
+        panelTimerInterval = null;
+      }
+    }
+
+    function startClientTimer(index, seconds) {
+      if (clientTimers[index]) clearInterval(clientTimers[index]);
+
+      let remaining = seconds;
+      const card    = document.querySelector(`.client-card[data-index="${index}"]`);
+      if (!card) return;
+
+      const fill = card.querySelector('.client-timer-fill');
+      if (!fill) return;
+
+      fill.style.width = '100%';
+
+      clientTimers[index] = setInterval(() => {
+        remaining--;
+        const pct = (remaining / seconds) * 100;
+
+        if (fill) {
+          fill.style.width = pct + '%';
+          if (pct < 30) fill.className = 'client-timer-fill critique';
+          else if (pct < 60) fill.className = 'client-timer-fill urgent';
+          else fill.className = 'client-timer-fill';
+        }
+
+        if (remaining <= 0) {
+          clearInterval(clientTimers[index]);
+          delete clientTimers[index];
+          clientPartSansAcheter(index);
+        }
+      }, 1000);
+    }
+
+    function startPanelTimer(seconds) {
+      if (panelTimerInterval) clearInterval(panelTimerInterval);
+
+      let remaining = seconds;
+      const fill    = document.getElementById('panel-timer-fill');
+      if (!fill) return;
+
+      fill.style.width = '100%';
+      fill.className   = 'panel-timer-fill';
+
+      panelTimerInterval = setInterval(() => {
+        remaining--;
+        const pct = (remaining / seconds) * 100;
+
+        fill.style.width = pct + '%';
+        if (pct < 30) fill.className = 'panel-timer-fill critique';
+        else if (pct < 60) fill.className = 'panel-timer-fill urgent';
+        else fill.className = 'panel-timer-fill';
+
+        if (remaining <= 0) {
+          clearInterval(panelTimerInterval);
+          panelTimerInterval = null;
+          // Client repart si panneau encore ouvert
+          if (activeClientIndex >= 0) {
+            clientPartSansAcheter(activeClientIndex);
+          }
+        }
+      }, 1000);
+    }
+
+    function clientPartSansAcheter(index) {
+      if (index >= currentClients.length || index < 0) return;
+
+      const client = currentClients[index];
+      if (!client) return;
+
+      // Réputation -
+      gameState.reputation = Math.max(0, gameState.reputation - 0.3);
+      comboCount = 0;
+
+      // Bulle BD
+      afficherBulles('mauvaise_vente');
+      setCoreyAvatar('colere');
+
+      if (activeClientIndex === index) {
+        closePanel();
+      }
+
+      currentClients.splice(index, 1);
+
+      // Réajuster activeClientIndex
+      if (activeClientIndex > index) activeClientIndex--;
+      else if (activeClientIndex === index) activeClientIndex = -1;
+
+      showNotif(`${client.name} est parti. Réputation -`, false);
+      updateUI();
+      renderQueue();
+      saveGame();
+
+      // Relancer les timers pour les clients restants
+      setTimeout(startAllTimers, 100);
+    }
+
+    function startAllTimers() {
+      currentClients.forEach((client, i) => {
+        if (!clientTimers[i]) {
+          const secs = client.timer_seconds || 30;
+          startClientTimer(i, secs);
+        }
+      });
+    }
+
+    // ===================================================
     // GÉNÉRER LES CLIENTS
     // ===================================================
 
     function generateClients() {
       currentClients = [];
       clientsServis  = 0;
+      comboCount     = 0;
+      clearAllTimers();
 
       // Canopi conditionnel
       if (doitApparaitreCanopi()) {
-        const insertAt = gameState.discretion >= 40
+        const insertAt = gameState.suspicion >= 40
           ? Math.floor(Math.random() * 3) + 1 : 0;
-        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='canopi'), timer:5, _insertAt:insertAt});
+        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='canopi'), _insertAt:insertAt});
       }
 
       // Ramon
       const ramonChance = gameState.semaine>=4?1.0:gameState.semaine>=2?0.6:0.2;
       if (Math.random() < ramonChance)
-        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='ramon'), timer:4});
+        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='ramon')});
 
       // Miguel dès S2
       if (gameState.semaine>=2 && Math.random()>0.5)
-        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='miguel'), timer:3});
+        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='miguel')});
 
       // Concurrent dès S2
       if (gameState.semaine>=2 && Math.random()>0.7)
-        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='concurrent'), timer:3});
+        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='concurrent')});
 
       // Journaliste dès S3
       if (gameState.semaine>=3 && Math.random()>0.75)
-        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='journaliste'), timer:4});
+        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='journaliste')});
 
       // Collectionneur dès S3
       if (gameState.semaine>=3 && Math.random()>0.8)
-        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='collectionneur'), timer:4});
+        currentClients.push({...CLIENT_TYPES.find(c=>c.id==='collectionneur')});
+
+      // SAM RAIMI — 1x par semaine
+      const joueDansSemaine = ((gameState.jour-1) % 7);
+      if (joueDansSemaine === 3 && !gameState.sam_raimi_visite) {
+        currentClients.push({...CLIENT_SAM_RAIMI});
+      }
 
       // Clients aléatoires
       const autres = CLIENT_TYPES.filter(
@@ -1499,7 +1989,7 @@
       const nb = gameState.semaine>=3 ? 4 : 3;
       for (let i=0; i<nb; i++) {
         const r = Math.floor(Math.random()*autres.length);
-        currentClients.push({...autres[r], timer:Math.floor(Math.random()*2)+3});
+        currentClients.push({...autres[r]});
       }
 
       // Repositionner Canopi
@@ -1520,6 +2010,7 @@
       }
 
       renderQueue();
+      setTimeout(startAllTimers, 500);
     }
 
     // ===================================================
@@ -1557,7 +2048,7 @@
         id:'retour_'+genre+'_'+Date.now(),
         name:'RETOUR — '+film.titre.substring(0,14).toUpperCase(),
         mood, demande, thought, genre, film, etat,
-        timer:2, isRetour:true,
+        timer_seconds:15, isRetour:true,
         canNegociate:false, weedDemande:false,
         aime:[], deteste:[], accepte:[], energie:0,
         onServi:(gs)=>({msg:'',positif:true})
@@ -1586,28 +2077,37 @@
         <div class="client-card
              ${client.isRamon  ? 'ramon-card'  : ''}
              ${client.isRetour ? 'retour-card' : ''}
+             ${client.isVIP    ? 'vip-card'    : ''}
              ${i===activeClientIndex ? 'active-client' : ''}"
+             data-index="${i}"
              onclick="selectClient(${i})">
-          <span class="client-mood">${client.mood}</span>
-          <div class="client-info">
-            <div class="client-name
-                 ${client.isRamon  ? 'ramon'  : ''}
-                 ${client.isRetour ? 'retour' : ''}">
-              ${client.name}
-              ${client.canNegociate ? ' 🤝' : ''}
-              ${client.isRetour    ? ' 📼' : ''}
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="client-mood">${client.mood}</span>
+              <div class="client-info">
+                <div class="client-name
+                     ${client.isRamon  ? 'ramon'  : ''}
+                     ${client.isRetour ? 'retour' : ''}
+                     ${client.isVIP    ? 'vip'    : ''}">
+                  ${client.name}
+                  ${client.canNegociate ? ' 🤝' : ''}
+                  ${client.isRetour    ? ' 📼' : ''}
+                  ${client.isVIP       ? ' ⭐' : ''}
+                </div>
+                <div class="client-demand">
+                  ${client.demande.substring(0,40)}${client.demande.length>40?'...':''}
+                </div>
+              </div>
             </div>
-            <div class="client-demand">
-              ${client.demande.substring(0,42)}${client.demande.length>42?'...':''}
+            <div class="client-timer-bar">
+              <div class="client-timer-fill" style="width:100%"></div>
             </div>
-          </div>
-          <div class="client-timer">
-            ${Array(client.timer).fill(0).map(()=>
-              `<div class="timer-dot"></div>`
-            ).join('')}
           </div>
         </div>
       `).join('');
+
+      // Relancer timers après render
+      setTimeout(startAllTimers, 100);
     }
 
     // ===================================================
@@ -1617,20 +2117,37 @@
     function selectClient(index) {
       activeClientIndex = index;
       const client  = currentClients[index];
+      if (!client) return;
+
       const visites = gameState['client_'+client.id+'_count'] || 0;
 
       weedAjoutee   = false;
       pendingFilmId = null;
 
       // Corey
-      if (client.id==='canopi') setCoreyAvatar('peur');
-      else if (client.isRetour) setCoreyAvatar(client.etat==='normale'?'joie':'colere');
-      else setCoreyAvatar('joie');
+      if (client.id==='canopi') {
+        setCoreyAvatar('peur');
+        afficherBulles('canopi_arrive');
+      } else if (client.isVIP) {
+        // Dialogue Sam Raimi
+        afficherBullesCustom(client.dialogues_bd);
+      } else if (client.isRetour) {
+        setCoreyAvatar(client.etat==='normale'?'joie':'colere');
+        const sit = `retour_${client.etat==='normale'?'normal':client.etat}`;
+        afficherBulles(sit);
+      } else if (client.id==='ramon') {
+        const v = gameState['client_ramon_count']||0;
+        setCoreyAvatar('joie');
+        if (v >= 2) afficherBulles('ramon_arrive');
+      } else {
+        setCoreyAvatar('joie');
+      }
 
       // Pensée
-      document.getElementById('fred-thought').textContent = `"${client.thought}"`;
+      const zone = document.getElementById('bulles-zone');
+      // La pensée s'affiche dans les bulles
 
-      // Avatar client
+      // Avatar
       const avatarImg   = document.getElementById('avatar-client-big');
       const avatarEmoji = document.getElementById('avatar-client-emoji');
       const avatarSrc   = AVATARS_CLIENTS[client.id];
@@ -1650,7 +2167,8 @@
       nameEl.textContent = client.name;
       nameEl.className   = 'panel-client-name' +
         (client.isRamon  ? ' ramon'  : '') +
-        (client.isRetour ? ' retour' : '');
+        (client.isRetour ? ' retour' : '') +
+        (client.isVIP    ? ' vip'    : '');
 
       // Demande
       let demande = client.demande;
@@ -1659,6 +2177,10 @@
         demande = client.dialogues[vk] || client.demande;
       }
       document.getElementById('panel-demand').textContent = demande;
+
+      // Timer panneau
+      const secs = client.timer_seconds || 30;
+      startPanelTimer(secs);
 
       // Note Ramon
       const ramonNote = document.getElementById('panel-ramon-note');
@@ -1679,6 +2201,8 @@
         badgeZone.innerHTML=`<span class="panel-client-badge badge-journaliste">PRESSE</span>`;
       else if (client.isCollectionneur)
         badgeZone.innerHTML=`<span class="panel-client-badge badge-collectionneur">COLLECTIONNEUR</span>`;
+      else if (client.isVIP)
+        badgeZone.innerHTML=`<span class="panel-client-badge badge-vip">⭐ VISITEUR MYSTÈRE</span>`;
       else if (client.isRetour)
         badgeZone.innerHTML=`<span class="panel-client-badge badge-retour">📼 RETOUR</span>`;
       else if (client.canNegociate)
@@ -1707,10 +2231,11 @@
       if (client.isRamon && gameState.semaine>=3) tension.classList.add('visible');
       else tension.classList.remove('visible');
 
-      // Panel classe
+      // Panel
       let panelClass = 'client-panel visible';
       if (client.isRamon)  panelClass += ' ramon-panel';
       if (client.isRetour) panelClass += ' retour-panel';
+      if (client.isVIP)    panelClass += ' vip-panel';
       document.getElementById('client-panel').className = panelClass;
 
       // Contenu
@@ -1731,6 +2256,37 @@
     }
 
     // ===================================================
+    // BULLES CUSTOM (Sam Raimi)
+    // ===================================================
+
+    function afficherBullesCustom(dialoguesArray) {
+      if (!dialoguesArray || !dialoguesArray.length) return;
+      const zone = document.getElementById('bulles-zone');
+      if (!zone) return;
+
+      const dialogue = dialoguesArray[Math.floor(Math.random()*dialoguesArray.length)];
+      zone.innerHTML = '';
+      let index = 0;
+
+      function next() {
+        if (index >= dialogue.length) return;
+        const rep = dialogue[index];
+
+        const bulle = document.createElement('div');
+        bulle.className = `bulle ${rep.perso}`;
+        bulle.innerHTML = `<div class="bulle-texte">${rep.texte}</div>`;
+        zone.appendChild(bulle);
+
+        const bulles = zone.querySelectorAll('.bulle');
+        if (bulles.length > 3) bulles[0].remove();
+
+        index++;
+        setTimeout(next, Math.min(rep.texte.length * 35 + 500, 2200));
+      }
+      next();
+    }
+
+    // ===================================================
     // RETOUR — RENDU
     // ===================================================
 
@@ -1747,29 +2303,26 @@
         etatLabel  = '✓ RETOUR NORMAL — REMBOBINÉE';
         etatClass  = 'normale';
         texte      = `"${client.film.titre}" rendue proprement.`;
-        actionsHtml = `
-          <div class="retour-actions">
-            <div class="retour-btn principal" onclick="traiterRetour('normale')">✓ ACCEPTER</div>
-          </div>`;
+        actionsHtml = `<div class="retour-actions">
+          <div class="retour-btn principal" onclick="traiterRetour('normale')">✓ ACCEPTER</div>
+        </div>`;
       } else if (client.etat==='non_rembobinee') {
         etatLabel  = '⚠ NON REMBOBINÉE';
         etatClass  = 'non_rembobinee';
-        texte      = `"${client.film.titre}" pas rembobinée. Le panneau dit pourtant MERCI DE REMBOBINER.`;
-        actionsHtml = `
-          <div class="retour-actions">
-            <div class="retour-btn principal warning" onclick="traiterRetour('penalite')">⚠ PÉNALITÉ +0.50$</div>
-            <div class="retour-btn secondaire" onclick="traiterRetour('laisser')">IGNORER</div>
-          </div>`;
+        texte      = `"${client.film.titre}" pas rembobinée. Le panneau dit MERCI DE REMBOBINER.`;
+        actionsHtml = `<div class="retour-actions">
+          <div class="retour-btn principal warning" onclick="traiterRetour('penalite')">⚠ PÉNALITÉ +0.50$</div>
+          <div class="retour-btn secondaire" onclick="traiterRetour('laisser')">IGNORER</div>
+        </div>`;
       } else if (client.etat==='abimee') {
         etatLabel  = '✗ CASSETTE ABÎMÉE';
         etatClass  = 'abimee';
-        texte      = `"${client.film.titre}" inutilisable. Bande magnétique endommagée.`;
+        texte      = `"${client.film.titre}" inutilisable.`;
         const pen  = client.film.prix*3;
-        actionsHtml = `
-          <div class="retour-actions">
-            <div class="retour-btn principal danger" onclick="traiterRetour('reclamer')">RÉCLAMER -${pen}$</div>
-            <div class="retour-btn secondaire" onclick="traiterRetour('absorber')">ABSORBER</div>
-          </div>`;
+        actionsHtml = `<div class="retour-actions">
+          <div class="retour-btn principal danger" onclick="traiterRetour('reclamer')">RÉCLAMER -${pen}$</div>
+          <div class="retour-btn secondaire" onclick="traiterRetour('absorber')">ABSORBER</div>
+        </div>`;
       }
 
       container.innerHTML = `
@@ -1793,18 +2346,21 @@
         gameState.stock[client.genre]=Math.min(max,(gameState.stock[client.genre]||0)+1);
         gameState.reputation=Math.min(5,gameState.reputation+0.1);
         msg=`${client.film.titre} — Stock +1.`; positif=true;
+        afficherBulles('retour_normal');
       } else if (action==='penalite') {
         gameState.argent+=0.5;
         gameState.reputation=Math.max(0,gameState.reputation-0.2);
         gameState.stock[client.genre]=Math.min(max,(gameState.stock[client.genre]||0)+1);
-        msg='+0.50$ pénalité. Stock +1.'; positif=false;
+        msg='+0.50$ pénalité.'; positif=false;
+        afficherBulles('retour_non_rembobinee');
       } else if (action==='laisser') {
         gameState.stock[client.genre]=Math.min(max,(gameState.stock[client.genre]||0)+1);
         msg='Fred rembobine. Stock +1.'; positif=true;
       } else if (action==='reclamer') {
         const pen=client.film.prix*3;
         if(gameState.argent>=pen) gameState.argent-=pen;
-        msg=`Cassette abîmée. -${pen}$`; positif=false;
+        msg=`-${pen}$`; positif=false;
+        afficherBulles('retour_abimee');
       } else if (action==='absorber') {
         gameState.stock[client.genre]=Math.max(0,(gameState.stock[client.genre]||0)-1);
         gameState.reputation=Math.max(0,gameState.reputation-0.1);
@@ -1812,6 +2368,7 @@
       }
 
       setCoreyAvatar(positif?'joie':'colere');
+      clearClientTimer(activeClientIndex);
       currentClients.splice(activeClientIndex,1);
       activeClientIndex=-1;
       closePanel();
@@ -1821,8 +2378,19 @@
       saveGame();
     }
 
+    function clearClientTimer(index) {
+      if (clientTimers[index]) {
+        clearInterval(clientTimers[index]);
+        delete clientTimers[index];
+      }
+      if (panelTimerInterval) {
+        clearInterval(panelTimerInterval);
+        panelTimerInterval = null;
+      }
+    }
+
     // ===================================================
-    // WEED — toggle dans la liste
+    // WEED
     // ===================================================
 
     function toggleWeed() {
@@ -1834,25 +2402,69 @@
         if (stockWeed<=0) { showNotif('Plus de Sicilian Gold.',false); return; }
         weedAjoutee=true;
         gameState.stock.weed=stockWeed-1;
-        gameState.discretion=Math.min(100,(gameState.discretion||0)+8);
+        gameState.suspicion=Math.min(100,(gameState.suspicion||0)+8);
         updateWeedStock();
-        updateDiscretion();
+        updateSuspicion();
         showNotifWeed('Sicilian Gold — +15$ ajouté.');
+        afficherBulles('weed_vendue');
         if (pendingFilmId) {
           setTimeout(()=>{ servirFilm(pendingFilmId); pendingFilmId=null; },800);
         }
       } else {
         weedAjoutee=false;
         gameState.stock.weed=(gameState.stock.weed||0)+1;
-        gameState.discretion=Math.max(0,(gameState.discretion||0)-8);
+        gameState.suspicion=Math.max(0,(gameState.suspicion||0)-8);
         updateWeedStock();
-        updateDiscretion();
+        updateSuspicion();
         showNotif('Sicilian Gold retiré.',true);
       }
       renderFilmsList(client);
     }
 
     function ajouterWeed() { toggleWeed(); }
+
+    // ===================================================
+    // WEED À CANOPI — GAME OVER
+    // ===================================================
+
+    function gameOverCanapiWeed() {
+      clearAllTimers();
+
+      // Afficher bulles game over
+      const bulles = document.getElementById('gameover-bulles');
+      const dialogue = DIALOGUES_BD.weed_canopi[0];
+      bulles.innerHTML = '';
+
+      let index = 0;
+      function next() {
+        if (index >= dialogue.length) return;
+        const rep = dialogue[index];
+        const div = document.createElement('div');
+        div.style.cssText = `
+          display:flex;
+          justify-content:${rep.perso==='fred'?'flex-start':'flex-end'};
+          margin-bottom:6px;
+        `;
+        div.innerHTML = `
+          <div style="
+            max-width:80%;
+            background:${rep.perso==='fred'?'#0f0f2a':'#1a0f05'};
+            border:1px solid ${rep.perso==='fred'?'#3a3a6a':'#ff885530'};
+            border-radius:${rep.perso==='fred'?'4px 10px 10px 10px':'10px 4px 10px 10px'};
+            padding:6px 10px;
+            font-size:11px;
+            color:${rep.perso==='fred'?'#9090cc':'#cc9966'};
+            font-style:italic;
+          ">${rep.texte}</div>
+        `;
+        bulles.appendChild(div);
+        index++;
+        setTimeout(next, Math.min(rep.texte.length*40+600,2000));
+      }
+      next();
+
+      document.getElementById('gameover-overlay').classList.add('visible');
+    }
 
     function showNotifWeed(message) {
       const notif=document.getElementById('notif');
@@ -1870,14 +2482,40 @@
       const client    = currentClients[activeClientIndex];
       const stockWeed = gameState.stock.weed||0;
 
+      // CANOPI + WEED = GAME OVER
+      if (client.id==='canopi' && weedAjoutee) {
+        gameOverCanapiWeed();
+        return;
+      }
+
+      // WEED proposée à client qui n'en veut pas
+      if (weedAjoutee && !client.weedDemande && client.id!=='canopi') {
+        // Pénalité
+        gameState.reputation=Math.max(0,gameState.reputation-1);
+        gameState.suspicion=Math.min(100,(gameState.suspicion||0)+5);
+        // Rembourser le stock
+        gameState.stock.weed=(gameState.stock.weed||0)+1;
+        weedAjoutee=false;
+        showNotif('Il refuse le "cadeau". Réputation -1',false);
+        updateSuspicion();
+        updateWeedStock();
+        // Client repart
+        clearClientTimer(activeClientIndex);
+        currentClients.splice(activeClientIndex,1);
+        activeClientIndex=-1;
+        closePanel();
+        renderQueue();
+        saveGame();
+        return;
+      }
+
       pendingFilmId = filmId;
 
       if (client.canNegociate && client.negoConfig) {
         ouvrirNego(filmId, client);
       } else {
         if (client.weedDemande && stockWeed>0 && client.id!=='canopi' && !weedAjoutee) {
-          // Weed disponible — laisser choisir avant de servir
-          renderFilmsList(client); // refresh pour highlight
+          renderFilmsList(client);
         } else {
           servirFilm(filmId);
           pendingFilmId=null;
@@ -1886,7 +2524,7 @@
     }
 
     // ===================================================
-    // NÉGOCIATION
+    // NÉGOCIATION — sans feedback
     // ===================================================
 
     function ouvrirNego(filmId, client) {
@@ -1894,55 +2532,63 @@
       if (!film) return;
       negoFilmId=filmId;
 
-      const slider=document.getElementById('nego-slider');
-      slider.min  =client.negoConfig.prixMin;
-      slider.max  =client.negoConfig.prixMax;
-      slider.value=client.negoConfig.prixIdeal;
+      const config = client.negoConfig;
+      const slider = document.getElementById('nego-slider');
+      slider.min   = config.prixMin;
+      slider.max   = config.prixMax;
+      slider.value = Math.round((config.prixMin + config.prixMax) / 2);
 
-      document.getElementById('nego-film-titre').textContent=film.titre;
+      document.getElementById('nego-film-titre').textContent = film.titre;
+      document.getElementById('nego-prix-val').textContent   = slider.value + '$';
       document.getElementById('negociation-zone').classList.add('visible');
+
       setTimeout(()=>{
         document.getElementById('negociation-zone').scrollIntoView({behavior:'smooth'});
       },100);
-      updateNego(slider.value);
     }
 
     function updateNego(val) {
-      if (activeClientIndex<0) return;
-      const client=currentClients[activeClientIndex];
-      const config=client.negoConfig;
-      if (!config) return;
-
-      const prix=parseInt(val);
-      const ideal=config.prixIdeal;
-      const tol=config.tolerance;
-      const valEl=document.getElementById('nego-prix-val');
-      const reEl=document.getElementById('nego-reaction');
-
-      valEl.textContent=prix+'$';
-
-      if (prix<ideal-tol) {
-        valEl.className='nego-prix-val trop-bas';reEl.className='nego-reaction positif';reEl.textContent=config.reactions.bas;negoAccepte=true;
-      } else if (prix<=ideal+tol) {
-        valEl.className='nego-prix-val bon';reEl.className='nego-reaction';reEl.textContent=config.reactions.juste;negoAccepte=true;
-      } else if (prix<=ideal+tol*2) {
-        valEl.className='nego-prix-val trop-haut';reEl.className='nego-reaction negatif';reEl.textContent=config.reactions.haut;negoAccepte=true;
-      } else {
-        valEl.className='nego-prix-val trop-bas';reEl.className='nego-reaction negatif';reEl.textContent=config.reactions.refuse;negoAccepte=false;
-      }
+      document.getElementById('nego-prix-val').textContent = val + '$';
+      // Pas de feedback sur l'acceptation — le joueur découvre en confirmant
     }
 
     function confirmerNego() {
       if (activeClientIndex<0||!negoFilmId) return;
-      if (!negoAccepte) {
-        showNotif('Le client refuse ce prix.',false);
+
+      const client = currentClients[activeClientIndex];
+      const config = client.negoConfig;
+      const prix   = parseInt(document.getElementById('nego-slider').value);
+      const ideal  = config.prixIdeal;
+      const tol    = config.tolerance;
+
+      // Calcul silencieux de l'acceptation
+      let accepte = false;
+      if (prix < ideal - tol) {
+        accepte = true; // Trop bas — il accepte quand même
+      } else if (prix <= ideal + tol) {
+        accepte = true; // Zone juste
+      } else if (prix <= ideal + tol * 2) {
+        accepte = Math.random() > 0.4; // Risqué
+      } else {
+        accepte = false; // Trop cher
+      }
+
+      document.getElementById('negociation-zone').classList.remove('visible');
+
+      if (!accepte) {
+        // Refus — le joueur découvre maintenant
+        showNotif('Il repart. Le prix était trop élevé.', false);
+        setCoreyAvatar('colere');
+        comboCount = 0;
+        clearClientTimer(activeClientIndex);
         currentClients.splice(activeClientIndex,1);
         activeClientIndex=-1;
-        closePanel(); renderQueue(); return;
+        closePanel();
+        renderQueue();
+        saveGame();
+      } else {
+        servirFilm(negoFilmId, prix);
       }
-      const prix=parseInt(document.getElementById('nego-slider').value);
-      document.getElementById('negociation-zone').classList.remove('visible');
-      servirFilm(negoFilmId, prix);
       negoFilmId=null;
     }
 
@@ -1961,6 +2607,12 @@
       const film=CATALOGUE.find(f=>f.id===filmId);
       if (!film) return;
 
+      // CANOPI + WEED check final
+      if (client.id==='canopi' && weedAjoutee) {
+        gameOverCanapiWeed();
+        return;
+      }
+
       if (film.id==='ghost'&&gameState.ghost_loue_aujourd_hui) {
         showNotif('Ghost est déjà sorti.',false); return;
       }
@@ -1973,9 +2625,28 @@
       const resultat=client.onServi(gameState,film,prixTotal);
 
       if (film.genre==='noires')
-        gameState.discretion=Math.min(100,(gameState.discretion||0)+5);
+        gameState.suspicion=Math.min(100,(gameState.suspicion||0)+5);
 
-      setCoreyAvatar(resultat.positif?'joie':'colere');
+      // COMBO
+      if (resultat.positif) {
+        comboCount++;
+        if (comboCount >= 3) {
+          gameState.reputation=Math.min(5,gameState.reputation+0.5);
+          const combo = document.getElementById('combo-notif');
+          combo.textContent = `⭐ COMBO ×${comboCount}`;
+          combo.classList.add('visible');
+          setTimeout(()=>combo.classList.remove('visible'), 2000);
+          afficherBulles('bonne_vente');
+          setCoreyAvatar('joie');
+        } else {
+          setCoreyAvatar('joie');
+          if (Math.random() > 0.6) afficherBulles('bonne_vente');
+        }
+      } else {
+        comboCount = 0;
+        setCoreyAvatar('colere');
+        if (Math.random() > 0.5) afficherBulles('mauvaise_vente');
+      }
 
       if (resultat.positif && typeof SOUNDS!=='undefined') SOUNDS.caisse();
 
@@ -1985,6 +2656,7 @@
       weedAjoutee=false;
       pendingFilmId=null;
 
+      clearClientTimer(activeClientIndex);
       document.getElementById('tension-overlay').classList.remove('visible');
       currentClients.splice(activeClientIndex,1);
       activeClientIndex=-1;
@@ -1992,11 +2664,13 @@
       closePanel();
       showNotif(resultat.msg,resultat.positif);
       updateUI();
-      updateDiscretion();
+      updateSuspicion();
       renderQueue();
       saveGame();
 
-      if (gameState.energie<=0) updateFredThought('tired');
+      if (gameState.energie<=0) {
+        setCoreyAvatar('peur');
+      }
     }
 
     function doActionSpeciale() {
@@ -2010,6 +2684,7 @@
       clientsServis++;
 
       setCoreyAvatar(resultat.positif?'joie':'colere');
+      clearClientTimer(activeClientIndex);
       currentClients.splice(activeClientIndex,1);
       activeClientIndex=-1;
       document.getElementById('tension-overlay').classList.remove('visible');
@@ -2037,8 +2712,10 @@
     function renvoyerClient() {
       if (activeClientIndex<0) return;
       gameState.reputation=Math.max(0,gameState.reputation-0.3);
+      comboCount=0;
       setCoreyAvatar('colere');
       document.getElementById('tension-overlay').classList.remove('visible');
+      clearClientTimer(activeClientIndex);
       currentClients.splice(activeClientIndex,1);
       activeClientIndex=-1;
       closePanel();
@@ -2063,7 +2740,7 @@
       const stock = gameState.stock;
 
       label.textContent = client.canNegociate
-        ? 'CHOISIR UN FILM (négociation possible) :'
+        ? 'CHOISIR UN FILM (négociation) :'
         : 'CHOISIR UN FILM :';
 
       const dispo = CATALOGUE.filter(film=>{
@@ -2078,7 +2755,7 @@
 
       let html='';
 
-      // WEED EN HAUT si applicable
+      // WEED EN HAUT
       const stockWeed=gameState.stock.weed||0;
       if (client.weedDemande && stockWeed>0 && client.id!=='canopi') {
         html+=`
@@ -2090,7 +2767,7 @@
               <div class="weed-film-detail">
                 ${weedAjoutee
                   ?'Corey a glissé une tête dans le boîtier.'
-                  :'Corey glisse une tête dans le boîtier avec le film.'}
+                  :'Corey glisse une tête dans le boîtier.'}
               </div>
             </div>
             <span class="weed-film-prix">${weedAjoutee?'✓':'+15$'}</span>
@@ -2100,6 +2777,7 @@
 
       if (!tris.length) {
         html+=`<div class="no-clients">Stock épuisé.</div>`;
+        if (Math.random()>0.5) afficherBulles('stock_vide');
       } else {
         html+=tris.map(film=>{
           let classe='correct',match='~',prix=film.prix;
@@ -2110,7 +2788,7 @@
             <div class="film-option ${classe}" onclick="filmClique('${film.id}')">
               <div class="film-info">
                 <div class="film-titre">${film.titre}</div>
-                <div class="film-detail">${film.genre.toUpperCase().replace('_',' ')} · ${film.ambiance.slice(0,2).join(', ')}</div>
+                <div class="film-detail">${film.genre.toUpperCase().replace(/_/g,' ')} · ${film.ambiance.slice(0,2).join(', ')}</div>
               </div>
               <span class="film-match">${match}</span>
               <span class="film-prix">+${prixAffiche}$</span>
@@ -2141,6 +2819,10 @@
       document.getElementById('tension-overlay').classList.remove('visible');
       document.getElementById('negociation-zone').classList.remove('visible');
       document.getElementById('retour-zone-container').innerHTML='';
+      if (panelTimerInterval) {
+        clearInterval(panelTimerInterval);
+        panelTimerInterval=null;
+      }
       activeClientIndex=-1;
       negoFilmId=null;
       weedAjoutee=false;
@@ -2153,18 +2835,23 @@
     // ===================================================
 
     function closingTime() {
+      clearAllTimers();
       if (typeof SOUNDS!=='undefined') SOUNDS.rideauFer();
 
       if (currentClients.length>0) {
         const lost=currentClients.filter(c=>!c.isRetour).length;
-        if(lost>0){gameState.reputation=Math.max(0,gameState.reputation-lost*0.2);showNotif(`${lost} client(s) reparti(s).`,false);}
+        if(lost>0){
+          gameState.reputation=Math.max(0,gameState.reputation-lost*0.2);
+          showNotif(`${lost} client(s) reparti(s).`,false);
+        }
         currentClients=[];
       }
 
       setCoreyAvatar('joie');
-      updateFredThought('fermeture');
+      afficherBulles('fermeture');
       gameState.ghost_loue_aujourd_hui=false;
       gameState.phase_journee='matin';
+      gameState.sam_raimi_visite=false; // Reset chaque semaine
       saveGame();
 
       setTimeout(()=>{
@@ -2290,17 +2977,17 @@
           </div>
 
           <div>
-            <div style="font-size:8px;color:#44aa44;letter-spacing:2px;margin-bottom:6px;">
-              DISCRÉTION — ${gs.discretion||0}%
+            <div style="font-size:8px;color:#ff4466;letter-spacing:2px;margin-bottom:6px;">
+              SUSPICION — ${gs.suspicion||0}%
             </div>
             <div style="width:100%;height:4px;background:#0a0a18;border-radius:2px;overflow:hidden;margin-bottom:6px;">
-              <div style="width:${gs.discretion||0}%;height:100%;
-                   background:${(gs.discretion||0)>=70?'#ff4466':(gs.discretion||0)>=40?'#ffdd44':'#44aa44'};
+              <div style="width:${gs.suspicion||0}%;height:100%;
+                   background:${(gs.suspicion||0)>=70?'#ff4466':(gs.suspicion||0)>=40?'#ffdd44':'#44aa44'};
                    border-radius:2px;"></div>
             </div>
             <div style="font-size:9px;color:#444466;font-style:italic;">
-              ${(gs.discretion||0)>=70?'Canopi va agir. Bientôt.'
-                :(gs.discretion||0)>=40?'Canopi commence à avoir des doutes.'
+              ${(gs.suspicion||0)>=70?'Canopi va agir. Bientôt.'
+                :(gs.suspicion||0)>=40?'Canopi commence à avoir des doutes.'
                 :'Tout va bien. Pour l\'instant.'}
             </div>
           </div>
@@ -2311,6 +2998,17 @@
             <div style="font-size:10px;color:#6644aa;font-style:italic;
                  line-height:1.6;border-left:1px solid #3a1a3a;padding-left:10px;">
               ${getRamonNote(gs)}
+            </div>
+          </div>
+          `:''}
+
+          ${gs.sam_raimi_visite?`
+          <div>
+            <div style="font-size:8px;color:#aa8844;letter-spacing:2px;margin-bottom:6px;">L'INCONNU</div>
+            <div style="font-size:10px;color:#887744;font-style:italic;
+                 line-height:1.6;border-left:1px solid #443300;padding-left:10px;">
+              Il est passé. Corey est convaincu que c'est Sam Raimi. Fred pas du tout.
+              On saura jamais.
             </div>
           </div>
           `:''}
@@ -2358,9 +3056,9 @@
       else shelf.style.display='none';
     }
 
-    function updateDiscretion() {
-      const pct=Math.min(100,gameState.discretion||0);
-      const fill=document.getElementById('discretion-fill');
+    function updateSuspicion() {
+      const pct=Math.min(100,gameState.suspicion||0);
+      const fill=document.getElementById('suspicion-fill');
       if(fill)fill.style.width=pct+'%';
     }
 
@@ -2386,8 +3084,7 @@
                padding:10px 12px;display:flex;align-items:center;gap:10px;">
             <div style="flex:1;">
               <div style="font-size:10px;color:#9090bb;letter-spacing:1px;margin-bottom:5px;">
-                ${g.label}
-                ${gs.remise_stock?`<span style="color:#00ffc8;font-size:8px;"> -${Math.round(gs.remise_stock*100)}%</span>`:''}
+                ${g.label}${gs.remise_stock?`<span style="color:#00ffc8;font-size:8px;"> -${Math.round(gs.remise_stock*100)}%</span>`:''}
               </div>
               <div style="width:100%;height:4px;background:#050510;border-radius:2px;overflow:hidden;">
                 <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;"></div>
@@ -2396,8 +3093,7 @@
             <div style="font-size:13px;color:${color};font-weight:bold;width:24px;text-align:right;">${val}</div>
             <div onclick="commanderStock('${g.id}',${prix})"
                  style="background:#0f0f1e;border:1px solid #2e2e50;border-radius:4px;
-                        padding:5px 8px;font-size:8px;color:#00ffc8;
-                        letter-spacing:1px;cursor:pointer;">
+                        padding:5px 8px;font-size:8px;color:#00ffc8;letter-spacing:1px;cursor:pointer;">
               ${prix}$
             </div>
           </div>
@@ -2415,8 +3111,7 @@
           <div style="font-size:13px;color:#44cc44;font-weight:bold;width:24px;text-align:right;">${weedStock}</div>
           <div onclick="commanderWeed()"
                style="background:#050f05;border:1px solid #44aa4430;border-radius:4px;
-                      padding:5px 8px;font-size:8px;color:#44cc44;
-                      letter-spacing:1px;cursor:pointer;">+20$</div>
+                      padding:5px 8px;font-size:8px;color:#44cc44;letter-spacing:1px;cursor:pointer;">+20$</div>
         </div>
       `;
 
@@ -2429,8 +3124,8 @@
       `;
       panel.innerHTML=`
         <div style="background:#080818;border-bottom:1px solid #1e1e3a;
-             padding:12px 14px;display:flex;justify-content:space-between;
-             align-items:center;position:sticky;top:0;z-index:10;">
+             padding:12px 14px;display:flex;justify-content:space-between;align-items:center;
+             position:sticky;top:0;z-index:10;">
           <span style="font-size:11px;color:#00ffc8;letter-spacing:2px;">GESTION DU STOCK</span>
           <span onclick="document.getElementById('stock-panel').remove()"
                 style="font-size:10px;color:#444466;cursor:pointer;padding:4px 8px;">✕</span>
@@ -2439,8 +3134,7 @@
           <div style="font-size:10px;color:#7777aa;letter-spacing:1px;margin-bottom:4px;">
             Budget : <span style="color:#00ffc8;font-weight:bold;">${gs.argent}$</span>
           </div>
-          ${stockHTML}
-          ${weedHTML}
+          ${stockHTML}${weedHTML}
           <div style="font-size:8px;color:#333355;letter-spacing:1px;text-align:center;margin-top:8px;">
             Livraison le lendemain matin.
           </div>
@@ -2455,7 +3149,7 @@
       const maxes={action:10,horreur:10,drame:10,enfants:10,comedie_romantique:8,rarites:3};
       const ajouts={action:2,horreur:2,drame:2,enfants:2,comedie_romantique:2,rarites:1};
       gameState.stock[genre]=Math.min(maxes[genre]||10,(gameState.stock[genre]||0)+(ajouts[genre]||2));
-      updateUI(); saveGame();
+      updateUI();saveGame();
       showNotif(`Commande passée. -${prix}$`,true);
       const panel=document.getElementById('stock-panel');
       if(panel)panel.remove();
@@ -2467,43 +3161,12 @@
       if(gameState.argent<prix){showNotif('Pas assez d\'argent.',false);return;}
       gameState.argent-=prix;
       gameState.stock.weed=(gameState.stock.weed||0)+3;
-      gameState.discretion=Math.min(100,(gameState.discretion||0)+3);
-      updateUI(); updateWeedStock(); updateDiscretion(); saveGame();
+      gameState.suspicion=Math.min(100,(gameState.suspicion||0)+3);
+      updateUI();updateWeedStock();updateSuspicion();saveGame();
       showNotifWeed('Corey a réapprovisionné. -20$ / +3 SG');
       const panel=document.getElementById('stock-panel');
       if(panel)panel.remove();
       openStock();
-    }
-
-    // ===================================================
-    // PENSÉES DE FRED
-    // ===================================================
-
-    function updateFredThought(context) {
-      if (typeof DIALOGUES==='undefined') return;
-      let pool=[];
-      const gs=gameState;
-
-      if (context==='matin') {
-        if(gs.semaine===4)pool=DIALOGUES.fred.semaine4;
-        else if(gs.semaine===3)pool=DIALOGUES.fred.semaine3;
-        else if(gs.semaine===2)pool=DIALOGUES.fred.semaine2;
-        else pool=DIALOGUES.fred.matin;
-        if(gs.legalite>=60)pool=[...pool,...DIALOGUES.fred.legalite_haute];
-        if(gs.exposition>=50)pool=[...pool,...DIALOGUES.fred.exposition_haute];
-        if(gs.argent<100)pool=[...pool,...DIALOGUES.fred.argent_serre];
-      } else if (context==='tired') {
-        pool=["Je suis à plat.","Plus d'énergie. La réserve attend."];
-        setCoreyAvatar('peur');
-      } else if (context==='fermeture') {
-        pool=DIALOGUES.fred.fermeture;
-        setCoreyAvatar('joie');
-      }
-
-      if (pool&&pool.length>0) {
-        const t=pool[Math.floor(Math.random()*pool.length)];
-        document.getElementById('fred-thought').textContent=`"${t}"`;
-      }
     }
 
     // ===================================================
@@ -2534,7 +3197,7 @@
       });
 
       updateWeedStock();
-      updateDiscretion();
+      updateSuspicion();
     }
 
     function updateDayInfo() {
