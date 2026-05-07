@@ -47,36 +47,34 @@
     /* MAIN */
     .main-area {
       flex: 1;
-      padding: 16px 14px 100px;
+      padding: 12px 14px 100px;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      max-width: 500px;
-      width: 100%;
-      margin: 0 auto;
     }
 
     /* HEURE */
     .time-display {
       text-align: center;
-      padding: 12px 0 4px;
+      padding: 10px 0 4px;
     }
 
     .time-val {
-      font-size: 36px;
-      color: #1a1a2e;
-      letter-spacing: 6px;
+      font-size: 38px;
+      color: #111122;
+      letter-spacing: 8px;
       text-shadow: 0 0 20px #0d0d1a;
+      font-weight: bold;
     }
 
     .time-label {
       font-size: 8px;
-      color: #111122;
+      color: #0d0d1a;
       letter-spacing: 3px;
       margin-top: 4px;
     }
 
-    /* BILAN JOURNÉE */
+    /* BILAN */
     .bilan-section {
       background: #080810;
       border: 1px solid #0f0f20;
@@ -86,7 +84,7 @@
 
     .bilan-label {
       font-size: 8px;
-      color: #222244;
+      color: #1a1a30;
       letter-spacing: 3px;
       margin-bottom: 10px;
     }
@@ -100,192 +98,54 @@
     }
 
     .bilan-ligne:last-child { border-bottom: none; }
-
-    .bilan-nom {
-      font-size: 10px;
-      color: #333355;
-      letter-spacing: 1px;
-    }
-
-    .bilan-val {
-      font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
+    .bilan-nom { font-size: 10px; color: #222244; letter-spacing: 1px; }
+    .bilan-val { font-size: 11px; font-weight: bold; letter-spacing: 1px; }
     .bilan-val.positif { color: #1a5a3a; }
     .bilan-val.negatif { color: #5a1a1a; }
-    .bilan-val.neutre  { color: #222244; }
+    .bilan-val.neutre  { color: #1a1a30; }
 
-    /* MESSAGES */
-    .messages-section {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .message-card {
-      border-radius: 8px;
-      padding: 12px 14px;
-      opacity: 0;
-      transform: translateY(8px);
-      animation: msgAppear 0.5s ease forwards;
-    }
-
-    @keyframes msgAppear {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Jackson */
-    .msg-jackson {
-      background: #080810;
-      border: 1px solid #1a1a30;
-      border-left: 3px solid #2a2a50;
-    }
-
-    .msg-jackson.tendu {
-      border-left-color: #503030;
-      background: #0a0808;
-    }
-
-    .msg-jackson.furieux {
-      border-left-color: #aa3333;
-      background: #0f0505;
-    }
-
-    /* Corey */
-    .msg-corey {
-      background: #080810;
-      border: 1px solid #1a1a30;
-      border-left: 3px solid #ff885530;
-    }
-
-    /* Cutter */
-    .msg-cutter {
-      background: #060612;
-      border: 1px solid #1e1e3a;
-      border-left: 3px solid #4444aa;
-    }
-
-    /* Jessica */
-    .msg-jessica {
-      background: #08080e;
-      border: 1px solid #1a1a2a;
-      border-left: 3px solid #aa4488;
-    }
-
-    /* Lucious */
-    .msg-lucious {
-      background: #080a08;
-      border: 1px solid #1a1e1a;
-      border-left: 3px solid #448844;
-    }
-
-    /* Anonyme */
-    .msg-anonyme {
-      background: #060608;
-      border: 1px solid #111118;
-      border-left: 3px solid #222233;
-    }
-
-    .msg-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    .msg-expediteur {
-      font-size: 9px;
-      letter-spacing: 2px;
-      font-weight: bold;
-    }
-
-    .msg-heure {
-      font-size: 8px;
-      color: #1a1a2e;
-      letter-spacing: 1px;
-    }
-
-    .msg-texte {
-      font-size: 11px;
-      color: #555577;
-      line-height: 1.6;
-      font-style: italic;
-    }
-
-    .msg-texte.important { color: #7777aa; }
-    .msg-texte.urgent    { color: #aa5555; }
-    .msg-texte.cutter    { color: #6666aa; }
-    .msg-texte.jessica   { color: #aa6688; }
-    .msg-texte.lucious   { color: #668866; }
-
-    /* CHOIX DE NUIT */
-    .choix-nuit {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .choix-nuit-btn {
-      background: #0a0a18;
-      border: 1px solid #1e1e3a;
-      border-radius: 6px;
-      padding: 10px 12px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .choix-nuit-btn:active { background: #0f0f22; }
-
-    .choix-nuit-texte {
-      font-size: 10px;
-      color: #6666aa;
-      letter-spacing: 1px;
-    }
-
-    .choix-nuit-effet {
-      font-size: 8px;
-      color: #333355;
-      letter-spacing: 1px;
-    }
-
-    /* JACKSON COLLECTE */
+    /* COLLECTE JACKSON */
     .collecte-zone {
       background: #080810;
       border: 1px solid #1a1a30;
       border-top: 2px solid #2a2a50;
       border-radius: 8px;
-      padding: 14px;
+      overflow: hidden;
       display: none;
     }
 
     .collecte-zone.visible { display: block; }
 
-    .collecte-label {
-      font-size: 9px;
-      color: #333355;
-      letter-spacing: 3px;
-      margin-bottom: 10px;
+    .collecte-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid #0f0f20;
     }
 
-    .collecte-montant {
-      font-size: 28px;
-      color: #2a2a50;
-      font-weight: bold;
-      letter-spacing: 3px;
-      margin-bottom: 8px;
+    .jackson-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #2a2a5040;
+      background: #0a0a18;
+      flex-shrink: 0;
     }
 
+    .collecte-info { flex: 1; }
+    .collecte-label { font-size: 9px; color: #2a2a50; letter-spacing: 3px; margin-bottom: 4px; }
+    .collecte-montant { font-size: 24px; color: #1a1a3a; font-weight: bold; letter-spacing: 3px; }
+
+    .collecte-body { padding: 12px 14px; }
     .collecte-detail {
       font-size: 9px;
-      color: #222233;
+      color: #1a1a30;
       letter-spacing: 1px;
       margin-bottom: 12px;
       line-height: 1.6;
+      font-style: italic;
     }
 
     .collecte-btn {
@@ -297,56 +157,226 @@
       text-align: center;
       cursor: pointer;
       font-size: 10px;
-      color: #333355;
+      color: #2a2a50;
       letter-spacing: 2px;
+      font-family: 'Courier New', monospace;
     }
 
     .collecte-btn:active { background: #0d0d1e; }
-    .collecte-btn.manque { border-color: #502a2a; color: #553333; }
+    .collecte-btn.manque { border-color: #502a2a; color: #443333; }
 
-    /* SCÈNE JESSICA */
-    .scene-card {
+    /* MESSAGES */
+    .messages-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message-card {
+      border-radius: 8px;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: msgAppear 0.5s ease forwards;
+    }
+
+    @keyframes msgAppear {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header message avec avatar */
+    .msg-header-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px 8px;
+    }
+
+    .msg-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #0a0a18;
+    }
+
+    .msg-header-info { flex: 1; }
+
+    .msg-expediteur {
+      font-size: 9px;
+      letter-spacing: 2px;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .msg-heure {
+      font-size: 8px;
+      color: #1a1a2e;
+      letter-spacing: 1px;
+    }
+
+    .msg-texte {
+      font-size: 11px;
+      color: #444466;
+      line-height: 1.7;
+      font-style: italic;
+      padding: 0 14px 12px;
+    }
+
+    .msg-texte.important { color: #555577; }
+    .msg-texte.urgent    { color: #664444; }
+    .msg-texte.cutter    { color: #445566; }
+
+    /* Styles par type */
+    .msg-jackson {
       background: #060610;
+      border: 1px solid #1a1a2e;
+      border-left: 3px solid #1a1a40;
+    }
+
+    .msg-jackson.tendu  { border-left-color: #402020; background: #060608; }
+    .msg-jackson.furieux { border-left-color: #662222; background: #080505; }
+
+    .msg-corey {
+      background: #060610;
+      border: 1px solid #1a1a2e;
+      border-left: 3px solid #ff885520;
+    }
+
+    .msg-cutter {
+      background: #050510;
+      border: 1px solid #1e1e3a;
+      border-left: 3px solid #333388;
+    }
+
+    .msg-anonyme {
+      background: #050508;
+      border: 1px solid #0d0d18;
+      border-left: 3px solid #111122;
+    }
+
+    /* FANZINE CUTTER */
+    .fanzine-card {
+      background: #050510;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .fanzine-card.visible { display: block; }
+
+    .fanzine-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #1a1a2e;
+      background: #080818;
+    }
+
+    .fanzine-cover {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid #2e2e50;
+      background: #0a0a18;
+      flex-shrink: 0;
+    }
+
+    .fanzine-info { flex: 1; }
+
+    .fanzine-titre {
+      font-size: 11px;
+      color: #4444aa;
+      letter-spacing: 2px;
+      margin-bottom: 2px;
+    }
+
+    .fanzine-num {
+      font-size: 8px;
+      color: #2a2a50;
+      letter-spacing: 1px;
+    }
+
+    .fanzine-citation {
+      padding: 12px 14px;
+      font-size: 11px;
+      color: #333355;
+      font-style: italic;
+      line-height: 1.7;
+    }
+
+    /* SCÈNES JESSICA / LUCIOUS */
+    .scene-card {
+      background: #050510;
       border: 1px solid #1a1a2e;
       border-radius: 8px;
       overflow: hidden;
       display: none;
     }
 
-    .scene-card.visible { display: block; }
+    .scene-card.visible { display: block; animation: fadeIn 0.5s ease; }
 
-    .scene-header {
-      background: #0a0a1a;
-      padding: 8px 14px;
-      border-bottom: 1px solid #1a1a2e;
-      display: flex;
-      justify-content: space-between;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
+    .scene-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #1a1a2e;
+      background: #080818;
+    }
+
+    .scene-perso-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #aa448840;
+      background: #0a0a18;
+      flex-shrink: 0;
+    }
+
+    .scene-perso-avatar.lucious {
+      border-color: #44884440;
+    }
+
+    .scene-header-info { flex: 1; }
+
     .scene-titre {
-      font-size: 9px;
+      font-size: 11px;
       color: #444466;
       letter-spacing: 2px;
+      margin-bottom: 2px;
     }
 
     .scene-num {
-      font-size: 8px;
-      color: #222233;
+      font-size: 9px;
+      color: #2a2a40;
       letter-spacing: 1px;
+      font-style: italic;
     }
 
     .scene-body { padding: 14px; }
 
     .scene-texte {
       font-size: 11px;
-      color: #555577;
+      color: #444466;
       line-height: 1.8;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       font-style: italic;
     }
 
     .scene-texte em {
-      color: #7777aa;
+      color: #555577;
       font-style: normal;
     }
 
@@ -357,25 +387,25 @@
     }
 
     .scene-choix-btn {
-      background: #0a0a18;
+      background: #080818;
       border: 1px solid #1e1e3a;
       border-radius: 6px;
       padding: 10px 12px;
       cursor: pointer;
     }
 
-    .scene-choix-btn:active { background: #0f0f22; }
+    .scene-choix-btn:active { background: #0f0f22; border-color: #2e2e50; }
 
     .scene-choix-texte {
       font-size: 10px;
-      color: #6666aa;
+      color: #555577;
       letter-spacing: 0.5px;
       margin-bottom: 2px;
     }
 
     .scene-choix-effet {
       font-size: 8px;
-      color: #333355;
+      color: #222233;
       letter-spacing: 1px;
     }
 
@@ -395,10 +425,11 @@
 
     .sleep-btn-text {
       font-size: 10px;
-      color: #1a1a2e;
+      color: #111122;
       letter-spacing: 4px;
     }
 
+    /* NOTIF */
     .notif {
       display: none;
       position: fixed;
@@ -445,7 +476,7 @@
     <div class="night-info" id="night-info">—</div>
   </div>
 
-  <div class="main-area" id="main-area">
+  <div class="main-area">
 
     <!-- HEURE -->
     <div class="time-display">
@@ -454,27 +485,57 @@
     </div>
 
     <!-- BILAN -->
-    <div class="bilan-section" id="bilan-section">
+    <div class="bilan-section">
       <div class="bilan-label">BILAN DE LA JOURNÉE</div>
       <div id="bilan-contenu"></div>
     </div>
 
     <!-- COLLECTE JACKSON -->
     <div class="collecte-zone" id="collecte-zone">
-      <div class="collecte-label">COLLECTE — JACKSON</div>
-      <div class="collecte-montant" id="collecte-montant">—$</div>
-      <div class="collecte-detail" id="collecte-detail">—</div>
-      <div class="collecte-btn" id="collecte-btn"
-           onclick="payerJackson()">
-        REMETTRE LA COLLECTE
+      <div class="collecte-header">
+        <img class="jackson-avatar"
+             src="posters/jackson.png" alt="Jackson"
+             onerror="this.style.display='none'">
+        <div class="collecte-info">
+          <div class="collecte-label">COLLECTE — JACKSON</div>
+          <div class="collecte-montant" id="collecte-montant">—$</div>
+        </div>
       </div>
+      <div class="collecte-body">
+        <div class="collecte-detail" id="collecte-detail">—</div>
+        <div class="collecte-btn" id="collecte-btn"
+             onclick="payerJackson()">
+          REMETTRE LA COLLECTE
+        </div>
+      </div>
+    </div>
+
+    <!-- FANZINE CUTTER -->
+    <div class="fanzine-card" id="fanzine-card">
+      <div class="fanzine-header">
+        <img class="fanzine-cover"
+             src="posters/cuter_magazine.png"
+             alt="Celluloïd Scalpel"
+             onerror="this.style.display='none'">
+        <div class="fanzine-info">
+          <div class="fanzine-titre">CELLULOÏD SCALPEL</div>
+          <div class="fanzine-num" id="fanzine-num">—</div>
+        </div>
+      </div>
+      <div class="fanzine-citation" id="fanzine-citation">—</div>
     </div>
 
     <!-- SCÈNE JESSICA -->
     <div class="scene-card" id="scene-jessica">
       <div class="scene-header">
-        <span class="scene-titre">JESSICA</span>
-        <span class="scene-num" id="scene-jessica-num">—</span>
+        <img class="scene-perso-avatar"
+             src="posters/inconnu.png"
+             alt="Jessica"
+             onerror="this.src='posters/joie.png'">
+        <div class="scene-header-info">
+          <div class="scene-titre">JESSICA</div>
+          <div class="scene-num" id="scene-jessica-num">—</div>
+        </div>
       </div>
       <div class="scene-body">
         <div class="scene-texte" id="scene-jessica-texte">—</div>
@@ -485,8 +546,14 @@
     <!-- SCÈNE LUCIOUS -->
     <div class="scene-card" id="scene-lucious">
       <div class="scene-header">
-        <span class="scene-titre">LUCIOUS</span>
-        <span class="scene-num" id="scene-lucious-num">—</span>
+        <img class="scene-perso-avatar lucious"
+             src="posters/inconnu.png"
+             alt="Lucious"
+             onerror="this.src='posters/joie.png'">
+        <div class="scene-header-info">
+          <div class="scene-titre">LUCIOUS</div>
+          <div class="scene-num" id="scene-lucious-num">—</div>
+        </div>
       </div>
       <div class="scene-body">
         <div class="scene-texte" id="scene-lucious-texte">—</div>
@@ -499,6 +566,7 @@
 
   </div>
 
+  <!-- DORMIR -->
   <div class="sleep-btn" onclick="dormirJusquAuMatin()">
     <div class="sleep-btn-text">▽ FERMER LES YEUX ▽</div>
   </div>
@@ -508,6 +576,28 @@
   <script>
 
     let gameState = {};
+
+    // ===================================================
+    // AVATARS
+    // ===================================================
+
+    const MSG_AVATARS = {
+      jackson: 'posters/jackson.png',
+      corey:   'posters/joie.png',
+      cutter:  'posters/cuter.png',
+      anonyme: null
+    };
+
+    function getCoreyAvatar(note) {
+      if (note >= 8) return 'posters/joie.png';
+      if (note <= 3) return 'posters/colere.png';
+      return 'posters/peur.png';
+    }
+
+    function getJacksonAvatar(humeur) {
+      // Jackson toujours la même image pour l'instant
+      return 'posters/jackson.png';
+    }
 
     // ===================================================
     // SCÈNES JESSICA
@@ -651,7 +741,7 @@
         id: 'lucious_02',
         semaine_min: 2,
         titre: 'L\'Autel',
-        texte: `Près de la fenêtre — un autel bricolé. Statuette de Bouddha. Bâtons d'encens consumés. Des rouleaux de papier ligaturés de fil rouge. Lucious en déplie un. <em>"Que j'arrive à partir de mon boulot."</em> Un autre. <em>"Qu'elle ne me quitte jamais."</em> Prières de survie griffonnées à l'encre pâle. John Wang priait pour des choses simples.`,
+        texte: `Près de la fenêtre — un autel bricolé. Statuette de Bouddha. Bâtons d'encens consumés. Des rouleaux de papier ligaturés de fil rouge. Lucious en déplie un. <em>"Que j'arrive à partir de mon boulot."</em> Un autre. <em>"Qu'elle ne me quitte jamais."</em> Prières de survie griffonnées à l'encre pâle.`,
         choix: [
           {
             texte: 'Prendre les rouleaux comme preuve.',
@@ -726,137 +816,6 @@
     ];
 
     // ===================================================
-    // MESSAGES JACKSON
-    // ===================================================
-
-    function getMessageJackson(gs) {
-      const semaine = gs.semaine || 1;
-      const humeur  = gs.jacksonHumeur || 'cool';
-      const note    = gs.currentNote || 5;
-      const discretion = gs.discretion || 0;
-      const estMercredi = ((gs.jour - 1) % 7) === 2;
-
-      let msg = '';
-      let classe = 'msg-jackson';
-
-      if (estMercredi) {
-        // Jour de collecte
-        const montant = getCollecteMontant(gs);
-        msg = `Mercredi. Je passe ce soir. ${montant}$ comme convenu.`;
-        classe = 'msg-jackson';
-      } else if (humeur === 'furieux' || discretion >= 70) {
-        msg = getMessageFurieux(gs);
-        classe = 'msg-jackson furieux';
-      } else if (humeur === 'tendu' || discretion >= 50) {
-        msg = getMessageTendu(gs);
-        classe = 'msg-jackson tendu';
-      } else {
-        msg = getMessageCool(gs);
-        classe = 'msg-jackson';
-      }
-
-      return { msg, classe };
-    }
-
-    function getCollecteMontant(gs) {
-      const base = 80;
-      const bonus = Math.floor((gs.credibilite || 0) / 20) * 10;
-      return base + bonus;
-    }
-
-    function getMessageCool(gs) {
-      const msgs = [
-        "Les affaires continuent. C'est bien.",
-        "T'as fait quoi ce soir ? Je veux pas savoir. Continue.",
-        "Le vidéoclub tourne. Garde ça comme ça.",
-        "Certaines personnes posent des questions. Réponds pas.",
-        "Je t'ai dit de rien faire d'inhabituel. T'as écouté. Bien."
-      ];
-      let msg = msgs[Math.floor(Math.random() * msgs.length)];
-
-      // Mention DiMaggio dès S3
-      if (gs.semaine >= 3 && Math.random() > 0.5) {
-        const dimaggio = [
-          "DiMaggio a demandé si le Rewind Paradise était fiable. J'ai dit oui.",
-          "DiMaggio sait que t'existes. C'est pas encore un problème.",
-          "M. DiMaggio voudrait te rencontrer. Pas encore une invitation officielle."
-        ];
-        msg += ' ' + dimaggio[Math.floor(Math.random() * dimaggio.length)];
-      }
-
-      return msg;
-    }
-
-    function getMessageTendu(gs) {
-      const msgs = [
-        "Fais profil bas cette semaine. Je dis pas pourquoi.",
-        "DiMaggio a entendu des choses. Je te dis ça pour que tu saches.",
-        "Le type en costume qui vient — laisse-le faire. Il fait partie des meubles.",
-        "J'ai eu des questions sur le Rewind Paradise. J'ai rien dit.",
-        "Reste tranquille. Pour l'instant."
-      ];
-      return msgs[Math.floor(Math.random() * msgs.length)];
-    }
-
-    function getMessageFurieux(gs) {
-      const msgs = [
-        "T'as un problème Fred. Et c'est mon problème aussi.",
-        "Le Rewind Paradise peut fermer aussi vite qu'il a ouvert.",
-        "DiMaggio est pas content. Moi non plus.",
-        "Dernière chance. Je dis ça rarement.",
-        "J'attends une explication. Courte. Claire."
-      ];
-      return msgs[Math.floor(Math.random() * msgs.length)];
-    }
-
-    // ===================================================
-    // MESSAGE COREY
-    // ===================================================
-
-    function getMessageCorey(gs) {
-      const note = gs.currentNote || 5;
-      const semaine = gs.semaine || 1;
-
-      if (note >= 9) {
-        return "Je savais que t'avais ça en toi. Repose-toi.";
-      } else if (note >= 7) {
-        return "Bonne coupe ce soir. Cutter va remarquer.";
-      } else if (note >= 5) {
-        return "Correct. La prochaine fois va plus loin.";
-      } else if (note >= 3) {
-        return "C'était pas ça. On recommence demain.";
-      } else {
-        return "Non. Juste... non. Dors.";
-      }
-    }
-
-    // ===================================================
-    // MESSAGE CUTTER
-    // ===================================================
-
-    function getMessageCutter(gs) {
-      const note      = gs.currentNote || 5;
-      const cassette  = gs.derniereCassette || '';
-      const semaine   = gs.semaine || 1;
-
-      if (semaine < 2) return null;
-      if (Math.random() > 0.4) return null; // Pas toujours
-
-      const citations = [
-        "Un micro-métrage c'est pas résumer un film. C'est trouver le moment où le film n'a plus besoin de continuer.",
-        "La bascule c'est pas un moment. C'est une décision.",
-        "Couper trop tôt c'est de la lâcheté déguisée en minimalisme.",
-        "Couper trop tard c'est vouloir expliquer. Le cinéma n'explique pas.",
-        "Le meilleur micro-métrage que j'ai vu cette année. Je donne pas le nom. Pas encore.",
-        "Quelqu'un dans ce quartier fait du cinéma sans le savoir. Ou en le sachant très bien.",
-        "Un bon micro-métrage ne change pas la fin. Il révèle que le début était déjà foutu.",
-        "Je ne comprends pas encore pourquoi cette coupe fonctionne. Mais elle fonctionne. Je déteste ça."
-      ];
-
-      return citations[Math.floor(Math.random() * citations.length)];
-    }
-
-    // ===================================================
     // INIT
     // ===================================================
 
@@ -867,9 +826,12 @@
 
       updateNightInfo();
       afficherBilan();
-      afficherMessages();
-      afficherScenes();
       afficherCollecte();
+      afficherFanzine();
+      afficherScenes();
+
+      // Messages avec délai
+      setTimeout(afficherMessages, 600);
     };
 
     // ===================================================
@@ -877,51 +839,39 @@
     // ===================================================
 
     function afficherBilan() {
-      const gs  = gameState;
+      const gs   = gameState;
       const note = gs.currentNote || 0;
 
       const lignes = [
         {
           nom: 'CAISSE',
           val: gs.argent + '$',
-          classe: gs.argent >= 200 ? 'positif'
-                : gs.argent >= 80  ? 'neutre'
-                : 'negatif'
+          classe: gs.argent >= 200 ? 'positif' : gs.argent >= 80 ? 'neutre' : 'negatif'
         },
         {
           nom: 'NOTE CUTTER',
           val: note > 0 ? note + '/10' : '—',
-          classe: note >= 7 ? 'positif'
-                : note >= 4 ? 'neutre'
-                : 'negatif'
+          classe: note >= 7 ? 'positif' : note >= 4 ? 'neutre' : 'negatif'
         },
         {
           nom: 'LÉGALITÉ',
           val: gs.legalite + '%',
-          classe: gs.legalite < 30 ? 'positif'
-                : gs.legalite < 60 ? 'neutre'
-                : 'negatif'
+          classe: gs.legalite < 30 ? 'positif' : gs.legalite < 60 ? 'neutre' : 'negatif'
         },
         {
           nom: 'EXPOSITION',
           val: gs.exposition + '%',
-          classe: gs.exposition < 30 ? 'positif'
-                : gs.exposition < 60 ? 'neutre'
-                : 'negatif'
+          classe: gs.exposition < 30 ? 'positif' : gs.exposition < 60 ? 'neutre' : 'negatif'
         },
         {
           nom: 'DISCRÉTION',
-          val: gs.discretion + '%',
-          classe: gs.discretion < 40 ? 'positif'
-                : gs.discretion < 70 ? 'neutre'
-                : 'negatif'
+          val: (gs.discretion || 0) + '%',
+          classe: (gs.discretion||0) < 40 ? 'positif' : (gs.discretion||0) < 70 ? 'neutre' : 'negatif'
         },
         {
           nom: 'RÉPUTATION',
-          val: '★'.repeat(Math.round(gs.reputation || 0)),
-          classe: gs.reputation >= 3 ? 'positif'
-                : gs.reputation >= 2 ? 'neutre'
-                : 'negatif'
+          val: '★'.repeat(Math.round(gs.reputation || 0)) || '—',
+          classe: gs.reputation >= 3 ? 'positif' : gs.reputation >= 2 ? 'neutre' : 'negatif'
         }
       ];
 
@@ -938,8 +888,14 @@
     // COLLECTE JACKSON
     // ===================================================
 
+    function getCollecteMontant(gs) {
+      const base  = 80;
+      const bonus = Math.floor((gs.credibilite || 0) / 20) * 10;
+      return base + bonus;
+    }
+
     function afficherCollecte() {
-      const gs = gameState;
+      const gs          = gameState;
       const estMercredi = ((gs.jour - 1) % 7) === 2;
       if (!estMercredi) return;
 
@@ -972,14 +928,14 @@
       if (gs.argent >= montant) {
         gs.argent -= montant;
         gs.jacksonHumeur = 'cool';
-        showNotif('Collecte remise. Jackson repart sans un mot.');
+        showNotif('Collecte remise. Jackson repart.');
       } else {
         const paye = gs.argent;
         gs.argent  = 0;
         gs.jacksonHumeur = 'tendu';
         gs.legalite = Math.min(100, gs.legalite + 5);
         showNotif(
-          `${paye}$ remis. Il manquait ${montant - paye}$. Jackson est pas content.`
+          `${paye}$ remis. Il manquait ${montant - paye}$.`
         );
       }
 
@@ -988,65 +944,107 @@
     }
 
     // ===================================================
+    // FANZINE CUTTER
+    // ===================================================
+
+    function afficherFanzine() {
+      const gs      = gameState;
+      const semaine = gs.semaine || 1;
+
+      if (semaine < 2) return;
+      if (Math.random() > 0.4) return;
+
+      const citations = [
+        "Un micro-métrage c'est pas résumer un film. C'est trouver le moment où le film n'a plus besoin de continuer.",
+        "La bascule c'est pas un moment. C'est une décision.",
+        "Couper trop tôt c'est de la lâcheté déguisée en minimalisme.",
+        "Couper trop tard c'est vouloir expliquer. Le cinéma n'explique pas.",
+        "Le meilleur micro-métrage que j'ai vu cette année. Je donne pas le nom. Pas encore.",
+        "Quelqu'un dans ce quartier fait du cinéma sans le savoir. Ou en le sachant très bien.",
+        "Un bon micro-métrage ne change pas la fin. Il révèle que le début était déjà foutu.",
+        "Je ne comprends pas encore pourquoi cette coupe fonctionne. Mais elle fonctionne. Je déteste ça.",
+        "Ce film est sur le regard. Couper sur le regard c'est soit de la lâcheté soit du génie.",
+        "Votre coupe révèle si vous faites confiance au spectateur."
+      ];
+
+      const nums = ['#17', '#18', '#19', '#20', '#21'];
+      const num  = nums[Math.floor(Math.random() * nums.length)];
+
+      document.getElementById('fanzine-num').textContent =
+        'CELLULOÏD SCALPEL ' + num + ' — THE GLITCH';
+      document.getElementById('fanzine-citation').textContent =
+        '"' + citations[Math.floor(Math.random() * citations.length)] + '"';
+
+      document.getElementById('fanzine-card').classList.add('visible');
+    }
+
+    // ===================================================
     // MESSAGES
     // ===================================================
 
     function afficherMessages() {
-      const gs       = gameState;
-      const section  = document.getElementById('messages-section');
+      const gs      = gameState;
+      const section = document.getElementById('messages-section');
+      const note    = gs.currentNote || 5;
+      const humeur  = gs.jacksonHumeur || 'cool';
+
       const messages = [];
-      let delay      = 0;
 
-      // Jackson
-      const jackson = getMessageJackson(gs);
-      messages.push({
-        expediteur: 'JACKSON',
-        heure:      '23:' + String(Math.floor(Math.random()*30)+15).padStart(2,'0'),
-        texte:      jackson.msg,
-        classe:     jackson.classe,
-        important:  gs.jacksonHumeur !== 'cool'
-      });
+      // JACKSON
+      const estMercredi = ((gs.jour - 1) % 7) === 2;
+      let jacksonMsg = '', jacksonClasse = 'msg-jackson';
 
-      // Corey
-      messages.push({
-        expediteur: 'COREY',
-        heure:      '23:' + String(Math.floor(Math.random()*20)+40).padStart(2,'0'),
-        texte:      getMessageCorey(gs),
-        classe:     'msg-corey',
-        important:  false
-      });
+      if (!estMercredi) {
+        if (humeur === 'furieux' || (gs.discretion || 0) >= 70) {
+          jacksonMsg   = getJacksonFurieux();
+          jacksonClasse = 'msg-jackson furieux';
+        } else if (humeur === 'tendu' || (gs.discretion || 0) >= 50) {
+          jacksonMsg   = getJacksonTendu(gs);
+          jacksonClasse = 'msg-jackson tendu';
+        } else {
+          jacksonMsg = getJacksonCool(gs);
+        }
 
-      // Cutter (conditionnel)
-      const cutter = getMessageCutter(gs);
-      if (cutter) {
         messages.push({
-          expediteur: 'CELLULOÏD SCALPEL',
-          heure:      '00:' + String(Math.floor(Math.random()*59)).padStart(2,'0'),
-          texte:      cutter,
-          classe:     'msg-cutter',
-          important:  true,
-          isCutter:   true
+          expediteur: 'JACKSON',
+          heure:      heure(),
+          texte:      jacksonMsg,
+          classe:     jacksonClasse,
+          avatar:     getJacksonAvatar(humeur),
+          important:  humeur !== 'cool'
         });
       }
 
+      // COREY
+      messages.push({
+        expediteur: 'COREY',
+        heure:      heure(true),
+        texte:      getCoreyMsg(note),
+        classe:     'msg-corey',
+        avatar:     getCoreyAvatar(note),
+        important:  false
+      });
+
       // Message anonyme si discrétion haute
-      if (gs.discretion >= 50) {
+      if ((gs.discretion || 0) >= 50) {
         messages.push({
           expediteur: '— ANONYME —',
-          heure:      '01:' + String(Math.floor(Math.random()*59)).padStart(2,'0'),
+          heure:      heureNuit(),
           texte:      'Faites attention. Quelqu\'un pose des questions.',
           classe:     'msg-anonyme',
+          avatar:     null,
           important:  true
         });
       }
 
-      // Message DiMaggio indirect (S3+)
+      // DiMaggio S3+
       if (gs.semaine >= 3 && gs.ultimatum_dimaggio) {
         messages.push({
           expediteur: 'NUMÉRO INCONNU',
           heure:      '02:13',
           texte:      'M. DiMaggio vous attend. C\'est pas une suggestion.',
           classe:     'msg-anonyme',
+          avatar:     null,
           important:  true
         });
       }
@@ -1059,26 +1057,34 @@
           card.className = `message-card ${msg.classe}`;
           card.style.animationDelay = '0s';
 
-          const couleurExp =
-            msg.classe.includes('jackson')  ? '#2a2a50' :
-            msg.classe.includes('corey')    ? '#ff885560' :
-            msg.classe.includes('cutter')   ? '#4444aa' :
-            msg.classe.includes('jessica')  ? '#aa4488' :
-            msg.classe.includes('lucious')  ? '#448844' :
-                                              '#222233';
+          const couleur =
+            msg.classe.includes('jackson') ? '#1a1a40' :
+            msg.classe.includes('corey')   ? '#ff885540' :
+            msg.classe.includes('cutter')  ? '#333388' :
+                                             '#111122';
 
-          const classeTexte =
-            msg.important     ? 'important' :
-            msg.isCutter      ? 'cutter'    :
-            msg.classe.includes('furieux') ? 'urgent' : '';
+          const avatarHtml = msg.avatar
+            ? `<img class="msg-avatar"
+                    src="${msg.avatar}" alt=""
+                    onerror="this.style.display='none'">`
+            : `<div style="width:40px;height:40px;border-radius:50%;
+                    background:#080818;flex-shrink:0;
+                    border:1px solid #111122;"></div>`;
+
+          const classeTexte = msg.important ? 'important'
+                            : msg.classe.includes('furieux') ? 'urgent'
+                            : '';
 
           card.innerHTML = `
-            <div class="msg-header">
-              <span class="msg-expediteur"
-                    style="color:${couleurExp}">
-                ${msg.expediteur}
-              </span>
-              <span class="msg-heure">${msg.heure}</span>
+            <div class="msg-header-row">
+              ${avatarHtml}
+              <div class="msg-header-info">
+                <span class="msg-expediteur"
+                      style="color:${couleur}">
+                  ${msg.expediteur}
+                </span>
+                <span class="msg-heure">${msg.heure}</span>
+              </div>
             </div>
             <div class="msg-texte ${classeTexte}">
               "${msg.texte}"
@@ -1086,100 +1092,140 @@
           `;
 
           section.appendChild(card);
-        }, delay);
-        delay += 400;
+        }, i * 400);
       });
     }
 
     // ===================================================
-    // SCÈNES JESSICA + LUCIOUS
+    // CONTENU MESSAGES
+    // ===================================================
+
+    function getJacksonCool(gs) {
+      const pool = [
+        "Les affaires continuent. C'est bien.",
+        "T'as fait quoi ce soir ? Je veux pas savoir. Continue.",
+        "Certaines personnes posent des questions. Réponds pas.",
+        "Le vidéoclub tourne. Garde ça comme ça.",
+        "Je t'ai dit de rien faire d'inhabituel. T'as écouté. Bien."
+      ];
+      let msg = pool[Math.floor(Math.random() * pool.length)];
+
+      if (gs.semaine >= 3 && Math.random() > 0.5) {
+        const dimaggio = [
+          "DiMaggio a demandé si le Rewind Paradise était fiable. J'ai dit oui.",
+          "DiMaggio sait que t'existes. C'est pas encore un problème.",
+          "M. DiMaggio voudrait te rencontrer. Pas encore une invitation officielle."
+        ];
+        msg += ' ' + dimaggio[Math.floor(Math.random() * dimaggio.length)];
+      }
+
+      return msg;
+    }
+
+    function getJacksonTendu(gs) {
+      const pool = [
+        "Fais profil bas cette semaine. Je dis pas pourquoi.",
+        "DiMaggio a entendu des choses. Je te dis ça pour que tu saches.",
+        "J'ai eu des questions sur le Rewind Paradise. J'ai rien dit.",
+        "Reste tranquille. Pour l'instant.",
+        "Le type en costume qui vient — laisse-le faire."
+      ];
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function getJacksonFurieux() {
+      const pool = [
+        "T'as un problème Fred. Et c'est mon problème aussi.",
+        "Le Rewind Paradise peut fermer aussi vite qu'il a ouvert.",
+        "DiMaggio est pas content. Moi non plus.",
+        "Dernière chance. Je dis ça rarement.",
+        "J'attends une explication. Courte. Claire."
+      ];
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function getCoreyMsg(note) {
+      if (note >= 9) return "Je savais que t'avais ça en toi. Repose-toi.";
+      if (note >= 7) return "Bonne coupe ce soir. Cutter va remarquer.";
+      if (note >= 5) return "Correct. La prochaine fois va plus loin.";
+      if (note >= 3) return "C'était pas ça. On recommence demain.";
+      return "Non. Juste... non. Dors.";
+    }
+
+    // ===================================================
+    // HEURES
+    // ===================================================
+
+    function heure(tard) {
+      const h = tard ? '00' : '23';
+      const m = String(Math.floor(Math.random() * 59)).padStart(2,'0');
+      return `${h}:${m}`;
+    }
+
+    function heureNuit() {
+      const h = String(Math.floor(Math.random() * 3) + 1).padStart(2,'0');
+      const m = String(Math.floor(Math.random() * 59)).padStart(2,'0');
+      return `0${h}:${m}`;
+    }
+
+    // ===================================================
+    // SCÈNES
     // ===================================================
 
     function afficherScenes() {
       const gs = gameState;
 
-      // Jessica — prochaine scène non vue
-      const sceneJessica = SCENES_JESSICA.find(s =>
+      const scJ = SCENES_JESSICA.find(s =>
         s.semaine_min <= gs.semaine &&
         !gs['scene_' + s.id + '_vue']
       );
 
-      if (sceneJessica && Math.random() > 0.4) {
-        afficherSceneJessica(sceneJessica);
+      if (scJ && Math.random() > 0.4) {
+        afficherScene('jessica', scJ);
       }
 
-      // Lucious — prochaine scène non vue
-      const sceneLucious = SCENES_LUCIOUS.find(s =>
+      const scL = SCENES_LUCIOUS.find(s =>
         s.semaine_min <= gs.semaine &&
         !gs['scene_' + s.id + '_vue']
       );
 
-      if (sceneLucious && Math.random() > 0.4) {
-        setTimeout(() => afficherSceneLucious(sceneLucious), 600);
+      if (scL && Math.random() > 0.4) {
+        setTimeout(() => afficherScene('lucious', scL), 300);
       }
     }
 
-    function afficherSceneJessica(scene) {
-      const card = document.getElementById('scene-jessica');
-      document.getElementById('scene-jessica-num').textContent =
+    function afficherScene(perso, scene) {
+      const card = document.getElementById('scene-' + perso);
+      document.getElementById('scene-' + perso + '-num').textContent =
         scene.titre;
-      document.getElementById('scene-jessica-texte').innerHTML =
+      document.getElementById('scene-' + perso + '-texte').innerHTML =
         scene.texte;
 
-      const choixEl = document.getElementById('scene-jessica-choix');
+      const choixEl = document.getElementById(
+        'scene-' + perso + '-choix'
+      );
       choixEl.innerHTML = scene.choix.map((c, i) => `
         <div class="scene-choix-btn"
-             onclick="resoudreJessica(${i})">
+             onclick="resoudreScene('${perso}', ${i})">
           <div class="scene-choix-texte">▶ ${c.texte}</div>
           <div class="scene-choix-effet">${c.detail}</div>
         </div>
       `).join('');
 
       card.classList.add('visible');
-      window.sceneJessicaCourante = scene;
+      window['scene_' + perso + '_courante'] = scene;
     }
 
-    function resoudreJessica(index) {
-      const scene = window.sceneJessicaCourante;
+    function resoudreScene(perso, index) {
+      const scene = window['scene_' + perso + '_courante'];
       if (!scene) return;
 
       scene.choix[index].impact(gameState);
       gameState['scene_' + scene.id + '_vue'] = true;
 
-      document.getElementById('scene-jessica').classList.remove('visible');
-      showNotif('Jessica — ' + scene.choix[index].effet);
-      saveGame();
-    }
-
-    function afficherSceneLucious(scene) {
-      const card = document.getElementById('scene-lucious');
-      document.getElementById('scene-lucious-num').textContent =
-        scene.titre;
-      document.getElementById('scene-lucious-texte').innerHTML =
-        scene.texte;
-
-      const choixEl = document.getElementById('scene-lucious-choix');
-      choixEl.innerHTML = scene.choix.map((c, i) => `
-        <div class="scene-choix-btn"
-             onclick="resoudreLucious(${i})">
-          <div class="scene-choix-texte">▶ ${c.texte}</div>
-          <div class="scene-choix-effet">${c.detail}</div>
-        </div>
-      `).join('');
-
-      card.classList.add('visible');
-      window.sceneLuciousCourante = scene;
-    }
-
-    function resoudreLucious(index) {
-      const scene = window.sceneLuciousCourante;
-      if (!scene) return;
-
-      scene.choix[index].impact(gameState);
-      gameState['scene_' + scene.id + '_vue'] = true;
-
-      document.getElementById('scene-lucious').classList.remove('visible');
-      showNotif('Lucious — ' + scene.choix[index].effet);
+      document.getElementById('scene-' + perso)
+              .classList.remove('visible');
+      showNotif(scene.choix[index].effet);
       saveGame();
     }
 
@@ -1190,29 +1236,28 @@
     function dormirJusquAuMatin() {
       const gs = gameState;
 
-      // Avancer le jour
       gs.jour++;
-
-      // Semaine
-      if (gs.jour > 1 && (gs.jour - 1) % 7 === 0) {
-        gs.semaine++;
-      }
+      if (gs.jour > 1 && (gs.jour - 1) % 7 === 0) gs.semaine++;
 
       // Récupération énergie
-      const bonusNote = gs.energieBonusTomorrow || 0;
-      gs.energie = Math.min(
+      const bonus = gs.energieBonusTomorrow || 0;
+      gs.energie  = Math.min(
         gs.energieMax || 15,
-        (gs.energieMax || 15) * 0.7 + bonusNote
+        Math.round((gs.energieMax || 15) * 0.7) + bonus
       );
       gs.energieBonusTomorrow = 0;
 
-      // Réinitialiser phase journée
+      // Reset phase
       gs.phase_journee = 'matin';
 
-      // Discrétion redescend légèrement la nuit
+      // Discrétion -5 la nuit
       gs.discretion = Math.max(0, (gs.discretion || 0) - 5);
 
-      // Vérifier fin du jeu
+      // Légalité monte si trop de distribution
+      if ((gs.noires_distribuees || 0) > 3)
+        gs.legalite = Math.min(100, gs.legalite + 2);
+
+      // Fin du jeu ?
       if (gs.semaine > 4) {
         saveGame();
         document.body.classList.add('fade-out');
@@ -1222,13 +1267,7 @@
         return;
       }
 
-      // Legalité monte légèrement si micro-métrages distribués
-      if ((gs.noires_distribuees || 0) > 3) {
-        gs.legalite = Math.min(100, gs.legalite + 2);
-      }
-
       saveGame();
-
       document.body.classList.add('fade-out');
       setTimeout(() => {
         window.location.href = 'game.html';
@@ -1243,10 +1282,10 @@
       document.getElementById('night-info').textContent =
         `Nuit — Jour ${gameState.jour}`;
 
-      // Heure aléatoire entre 23h et 2h
       const h = Math.random() > 0.5
         ? '23:' + String(Math.floor(Math.random()*59)).padStart(2,'0')
-        : '0' + Math.floor(Math.random()*3) + ':' + String(Math.floor(Math.random()*59)).padStart(2,'0');
+        : '0' + Math.floor(Math.random()*3) + ':' +
+          String(Math.floor(Math.random()*59)).padStart(2,'0');
       document.getElementById('time-val').textContent = h;
     }
 
