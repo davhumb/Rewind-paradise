@@ -22,7 +22,6 @@
       position: relative;
     }
 
-    /* SCANLINES */
     body::before {
       content: '';
       position: fixed;
@@ -38,7 +37,6 @@
       z-index: 10;
     }
 
-    /* TRACKING LINE */
     .tracking {
       position: fixed;
       width: 100%; height: 2px;
@@ -52,7 +50,17 @@
       100% { top: 100vh; }
     }
 
-    /* HERO — image du vidéoclub */
+    .mute-btn {
+      position: fixed;
+      top: 14px; right: 16px;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0.5;
+      z-index: 200;
+    }
+
+    .mute-btn:active { opacity: 1; }
+
     .hero {
       width: 100%;
       position: relative;
@@ -68,7 +76,6 @@
       filter: brightness(0.7) saturate(1.2) contrast(1.1);
     }
 
-    /* Overlay dégradé sur l'image */
     .hero-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -81,7 +88,6 @@
       );
     }
 
-    /* TITRE sur l'image */
     .hero-titre {
       position: absolute;
       bottom: 20px; left: 0; right: 0;
@@ -140,7 +146,6 @@
       display: block;
     }
 
-    /* CONTENU PRINCIPAL */
     .main {
       width: 100%;
       max-width: 420px;
@@ -152,7 +157,6 @@
       z-index: 5;
     }
 
-    /* VHS BADGE */
     .vhs-badge {
       display: flex;
       align-items: center;
@@ -161,15 +165,8 @@
       padding: 6px 0;
     }
 
-    .vhs-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #1e1e3a);
-    }
-
-    .vhs-line.right {
-      background: linear-gradient(90deg, #1e1e3a, transparent);
-    }
+    .vhs-line       { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #1e1e3a); }
+    .vhs-line.right { background: linear-gradient(90deg, #1e1e3a, transparent); }
 
     .vhs-text {
       font-size: 8px;
@@ -188,7 +185,6 @@
       99%            { opacity: 1; }
     }
 
-    /* SYNOPSIS */
     .synopsis {
       background: #080810;
       border: 1px solid #1e1e3a;
@@ -209,7 +205,6 @@
       font-style: normal;
     }
 
-    /* PERSONNAGES */
     .personnages {
       display: flex;
       gap: 10px;
@@ -246,7 +241,6 @@
       text-align: center;
     }
 
-    /* ÉLÉMENTS VHS */
     .vhs-elements {
       display: flex;
       justify-content: space-around;
@@ -263,7 +257,6 @@
     .vhs-element-icon  { font-size: 20px; }
     .vhs-element-label { font-size: 8px; color: #333355; letter-spacing: 2px; }
 
-    /* INFOS */
     .infos {
       background: #080810;
       border: 1px solid #1e1e3a;
@@ -283,7 +276,6 @@
     .info-label { font-size: 8px; color: #222244; letter-spacing: 2px; }
     .info-val   { font-size: 9px; color: #444466; letter-spacing: 1px; }
 
-    /* CRÉDITS */
     .credits {
       text-align: center;
       display: flex;
@@ -291,16 +283,9 @@
       gap: 4px;
     }
 
-    .credits-ligne {
-      font-size: 8px;
-      color: #1a1a2e;
-      letter-spacing: 2px;
-      line-height: 1.8;
-    }
-
+    .credits-ligne        { font-size: 8px; color: #1a1a2e; letter-spacing: 2px; line-height: 1.8; }
     .credits-ligne.accent { color: #2a2a40; }
 
-    /* BOUTONS FIXES EN BAS */
     .fixed-bottom {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -312,7 +297,6 @@
       z-index: 20;
     }
 
-    /* BOUTON JOUER */
     .btn-jouer {
       width: 100%;
       background: #071a10;
@@ -334,10 +318,7 @@
       position: absolute;
       top: 0; left: -100%;
       width: 100%; height: 100%;
-      background: linear-gradient(
-        90deg, transparent,
-        rgba(0,255,200,0.1), transparent
-      );
+      background: linear-gradient(90deg, transparent, rgba(0,255,200,0.1), transparent);
       animation: shimmer 3s infinite;
     }
 
@@ -363,7 +344,6 @@
       font-family: 'Courier New', monospace;
     }
 
-    /* BOUTON CONTINUER */
     .btn-continuer {
       width: 100%;
       background: #080818;
@@ -394,7 +374,6 @@
       font-family: 'Courier New', monospace;
     }
 
-    /* STATUT BAS */
     .statut-bar {
       display: flex;
       justify-content: space-between;
@@ -402,25 +381,16 @@
       padding: 0 2px;
     }
 
-    .statut-left {
-      font-size: 7px;
-      color: #111122;
-      letter-spacing: 2px;
-    }
-
-    .statut-right {
-      font-size: 7px;
-      color: #111122;
-      letter-spacing: 2px;
-    }
+    .statut-left  { font-size: 7px; color: #111122; letter-spacing: 2px; }
+    .statut-right { font-size: 7px; color: #111122; letter-spacing: 2px; }
 
   </style>
 </head>
 <body>
 
   <div class="tracking"></div>
+  <div class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊</div>
 
-  <!-- HERO — image du vidéoclub -->
   <div class="hero">
     <img class="hero-img"
          src="posters/rewind_paradise.png"
@@ -434,17 +404,14 @@
     </div>
   </div>
 
-  <!-- CONTENU -->
   <div class="main">
 
-    <!-- VHS BADGE -->
     <div class="vhs-badge">
       <div class="vhs-line"></div>
       <span class="vhs-text">📼 VHS · HI-FI STÉRÉO · COULEUR</span>
       <div class="vhs-line right"></div>
     </div>
 
-    <!-- SYNOPSIS -->
     <div class="synopsis">
       <div class="synopsis-text">
         Vous êtes <strong>Fred</strong>.<br>
@@ -457,35 +424,29 @@
       </div>
     </div>
 
-    <!-- PERSONNAGES -->
     <div class="personnages">
       <div class="perso-card">
-        <img class="perso-avatar"
-             src="posters/fred.png" alt="Fred"
+        <img class="perso-avatar" src="posters/fred.png" alt="Fred"
              onerror="this.style.display='none'">
         <div class="perso-name">FRED</div>
       </div>
       <div class="perso-card">
-        <img class="perso-avatar"
-             src="posters/joie.png" alt="Corey"
+        <img class="perso-avatar" src="posters/joie.png" alt="Corey"
              onerror="this.style.display='none'">
         <div class="perso-name">COREY</div>
       </div>
       <div class="perso-card">
-        <img class="perso-avatar"
-             src="posters/canopi.png" alt="Canopi"
+        <img class="perso-avatar" src="posters/canopi.png" alt="Canopi"
              onerror="this.style.display='none'">
         <div class="perso-name">CANOPI</div>
       </div>
       <div class="perso-card">
-        <img class="perso-avatar"
-             src="posters/ramon.png" alt="Ramon"
+        <img class="perso-avatar" src="posters/ramon.png" alt="Ramon"
              onerror="this.style.display='none'">
         <div class="perso-name">RAMON</div>
       </div>
     </div>
 
-    <!-- ICÔNES VHS -->
     <div class="vhs-elements">
       <div class="vhs-element">
         <span class="vhs-element-icon">✂</span>
@@ -505,7 +466,6 @@
       </div>
     </div>
 
-    <!-- INFOS -->
     <div class="infos">
       <div class="info-ligne">
         <span class="info-label">GENRE</span>
@@ -533,38 +493,33 @@
       </div>
     </div>
 
-    <!-- CRÉDITS -->
     <div class="credits">
       <div class="credits-ligne accent">
         Basé sur le roman <em>Micro-Métrage</em>
       </div>
-      <div class="credits-ligne">
-        de David Humbert
-      </div>
+      <div class="credits-ligne">de David Humbert</div>
       <div class="credits-ligne" style="margin-top:6px;">
         ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
       </div>
     </div>
 
-    <!-- Espace pour les boutons fixes -->
-    <div style="height: 120px;"></div>
+    <div style="height:120px;"></div>
 
   </div>
 
-  <!-- BOUTONS FIXES EN BAS -->
   <div class="fixed-bottom">
 
-    <a class="btn-jouer" href="index.html">
+    <div class="btn-jouer"
+         onclick="fadeOutMusic(()=>window.location.href='game.html')"
       <div class="btn-jouer-text">▶ JOUER</div>
       <div class="btn-jouer-sub">APPUYEZ POUR LANCER</div>
-    </a>
+    </div>
 
-    <a class="btn-continuer" id="btn-continuer" href="game.html">
-      <div class="btn-continuer-text" id="btn-continuer-text">
-        ▶ CONTINUER
-      </div>
-      <div class="btn-continuer-sub" id="btn-continuer-sub">—</div>
-    </a>
+    <div class="btn-continuer" id="btn-continuer"
+         onclick="fadeOutMusic(()=>window.location.href='game.html')">
+      <div class="btn-continuer-text" id="btn-continuer-text">▶ CONTINUER</div>
+      <div class="btn-continuer-sub"  id="btn-continuer-sub">—</div>
+    </div>
 
     <div class="statut-bar">
       <span class="statut-left">▶ PLAY</span>
@@ -573,7 +528,52 @@
 
   </div>
 
+  <audio id="bg-music" loop>
+    <source src="music/landing.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
+
+    let music   = null;
+    let isMuted = false;
+
+    function initMusic() {
+      music   = document.getElementById('bg-music');
+      isMuted = localStorage.getItem('rewind_muted') === 'true';
+      music.volume = 0.25;
+      music.muted  = isMuted;
+      document.getElementById('mute-btn').textContent =
+        isMuted ? '🔇' : '🔊';
+      const p = music.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          document.addEventListener('touchstart',
+            () => music.play(), { once: true });
+        });
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      if (music) music.muted = isMuted;
+      localStorage.setItem('rewind_muted', isMuted);
+      document.getElementById('mute-btn').textContent =
+        isMuted ? '🔇' : '🔊';
+    }
+
+    function fadeOutMusic(callback) {
+      if (!music || isMuted) { if (callback) callback(); return; }
+      let vol = music.volume;
+      const fade = setInterval(() => {
+        vol = Math.max(0, vol - 0.05);
+        music.volume = vol;
+        if (vol <= 0) {
+          clearInterval(fade);
+          music.pause();
+          if (callback) callback();
+        }
+      }, 50);
+    }
 
     // Timecode VHS
     let secondes = 0;
@@ -586,21 +586,21 @@
       if (el) el.textContent = `${h}:${m}:${s}`;
     }, 1000);
 
-    // Bouton continuer si partie en cours
     window.onload = function() {
+      initMusic();
+
       const save = localStorage.getItem('rewindParadise_save');
       if (save) {
         try {
           const gs = JSON.parse(save);
           if (gs.jour > 1) {
-            const btn    = document.getElementById('btn-continuer');
-            const texte  = document.getElementById('btn-continuer-text');
-            const sub    = document.getElementById('btn-continuer-sub');
+            const btn  = document.getElementById('btn-continuer');
+            const txt  = document.getElementById('btn-continuer-text');
+            const sub  = document.getElementById('btn-continuer-sub');
             btn.classList.add('visible');
-            texte.textContent =
-              `▶ CONTINUER — JOUR ${gs.jour} · S${gs.semaine}`;
+            txt.textContent = `▶ CONTINUER — JOUR ${gs.jour} · S${gs.semaine}`;
             sub.textContent =
-              `${gs.argent}$ · LÉGALITÉ ${gs.legalite}% · DISCRÉTION ${gs.discretion || 0}%`;
+              `${gs.argent}$ · LÉGALITÉ ${gs.legalite}% · SUSPICION ${gs.suspicion||0}%`;
           }
         } catch(e) {}
       }
