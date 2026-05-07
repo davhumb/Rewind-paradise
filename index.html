@@ -6,385 +6,605 @@
         initial-scale=1.0, maximum-scale=1.0, 
         user-scalable=no">
   <title>Rewind Paradise</title>
-  <link rel="stylesheet" href="data/theme.css">
   <style>
 
-    /* ===== BASE ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background-color: #0a0a0a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      background: #050508;
       font-family: 'Courier New', monospace;
-      overflow: hidden;
+      color: #f0f0ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* ===== EFFET GRAIN VHS ===== */
     body::before {
       content: '';
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background-image: 
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(0,0,0,0.15) 2px,
-          rgba(0,0,0,0.15) 4px
-        );
-      pointer-events: none;
-      z-index: 100;
-    }
-
-    /* ===== TÉLÉVISION ===== */
-    .tv-container {
-      width: 90vw;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .tv-body {
-      width: 100%;
-      background: #1a1a2e;
-      border-radius: 20px;
-      padding: 15px;
-      border: 3px solid #2a2a4e;
-      box-shadow: 
-        0 0 30px rgba(0, 255, 200, 0.1),
-        inset 0 0 20px rgba(0,0,0,0.5);
-    }
-
-    .tv-screen {
-      width: 100%;
-      background: #050510;
-      border-radius: 10px;
-      padding: 30px 20px;
-      border: 2px solid #111130;
-      position: relative;
-      overflow: hidden;
-      min-height: 300px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* ===== EFFET SCANLINES ===== */
-    .tv-screen::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
       background: repeating-linear-gradient(
         0deg,
-        rgba(0, 255, 200, 0.03),
-        rgba(0, 255, 200, 0.03) 1px,
-        transparent 1px,
-        transparent 3px
+        transparent, transparent 3px,
+        rgba(0,0,0,0.12) 3px,
+        rgba(0,0,0,0.12) 4px
       );
       pointer-events: none;
+      z-index: 10;
     }
 
-    /* ===== TITRE ===== */
-    .title-block {
-      text-align: center;
-      margin-bottom: 30px;
-      animation: flicker 4s infinite;
+    .tracking {
+      position: fixed;
+      width: 100%; height: 2px;
+      background: rgba(255,255,255,0.05);
+      left: 0; z-index: 8;
+      animation: trackingMove 6s linear infinite;
     }
 
-    .title-main {
-      font-size: 28px;
-      font-weight: bold;
-      color: #00ffc8;
-      text-shadow: 
-        0 0 10px #00ffc8,
-        0 0 20px #00ffc8,
-        2px 2px 0px #005540;
-      letter-spacing: 3px;
-      line-height: 1.2;
+    @keyframes trackingMove {
+      0%   { top: -2px; }
+      100% { top: 100vh; }
     }
 
-    .title-sub {
-      font-size: 13px;
-      color: #ff6b35;
-      letter-spacing: 6px;
-      margin-top: 8px;
-      text-shadow: 0 0 8px #ff6b35;
+    .mute-btn {
+      position: fixed;
+      top: 14px; right: 16px;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0.5;
+      z-index: 200;
     }
 
-    .title-year {
-      font-size: 10px;
-      color: #444466;
-      letter-spacing: 4px;
-      margin-top: 4px;
-    }
+    .mute-btn:active { opacity: 1; }
 
-    /* ===== MENU ===== */
-    .menu-container {
+    .hero {
       width: 100%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .hero-img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: brightness(0.7) saturate(1.2) contrast(1.1);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(5,5,8,0.3) 0%,
+        rgba(5,5,8,0.0) 40%,
+        rgba(5,5,8,0.8) 80%,
+        rgba(5,5,8,1.0) 100%
+      );
+    }
+
+    .hero-titre {
+      position: absolute;
+      bottom: 20px; left: 0; right: 0;
+      text-align: center;
+      z-index: 5;
+    }
+
+    .titre-rewind {
+      font-size: 36px;
+      color: #f0f0ff;
+      letter-spacing: 5px;
+      text-shadow:
+        0 0 20px rgba(255,255,255,0.4),
+        0 2px 4px rgba(0,0,0,0.8);
+      line-height: 1;
+      display: block;
+    }
+
+    .titre-paradise {
+      font-size: 36px;
+      color: #00ffc8;
+      letter-spacing: 5px;
+      text-shadow:
+        0 0 20px #00ffc8,
+        0 0 40px #00ffc840,
+        0 2px 4px rgba(0,0,0,0.8);
+      line-height: 1;
+      display: block;
+      animation: glitchTitle 12s infinite;
+    }
+
+    @keyframes glitchTitle {
+      0%, 92%, 100% {
+        text-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc840, 0 2px 4px rgba(0,0,0,0.8);
+        transform: none;
+      }
+      93% {
+        text-shadow: -2px 0 #ff4466, 2px 0 #00ffc8, 0 2px 4px rgba(0,0,0,0.8);
+        transform: translateX(2px);
+      }
+      94% {
+        text-shadow: 2px 0 #ff4466, -2px 0 #00ffc8, 0 2px 4px rgba(0,0,0,0.8);
+        transform: translateX(-2px);
+      }
+      95% {
+        text-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc840, 0 2px 4px rgba(0,0,0,0.8);
+        transform: none;
+      }
+    }
+
+    .titre-sous {
+      font-size: 9px;
+      color: #ffffff60;
+      letter-spacing: 4px;
+      margin-top: 6px;
+      display: block;
+    }
+
+    .main {
+      width: 100%;
+      max-width: 420px;
+      padding: 16px 18px 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .vhs-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 6px 0;
+    }
+
+    .vhs-line       { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #1e1e3a); }
+    .vhs-line.right { background: linear-gradient(90deg, #1e1e3a, transparent); }
+
+    .vhs-text {
+      font-size: 8px;
+      color: #ff8855;
+      letter-spacing: 3px;
+      text-shadow: 0 0 6px #ff8855;
+      animation: neonFlicker 8s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes neonFlicker {
+      0%, 95%, 100% { opacity: 1; }
+      96%            { opacity: 0.3; }
+      97%            { opacity: 1; }
+      98%            { opacity: 0.2; }
+      99%            { opacity: 1; }
+    }
+
+    .synopsis {
+      background: #080810;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .synopsis-text {
+      font-size: 12px;
+      color: #8888aa;
+      line-height: 1.8;
+      letter-spacing: 0.3px;
+      font-style: italic;
+    }
+
+    .synopsis-text strong {
+      color: #c0c0dd;
+      font-style: normal;
+    }
+
+    .personnages {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .perso-card {
+      flex: 1;
+      background: #080810;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 10px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      max-width: 90px;
+    }
+
+    .perso-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #aa880040;
+      box-shadow: 0 0 10px #aa880020;
+      background: #0a0a18;
+    }
+
+    .perso-name {
+      font-size: 8px;
+      color: #444466;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .vhs-elements {
+      display: flex;
+      justify-content: space-around;
+      padding: 4px 0;
+    }
+
+    .vhs-element {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .vhs-element-icon  { font-size: 20px; }
+    .vhs-element-label { font-size: 8px; color: #333355; letter-spacing: 2px; }
+
+    .infos {
+      background: #080810;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .info-ligne {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 14px;
+      border-bottom: 1px solid #0a0a18;
+    }
+
+    .info-ligne:last-child { border-bottom: none; }
+    .info-label { font-size: 8px; color: #222244; letter-spacing: 2px; }
+    .info-val   { font-size: 9px; color: #444466; letter-spacing: 1px; }
+
+    .credits {
+      text-align: center;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .menu-item {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      cursor: pointer;
-      transition: all 0.1s;
-      border: 1px solid transparent;
-      border-radius: 3px;
-    }
+    .credits-ligne        { font-size: 8px; color: #1a1a2e; letter-spacing: 2px; line-height: 1.8; }
+    .credits-ligne.accent { color: #2a2a40; }
 
-    .menu-item:active {
-      background: rgba(0, 255, 200, 0.1);
-      border-color: #00ffc8;
-    }
-
-    .menu-item.selected {
-      background: rgba(0, 255, 200, 0.08);
-      border-color: rgba(0, 255, 200, 0.3);
-    }
-
-    .menu-cursor {
-      color: #00ffc8;
-      font-size: 14px;
-      margin-right: 10px;
-      width: 16px;
-      animation: blink 1s infinite;
-    }
-
-    .menu-text {
-      color: #ccccdd;
-      font-size: 14px;
-      letter-spacing: 2px;
-    }
-
-    .menu-item.disabled .menu-text {
-      color: #333344;
-    }
-
-    .menu-item.disabled .menu-cursor {
-      color: #333344;
-    }
-
-    /* ===== PIED DE L'ÉCRAN ===== */
-    .screen-footer {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .vhs-label {
-      font-size: 9px;
-      color: #222233;
-      letter-spacing: 3px;
-    }
-
-    /* ===== PIED DE LA TÉLÉ ===== */
-    .tv-base {
-      width: 60%;
-      height: 12px;
-      background: #1a1a2e;
-      border-radius: 0 0 8px 8px;
-      border: 2px solid #2a2a4e;
-      border-top: none;
-    }
-
-    .tv-stand {
-      width: 30%;
-      height: 8px;
-      background: #151525;
-      border-radius: 0 0 4px 4px;
-    }
-
-    /* ===== SIGNAL PARASITE ===== */
-    .glitch-line {
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      background: rgba(0, 255, 200, 0.4);
-      left: 0;
-      animation: glitch-move 6s infinite;
-      pointer-events: none;
-    }
-
-    /* ===== VERSION ===== */
-    .version-tag {
+    .fixed-bottom {
       position: fixed;
-      bottom: 10px;
-      right: 10px;
-      font-size: 9px;
-      color: #222233;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, #050508 30%);
+      padding: 20px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 20;
+    }
+
+    .btn-jouer {
+      width: 100%;
+      background: #071a10;
+      border: 2px solid #00ffc8;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+    }
+
+    .btn-jouer:active { transform: scale(0.98); background: #0d2818; }
+
+    .btn-jouer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,200,0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0%   { left: -100%; }
+      100% { left:  100%; }
+    }
+
+    .btn-jouer-text {
+      font-size: 14px;
+      color: #00ffc8;
+      letter-spacing: 5px;
+      font-weight: bold;
+      text-shadow: 0 0 12px #00ffc8;
       font-family: 'Courier New', monospace;
+    }
+
+    .btn-jouer-sub {
+      font-size: 8px;
+      color: #00ffc840;
+      letter-spacing: 2px;
+      margin-top: 4px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .btn-continuer {
+      width: 100%;
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      display: none;
+    }
+
+    .btn-continuer.visible { display: block; }
+    .btn-continuer:active  { background: #0f0f22; }
+
+    .btn-continuer-text {
+      font-size: 11px;
+      color: #444466;
+      letter-spacing: 2px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .btn-continuer-sub {
+      font-size: 8px;
+      color: #222233;
       letter-spacing: 1px;
+      margin-top: 3px;
+      font-family: 'Courier New', monospace;
     }
 
-    /* ===== ANIMATIONS ===== */
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+    .statut-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2px;
     }
 
-    @keyframes flicker {
-      0%, 95%, 100% { opacity: 1; }
-      96% { opacity: 0.8; }
-      97% { opacity: 1; }
-      98% { opacity: 0.9; }
-    }
-
-    @keyframes glitch-move {
-      0% { top: -10%; opacity: 0; }
-      10% { opacity: 0; }
-      11% { opacity: 1; top: 20%; }
-      13% { opacity: 0; }
-      50% { top: 60%; opacity: 0; }
-      51% { opacity: 0.6; }
-      53% { opacity: 0; }
-      100% { top: 110%; opacity: 0; }
-    }
-
-    /* ===== TRANSITION ===== */
-    .fade-out {
-      animation: fadeOut 0.5s forwards;
-    }
-
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
+    .statut-left  { font-size: 7px; color: #111122; letter-spacing: 2px; }
+    .statut-right { font-size: 7px; color: #111122; letter-spacing: 2px; }
 
   </style>
 </head>
 <body>
 
-  <div class="tv-container">
-    <div class="tv-body">
-      <div class="tv-screen">
+  <div class="tracking"></div>
+  <div class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊</div>
 
-        <!-- Ligne parasite VHS -->
-        <div class="glitch-line"></div>
-
-        <!-- Titre -->
-        <div class="title-block">
-          <div class="title-main">REWIND<br>PARADISE</div>
-          <div class="title-sub">MICRO-MÉTRAGE</div>
-          <div class="title-year">▓▓ EST. 1994 ▓▓</div>
-        </div>
-
-        <!-- Menu -->
-        <div class="menu-container">
-
-          <div class="menu-item selected" 
-               id="btn-nouvelle"
-               onclick="startGame()">
-            <span class="menu-cursor">▶</span>
-            <span class="menu-text">NOUVELLE PARTIE</span>
-          </div>
-
-          <div class="menu-item disabled" id="btn-continuer">
-            <span class="menu-cursor">▷</span>
-            <span class="menu-text">CONTINUER</span>
-          </div>
-
-          <div class="menu-item" 
-               id="btn-options"
-               onclick="showOptions()">
-            <span class="menu-cursor">▷</span>
-            <span class="menu-text">OPTIONS</span>
-          </div>
-
-        </div>
-
-        <!-- Pied d'écran -->
-        <div class="screen-footer">
-          <div class="vhs-label">
-            ◀◀ REMBOBINEZ AVANT DE RENDRE ▶▶
-          </div>
-        </div>
-
-      </div>
+  <div class="hero">
+    <img class="hero-img"
+         src="posters/rewind_paradise.png"
+         alt="Rewind Paradise"
+         onerror="this.style.display='none'">
+    <div class="hero-overlay"></div>
+    <div class="hero-titre">
+      <span class="titre-rewind">REWIND</span>
+      <span class="titre-paradise">PARADISE</span>
+      <span class="titre-sous">UN JEU DE MICRO-MÉTRAGE</span>
     </div>
-    <div class="tv-base"></div>
-    <div class="tv-stand"></div>
   </div>
 
-  <div class="version-tag">v0.1 — PROTO</div>
+  <div class="main">
+
+    <div class="vhs-badge">
+      <div class="vhs-line"></div>
+      <span class="vhs-text">📼 VHS · HI-FI STÉRÉO · COULEUR</span>
+      <div class="vhs-line right"></div>
+    </div>
+
+    <div class="synopsis">
+      <div class="synopsis-text">
+        Vous êtes <strong>Fred</strong>.<br>
+        Vous gérez le <strong>Rewind Paradise</strong> —
+        un vidéoclub de quartier.<br>
+        Le soir, dans la réserve, vous fabriquez
+        des <strong>micro-métrages clandestins</strong>.<br>
+        Coupez au bon moment.<br>
+        Avant que tout s'effondre.
+      </div>
+    </div>
+
+    <div class="personnages">
+      <div class="perso-card">
+        <img class="perso-avatar" src="posters/fred.png" alt="Fred"
+             onerror="this.style.display='none'">
+        <div class="perso-name">FRED</div>
+      </div>
+      <div class="perso-card">
+        <img class="perso-avatar" src="posters/joie.png" alt="Corey"
+             onerror="this.style.display='none'">
+        <div class="perso-name">COREY</div>
+      </div>
+      <div class="perso-card">
+        <img class="perso-avatar" src="posters/canopi.png" alt="Canopi"
+             onerror="this.style.display='none'">
+        <div class="perso-name">CANOPI</div>
+      </div>
+      <div class="perso-card">
+        <img class="perso-avatar" src="posters/ramon.png" alt="Ramon"
+             onerror="this.style.display='none'">
+        <div class="perso-name">RAMON</div>
+      </div>
+    </div>
+
+    <div class="vhs-elements">
+      <div class="vhs-element">
+        <span class="vhs-element-icon">✂</span>
+        <span class="vhs-element-label">COUPER</span>
+      </div>
+      <div class="vhs-element">
+        <span class="vhs-element-icon">📼</span>
+        <span class="vhs-element-label">REMBOBINER</span>
+      </div>
+      <div class="vhs-element">
+        <span class="vhs-element-icon">👁</span>
+        <span class="vhs-element-label">OBSERVER</span>
+      </div>
+      <div class="vhs-element">
+        <span class="vhs-element-icon">🎬</span>
+        <span class="vhs-element-label">SURVIVRE</span>
+      </div>
+    </div>
+
+    <div class="infos">
+      <div class="info-ligne">
+        <span class="info-label">GENRE</span>
+        <span class="info-val">GESTION · NARRATION · TIMING</span>
+      </div>
+      <div class="info-ligne">
+        <span class="info-label">DURÉE</span>
+        <span class="info-val">30 — 60 MIN PAR PARTIE</span>
+      </div>
+      <div class="info-ligne">
+        <span class="info-label">FINS</span>
+        <span class="info-val">5 FINS DIFFÉRENTES</span>
+      </div>
+      <div class="info-ligne">
+        <span class="info-label">CASSETTES</span>
+        <span class="info-val">20 MICRO-MÉTRAGES</span>
+      </div>
+      <div class="info-ligne">
+        <span class="info-label">SUCCÈS</span>
+        <span class="info-val">15 ACHIEVEMENTS</span>
+      </div>
+      <div class="info-ligne">
+        <span class="info-label">PLATEFORME</span>
+        <span class="info-val">MOBILE · NAVIGATEUR</span>
+      </div>
+    </div>
+
+    <div class="credits">
+      <div class="credits-ligne accent">
+        Basé sur le roman <em>Micro-Métrage</em>
+      </div>
+      <div class="credits-ligne">de David Humbert</div>
+      <div class="credits-ligne" style="margin-top:6px;">
+        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+      </div>
+    </div>
+
+    <div style="height:120px;"></div>
+
+  </div>
+
+  <div class="fixed-bottom">
+
+    <div class="btn-jouer"
+         onclick="fadeOutMusic(()=>window.location.href='index.html')">
+      <div class="btn-jouer-text">▶ JOUER</div>
+      <div class="btn-jouer-sub">APPUYEZ POUR LANCER</div>
+    </div>
+
+    <div class="btn-continuer" id="btn-continuer"
+         onclick="fadeOutMusic(()=>window.location.href='game.html')">
+      <div class="btn-continuer-text" id="btn-continuer-text">▶ CONTINUER</div>
+      <div class="btn-continuer-sub"  id="btn-continuer-sub">—</div>
+    </div>
+
+    <div class="statut-bar">
+      <span class="statut-left">▶ PLAY</span>
+      <span class="statut-right" id="timecode">00:00:00</span>
+    </div>
+
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="music/landing.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
 
-    // ===== VÉRIFIER UNE SAUVEGARDE =====
+    let music   = null;
+    let isMuted = false;
+
+    function initMusic() {
+      music   = document.getElementById('bg-music');
+      isMuted = localStorage.getItem('rewind_muted') === 'true';
+      music.volume = 0.25;
+      music.muted  = isMuted;
+      document.getElementById('mute-btn').textContent =
+        isMuted ? '🔇' : '🔊';
+      const p = music.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          document.addEventListener('touchstart',
+            () => music.play(), { once: true });
+        });
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      if (music) music.muted = isMuted;
+      localStorage.setItem('rewind_muted', isMuted);
+      document.getElementById('mute-btn').textContent =
+        isMuted ? '🔇' : '🔊';
+    }
+
+    function fadeOutMusic(callback) {
+      if (!music || isMuted) { if (callback) callback(); return; }
+      let vol = music.volume;
+      const fade = setInterval(() => {
+        vol = Math.max(0, vol - 0.05);
+        music.volume = vol;
+        if (vol <= 0) {
+          clearInterval(fade);
+          music.pause();
+          if (callback) callback();
+        }
+      }, 50);
+    }
+
+    // Timecode VHS
+    let secondes = 0;
+    setInterval(() => {
+      secondes++;
+      const h = String(Math.floor(secondes / 3600)).padStart(2,'0');
+      const m = String(Math.floor((secondes % 3600) / 60)).padStart(2,'0');
+      const s = String(secondes % 60).padStart(2,'0');
+      const el = document.getElementById('timecode');
+      if (el) el.textContent = `${h}:${m}:${s}`;
+    }, 1000);
+
     window.onload = function() {
+      initMusic();
+
       const save = localStorage.getItem('rewindParadise_save');
       if (save) {
-        const btnContinuer = document.getElementById('btn-continuer');
-        btnContinuer.classList.remove('disabled');
-        btnContinuer.onclick = continueGame;
-        btnContinuer.querySelector('.menu-cursor').textContent = '▶';
+        try {
+          const gs = JSON.parse(save);
+          if (gs.jour > 1) {
+            const btn  = document.getElementById('btn-continuer');
+            const txt  = document.getElementById('btn-continuer-text');
+            const sub  = document.getElementById('btn-continuer-sub');
+            btn.classList.add('visible');
+            txt.textContent = `▶ CONTINUER — JOUR ${gs.jour} · S${gs.semaine}`;
+            sub.textContent =
+              `${gs.argent}$ · LÉGALITÉ ${gs.legalite}% · SUSPICION ${gs.suspicion||0}%`;
+          }
+        } catch(e) {}
       }
     };
-
-    // ===== NOUVELLE PARTIE =====
-    function startGame() {
-      // Initialiser la sauvegarde
-      const gameState = {
-        semaine: 1,
-        jour: 1,
-        argent: 200,
-        legalite: 0,
-        exposition: 0,
-        energie: 15,
-        energieMax: 15,
-        stock: {
-          action: 8,
-          horreur: 6,
-          drame: 4,
-          enfants: 6,
-          rarites: 1,
-          noires: 0
-        },
-        reputation: 3,
-        credibilite: 0,
-        jacksonHumeur: 'cool',
-        cutterInteret: 'indifferent',
-        notesHistory: [],
-        choicesHistory: []
-      };
-
-      localStorage.setItem(
-        'rewindParadise_save', 
-        JSON.stringify(gameState)
-      );
-
-      // Transition vers le jeu
-      document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = 'game.html';
-      }, 500);
-    }
-
-    // ===== CONTINUER =====
-    function continueGame() {
-      document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = 'game.html';
-      }, 500);
-    }
-
-    // ===== OPTIONS (à développer) =====
-    function showOptions() {
-      alert('OPTIONS — Session 3.x');
-    }
 
   </script>
 
