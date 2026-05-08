@@ -1747,16 +1747,15 @@
       }
     }
 
-    // Wrapper pour UPGRADES.showPanel
-    const _origShowPanel = typeof UPGRADES !== 'undefined'
-      ? UPGRADES.showPanel.bind(UPGRADES) : null;
-
     function showUpgrades() {
       gameState.upgradesVus = true;
       saveGame();
       checkUpgradeBadge();
-      if (_origShowPanel) _origShowPanel(gameState);
+      if (typeof UPGRADES !== 'undefined' && UPGRADES.showPanel) {
+        UPGRADES.showPanel(gameState);
+      }
     }
+  
 
     // ===================================================
     // PHASE + NAVIGATION
