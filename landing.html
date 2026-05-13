@@ -344,26 +344,6 @@
       font-family: 'Courier New', monospace;
     }
 
-    .btn-rembobiner {
-      display: none;
-      width: 100%;
-      background: #100508;
-      border: 1px solid #ff2d7850;
-      border-radius: 8px;
-      padding: 10px 8px;
-      text-align: center;
-      cursor: pointer;
-      margin-top: 6px;
-    }
-    .btn-rembobiner.visible { display: block; }
-    .btn-rembobiner:active  { background: #180a10; }
-    .btn-rembobiner-text {
-      font-size: 11px;
-      color: #ff2d78;
-      letter-spacing: 3px;
-      font-family: 'Courier New', monospace;
-    }
-
     .btn-continuer {
       width: 100%;
       background: #080818;
@@ -530,19 +510,19 @@
   <div class="fixed-bottom">
 
     <div class="btn-jouer"
-         onclick="fadeOutMusic(()=>window.location.href='game.html')"
+         onclick="fadeOutMusic(()=>window.location.href='game.html')">
       <div class="btn-jouer-text">▶ JOUER</div>
       <div class="btn-jouer-sub">APPUYEZ POUR LANCER</div>
+    </div>
+
+    <div class="btn-rembobiner" id="btn-rembobiner" onclick="confirmerRembobinage()">
+      <div class="btn-rembobiner-text">◀ REMBOBINER</div>
     </div>
 
     <div class="btn-continuer" id="btn-continuer"
          onclick="fadeOutMusic(()=>window.location.href='game.html')">
       <div class="btn-continuer-text" id="btn-continuer-text">▶ CONTINUER</div>
       <div class="btn-continuer-sub"  id="btn-continuer-sub">—</div>
-    </div>
-
-    <div class="btn-rembobiner" id="btn-rembobiner" onclick="confirmerRembobinage()">
-      <div class="btn-rembobiner-text">◀ REMBOBINER</div>
     </div>
 
     <div class="statut-bar">
@@ -560,13 +540,6 @@
 
     let music   = null;
     let isMuted = false;
-
-    function confirmerRembobinage() {
-      if (confirm("Tout rembobiner depuis le début ?")) {
-        localStorage.removeItem('rewindParadise_save');
-        window.location.reload();
-      }
-    }
 
     function initMusic() {
       music   = document.getElementById('bg-music');
@@ -619,11 +592,6 @@
 
     window.onload = function() {
       initMusic();
-      // Afficher REMBOBINER si save existe
-      if (localStorage.getItem('rewindParadise_save')) {
-        const btn = document.getElementById('btn-rembobiner');
-        if (btn) btn.classList.add('visible');
-      }
 
       const save = localStorage.getItem('rewindParadise_save');
       if (save) {
