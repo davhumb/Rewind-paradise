@@ -737,10 +737,7 @@
       const seg   = segments[idx];
       const imgEl = document.getElementById('scene-image');
       if (!seg || !imgEl) return;
-      imgEl.classList.remove('visible');
       imgEl.src = seg.image || '';
-      imgEl.onload = () => imgEl.classList.add('visible');
-      imgEl.onerror = () => imgEl.classList.remove('visible');
     }
 
     // ===================================================
