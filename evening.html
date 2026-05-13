@@ -1259,8 +1259,11 @@
       updateNightInfo();
 
       // Choisir cassette
-      if (typeof choisirCassette !== 'undefined') {
-        currentCassette = choisirCassette(gameState);
+      const semaine = gameState.semaine || 1;
+      if (typeof getCassetteAleatoire !== 'undefined') {
+        currentCassette = getCassetteAleatoire(semaine);
+      } else if (CASSETTES_DATA && CASSETTES_DATA.length) {
+        currentCassette = CASSETTES_DATA[0];
       } else {
         currentCassette = getFallbackCassette();
       }
