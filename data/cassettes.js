@@ -28,7 +28,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [3],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Film noir classique. Méfie-toi de tout le monde. Surtout de celle qui sourit.',
+    corey_avant: 'Film noir classique. Un détective. Une femme. Le genre a ses règles.',
     corey_reussi: "Ne jamais engager la conversation avec une femme fatale, c'est la règle du film noir.",
     corey_rate: "T'as raté le moment. Dans le film noir, le moment c'est tout.",
     cutter_special: null
@@ -53,7 +53,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [1],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Six segments. Le deuxième est là où tout se joue. Regarde bien.',
+    corey_avant: 'Science-fiction domestique. Une douche. Ce qu\'on entend dans les tuyaux.',
     corey_reussi: "Bah oui, on ne baisse jamais la tête sous la douche. Elle voit rien, il se passe rien.",
     corey_rate: "Elle a vu le monstre. T'as laissé le film continuer. Erreur.",
     cutter_special: null
@@ -83,7 +83,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [2],
     coupeAcceptable: [8],
     pasDeCoupe: false,
-    corey_avant: 'Dan construit une fusée dans son garage. Onze segments. Y en a un seul qui compte.',
+    corey_avant: 'Un homme construit une fusée dans son garage. Onze segments. C\'est long. C\'est voulu.',
     corey_reussi: "Rajoute en voix off : \"Oh là, ma caisse montera jamais cette pente.\" Coupe parfaite.",
     corey_rate_acceptable: "Dan qui flotte dans le cosmos en bouffant des chips. Je peux vivre avec ça.",
     corey_rate: "T'as laissé Dan finir dans le trou noir. Trop généreux.",
@@ -108,7 +108,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [1],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: "Suite du classique. Cinq segments. Le deuxième c'est le film entier.",
+    corey_avant: 'La suite du classique. L\'Amazonie. Un hélico. Cinq segments.',
     corey_reussi: "Un survol de l'Amazonie en hélico, on passe du cannibalisme au documentaire National Geographic. J'adore.",
     corey_rate: "T'as laissé les cannibales manger. C'était pas obligatoire.",
     cutter_special: null
@@ -137,7 +137,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [2],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Godzilla est de retour. Quelqu\'un a des jumelles. Fais le bon choix.',
+    corey_avant: 'Godzilla est de retour. Quelqu\'un surveille avec des jumelles. Classique.',
     corey_reussi: "Petite voix off : \"Rien à signaler dans mes jumelles...\" Chef-d'œuvre.",
     corey_rate: "Godzilla a tout cassé. T'aurais pu l'arrêter avant.",
     cutter_special: null
@@ -161,7 +161,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [2],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Gros nanard. Mais même les nanards ont un bon moment. Trouve-le.',
+    corey_avant: 'Gros nanard. Cinq segments. Le crocodile arrive.',
     corey_reussi: "Juste une voix off : \"Rien à signaler. Tout est silencieux.\" Et hop, le film est mort.",
     corey_rate: "Le crocodile a mangé tout le monde. Fallait couper avant.",
     cutter_special: null
@@ -187,7 +187,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [3],
     coupeAcceptable: [2],
     pasDeCoupe: false,
-    corey_avant: 'Sept segments. Deux bons moments de coupe. Le quatrième est parfait.',
+    corey_avant: 'Zombies et route. Sept segments. Un héros qui va le regretter.',
     corey_reussi: "On ajoute un \"Boom !\" — le type passe de héros à loser qui se fait exploser tout seul dans sa bagnole. Génial.",
     corey_rate_acceptable: "Mouais. Acceptable. Mais t'as raté le vrai moment.",
     corey_rate: "Les zombies ont gagné. C'était pas ce scénario-là qui était prévu.",
@@ -215,7 +215,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [2],
     coupeAcceptable: [4],
     pasDeCoupe: false,
-    corey_avant: 'Comédie teen. Huit segments. Le troisième coupe court le film avant qu\'il soit trop long.',
+    corey_avant: 'Comédie teen. Un bal. Ce qui se passe avant le bal.',
     corey_reussi: "Tu coupes juste avant qu'il se vante auprès de ses potes. Pas de bal. Pas de film. Parfait.",
     corey_rate_acceptable: "Acceptable. Mais t'as laissé trainer.",
     corey_rate: "Le bal a eu lieu. T'aurais pu l'éviter.",
@@ -245,7 +245,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [2],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Arts martiaux. Maître suspect. Le troisième segment c\'est le film.',
+    corey_avant: 'Arts martiaux. Un élève. Un maître avec de mauvaises habitudes.',
     corey_reussi: "Il fait comme s'il n'avait pas vu son maître s'adonner à ses vices. Pas de vengeance, plus de film.",
     corey_rate: "La vengeance a eu lieu. C'était pas obligatoire.",
     cutter_special: null
@@ -269,7 +269,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [0,1,2,3,4],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Coupez n\'importe où. Vraiment. N\'importe où.',
+    corey_avant: 'Film d\'espionnage. Des agents. Une mission. Cinq segments.',
     corey_reussi: "Coupez ce film n'importe où, je peux que le rendre meilleur.",
     corey_rate: "T'as regardé jusqu'au bout ? Pourquoi ?",
     cutter_special: null
@@ -293,7 +293,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [2],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Kung-fu. Maître cruel. Johnny Wong mérite mieux.',
+    corey_avant: 'Kung-fu. Johnny Wong et son maître. Une relation compliquée.',
     corey_reussi: "Yep, quand ton maître de kung-fu te traite comme de la merde, faut se barrer. Bien joué Johnny Wong.",
     corey_rate: "Johnny est resté. Il aurait pas dû.",
     cutter_special: null
@@ -318,7 +318,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [2],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Action sur un pont. Un catcheur dans un canapé. Le troisième segment c\'est la clé.',
+    corey_avant: 'Action sur un pont. Un catcheur devant sa télé. Six segments.',
     corey_reussi: "Impeccable. Il éteint sa télé. Il est pas concerné. Après tout c'est un catcheur, pas un membre du SWAT.",
     corey_rate: "Il a fini par aller sur le pont. C'était pas son truc.",
     cutter_special: null
@@ -350,7 +350,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [4],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Neuf segments. Long. Le cinquième est là où ça bascule vraiment.',
+    corey_avant: 'Une plante magique. Des muscles. Neuf segments. Ça prend le temps que ça prend.',
     corey_reussi: "Tu rajoutes un son de mec qui vomit derrière. Pas de plante magique, pas de muscles, pas de monstre qui te pousse sur l'épaule.",
     corey_rate: "La transformation a eu lieu. T'aurais pu l'éviter.",
     cutter_special: null
@@ -400,7 +400,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [2],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Robert et son robot. Le troisième segment précède la poignée de mains. Fais le bon choix.',
+    corey_avant: 'Robert et son robot. Une amitié naissante. Six segments.',
     corey_reussi: "Juste avant la poignée de mains. Pas de partenaire robot, pas de film.",
     corey_rate: "Ils se sont serré la main. T'as regardé.",
     cutter_special: null
@@ -426,7 +426,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [4],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Seven segments. Le cinquième c\'est le son de freins. Écoute.',
+    corey_avant: 'Action. Un rebelle. Une voiture. Sept segments.',
     corey_reussi: "Parfait. Le bruit de voiture qui freine à fond — on comprend qu'il se rend. Un rebelle, non, un mouilleux. Génial.",
     corey_rate: "La vengeance a eu lieu. T'aurais pu couper avant.",
     cutter_special: null
@@ -451,7 +451,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [1],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Court. Six segments. Le deuxième ferme le film tôt. C\'est là.',
+    corey_avant: 'Arts martiaux. Un héros. Son destin. Court mais dense.',
     corey_reussi: "Bien vu. Ça se referme tôt sur le héros. C'était dès le début ou rien. Court mais efficace.",
     corey_rate: "T'as attendu. Dans ce film-là, attendre c'est perdre.",
     cutter_special: null
@@ -476,7 +476,7 @@ const CASSETTES_DATA = [
     coupesIdeal: [3],
     coupeAcceptable: null,
     pasDeCoupe: false,
-    corey_avant: 'Road movie. Le quatrième segment. Facile, mais diablement efficace.',
+    corey_avant: 'Road movie. Une route. Un homme. Six segments.',
     corey_reussi: "Facile, mais diablement efficace. T'as compris la route.",
     corey_rate: "T'as laissé la route continuer. Elle finit toujours quelque part.",
     cutter_special: null
