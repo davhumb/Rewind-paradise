@@ -2,16 +2,13 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, 
-        initial-scale=1.0, maximum-scale=1.0, 
-        user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Rewind Paradise — La Réserve</title>
   <link rel="stylesheet" href="data/style.css">
   <script src="data/cassettes.js"></script>
   <script src="data/sounds.js"></script>
   <script src="data/achievements.js"></script>
   <style>
-
     * { box-sizing: border-box; }
 
     body {
@@ -23,13 +20,11 @@
       color: #ffffff;
     }
 
-    /* TOP */
     .top-bar {
       padding: 8px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-shrink: 0;
       background: #080818;
       border-bottom: 2px solid #00b4ff;
       box-shadow: 0 2px 12px #00b4ff30;
@@ -45,172 +40,75 @@
       text-shadow: 0 0 8px #ff2d78, 0 0 16px #00b4ff;
     }
 
-    .top-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
     .night-info {
       font-size: 9px;
       color: #aaaadd;
       letter-spacing: 1px;
     }
 
-    .mute-btn {
-      font-size: 16px;
-      cursor: pointer;
-      opacity: 0.5;
-    }
+    .mute-btn { font-size: 16px; cursor: pointer; opacity: 0.6; }
 
-    .mute-btn:active { opacity: 1; }
-
-    /* MAIN */
     .main-area {
       flex: 1;
       padding: 10px 12px 100px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
-    /* HERO RÉSERVE */
-    .reserve-hero {
-      width: 100%;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .reserve-hero-img {
-      width: 100%;
-      max-height: 140px;
-      object-fit: cover;
-      display: block;
-      filter: brightness(0.55) saturate(0.7);
-    }
-
-    .reserve-hero-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(3,3,6,0.1) 0%,
-        rgba(3,3,6,0.75) 100%
-      );
-    }
-
-    .reserve-hero-label {
-      position: absolute;
-      bottom: 10px; left: 14px;
-      font-size: 9px;
-      color: #ff885550;
-      letter-spacing: 3px;
-    }
-
-    /* CASSETTE SOURCE */
+    /* CASSETTE INFO */
     .cassette-source {
       background: #0a0a1a;
       border: 2px solid #ff2d78;
       box-shadow: 0 0 10px #ff2d7830;
       border-radius: 8px;
-      padding: 10px 12px;
-      flex-shrink: 0;
+      padding: 12px;
     }
 
-    .cassette-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .cassette-illustration {
-      width: 54px;
-      height: 54px;
-      border-radius: 6px;
-      object-fit: cover;
-      flex-shrink: 0;
-      filter: brightness(0.8);
-      background: #0a0a18;
-    }
-
-    .cassette-info { flex: 1; }
-    .cassette-label { font-size: 9px; color: #ff2d78; letter-spacing: 2px; margin-bottom: 3px; text-shadow: 0 0 6px #ff2d7840; }
-    .cassette-title { font-size: 14px; color: #ffffff; letter-spacing: 1px; margin-bottom: 3px; font-weight: bold; }
-    .cassette-meta  { font-size: 10px; color: #aaaadd; letter-spacing: 1px; }
-
-    .cassette-difficulte {
-      display: flex;
-      gap: 3px;
-      margin-top: 4px;
-    }
-
-    .diff-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #1e1e3a;
-    }
-
-    .diff-dot.active { background: #ff8855; }
+    .cassette-label { font-size: 9px; color: #ff2d78; letter-spacing: 2px; margin-bottom: 4px; }
+    .cassette-title { font-size: 15px; color: #ffffff; font-weight: bold; letter-spacing: 1px; margin-bottom: 2px; }
+    .cassette-meta  { font-size: 10px; color: #aaaadd; }
 
     /* FRED + COREY AVANT */
     .fred-corey-avant {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       background: #06060f;
-      border: 1px solid #00b4ff30;
       border-left: 3px solid #00b4ff;
       border-radius: 0 6px 6px 0;
       padding: 10px 12px;
-      margin-bottom: 4px;
     }
-    .fred-reserve-portrait {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      flex-shrink: 0;
-    }
+
     .fred-reserve-avatar {
-      width: 70px;
-      height: 70px;
+      width: 64px; height: 64px;
       border-radius: 50%;
       border: 2px solid #00b4ff80;
       object-fit: cover;
       background: #080818;
-      box-shadow: 0 0 12px #00b4ff30;
-    }
-    .fred-reserve-name {
-      font-size: 8px;
-      color: #00b4ff;
-      letter-spacing: 2px;
-      text-shadow: 0 0 6px #00b4ff60;
+      box-shadow: 0 0 10px #00b4ff30;
+      flex-shrink: 0;
     }
 
-    /* COREY AVANT */
-    .corey-avant {
-      background: #06060f;
-      border: 1px solid #ff2d7830;
-      border-left: 3px solid #ff2d78;
-      padding: 10px 12px;
-      border-radius: 0 6px 6px 0;
+    .corey-avant-wrapper {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex: 1;
+      background: #06060f;
+      border-left: 3px solid #ff2d78;
+      border-radius: 0 6px 6px 0;
+      padding: 8px 10px;
     }
 
     .corey-reserve-avatar {
-      width: 70px;
-      height: 70px;
+      width: 64px; height: 64px;
       border-radius: 50%;
       border: 2px solid #ff2d7880;
       object-fit: cover;
-      flex-shrink: 0;
       background: #080818;
-      box-shadow: 0 0 12px #ff2d7830;
+      box-shadow: 0 0 10px #ff2d7830;
+      flex-shrink: 0;
     }
 
     .corey-avant-text {
@@ -218,7 +116,6 @@
       color: #ffdd99;
       font-style: italic;
       line-height: 1.5;
-      flex: 1;
     }
 
     /* MONITEUR */
@@ -227,153 +124,64 @@
       border: 2px solid #00b4ff;
       box-shadow: 0 0 12px #00b4ff30;
       border-radius: 8px;
-      padding: 10px 12px;
-      flex-shrink: 0;
+      overflow: hidden;
     }
 
-    .monitor-label {
-      font-size: 8px;
-      color: #444466;
-      letter-spacing: 2px;
-      margin-bottom: 6px;
+    .monitor-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 6px 12px;
+      font-size: 8px;
+      color: #444466;
+      letter-spacing: 2px;
     }
 
     .monitor-rec {
-      font-size: 8px;
       color: #ff0000;
       display: none;
     }
-
     .monitor-rec.visible {
       display: block;
       animation: recBlink 1s infinite;
     }
-
     @keyframes recBlink {
       0%, 100% { opacity: 1; }
       50%       { opacity: 0; }
     }
 
     .monitor-screen {
+      width: 100%;
+      aspect-ratio: 4/3;
       background: #020205;
-      border: 2px solid #1e1e3a;
-      border-radius: 6px;
-      height: 160px;
       position: relative;
       overflow: hidden;
     }
 
     /* SCANLINES */
-    .monitor-screen::before {
+    .monitor-screen::after {
       content: '';
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: repeating-linear-gradient(
         0deg, transparent, transparent 3px,
-        rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px
+        rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px
       );
       pointer-events: none;
       z-index: 10;
     }
 
-    .scene-bg {
-      position: absolute;
-      top: 0; left: 0;
+    .scene-image {
       width: 100%; height: 100%;
-      transition: background 0.3s;
-      z-index: 1;
-    }
-
-    /* TEXTE MONITEUR — plus grand */
-    .scene-content {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 12px;
-      z-index: 5;
-    }
-
-    .scene-icon-big {
-      font-size: 32px;
-      margin-bottom: 8px;
-      opacity: 0.7;
-    }
-
-    .scene-personnage {
-      font-size: 12px;
-      color: rgba(255,255,255,0.8);
-      letter-spacing: 2px;
-      margin-bottom: 4px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .scene-lieu {
-      font-size: 10px;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .scene-description {
-      font-size: 12px;
-      color: rgba(255,255,255,0.75);
-      font-style: italic;
-      text-align: center;
-      line-height: 1.5;
-      letter-spacing: 0.3px;
-    }
-
-    .scene-label {
-      position: absolute;
-      bottom: 8px; left: 10px;
-      font-size: 9px;
-      color: rgba(255,255,255,0.35);
-      letter-spacing: 2px;
-      z-index: 11;
-    }
-
-    .scene-timecode {
-      position: absolute;
-      bottom: 8px; right: 10px;
-      font-size: 9px;
-      color: rgba(255,255,255,0.25);
-      letter-spacing: 1px;
-      z-index: 11;
-    }
-
-    /* GLITCH */
-    .glitch-overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 7;
-      pointer-events: none;
-      display: none;
-    }
-
-    .glitch-overlay.active {
+      object-fit: cover;
       display: block;
-      animation: glitchPulse 0.12s infinite;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
-    @keyframes glitchPulse {
-      0%   { background: rgba(255,68,102,0.08); transform: translateX(0); }
-      25%  { background: rgba(0,255,200,0.05);  transform: translateX(-2px); }
-      50%  { background: rgba(255,68,102,0.05); transform: translateX(2px); }
-      75%  { background: transparent;            transform: translateX(-1px); }
-      100% { background: rgba(255,68,102,0.03); transform: translateX(0); }
-    }
+    .scene-image.visible { opacity: 1; }
 
-    /* TRACKING LINE */
     .tracking-line {
       position: absolute;
       width: 100%; height: 3px;
@@ -382,12 +190,10 @@
       display: none;
       pointer-events: none;
     }
-
     .tracking-line.visible {
       display: block;
       animation: trackingMove 3s linear infinite;
     }
-
     @keyframes trackingMove {
       0%   { top: -5%; opacity: 0; }
       5%   { opacity: 1; }
@@ -395,203 +201,30 @@
       100% { top: 105%; opacity: 0; }
     }
 
-    /* TIMELINE FLUIDE */
-    .timeline-section {
-      background: #08081a;
-      border: 2px solid #ff2d78;
-      box-shadow: 0 0 10px #ff2d7830;
-      border-radius: 8px;
-      padding: 10px 12px;
-      flex-shrink: 0;
-    }
-
-    .timeline-label {
-      font-size: 8px;
-      color: #ff2d78;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      text-shadow: 0 0 6px #ff2d7840;
-    }
-
-    .timeline-duration {
-      font-size: 8px;
-      color: #333355;
-      letter-spacing: 1px;
-    }
-
-    .timeline-bar {
-      width: 100%;
-      height: 24px;
-      background: #020205;
-      border: 1px solid #1e1e3a;
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-      margin-bottom: 4px;
-    }
-
-    /* Zones colorées de fond */
-    .timeline-zones-bg {
-      display: flex;
-      height: 100%;
+    .scene-timecode {
       position: absolute;
-      top: 0; left: 0; right: 0;
-    }
-
-    .tl-zone-bg {
-      height: 100%;
-      opacity: 0.4;
-      transition: opacity 0.3s;
-    }
-
-    .tl-zone-bg.bleu   { background: #0a1830; }
-    .tl-zone-bg.orange { background: #301800; }
-    .tl-zone-bg.rouge  { background: #300010; }
-    .tl-zone-bg.vert   { background: #0a2010; }
-
-    .tl-zone-bg.active { opacity: 1; }
-
-    /* Curseur fluide */
-    .timeline-cursor {
-      position: absolute;
-      top: 0; width: 3px; height: 100%;
-      background: #ffffff;
-      box-shadow: 0 0 8px #ffffff;
-      left: 0%;
-      z-index: 5;
-      transition: left 0.1s linear;
-      pointer-events: none;
-    }
-
-    .timeline-cursor.bascule {
-      background: #ff4466;
-      box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446660;
-      animation: cursorPulse 0.25s infinite;
-    }
-
-    @keyframes cursorPulse {
-      0%, 100% { box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446660; }
-      50%       { box-shadow: 0 0 25px #ff4466, 0 0 50px #ff4466; }
-    }
-
-    /* Marqueur moment idéal — invisible par défaut */
-    .timeline-ideal-marker {
-      position: absolute;
-      top: 0; width: 2px; height: 100%;
-      background: transparent;
-      z-index: 4;
-      pointer-events: none;
-    }
-
-    .timeline-zones-labels {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .tl-label { font-size: 7px; color: #333355; letter-spacing: 1px; }
-    .tl-label.active { color: #666688; }
-
-    /* REMBOBINAGE MANUEL */
-    .rembobinage-zone {
-      background: #080810;
-      border: 1px solid #ffcc0030;
-      border-radius: 8px;
-      padding: 12px 14px;
-      flex-shrink: 0;
-      display: none;
-    }
-
-    .rembobinage-zone.visible { display: block; }
-
-    .rembobinage-label {
+      bottom: 8px; right: 10px;
       font-size: 9px;
-      color: #ffcc00;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .rembobinage-barre-container {
-      width: 100%;
-      height: 20px;
-      background: #0a0a18;
-      border: 1px solid #1e1e3a;
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-      margin-bottom: 8px;
-    }
-
-    .rembobinage-fill {
-      height: 100%;
-      width: 0%;
-      border-radius: 4px;
-      transition: width 0.05s linear, background 0.1s;
-    }
-
-    .rembobinage-fill.lent     { background: #3366cc; }
-    .rembobinage-fill.parfait  { background: #00ffc8; }
-    .rembobinage-fill.rapide   { background: #ff4466; }
-
-    /* Zone verte indicateur */
-    .rembobinage-zones {
-      display: flex;
-      height: 4px;
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 6px;
-    }
-
-    .remb-zone-lent    { flex: 2; background: #3366cc40; }
-    .remb-zone-ok      { flex: 3; background: #00ffc840; border: 1px solid #00ffc830; }
-    .remb-zone-rapide  { flex: 2; background: #ff446640; }
-
-    .rembobinage-hint {
-      font-size: 9px;
-      color: #444466;
-      text-align: center;
+      color: rgba(255,255,255,0.3);
       letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-
-    .rembobinage-btn {
-      width: 100%;
-      background: #100f00;
-      border: 2px solid #ffcc00;
-      border-radius: 8px;
-      padding: 16px;
-      text-align: center;
-      cursor: pointer;
-      font-size: 13px;
-      color: #ffcc00;
-      letter-spacing: 3px;
-      font-weight: bold;
+      z-index: 11;
       font-family: 'Courier New', monospace;
-      user-select: none;
-      -webkit-user-select: none;
     }
 
-    .rembobinage-btn:active { background: #181400; }
-
-    .rembobinage-resultat {
-      font-size: 10px;
-      text-align: center;
-      margin-top: 8px;
-      letter-spacing: 1px;
-      min-height: 20px;
-      font-style: italic;
+    /* PROGRESS BAR — subtile, juste l'ambiance */
+    .progress-bar {
+      height: 3px;
+      background: #0a0a18;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #ff2d78;
+      width: 0%;
+      transition: width 0.1s linear;
     }
 
-    /* ZONE COUPE */
+    /* BOUTONS */
     .cut-zone {
-      background: #08081a;
-      border: 2px solid #00b4ff;
-      box-shadow: 0 0 10px #00b4ff20;
-      border-radius: 8px;
-      padding: 10px 12px;
-      flex-shrink: 0;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -602,7 +235,7 @@
       background: #080f06;
       border: 2px solid #ff8855;
       border-radius: 8px;
-      padding: 14px 8px;
+      padding: 16px 8px;
       text-align: center;
       cursor: pointer;
       font-size: 13px;
@@ -612,7 +245,6 @@
       font-family: 'Courier New', monospace;
       text-shadow: 0 0 10px #ff8855;
     }
-
     .btn-lancer:active { transform: scale(0.97); }
     .btn-lancer.hidden { display: none; }
 
@@ -621,26 +253,15 @@
       background: #100508;
       border: 2px solid #ff4466;
       border-radius: 8px;
-      padding: 14px 8px;
+      padding: 18px 8px;
       text-align: center;
       cursor: pointer;
+      display: none;
       position: relative;
       overflow: hidden;
-      display: none;
     }
-
     .cut-btn.visible  { display: block; }
     .cut-btn:active   { transform: scale(0.97); }
-    .cut-btn.disabled { opacity: 0.3; pointer-events: none; }
-
-    .cut-btn.bascule-active {
-      animation: btnScintille 0.35s infinite;
-    }
-
-    @keyframes btnScintille {
-      0%, 100% { box-shadow: 0 0 15px #ff4466, 0 0 30px #ff446650; border-color: #ff4466; }
-      50%       { box-shadow: 0 0 30px #ff4466, 0 0 60px #ff4466;   border-color: #ff8899; }
-    }
 
     .cut-btn::before {
       content: '';
@@ -650,46 +271,37 @@
       background: linear-gradient(90deg, transparent, rgba(255,68,102,0.1), transparent);
       animation: shimmer 2s infinite;
     }
-
     @keyframes shimmer {
       0%   { left: -100%; }
-      100% { left:  100%; }
+      100% { left: 100%; }
     }
 
-    .cut-icon { font-size: 18px; display: block; margin-bottom: 3px; }
-    .cut-text { font-size: 14px; color: #ff4466; letter-spacing: 4px; font-weight: bold; text-shadow: 0 0 12px #ff4466; }
+    .cut-text { font-size: 16px; color: #ff4466; letter-spacing: 4px; font-weight: bold; text-shadow: 0 0 12px #ff4466; }
 
     /* COREY RÉACTION */
     .corey-reaction {
       background: #0a0a18;
       border: 1px solid #1e1e3a;
-      border-left: 3px solid #ff8855;
-      border-radius: 6px;
-      padding: 10px 12px;
+      border-left: 3px solid #ff2d78;
+      border-radius: 0 6px 6px 0;
+      padding: 12px;
       display: none;
-      flex-shrink: 0;
     }
-
     .corey-reaction.visible {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      align-items: flex-start;
+      gap: 12px;
     }
-
     .corey-reaction-avatar {
-      width: 70px;
-      height: 70px;
+      width: 64px; height: 64px;
       border-radius: 50%;
       border: 2px solid #ff2d7880;
       object-fit: cover;
       flex-shrink: 0;
       background: #080818;
-      box-shadow: 0 0 12px #ff2d7830;
     }
-
-    .corey-reaction-content { flex: 1; }
-    .corey-label { font-size: 8px; color: #ff8855; letter-spacing: 2px; margin-bottom: 4px; }
-    .corey-text  { font-size: 12px; color: #f0f0ff; font-style: italic; line-height: 1.5; }
+    .corey-label { font-size: 8px; color: #ff2d78; letter-spacing: 2px; margin-bottom: 6px; }
+    .corey-text  { font-size: 13px; color: #ffffff; font-style: italic; line-height: 1.6; }
 
     /* CUTTER */
     .cutter-panel {
@@ -698,183 +310,100 @@
       border: 1px solid #2e2e50;
       border-radius: 8px;
       overflow: hidden;
-      flex-shrink: 0;
     }
-
-    .cutter-panel.visible {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-
+    .cutter-panel.visible { display: block; animation: fadeIn 0.5s ease; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     .cutter-header {
       background: #0a0a1e;
-      padding: 8px 14px;
+      padding: 10px 14px;
       border-bottom: 1px solid #2e2e50;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .cutter-header-left {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
     .cutter-avatar {
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       border-radius: 50%;
       object-fit: cover;
       border: 1px solid #4444aa40;
       background: #0a0a18;
     }
-
     .cutter-fanzine { font-size: 11px; color: #f0f0ff; letter-spacing: 2px; }
     .cutter-pseudo  { font-size: 9px; color: #444466; letter-spacing: 1px; }
-
-    .cutter-body    { padding: 12px 14px; }
-    .cutter-title   { font-size: 13px; color: #f0f0ff; letter-spacing: 1px; margin-bottom: 4px; }
-    .cutter-meta    { font-size: 9px; color: #444466; letter-spacing: 1px; margin-bottom: 10px; }
-
-    .cutter-zone-critique {
-      font-size: 11px;
-      color: #888899;
-      font-style: italic;
-      line-height: 1.6;
-      margin-bottom: 8px;
-      padding: 8px 10px;
-      background: #080818;
-      border-left: 2px solid #333355;
-      border-radius: 0 4px 4px 0;
-    }
-
-    .cutter-critique {
-      font-size: 11px;
-      color: #8080aa;
-      font-style: italic;
-      line-height: 1.7;
-      margin-bottom: 12px;
-    }
-
+    .cutter-body    { padding: 14px; }
+    .cutter-title   { font-size: 13px; color: #f0f0ff; letter-spacing: 1px; margin-bottom: 10px; }
+    .cutter-critique { font-size: 12px; color: #8080aa; font-style: italic; line-height: 1.7; margin-bottom: 14px; }
     .cutter-note {
       display: flex;
       align-items: baseline;
       gap: 4px;
       margin-bottom: 10px;
     }
-
     .note-label { font-size: 10px; color: #444466; letter-spacing: 2px; }
     .note-max   { font-size: 14px; color: #444466; }
-
     .note-value {
-      font-size: 36px;
+      font-size: 40px;
       font-weight: bold;
       letter-spacing: 2px;
       animation: noteReveal 0.6s ease;
     }
-
     @keyframes noteReveal {
       from { opacity: 0; transform: scale(0.5); }
       to   { opacity: 1; transform: scale(1); }
     }
-
     .corey-after {
-      margin-top: 10px;
-      font-size: 10px;
+      font-size: 11px;
       color: #7070aa;
       font-style: italic;
       border-top: 1px solid #1e1e3a;
-      padding-top: 8px;
+      padding-top: 10px;
     }
 
     /* DISTRIBUTION */
-    .distrib-section {
-      display: none;
-      flex-shrink: 0;
-    }
-
+    .distrib-section { display: none; }
     .distrib-section.visible { display: block; }
-
-    .distrib-title {
-      font-size: 9px;
-      color: #ff8855;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-    }
-
+    .distrib-title { font-size: 9px; color: #ff2d78; letter-spacing: 2px; margin-bottom: 8px; }
     .distrib-options { display: flex; flex-direction: column; gap: 6px; }
-
     .distrib-option {
       background: #0a0a18;
       border: 1px solid #1e1e3a;
       border-radius: 6px;
       padding: 12px 14px;
       cursor: pointer;
-      transition: background 0.15s;
     }
-
-    .distrib-option:active  { background: #0f0f22; border-color: #00ffc8; }
+    .distrib-option:active { background: #0f0f22; border-color: #00b4ff; }
     .distrib-option.disabled { opacity: 0.3; pointer-events: none; }
-
-    .distrib-name    { font-size: 11px; color: #f0f0ff; letter-spacing: 1px; margin-bottom: 6px; }
+    .distrib-name    { font-size: 12px; color: #f0f0ff; letter-spacing: 1px; margin-bottom: 6px; }
     .distrib-effects { display: flex; flex-direction: column; gap: 3px; }
     .distrib-effect  { font-size: 9px; color: #555577; letter-spacing: 1px; }
     .distrib-effect.positive { color: #00ffc8; }
     .distrib-effect.negative { color: #ff4466; }
     .distrib-effect.warning  { color: #ff8855; }
 
-    /* JAUGES */
+    /* BOTTOM */
     .bottom-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
       background: #080818;
       border-top: 2px solid #ff2d78;
-      box-shadow: 0 -4px 16px #ff2d7820;
       padding: 8px 12px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 6px;
       z-index: 100;
     }
-
-    .gauge-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-    }
-
+    .gauge-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
     .gauge-icon { font-size: 14px; }
-
-    .gauge-bar-container {
-      width: 100%; height: 4px;
-      background: #0f0f20;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
+    .gauge-bar-container { width: 100%; height: 4px; background: #0f0f20; border-radius: 2px; overflow: hidden; }
     .gauge-bar { height: 100%; border-radius: 2px; transition: width 0.3s; }
     .gauge-bar.money  { background: #00ffc8; }
     .gauge-bar.legal  { background: #ff8855; }
-    .gauge-bar.expo   { background: #ff4466; }
     .gauge-bar.energy { background: #ffdd44; }
+    .gauge-value { font-size: 9px; color: #aaaadd; letter-spacing: 1px; font-weight: bold; }
 
-    .gauge-value { font-size: 8px; color: #6060aa; letter-spacing: 1px; }
-
-    .fade-out { animation: fadeOut 0.5s forwards; }
-
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to   { opacity: 0; }
-    }
-
-    /* NOTIF */
     .notif-toast {
       position: fixed;
       top: 60px; left: 50%;
@@ -892,29 +421,25 @@
       font-family: 'Courier New', monospace;
       display: none;
     }
-
-    .notif-toast.visible {
-      display: block;
-      animation: notifAnim 2.5s forwards;
-    }
-
-    .notif-toast.positive { border-color: #00ffc8; color: #00ffc8; background: #051510; }
-    .notif-toast.negative { border-color: #ff4466; color: #ff4466; background: #150510; }
-
+    .notif-toast.visible { display: block; animation: notifAnim 2.5s forwards; }
+    .notif-toast.positive { border-color: #00ffc8; color: #00ffc8; }
+    .notif-toast.negative { border-color: #ff4466; color: #ff4466; }
     @keyframes notifAnim {
-      0%   { opacity: 0; }
-      12%  { opacity: 1; }
-      75%  { opacity: 1; }
-      100% { opacity: 0; }
+      0%  { opacity: 0; }
+      12% { opacity: 1; }
+      75% { opacity: 1; }
+      100%{ opacity: 0; }
     }
 
+    .fade-out { animation: fadeOut 0.5s forwards; }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
   </style>
 </head>
 <body>
 
   <div class="top-bar">
     <div class="reserve-title">▓ LA RÉSERVE ▓</div>
-    <div class="top-bar-right">
+    <div style="display:flex;align-items:center;gap:12px;">
       <div class="night-info" id="night-info">Soir — Jour 1</div>
       <div class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊</div>
     </div>
@@ -922,134 +447,60 @@
 
   <div class="main-area">
 
-    <!-- HERO -->
-    <div class="reserve-hero">
-      <img class="reserve-hero-img"
-           src="posters/reserve.png" alt="La Réserve"
-           onerror="this.parentElement.style.display='none'">
-      <div class="reserve-hero-overlay"></div>
-      <div class="reserve-hero-label">▓ RÉSERVE — ACCÈS RESTREINT</div>
+    <!-- CASSETTE -->
+    <div class="cassette-source">
+      <div class="cassette-label">CASSETTE SOURCE</div>
+      <div class="cassette-title" id="cassette-title">Chargement...</div>
+      <div class="cassette-meta" id="cassette-type">—</div>
     </div>
 
-    <!-- CASSETTE SOURCE -->
-    <div class="cassette-source">
-      <div class="cassette-header">
-        <img class="cassette-illustration"
-             src="posters/cassette_noire.png" alt="Cassette"
+    <!-- FRED + COREY -->
+    <div class="fred-corey-avant">
+      <img class="fred-reserve-avatar" id="fred-reserve-avatar"
+           src="posters/fred.png" alt="Fred"
+           onerror="this.style.display='none'">
+      <div class="corey-avant-wrapper">
+        <img class="corey-reserve-avatar" id="corey-avant-avatar"
+             src="posters/corey.png" alt="Corey"
              onerror="this.style.display='none'">
-        <div class="cassette-info">
-          <div class="cassette-label">CASSETTE SOURCE</div>
-          <div class="cassette-title" id="cassette-title">Chargement...</div>
-          <div class="cassette-meta">
-            <span id="cassette-type">—</span>
-            &nbsp;·&nbsp;
-            <span id="cassette-diff-text">—</span>
-          </div>
-          <div class="cassette-difficulte" id="cassette-difficulte"></div>
-        </div>
-      </div>
-      <!-- FRED + COREY AVANT LE FILM -->
-      <div class="fred-corey-avant">
-        <div class="fred-reserve-portrait">
-          <img class="fred-reserve-avatar" id="fred-reserve-avatar"
-               src="posters/fred.png" alt="Fred"
-               onerror="this.style.display='none'">
-          <div class="fred-reserve-name">FRED</div>
-        </div>
-        <div class="corey-avant" style="flex:1;margin:0;border-radius:6px;">
-          <img class="corey-reserve-avatar" id="corey-avant-avatar"
-               src="posters/corey.png" alt="Corey"
-               onerror="this.style.display='none'">
-          <div class="corey-avant-text" id="corey-avant-text">
-            Corey prépare le magnéto...
-          </div>
+        <div class="corey-avant-text" id="corey-avant-text">
+          Corey prépare le magnéto...
         </div>
       </div>
     </div>
 
     <!-- MONITEUR -->
     <div class="monitor-wrapper">
-      <div class="monitor-label">
+      <div class="monitor-top">
         <span>▶ MONITEUR</span>
         <span class="monitor-rec" id="monitor-rec">● REC</span>
+        <span class="scene-timecode" id="scene-timecode" style="position:relative;bottom:auto;right:auto;">00:00</span>
       </div>
-      <div class="monitor-screen" id="monitor-screen">
-        <img id="scene-image" src="" alt=""
-             style="position:absolute;top:0;left:0;width:100%;height:100%;
-                    object-fit:cover;z-index:2;opacity:0;
-                    transition:opacity 0.3s;">
-        <div class="scene-bg" id="scene-bg"></div>
-        <div class="scene-content" id="scene-content">
-          <span class="scene-icon-big" id="scene-icon">📼</span>
-          <div class="scene-personnage"   id="scene-personnage"></div>
-          <div class="scene-lieu"         id="scene-lieu"></div>
-          <div class="scene-description"  id="scene-description">En attente...</div>
-        </div>
-        <div class="tracking-line"  id="tracking-line"></div>
-        <div class="glitch-overlay" id="glitch-overlay"></div>
-        <div class="scene-label"    id="scene-label">EN ATTENTE</div>
-        <div class="scene-timecode" id="scene-timecode">00:00</div>
+      <div class="monitor-screen">
+        <img class="scene-image" id="scene-image" src="" alt="">
+        <div class="tracking-line" id="tracking-line"></div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
       </div>
     </div>
 
-    <!-- TIMELINE FLUIDE -->
-    <div class="timeline-section">
-      <div class="timeline-label">
-        <span>TIMELINE</span>
-        <span class="timeline-duration" id="timeline-duration">—</span>
-      </div>
-      <div class="timeline-bar">
-        <div class="timeline-zones-bg" id="timeline-zones-bg"></div>
-        <div class="timeline-ideal-marker" id="timeline-ideal-marker"></div>
-        <div class="timeline-cursor" id="timeline-cursor"></div>
-      </div>
-      <div class="timeline-zones-labels" id="timeline-labels"></div>
-    </div>
-
-    <!-- REMBOBINAGE MANUEL -->
-    <div class="rembobinage-zone" id="rembobinage-zone">
-      <div class="rembobinage-label">◀◀ REMBOBINAGE</div>
-      <div class="rembobinage-barre-container">
-        <div class="rembobinage-fill parfait" id="remb-fill"
-             style="width:0%"></div>
-      </div>
-      <div class="rembobinage-zones">
-        <div class="remb-zone-lent"></div>
-        <div class="remb-zone-ok"></div>
-        <div class="remb-zone-rapide"></div>
-      </div>
-      <div class="rembobinage-hint" id="remb-hint">
-        Maintenez le bouton. Restez dans la zone verte.
-      </div>
-      <div class="rembobinage-btn"
-           id="remb-btn"
-           ontouchstart="rembStartTouch(event)"
-           ontouchend="rembStopTouch(event)"
-           onmousedown="rembStart()"
-           onmouseup="rembStop()"
-           onmouseleave="rembStop()">
-        ◀◀ REMBOBINER
-      </div>
-      <div class="rembobinage-resultat" id="remb-resultat"></div>
-    </div>
-
-    <!-- ZONE COUPE -->
+    <!-- BOUTONS -->
     <div class="cut-zone">
       <div class="btn-lancer" id="btn-lancer" onclick="lancerFilm()">
         ▶ LANCER LE FILM
       </div>
-      <div class="cut-btn disabled" id="cut-btn" onclick="makeCut()">
-        <span class="cut-icon">✂</span>
-        <span class="cut-text">COUPER</span>
+      <div class="cut-btn" id="cut-btn" onclick="makeCut()">
+        <div class="cut-text">✂ COUPER</div>
       </div>
     </div>
 
     <!-- COREY RÉACTION -->
     <div class="corey-reaction" id="corey-reaction">
       <img class="corey-reaction-avatar" id="corey-reaction-avatar"
-           src="posters/joie.png" alt="Corey"
+           src="posters/corey.png" alt="Corey"
            onerror="this.style.display='none'">
-      <div class="corey-reaction-content">
+      <div>
         <div class="corey-label">COREY —</div>
         <div class="corey-text" id="corey-text">...</div>
       </div>
@@ -1058,21 +509,16 @@
     <!-- CUTTER -->
     <div class="cutter-panel" id="cutter-panel">
       <div class="cutter-header">
-        <div class="cutter-header-left">
-          <img class="cutter-avatar"
-               src="posters/cuter.png" alt="Cutter"
-               onerror="this.style.display='none'">
-          <div>
-            <div class="cutter-fanzine">CELLULOÏD SCALPEL</div>
-            <div class="cutter-pseudo">The Glitch</div>
-          </div>
+        <img class="cutter-avatar" src="posters/cuter.png" alt=""
+             onerror="this.style.display='none'">
+        <div>
+          <div class="cutter-fanzine">CELLULOÏD SCALPEL</div>
+          <div class="cutter-pseudo">The Glitch</div>
         </div>
       </div>
       <div class="cutter-body">
-        <div class="cutter-title"        id="cutter-title">—</div>
-        <div class="cutter-meta"         id="cutter-meta">—</div>
-        <div class="cutter-zone-critique" id="cutter-zone-critique"></div>
-        <div class="cutter-critique"     id="cutter-critique">—</div>
+        <div class="cutter-title" id="cutter-title">—</div>
+        <div class="cutter-critique" id="cutter-critique">—</div>
         <div class="cutter-note">
           <span class="note-label">NOTE :</span>
           <span class="note-value" id="note-value">—</span>
@@ -1090,7 +536,6 @@
 
   </div>
 
-  <!-- JAUGES -->
   <div class="bottom-bar">
     <div class="gauge-item">
       <span class="gauge-icon">💰</span>
@@ -1107,13 +552,6 @@
       <span class="gauge-value" id="val-legal">—</span>
     </div>
     <div class="gauge-item">
-      <span class="gauge-icon">👁</span>
-      <div class="gauge-bar-container">
-        <div class="gauge-bar expo" id="bar-expo" style="width:0%"></div>
-      </div>
-      <span class="gauge-value" id="val-expo">—</span>
-    </div>
-    <div class="gauge-item">
       <span class="gauge-icon">⚡</span>
       <div class="gauge-bar-container">
         <div class="gauge-bar energy" id="bar-energy" style="width:100%"></div>
@@ -1123,40 +561,20 @@
   </div>
 
   <div class="notif-toast" id="notif-toast"></div>
-
-  <!-- AUDIO -->
-  <audio id="bg-music" loop>
-    <source src="music/micrometrage.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="bg-music" loop><source src="music/micrometrage.mp3" type="audio/mpeg"></audio>
 
   <script>
 
-    let gameState        = {};
-    let currentCassette  = null;
-    let cutMade          = false;
-    let currentSegIndex  = 0;
-    let cutSegIndex      = 0;
-    let timelineInterval = null;
-    let timelineProgress = 0; // 0 à 100 — progression fluide
-    let timelineRAF      = null;
-    let filmEnCours      = false;
-    let phaseCoupe       = false;
-    let momentIdeal      = 0; // position idéale de coupe (0-100)
-    let rembOK           = false;
-    let rembBonus        = 0;
-
-    // Rembobinage
-    let rembInterval    = null;
-    let rembVitesse     = 0;
-    let rembProgress    = 0;
-    let rembZoneOKStart = 0;
-    let rembZoneOKEnd   = 0;
-    let rembTempsZone   = 0;
-    let rembActif       = false;
-
-    // MUSIQUE
-    let music   = null;
-    let isMuted = false;
+    let gameState       = {};
+    let currentCassette = null;
+    let segments        = [];
+    let currentSegIdx   = -1;
+    let cutMade         = false;
+    let filmEnCours     = false;
+    let timelineRAF     = null;
+    let rembBonus       = 0;
+    let music           = null;
+    let isMuted         = false;
 
     // ===================================================
     // MUSIQUE
@@ -1167,87 +585,27 @@
       isMuted = localStorage.getItem('rewind_muted') === 'true';
       music.volume = 0.25;
       music.muted  = isMuted;
-      document.getElementById('mute-btn').textContent =
-        isMuted ? '🔇' : '🔊';
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
       const p = music.play();
-      if (p !== undefined) {
-        p.catch(() => {
-          document.addEventListener('touchstart',
-            () => music.play(), { once: true });
-        });
-      }
+      if (p) p.catch(() => document.addEventListener('touchstart', () => music.play(), {once:true}));
     }
 
     function toggleMute() {
       isMuted = !isMuted;
       if (music) music.muted = isMuted;
       localStorage.setItem('rewind_muted', isMuted);
-      document.getElementById('mute-btn').textContent =
-        isMuted ? '🔇' : '🔊';
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
     }
 
-    function fadeOutMusic(callback) {
-      if (!music || isMuted) { if (callback) callback(); return; }
-      let vol = music.volume;
-      const fade = setInterval(() => {
-        vol = Math.max(0, vol - 0.05);
-        music.volume = vol;
-        if (vol <= 0) {
-          clearInterval(fade);
-          music.pause();
-          if (callback) callback();
-        }
+    function fadeOutMusic(cb) {
+      if (!music || isMuted) { if (cb) cb(); return; }
+      let v = music.volume;
+      const f = setInterval(() => {
+        v = Math.max(0, v - 0.05);
+        music.volume = v;
+        if (v <= 0) { clearInterval(f); music.pause(); if (cb) cb(); }
       }, 50);
     }
-
-    // ===================================================
-    // COULEURS ZONES
-    // ===================================================
-
-    const ZONE_STYLES = {
-      bleu:   { bg:'#020810', accent:'#1a3080', label:'MISE EN PLACE' },
-      orange: { bg:'#100400', accent:'#602800', label:'TENSION'       },
-      rouge:  { bg:'#100205', accent:'#800015', label:'BASCULE'       },
-      vert:   { bg:'#020a03', accent:'#185015', label:'RÉSOLUTION'    }
-    };
-
-    const COREY_REACTIONS = {
-      trop_tot: [
-        "T'as même pas attendu que ça commence.",
-        "C'est juste un générique Fred.",
-        "On avait rien là. Vraiment rien."
-      ],
-      mise_en_place: [
-        "Trop tôt. L'histoire commençait à peine.",
-        "T'as pas attendu la tension.",
-        "Y'avait mieux à trouver."
-      ],
-      tension: [
-        "Dans la tension. Pas encore la bascule.",
-        "Mmh. Correct. Pas parfait.",
-        "Ça dépend de ce que Cutter en pense."
-      ],
-      bascule: [
-        "Oh putain. Ouais. C'est ça.",
-        "T'as vu le moment exact.",
-        "Je dirai rien de plus. C'est bien."
-      ],
-      resolution: [
-        "Fred. T'aurais pu t'arrêter avant.",
-        "Trop tard. C'était fini avant ça.",
-        "Tu pouvais pas lâcher deux secondes plus tôt ?"
-      ],
-      parfait: [
-        "Comment t'as trouvé ça ? Personne coupe là.",
-        "Je comprends pas encore. Mais ça marche.",
-        "Bien joué. Vraiment."
-      ],
-      mauvais: [
-        "Non. Juste... non.",
-        "T'as essayé un truc. Ça a pas marché.",
-        "Fred... non."
-      ]
-    };
 
     // ===================================================
     // INIT
@@ -1260,655 +618,246 @@
 
       initMusic();
       updateUI();
-      updateNightInfo();
+      document.getElementById('night-info').textContent =
+        `Soir — Jour ${gameState.jour || 1}`;
 
       // Choisir cassette
       const semaine = gameState.semaine || 1;
-      if (typeof getCassetteAleatoire !== 'undefined') {
-        currentCassette = getCassetteAleatoire(semaine);
-      } else if (CASSETTES_DATA && CASSETTES_DATA.length) {
+      currentCassette = getCassetteAleatoire(semaine);
+      if (!currentCassette && CASSETTES_DATA && CASSETTES_DATA.length) {
         currentCassette = CASSETTES_DATA[0];
-      } else {
-        currentCassette = getFallbackCassette();
       }
 
+      if (!currentCassette) { window.location.href = 'night.html'; return; }
+
+      // Mémoriser
+      if (!gameState.cassettes_jouees) gameState.cassettes_jouees = [];
+      if (!gameState.cassettes_jouees.includes(currentCassette.id)) {
+        gameState.cassettes_jouees.push(currentCassette.id);
+      }
       gameState.derniereCassette = currentCassette.id;
-      afficherCassette();
-      renderTimeline();
-      initRembobinage();
+
+      segments = currentCassette.segments || [];
+
+      // Afficher infos
+      document.getElementById('cassette-title').textContent = currentCassette.titre;
+      document.getElementById('cassette-type').textContent  = currentCassette.type || '—';
+      document.getElementById('corey-avant-text').textContent =
+        currentCassette.corey_avant || 'Corey charge la cassette.';
+
+      // Avatars selon difficulté
+      const diff = currentCassette.difficulte || 2;
+      if (diff >= 4) {
+        setAvatar('corey-avant-avatar', 'posters/corey-peur.png');
+        setAvatar('fred-reserve-avatar', 'posters/fred_stress.png');
+      } else {
+        setAvatar('corey-avant-avatar', 'posters/corey-heureux.png');
+        setAvatar('fred-reserve-avatar', 'posters/fred.png');
+      }
     };
 
-    // ===================================================
-    // FALLBACK CASSETTE
-    // ===================================================
-
     function getCassetteAleatoire(semaine) {
-      const dispo = CASSETTES_DATA.filter(c => c.semaine_min <= semaine);
-      if (!dispo.length) return CASSETTES_DATA[0];
-      // Éviter de rejouer la même
-      const dejouees = gameState.cassettes_jouees || [];
+      if (typeof CASSETTES_DATA === 'undefined') return null;
+      const dispo     = CASSETTES_DATA.filter(c => c.semaine_min <= semaine);
+      const dejouees  = gameState.cassettes_jouees || [];
       const nonJouees = dispo.filter(c => !dejouees.includes(c.id));
-      const pool = nonJouees.length > 0 ? nonJouees : dispo;
+      const pool      = nonJouees.length > 0 ? nonJouees : dispo;
+      if (!pool.length) return null;
       return pool[Math.floor(Math.random() * pool.length)];
     }
 
-    function getFallbackCassette() {
-      return {
-        id:'fallback',
-        titre:'LE DERNIER RECOURS',
-        type:'DRAME', difficulte:2,
-        segments:[
-          {zone:'bleu',   icon:'🚗', personnage:'UN HOMME',  lieu:'Rue',       texte:'Il sort d\'une voiture. Regarde autour.'},
-          {zone:'orange', icon:'🔫', personnage:'UN HOMME',  lieu:'Escaliers', texte:'Il monte. Lentement. Tension.'},
-          {zone:'rouge',  icon:'🚪', personnage:'UN HOMME',  lieu:'Couloir',   texte:'Il frappe. Silence. Il attend.'},
-          {zone:'vert',   icon:'💥', personnage:'UN HOMME',  lieu:'Appartement','texte':'La porte s\'ouvre enfin.'}
-        ],
-        coupeIdeal:55,      // Position idéale en % — milieu de bascule
-        coupeVariance:15,   // Tolérance en % pour la proximité
-        critiques_par_zone:{
-          bleu:  'Vous avez coupé avant que rien se passe.',
-          orange:'Dans la tension. Pas encore la bascule.',
-          rouge: 'La porte. Le silence. C\'est là.',
-          vert:  'Trop tard.'
-        },
-        corey_avant:'Action ce soir. Tu sais où couper.',
-        cutter_special:null
-      };
+    function setAvatar(id, src) {
+      const el = document.getElementById(id);
+      if (el) el.src = src;
     }
 
     // ===================================================
-    // AFFICHER CASSETTE
-    // ===================================================
-
-    function afficherCassette() {
-      const c = currentCassette;
-      document.getElementById('cassette-title').textContent = c.titre;
-      document.getElementById('cassette-type').textContent  = c.type || '—';
-
-      // Difficulté
-      const diff    = c.difficulte || 3;
-      const diffEl  = document.getElementById('cassette-difficulte');
-      const diffTxt = document.getElementById('cassette-diff-text');
-      diffEl.innerHTML = Array(5).fill(0).map((_, i) =>
-        `<div class="diff-dot ${i < diff ? 'active' : ''}"></div>`
-      ).join('');
-      diffTxt.textContent = ['AUCUNE','FACILE','CORRECT','DIFFICILE','EXPERT','MAÎTRE'][diff] || '';
-
-      // Corey avant — texte spécifique au MM
-      document.getElementById('corey-avant-text').textContent =
-        c.corey_avant || 'Corey charge la cassette en silence.';
-
-      // Humeur Corey + Fred selon difficulté
-      if (diff >= 4)      { setCoreyAvant('peur');    setFredReserve('stress'); }
-      else if (diff >= 3) { setCoreyAvant('ok');      setFredReserve('attentif'); }
-      else                { setCoreyAvant('illumine'); setFredReserve('neutre'); }
-
-      // Mémoriser la cassette jouée
-      if (!gameState.cassettes_jouees) gameState.cassettes_jouees = [];
-      if (!gameState.cassettes_jouees.includes(c.id)) {
-        gameState.cassettes_jouees.push(c.id);
-      }
-    }
-
-    // ===================================================
-    // TIMELINE FLUIDE
-    // ===================================================
-
-    function renderTimeline() {
-      const c        = currentCassette;
-      const segments = c.segments;
-      const zonesEl  = document.getElementById('timeline-zones-bg');
-      const labelsEl = document.getElementById('timeline-labels');
-
-      // Zones de fond
-      const pct = 100 / segments.length;
-      zonesEl.innerHTML = segments.map((seg, i) =>
-        `<div class="tl-zone-bg ${seg.zone}" style="width:${pct}%"
-              data-zone="${i}"></div>`
-      ).join('');
-
-      // Labels
-      labelsEl.innerHTML = segments.map(seg =>
-        `<span class="tl-label">${ZONE_STYLES[seg.zone]?.label || seg.zone}</span>`
-      ).join('');
-
-      // Durée totale estimée
-      const VITESSES = {1:180,2:140,3:100,4:70,5:50};
-      const vitesse  = VITESSES[c.difficulte || 3];
-      const dureeTotal = segments.length * vitesse / 1000;
-      document.getElementById('timeline-duration').textContent =
-        `~${Math.round(dureeTotal)}s`;
-
-      // Curseur à zéro
-      document.getElementById('timeline-cursor').style.left = '0%';
-    }
-
-    function updateTimelineProgress(pct) {
-      const cursor   = document.getElementById('timeline-cursor');
-      const segments = currentCassette.segments;
-      const segIndex = Math.floor((pct / 100) * segments.length);
-      const safeIdx  = Math.min(segIndex, segments.length - 1);
-      const seg      = segments[safeIdx];
-
-      cursor.style.left = Math.min(pct, 99) + '%';
-
-      // Zone active
-      document.querySelectorAll('.tl-zone-bg').forEach((z, i) => {
-        z.classList.toggle('active', i === safeIdx);
-      });
-
-      // Labels actifs
-      document.querySelectorAll('.tl-label').forEach((l, i) => {
-        l.classList.toggle('active', i === safeIdx);
-      });
-
-      // Bascule
-      if (seg.zone === 'rouge') {
-        cursor.classList.add('bascule');
-      } else {
-        cursor.classList.remove('bascule');
-      }
-
-      return safeIdx;
-    }
-
-    // ===================================================
-    // REMBOBINAGE MANUEL
-    // ===================================================
-
-    function initRembobinage() {
-      // Zone verte entre 35% et 65%
-      rembZoneOKStart = 35;
-      rembZoneOKEnd   = 65;
-      rembProgress    = 0;
-      rembTempsZone   = 0;
-      rembOK          = false;
-      rembBonus       = 0;
-    }
-
-    function rembStartTouch(e) {
-      e.preventDefault();
-      rembStart();
-    }
-
-    function rembStopTouch(e) {
-      e.preventDefault();
-      rembStop();
-    }
-
-    function rembStart() {
-      if (rembOK) return;
-      rembActif = true;
-      rembInterval = setInterval(rembTick, 50);
-    }
-
-    function rembStop() {
-      rembActif = false;
-    }
-
-    function rembTick() {
-      if (!rembActif) {
-        // Décélération
-        rembVitesse = Math.max(0, rembVitesse - 3);
-      } else {
-        // Accélération
-        rembVitesse = Math.min(12, rembVitesse + 1.5);
-      }
-
-      rembProgress = Math.min(100, rembProgress + rembVitesse);
-
-      const fill    = document.getElementById('remb-fill');
-      const hint    = document.getElementById('remb-hint');
-      const resultat = document.getElementById('remb-resultat');
-
-      fill.style.width = rembProgress + '%';
-
-      // Classe selon vitesse
-      if (rembVitesse < 2) {
-        fill.className = 'rembobinage-fill lent';
-        hint.textContent = 'Trop lent. Maintenez le bouton.';
-        hint.style.color = '#3366cc';
-      } else if (rembVitesse > 9) {
-        fill.className = 'rembobinage-fill rapide';
-        hint.textContent = 'Trop vite ! Relâchez un peu.';
-        hint.style.color = '#ff4466';
-      } else {
-        fill.className = 'rembobinage-fill parfait';
-        hint.textContent = '✓ Zone parfaite — maintenez.';
-        hint.style.color = '#00ffc8';
-      }
-
-      // Temps dans la zone verte
-      const dansZone = rembProgress >= rembZoneOKStart
-                    && rembProgress <= rembZoneOKEnd
-                    && rembVitesse >= 2
-                    && rembVitesse <= 9;
-
-      if (dansZone) {
-        rembTempsZone += 50; // ms
-      } else {
-        rembTempsZone = Math.max(0, rembTempsZone - 20);
-      }
-
-      // Succès si 3 secondes dans la zone
-      if (rembTempsZone >= 3000) {
-        clearInterval(rembInterval);
-        rembOK = true;
-        rembBonus = 1; // +1 à la note Cutter
-
-        resultat.style.color = '#00ffc8';
-        resultat.textContent = '✓ Rembobinage parfait. Bande intacte.';
-        hint.textContent = 'Prêt à couper.';
-
-        setCoreyAvant('joie');
-        document.getElementById('corey-avant-text').textContent =
-          'La bande est propre. C\'est déjà quelque chose.';
-
-        // Activer le lanceur
-        setTimeout(() => {
-          document.getElementById('rembobinage-zone').classList.remove('visible');
-          document.getElementById('btn-lancer').classList.remove('hidden');
-          showNotif('Rembobinage parfait. Bonus Cutter +1.', true);
-        }, 800);
-        return;
-      }
-
-      // Trop rapide — pénalité
-      if (rembProgress >= 100 && rembVitesse > 9) {
-        clearInterval(rembInterval);
-        rembBonus = -1;
-        resultat.style.color = '#ff4466';
-        resultat.textContent = 'Trop vite. La bande a souffert.';
-        setCoreyAvant('colere');
-        document.getElementById('corey-avant-text').textContent =
-          'T\'as abîmé la bande Fred. Cutter va le sentir.';
-        setTimeout(() => {
-          document.getElementById('rembobinage-zone').classList.remove('visible');
-          document.getElementById('btn-lancer').classList.remove('hidden');
-          showNotif('Bande abîmée. Malus Cutter -1.', false);
-        }, 800);
-        return;
-      }
-
-      // Fin naturelle sans bonus
-      if (rembProgress >= 100) {
-        clearInterval(rembInterval);
-        rembBonus = 0;
-        resultat.style.color = '#7777aa';
-        resultat.textContent = 'Rembobiné. Correct.';
-        setTimeout(() => {
-          document.getElementById('rembobinage-zone').classList.remove('visible');
-          document.getElementById('btn-lancer').classList.remove('hidden');
-        }, 600);
-      }
-    }
-
-    // ===================================================
-    // PHASE 1 — OBSERVER
+    // LANCER LE FILM
     // ===================================================
 
     function lancerFilm() {
+      if (!segments.length) return;
+
       document.getElementById('btn-lancer').classList.add('hidden');
+      document.getElementById('cut-btn').classList.add('visible');
       document.getElementById('monitor-rec').classList.add('visible');
       document.getElementById('tracking-line').classList.add('visible');
 
-      if (typeof SOUNDS !== 'undefined') SOUNDS.magneto();
+      cutMade      = false;
+      filmEnCours  = true;
+      currentSegIdx = -1;
 
-      setCoreyAvant('joie');
+      // Durée par image selon difficulté
+      const DUREES = {0:3000, 1:2800, 2:2200, 3:1600, 4:1100, 5:800};
+      const dureeParImage = DUREES[currentCassette.difficulte || 2];
+      const dureeTotal    = segments.length * dureeParImage;
 
-      const segments = currentCassette.segments;
-      const VITESSES = {1:2000,2:1600,3:1200,4:850,5:600};
-      const vitesse  = VITESSES[currentCassette.difficulte || 3];
-      const dureeTotal = segments.length * vitesse;
+      let startTime = null;
 
-      filmEnCours    = true;
-      timelineProgress = 0;
-      currentSegIndex = -1;
-      let startTime  = null;
-
-      function animateTimeline(timestamp) {
+      function animate(timestamp) {
+        if (cutMade) return;
         if (!startTime) startTime = timestamp;
+
         const elapsed = timestamp - startTime;
-        timelineProgress = Math.min((elapsed / dureeTotal) * 100, 100);
+        const pct     = Math.min(elapsed / dureeTotal, 1);
 
-        const segIdx = updateTimelineProgress(timelineProgress);
+        // Progress bar
+        document.getElementById('progress-fill').style.width = (pct * 100) + '%';
 
-        // Mettre à jour le moniteur
-        if (segIdx !== currentSegIndex) {
-          currentSegIndex = segIdx;
-          updateMonitorScene(segments[segIdx], segIdx, segments.length);
+        // Index du segment actuel
+        const newIdx = Math.min(
+          Math.floor(pct * segments.length),
+          segments.length - 1
+        );
+
+        if (newIdx !== currentSegIdx) {
+          currentSegIdx = newIdx;
+          afficherSegment(newIdx);
         }
 
         // Timecode
         const secs = Math.floor(elapsed / 1000);
-        const mins = Math.floor(secs / 60);
-        const s    = String(secs % 60).padStart(2,'0');
         document.getElementById('scene-timecode').textContent =
-          `${String(mins).padStart(2,'0')}:${s}`;
+          String(Math.floor(secs / 60)).padStart(2,'0') + ':' +
+          String(secs % 60).padStart(2,'0');
 
-        if (timelineProgress < 100) {
-          timelineRAF = requestAnimationFrame(animateTimeline);
+        if (pct < 1) {
+          timelineRAF = requestAnimationFrame(animate);
         } else {
-          filmTermine();
-        }
-      }
-
-      timelineRAF = requestAnimationFrame(animateTimeline);
-    }
-
-    function filmTermine() {
-      filmEnCours = false;
-      document.getElementById('monitor-rec').classList.remove('visible');
-      document.getElementById('scene-label').textContent = 'FIN';
-
-      setCoreyAvant('joie');
-      document.getElementById('corey-avant-text').textContent =
-        'T\'as vu. Maintenant on rembobine et on coupe.';
-
-      // Afficher rembobinage
-      initRembobinage();
-      document.getElementById('rembobinage-zone').classList.add('visible');
-      document.getElementById('btn-lancer').classList.remove('hidden');
-      document.getElementById('btn-lancer').textContent = '▶ RELANCER (observation)';
-      document.getElementById('btn-lancer').onclick = lancerPhaseCoupe;
-    }
-
-    // ===================================================
-    // PHASE 2 — COUPER (après rembobinage)
-    // ===================================================
-
-    function lancerPhaseCoupe() {
-      // LES REQUINS DU BRONX — pas de coupe possible
-      if (currentCassette.pasDeCoupe) {
-        // Afficher message Corey directement
-        setTimeout(() => {
-          document.getElementById('corey-text').textContent = currentCassette.corey_reussi;
-          const avatarEl = document.getElementById('corey-reaction-avatar');
-          avatarEl.src = 'posters/corey-illumine.png';
-          document.getElementById('corey-reaction').classList.add('visible');
-          setFredReserve('attentif');
-          document.getElementById('cut-btn').style.display = 'none';
-          // Aller directement au jugement — note max
-          setTimeout(() => showCutterJudgement(10, currentCassette.segments[0], 0), 2000);
-        }, 500);
-        return;
-      }
-      document.getElementById('btn-lancer').classList.add('hidden');
-      document.getElementById('cut-btn').classList.add('visible');
-      document.getElementById('cut-btn').classList.remove('disabled');
-      document.getElementById('monitor-rec').classList.add('visible');
-      document.getElementById('tracking-line').classList.add('visible');
-
-      phaseCoupe = true;
-      cutMade    = false;
-      timelineProgress = 0;
-
-      // Moment idéal — variable selon la cassette
-      momentIdeal = currentCassette.coupeIdeal || 50;
-      // Variance ±10% aléatoire pour que ce soit jamais exactement pareil
-      momentIdeal += (Math.random() - 0.5) * 20;
-      momentIdeal  = Math.max(15, Math.min(85, momentIdeal));
-
-      const segments   = currentCassette.segments;
-      const VITESSES   = {1:2000,2:1600,3:1200,4:850,5:600};
-      const vitesse    = VITESSES[currentCassette.difficulte || 3];
-      const dureeTotal = segments.length * vitesse;
-      let startTime    = null;
-
-      function animateCoupe(timestamp) {
-        if (cutMade) return;
-        if (!startTime) startTime = timestamp;
-        const elapsed = timestamp - startTime;
-        timelineProgress = Math.min((elapsed / dureeTotal) * 100, 100);
-
-        const segIdx = updateTimelineProgress(timelineProgress);
-        cutSegIndex  = segIdx;
-
-        if (segIdx !== currentSegIndex) {
-          currentSegIndex = segIdx;
-          updateMonitorScene(segments[segIdx], segIdx, segments.length);
-        }
-
-        // Bascule — animation bouton
-        const seg = segments[segIdx];
-        const cutBtn = document.getElementById('cut-btn');
-        if (seg.zone === 'rouge') {
-          cutBtn.classList.add('bascule-active');
-          if (typeof SOUNDS !== 'undefined') {
-            // Son discret de tracking
-          }
-        } else {
-          cutBtn.classList.remove('bascule-active');
-        }
-
-        const secs = Math.floor(elapsed / 1000);
-        const mins = Math.floor(secs / 60);
-        const s    = String(secs % 60).padStart(2,'0');
-        document.getElementById('scene-timecode').textContent =
-          `${String(mins).padStart(2,'0')}:${s}`;
-
-        if (timelineProgress < 100 && !cutMade) {
-          timelineRAF = requestAnimationFrame(animateCoupe);
-        } else if (!cutMade) {
-          // Film terminé sans couper
+          // Film terminé sans couper — coupe forcée sur dernier segment
           cutMade = true;
-          cutSegIndex = segments.length - 1;
-          finaliserCoupe();
+          finaliserCoupe(segments.length - 1);
         }
       }
 
-      timelineRAF = requestAnimationFrame(animateCoupe);
+      timelineRAF = requestAnimationFrame(animate);
+    }
+
+    function afficherSegment(idx) {
+      const seg   = segments[idx];
+      const imgEl = document.getElementById('scene-image');
+      if (!seg || !imgEl) return;
+      imgEl.classList.remove('visible');
+      imgEl.src = seg.image || '';
+      imgEl.onload = () => imgEl.classList.add('visible');
+      imgEl.onerror = () => imgEl.classList.remove('visible');
     }
 
     // ===================================================
-    // LA COUPE
+    // COUPER
     // ===================================================
 
     function makeCut() {
-      if (cutMade || !phaseCoupe) return;
+      if (cutMade || !filmEnCours) return;
       cutMade = true;
       if (timelineRAF) cancelAnimationFrame(timelineRAF);
-      if (typeof SOUNDS !== 'undefined') SOUNDS.ciseaux();
-      finaliserCoupe();
+      finaliserCoupe(currentSegIdx);
     }
 
-    function finaliserCoupe() {
-      const segments = currentCassette.segments;
-      const idx      = Math.min(cutSegIndex, segments.length - 1);
-      const cutSeg   = segments[idx];
-
+    function finaliserCoupe(segIdx) {
+      filmEnCours = false;
       document.getElementById('monitor-rec').classList.remove('visible');
-      document.getElementById('cut-btn').classList.remove('bascule-active');
-      document.getElementById('cut-btn').classList.add('disabled');
-      document.getElementById('glitch-overlay').classList.remove('active');
-      document.getElementById('timeline-cursor').classList.remove('bascule');
       document.getElementById('tracking-line').classList.remove('visible');
+      document.getElementById('cut-btn').classList.remove('visible');
 
-      updateMonitorScene(cutSeg, idx, segments.length);
-      document.getElementById('scene-label').textContent =
-        '✂ COUPE — ' + (ZONE_STYLES[cutSeg.zone]?.label || cutSeg.zone);
-
-      // CALCUL NOTE — système de proximité
-      const note = calculerNoteProximite(timelineProgress, momentIdeal, idx, segments);
+      // Calculer la note
+      const note = calculerNote(segIdx);
 
       // Corey réaction
-      afficherCoreyReaction(note, cutSeg.zone);
+      setTimeout(() => afficherCoreyReaction(note, segIdx), 400);
 
-      setTimeout(() => {
-        showCutterJudgement(note, cutSeg, idx);
-      }, 1800);
+      // Cutter jugement
+      setTimeout(() => showCutterJudgement(note), 2200);
     }
 
     // ===================================================
-    // CALCUL NOTE — PROXIMITÉ
+    // CALCUL NOTE
     // ===================================================
 
-    function calculerNoteProximite(cutPosition, ideal, segIdx, segments) {
-      // OCR — coupe n'importe où = bon score
-      if (currentCassette.id === 'ocr') return 8;
-
-      // Calcul par index de segment (nouveau système)
+    function calculerNote(segIdx) {
       const c = currentCassette;
-      if (c.coupesIdeal && c.coupesIdeal.length > 0) {
-        // Trouver la distance minimale à un index idéal
-        const minDist = Math.min(...c.coupesIdeal.map(ideal => Math.abs(segIdx - ideal)));
-        let note;
-        if (minDist === 0) note = 10;
-        else if (minDist === 1) note = 7;
-        else if (minDist === 2) note = 5;
-        else note = Math.max(1, 5 - minDist);
-        // Coupe acceptable
-        if (c.coupeAcceptable && Array.isArray(c.coupeAcceptable)) {
-          const acceptDist = Math.min(...c.coupeAcceptable.map(a => Math.abs(segIdx - a)));
-          if (acceptDist === 0 && note < 6) note = 6;
-        }
-        note = Math.max(1, Math.min(10, note + rembBonus));
-        return note;
-      }
 
-      // Ancien système fallback
-      const distance = Math.abs(cutPosition - ideal);
-      const variance = currentCassette.coupeVariance || 15;
+      // OCR — n'importe où c'est bien
+      if (c.id === 'ocr') return 8;
 
+      // Requins du Bronx — pas de bonne coupe
+      if (c.pasDeCoupe) return 10;
+
+      if (!c.coupesIdeal || !c.coupesIdeal.length) return 5;
+
+      const minDist = Math.min(...c.coupesIdeal.map(i => Math.abs(segIdx - i)));
       let note;
+      if (minDist === 0)      note = 10;
+      else if (minDist === 1) note = 7;
+      else if (minDist === 2) note = 4;
+      else                    note = Math.max(1, 4 - minDist);
 
-      if (distance <= variance * 0.2) {
-        note = 10; // Parfait
-      } else if (distance <= variance * 0.5) {
-        note = Math.round(8 + (1 - distance / (variance * 0.5)) * 2);
-        note = Math.min(9, Math.max(8, note));
-      } else if (distance <= variance) {
-        note = Math.round(6 + (1 - distance / variance) * 2);
-        note = Math.min(7, Math.max(6, note));
-      } else if (distance <= variance * 1.8) {
-        note = Math.round(4 + (1 - distance / (variance * 1.8)) * 2);
-        note = Math.min(5, Math.max(4, note));
-      } else if (distance <= variance * 3) {
-        note = Math.round(2 + (1 - distance / (variance * 3)) * 2);
-        note = Math.min(3, Math.max(2, note));
-      } else {
-        note = 1;
+      // Coupe acceptable
+      if (c.coupeAcceptable && Array.isArray(c.coupeAcceptable)) {
+        const ad = Math.min(...c.coupeAcceptable.map(a => Math.abs(segIdx - a)));
+        if (ad === 0 && note < 6) note = 6;
       }
 
-      // Bonus/malus rembobinage
-      note = Math.max(1, Math.min(10, note + rembBonus));
-
-      // Coupe audacieuse — très tôt mais proche d'un moment spécial
-      const coupeAudacieuse = currentCassette.coupeAudacieuse;
-      if (coupeAudacieuse !== undefined) {
-        const segPct = (segIdx / segments.length) * 100;
-        if (Math.abs(segPct - coupeAudacieuse) < 10 && note < 8) {
-          note = Math.max(note, 7);
-          gameState.coupe_audacieuse_reussie = true;
-        }
-      }
-
-      return note;
-    }
-
-    // ===================================================
-    // MONITEUR — mise à jour
-    // ===================================================
-
-    function updateMonitorScene(seg, index, total) {
-      const style = ZONE_STYLES[seg.zone] || ZONE_STYLES.bleu;
-
-      document.getElementById('scene-bg').style.background =
-        `radial-gradient(ellipse at center, ${style.accent}55 0%, ${style.bg} 70%)`;
-
-      // Image du segment si disponible
-      const imgEl = document.getElementById('scene-image');
-      if (imgEl && seg.image) {
-        imgEl.src = seg.image;
-        imgEl.style.opacity = '1';
-        // Fond semi-transparent pour les textes
-        document.getElementById('scene-bg').style.background =
-          `linear-gradient(to bottom, rgba(8,8,24,0.1) 0%, rgba(8,8,24,0.8) 100%)`;
-      } else if (imgEl) {
-        imgEl.style.opacity = '0';
-        document.getElementById('scene-bg').style.background =
-          `radial-gradient(ellipse at center, ${style.accent}55 0%, ${style.bg} 70%)`;
-      }
-
-      document.getElementById('scene-icon').textContent =
-        seg.icon || '';
-      document.getElementById('scene-personnage').textContent =
-        seg.personnage || '';
-      document.getElementById('scene-lieu').textContent =
-        seg.lieu || '';
-      document.getElementById('scene-description').textContent =
-        seg.texte || '';
-      document.getElementById('scene-label').textContent =
-        style.label || seg.label || seg.zone;
-
-      if (seg.zone === 'rouge') {
-        document.getElementById('glitch-overlay').classList.add('active');
-      } else {
-        document.getElementById('glitch-overlay').classList.remove('active');
-      }
+      return Math.max(1, Math.min(10, note + rembBonus));
     }
 
     // ===================================================
     // COREY RÉACTION
     // ===================================================
 
-    function setCoreyAvant(humeur) {
-      const avatars = {
-        joie:   'posters/corey-heureux.png',
-        ok:     'posters/corey-ok.png',
-        peur:   'posters/corey-peur.png',
-        colere: 'posters/corey-colere1.png',
-        depite: 'posters/corey-depite.png',
-        illumine: 'posters/corey-illumine.png'
-      };
-      const el = document.getElementById('corey-avant-avatar');
-      if (el) el.src = avatars[humeur] || avatars.ok;
-    }
+    const COREY_GENERIQUES = {
+      bien: [
+        "T'as vu le moment exact.",
+        "Je dirai rien de plus. C'est bien.",
+        "Comment t'as trouvé ça ?"
+      ],
+      moyen: [
+        "Pas loin. Mais pas parfait.",
+        "Y'avait mieux. Mais c'est honnête.",
+        "Mmh. Ça passe."
+      ],
+      rate: [
+        "Non. Juste... non.",
+        "T'as essayé un truc. Ça a pas marché.",
+        "Fred... on en reparlera."
+      ]
+    };
 
-    function setFredReserve(humeur) {
-      const avatars = {
-        neutre:    'posters/fred.png',
-        attentif:  'posters/fred-attentif.png',
-        fier:      'posters/fred_fier.png',
-        stress:    'posters/fred_stress.png',
-        doute:     'posters/fred_doute.png'
-      };
-      const el = document.getElementById('fred-reserve-avatar');
-      if (el) el.src = avatars[humeur] || avatars.neutre;
-    }
+    function afficherCoreyReaction(note, segIdx) {
+      const c   = currentCassette;
+      let txt   = '';
+      let avatar = 'posters/corey-heureux.png';
 
-    function afficherCoreyReaction(note, zone) {
-      const c = currentCassette;
-      let txt = '';
-
-      // Priorité : texte spécifique du MM
-      if (note >= 8 && c.corey_reussi) {
-        txt = c.corey_reussi;
-      } else if (note >= 6 && c.coupeAcceptable !== null && c.corey_rate_acceptable) {
-        txt = c.corey_rate_acceptable;
+      if (c.pasDeCoupe) {
+        txt    = c.corey_reussi || "On touche pas à ça.";
+        avatar = 'posters/corey-illumine.png';
+        setAvatar('fred-reserve-avatar', 'posters/fred-attentif.png');
+      } else if (note >= 8 && c.corey_reussi) {
+        txt    = c.corey_reussi;
+        avatar = 'posters/corey-heureux.png';
+        setAvatar('fred-reserve-avatar', 'posters/fred_fier.png');
+      } else if (note >= 6 && c.corey_rate_acceptable) {
+        txt    = c.corey_rate_acceptable;
+        avatar = 'posters/corey-ok.png';
+        setAvatar('fred-reserve-avatar', 'posters/fred-attentif.png');
       } else if (note < 5 && c.corey_rate) {
-        txt = c.corey_rate;
+        txt    = c.corey_rate;
+        avatar = 'posters/corey-depite.png';
+        setAvatar('fred-reserve-avatar', 'posters/fred_doute.png');
+      } else if (note >= 7) {
+        txt    = COREY_GENERIQUES.bien[Math.floor(Math.random()*3)];
+        avatar = 'posters/corey-heureux.png';
+        setAvatar('fred-reserve-avatar', 'posters/fred_fier.png');
+      } else if (note >= 5) {
+        txt    = COREY_GENERIQUES.moyen[Math.floor(Math.random()*3)];
+        avatar = 'posters/corey-ok.png';
       } else {
-        // Fallback pool générique
-        let cat = 'tension';
-        if (note === 10)       cat = 'parfait';
-        else if (note >= 8)    cat = 'bascule';
-        else if (note >= 6)    cat = 'tension';
-        else if (note >= 4)    cat = zone === 'orange' ? 'tension' : 'mise_en_place';
-        else if (note >= 2)    cat = 'resolution';
-        else                   cat = 'mauvais';
-        if (zone === 'bleu' && note < 5) cat = 'trop_tot';
-        if (zone === 'vert' && note < 5) cat = 'resolution';
-        const pool = COREY_REACTIONS[cat] || COREY_REACTIONS.tension;
-        txt = pool[Math.floor(Math.random() * pool.length)];
+        txt    = COREY_GENERIQUES.rate[Math.floor(Math.random()*3)];
+        avatar = 'posters/corey-colere1.png';
+        setAvatar('fred-reserve-avatar', 'posters/fred_doute.png');
       }
 
-      // Avatar Corey selon note
-      const avatarEl = document.getElementById('corey-reaction-avatar');
-      if (note >= 7)      { avatarEl.src = 'posters/corey-heureux.png'; setFredReserve('fier'); }
-      else if (note <= 3) { avatarEl.src = 'posters/corey-colere1.png'; setFredReserve('doute'); }
-      else                { avatarEl.src = 'posters/corey-peur.png';    setFredReserve('attentif'); }
-
+      setAvatar('corey-reaction-avatar', avatar);
       document.getElementById('corey-text').textContent = txt;
       document.getElementById('corey-reaction').classList.add('visible');
     }
@@ -1917,38 +866,36 @@
     // CUTTER
     // ===================================================
 
-    function showCutterJudgement(note, cutSeg, cutIndex) {
-      // Critique par zone
-      const zoneEl = document.getElementById('cutter-zone-critique');
-      if (currentCassette.critiques_par_zone?.[cutSeg.zone]) {
-        zoneEl.textContent = currentCassette.critiques_par_zone[cutSeg.zone];
-        zoneEl.style.display = 'block';
-      } else {
-        zoneEl.style.display = 'none';
-      }
+    function showCutterJudgement(note) {
+      const critiques = {
+        10: { texte:"Je ne comprends pas encore pourquoi cette coupe fonctionne. Mais elle fonctionne.", corey:'"Dix sur dix."' },
+        9:  { texte:"Exactement là où le film n'avait plus besoin de continuer.", corey:'"Je savais que t\'avais ça en toi."' },
+        8:  { texte:"Vous avez vu juste. Pas de chance — c'est du travail.", corey:'"Huit. C\'est bien. Pas dix."' },
+        7:  { texte:"L'instinct était là. L'exécution presque parfaite.", corey:'"Sept. On peut faire mieux."' },
+        6:  { texte:"Vous avez compris ce que ce film avait à dire. Presque.", corey:'"Six sur dix."' },
+        5:  { texte:"Bon endroit. Mauvais moment. Ou l'inverse.", corey:'"Cinq. Le milieu."' },
+        4:  { texte:"Prudent. Sécurité au lieu du risque.", corey:'"Quatre. Cutter est déçu."' },
+        3:  { texte:"Au bon endroit mais trop tôt ou trop tard.", corey:'"Trois. On recommence."' },
+        2:  { texte:"Vous avez coupé. C'est tout ce qu'on peut dire.", corey:'"Deux sur dix. Dur."' },
+        1:  { texte:"Vous avez appuyé sur stop au hasard.", corey:'"Un sur dix Fred. Un."' }
+      };
 
-      const critique = getCutterCritique(note);
+      const c = critiques[note] || critiques[5];
 
-      document.getElementById('cutter-title').textContent =
-        `"${currentCassette.titre}"`;
-      document.getElementById('cutter-meta').textContent =
-        `Zone : ${ZONE_STYLES[cutSeg.zone]?.label || cutSeg.zone} · ${currentCassette.type}`;
-      document.getElementById('cutter-critique').textContent =
-        critique.texte;
+      document.getElementById('cutter-title').textContent = `"${currentCassette.titre}"`;
+      document.getElementById('cutter-critique').textContent = c.texte;
+      document.getElementById('corey-after').textContent    = c.corey;
 
       const noteEl = document.getElementById('note-value');
-      noteEl.textContent = note;
-      noteEl.style.color = note >= 8 ? '#00ffc8'
-                         : note >= 5 ? '#ff8855'
-                         : '#ff4466';
+      noteEl.textContent   = note;
+      noteEl.style.color   = note >= 8 ? '#00ffc8' : note >= 5 ? '#ff8855' : '#ff4466';
       noteEl.style.animation = 'none';
       void noteEl.offsetWidth;
       noteEl.style.animation = 'noteReveal 0.6s ease';
 
-      document.getElementById('corey-after').textContent = critique.corey;
       document.getElementById('cutter-panel').classList.add('visible');
 
-      // Impact gameState
+      // gameState
       if (note >= 8) {
         gameState.credibilite = Math.min(100, (gameState.credibilite||0) + 5);
         if (note === 10) gameState.cutterInteret = 'investi';
@@ -1965,57 +912,9 @@
 
       setTimeout(() => {
         showDistribution(note);
-        setTimeout(() => {
-          document.getElementById('distrib-section')
-                  .scrollIntoView({ behavior:'smooth' });
-        }, 300);
+        setTimeout(() => document.getElementById('distrib-section')
+          .scrollIntoView({behavior:'smooth'}), 300);
       }, 1000);
-    }
-
-    function getCutterCritique(note) {
-      const critiques = {
-        10: {
-          texte: "Je ne comprends pas encore pourquoi cette coupe fonctionne. Mais elle fonctionne. Je déteste ça.",
-          corey: '"Dix sur dix. Repose-toi."'
-        },
-        9: {
-          texte: "Exactement là où le film n'avait plus besoin de continuer. Rare.",
-          corey: '"Je savais que t\'avais ça en toi."'
-        },
-        8: {
-          texte: "Vous avez vu juste. Pas de chance — c'est du travail.",
-          corey: '"Huit. C\'est bien. Pas dix."'
-        },
-        7: {
-          texte: "L'instinct était là. L'exécution presque parfaite.",
-          corey: '"Sept. On peut faire mieux. Mais c\'est bien."'
-        },
-        6: {
-          texte: "Vous avez compris ce que ce film avait à dire. Pas complètement. Mais presque.",
-          corey: '"Six sur dix. Ouais."'
-        },
-        5: {
-          texte: "Bon endroit. Mauvais moment. Ou l'inverse.",
-          corey: '"Cinq. C\'est le milieu."'
-        },
-        4: {
-          texte: "Prudent. Sécurité au lieu du risque. Le cinéma n'est pas prudent.",
-          corey: '"Quatre. Cutter est déçu. Moi un peu aussi."'
-        },
-        3: {
-          texte: "Au bon endroit mais trop tôt ou trop tard. L'un ou l'autre.",
-          corey: '"Trois. On recommence demain."'
-        },
-        2: {
-          texte: "Vous avez coupé. C'est tout ce qu'on peut dire.",
-          corey: '"Deux sur dix. Dur."'
-        },
-        1: {
-          texte: "Vous avez appuyé sur stop au hasard. Ou presque.",
-          corey: '"Un sur dix Fred. Un."'
-        }
-      };
-      return critiques[note] || critiques[5];
     }
 
     // ===================================================
@@ -2023,29 +922,25 @@
     // ===================================================
 
     function showDistribution(note) {
-      const section = document.getElementById('distrib-section');
       const options = document.getElementById('distrib-options');
-      const jacksonDisabled = note < 4;
+      const jacksonOk = note >= 4;
 
       options.innerHTML = `
-        <div class="distrib-option ${jacksonDisabled ? 'disabled' : ''}"
-             onclick="distribute('jackson')">
+        <div class="distrib-option ${jacksonOk ? '' : 'disabled'}" onclick="distribute('jackson')">
           <div class="distrib-name">▶ VIA JACKSON</div>
           <div class="distrib-effects">
-            <div class="distrib-effect positive">+${Math.round(note * 4)}$</div>
+            <div class="distrib-effect positive">+${Math.round(note*4)}$</div>
             <div class="distrib-effect positive">Crédibilité +2</div>
             <div class="distrib-effect warning">Légalité +1</div>
-            ${jacksonDisabled
-              ? '<div class="distrib-effect negative">Note insuffisante — il refuse</div>'
-              : ''}
+            ${!jacksonOk ? '<div class="distrib-effect negative">Note insuffisante</div>' : ''}
           </div>
         </div>
         <div class="distrib-option" onclick="distribute('gamins')">
           <div class="distrib-name">▶ VIA LES GAMINS</div>
           <div class="distrib-effects">
-            <div class="distrib-effect positive">+${Math.round(note * 1.5)}$</div>
+            <div class="distrib-effect positive">+${Math.round(note*1.5)}$</div>
             <div class="distrib-effect positive">Crédibilité +3</div>
-            <div class="distrib-effect warning">Exposition +${note >= 7 ? 4 : 2}</div>
+            <div class="distrib-effect warning">Exposition +${note>=7?4:2}</div>
           </div>
         </div>
         <div class="distrib-option" onclick="distribute('garder')">
@@ -2053,51 +948,63 @@
           <div class="distrib-effects">
             <div class="distrib-effect">Flash-cut stock +1</div>
             <div class="distrib-effect positive">Légalité -1</div>
-            ${note < 7
-              ? '<div class="distrib-effect negative">Crédibilité -1</div>'
-              : '<div class="distrib-effect">Crédibilité neutre</div>'
-            }
           </div>
-        </div>
-      `;
+        </div>`;
 
-      section.classList.add('visible');
+      document.getElementById('distrib-section').classList.add('visible');
     }
 
     function distribute(choice) {
       const note = gameState.currentNote || 5;
-
       if (choice === 'jackson') {
-        gameState.argent      = (gameState.argent||0) + Math.round(note * 4);
+        gameState.argent      = (gameState.argent||0) + Math.round(note*4);
         gameState.credibilite = Math.min(100, (gameState.credibilite||0) + 2);
         gameState.legalite    = Math.min(100, (gameState.legalite||0) + 1);
-        gameState.exposition  = Math.max(0,   (gameState.exposition||0) - 2);
-        showNotif(`+${Math.round(note * 4)}$ via Jackson`, true);
+        showNotif(`+${Math.round(note*4)}$ via Jackson`, true);
       } else if (choice === 'gamins') {
-        gameState.argent      = (gameState.argent||0) + Math.round(note * 1.5);
+        gameState.argent      = (gameState.argent||0) + Math.round(note*1.5);
         gameState.credibilite = Math.min(100, (gameState.credibilite||0) + 3);
-        gameState.exposition  = Math.min(100, (gameState.exposition||0) + (note >= 7 ? 4 : 2));
+        gameState.exposition  = Math.min(100, (gameState.exposition||0) + (note>=7?4:2));
         gameState.noires_distribuees = (gameState.noires_distribuees||0) + 1;
-        showNotif(`+${Math.round(note * 1.5)}$ via les gamins`, true);
+        showNotif(`+${Math.round(note*1.5)}$ via les gamins`, true);
       } else {
         if (!gameState.flashCutStock) gameState.flashCutStock = 0;
         gameState.flashCutStock++;
-        gameState.legalite   = Math.max(0, (gameState.legalite||0) - 1);
-        gameState.exposition = Math.max(0, (gameState.exposition||0) - 1);
-        if (note < 7) gameState.credibilite = Math.max(0, (gameState.credibilite||0) - 1);
+        gameState.legalite = Math.max(0, (gameState.legalite||0) - 1);
         showNotif(`Flash-cut stocké. Total : ${gameState.flashCutStock}`, true);
       }
-
       gameState.energieBonusTomorrow = note >= 8 ? 3 : note <= 3 ? -3 : 0;
       updateUI();
       saveGame();
-
       setTimeout(goToNight, 1500);
     }
 
     // ===================================================
-    // NAVIGATION
+    // UI / NAV
     // ===================================================
+
+    function updateUI() {
+      const gs = gameState;
+      document.getElementById('bar-money').style.width  = Math.min(100,((gs.argent||0)/500)*100)+'%';
+      document.getElementById('val-money').textContent  = (gs.argent||0)+'$';
+      document.getElementById('bar-legal').style.width  = (gs.legalite||0)+'%';
+      document.getElementById('val-legal').textContent  = (gs.legalite||0)+'%';
+      const ePct = ((gs.energie||0)/(gs.energieMax||15))*100;
+      document.getElementById('bar-energy').style.width = ePct+'%';
+      document.getElementById('val-energy').textContent = (gs.energie||0)+'/'+(gs.energieMax||15);
+    }
+
+    function showNotif(msg, positive) {
+      const n = document.getElementById('notif-toast');
+      n.textContent = msg;
+      n.className   = `notif-toast visible ${positive ? 'positive' : 'negative'}`;
+      setTimeout(() => { n.className = 'notif-toast'; }, 2500);
+    }
+
+    function saveGame() {
+      if (typeof ACHIEVEMENTS !== 'undefined') ACHIEVEMENTS.checkAndNotify(gameState);
+      localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
+    }
 
     function goToNight() {
       fadeOutMusic(() => {
@@ -2106,44 +1013,6 @@
       });
     }
 
-    // ===================================================
-    // UI
-    // ===================================================
-
-    function updateUI() {
-      const gs = gameState;
-      document.getElementById('bar-money').style.width =
-        Math.min(100, ((gs.argent||0) / 500) * 100) + '%';
-      document.getElementById('val-money').textContent = (gs.argent||0) + '$';
-      document.getElementById('bar-legal').style.width = (gs.legalite||0) + '%';
-      document.getElementById('val-legal').textContent = (gs.legalite||0) + '%';
-      document.getElementById('bar-expo').style.width  = (gs.exposition||0) + '%';
-      document.getElementById('val-expo').textContent  = (gs.exposition||0) + '%';
-      const ePct = ((gs.energie||0) / (gs.energieMax||15)) * 100;
-      document.getElementById('bar-energy').style.width = ePct + '%';
-      document.getElementById('val-energy').textContent =
-        (gs.energie||0) + '/' + (gs.energieMax||15);
-    }
-
-    function updateNightInfo() {
-      document.getElementById('night-info').textContent =
-        `Soir — Jour ${gameState.jour||1}`;
-    }
-
-    function showNotif(message, positive = true) {
-      const notif = document.getElementById('notif-toast');
-      notif.textContent = message;
-      notif.className   = `notif-toast visible ${positive ? 'positive' : 'negative'}`;
-      setTimeout(() => { notif.className = 'notif-toast'; }, 2500);
-    }
-
-    function saveGame() {
-      if (typeof ACHIEVEMENTS !== 'undefined')
-        ACHIEVEMENTS.checkAndNotify(gameState);
-      localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
-    }
-
   </script>
-
 </body>
 </html>
