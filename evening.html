@@ -974,7 +974,11 @@
         <span class="monitor-rec" id="monitor-rec">● REC</span>
       </div>
       <div class="monitor-screen" id="monitor-screen">
-        <div class="scene-bg"     id="scene-bg"></div>
+        <img id="scene-image" src="" alt=""
+             style="position:absolute;top:0;left:0;width:100%;height:100%;
+                    object-fit:cover;z-index:2;opacity:0;
+                    transition:opacity 0.3s;">
+        <div class="scene-bg" id="scene-bg"></div>
         <div class="scene-content" id="scene-content">
           <span class="scene-icon-big" id="scene-icon">📼</span>
           <div class="scene-personnage"   id="scene-personnage"></div>
@@ -1553,18 +1557,13 @@
       setCoreyAvant('joie');
 
       const segments = currentCassette.segments;
-      
-      // Afficher le segment 0 — écran titre — avant de lancer l'animation
-      if (segments[0]) {
-        updateMonitorScene(segments[0], 0, segments.length);
-      }
       const VITESSES = {1:2000,2:1600,3:1200,4:850,5:600};
       const vitesse  = VITESSES[currentCassette.difficulte || 3];
       const dureeTotal = segments.length * vitesse;
 
       filmEnCours    = true;
       timelineProgress = 0;
-      currentSegIndex = 0;
+      currentSegIndex = -1;
       let startTime  = null;
 
       function animateTimeline(timestamp) {
