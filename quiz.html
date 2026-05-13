@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, 
+        initial-scale=1.0, maximum-scale=1.0, 
+        user-scalable=no">
+  <title>Rewind Paradise — Pause Déjeuner</title>
+  <style>
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #030306;
+      font-family: 'Courier New', monospace;
+      color: #f0f0ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 2s;
+    }
+
+    body.psycho {
+      animation: psychoBg 8s ease infinite;
+    }
+
+    @keyframes psychoBg {
+      0%   { background: #030306; }
+      25%  { background: #050210; }
+      50%  { background: #020808; }
+      75%  { background: #080205; }
+      100% { background: #030306; }
+    }
+
+    /* SCANLINES */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* PSYCHO OVERLAY */
+    .psycho-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .psycho-overlay.visible { display: block; }
+
+    /* TOP BAR */
+    .top-bar {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #050508;
+      border-bottom: 1px solid #0d0d1a;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .top-title {
+      font-size: 10px;
+      color: #ff8855;
+      letter-spacing: 3px;
+      text-shadow: 0 0 8px #ff885540;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top-info {
+      font-size: 9px;
+      color: #333355;
+      letter-spacing: 1px;
+    }
+
+    .mute-btn {
+      font-size: 16px;
+      cursor: pointer;
+      opacity: 0.5;
+    }
+
+    /* MAIN */
+    .main {
+      padding: 0 0 100px;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* RITUEL */
+    .rituel-zone {
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rideau-label {
+      font-size: 8px;
+      color: #333355;
+      letter-spacing: 3px;
+      text-align: center;
+      padding: 8px;
+      border: 1px solid #0d0d1a;
+      border-radius: 4px;
+    }
+
+    /* JOINT ANIMATION */
+    .joint-scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px;
+      background: #050510;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      min-height: 120px;
+    }
+
+    .joint-scene.allume {
+      border-color: #44aa4440;
+      background: #030a03;
+    }
+
+    .joint-svg {
+      width: 80px;
+      height: 24px;
+      margin-top: 8px;
+    }
+
+    .joint-status {
+      font-size: 9px;
+      color: #333355;
+      letter-spacing: 2px;
+    }
+
+    .joint-status.allume { color: #44aa44; }
+
+    /* PARTICULES */
+    .particule {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: particuleMonte linear forwards;
+    }
+
+    @keyframes particuleMonte {
+      0%   { opacity: 1; transform: translateY(0) translateX(0) scale(1); }
+      50%  { opacity: 0.6; transform: translateY(-30px) translateX(var(--dx)) scale(0.8); }
+      100% { opacity: 0; transform: translateY(-60px) translateX(var(--dx2)) scale(0.3); }
+    }
+
+    /* BULLES BD */
+    .bulles-rituel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 0 4px;
+    }
+
+    .bulle-pause {
+      display: flex;
+      animation: bulleIn 0.3s ease;
+    }
+
+    .bulle-pause.fred  { justify-content: flex-start; }
+    .bulle-pause.corey { justify-content: flex-end; }
+
+    @keyframes bulleIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .bulle-pause-texte {
+      max-width: 88%;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-style: italic;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .bulle-pause.fred .bulle-pause-texte {
+      background: #0f0f2a;
+      border: 1px solid #3a3a6a;
+      border-radius: 4px 14px 14px 14px;
+      color: #9090cc;
+    }
+
+    .bulle-pause.corey .bulle-pause-texte {
+      background: #1a0f05;
+      border: 1px solid #ff885530;
+      border-radius: 14px 4px 14px 14px;
+      color: #cc9966;
+    }
+
+    /* Effet psychédélique sur les bulles */
+    .psycho .bulle-pause-texte {
+      animation: psychoText 3s ease infinite;
+    }
+
+    @keyframes psychoText {
+      0%, 100% { filter: none; }
+      50%       { filter: hue-rotate(20deg) brightness(1.1); }
+    }
+
+    /* SÉPARATEUR QUIZ */
+    .quiz-sep {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px 0;
+    }
+
+    .quiz-sep-line      { flex: 1; height: 1px; background: #1e1e3a; }
+    .quiz-sep-label     { font-size: 8px; color: #ff8855; letter-spacing: 3px; flex-shrink: 0; }
+
+    /* QUIZ */
+    .quiz-zone {
+      padding: 12px 14px;
+      display: none;
+    }
+
+    .quiz-zone.visible { display: block; }
+
+    .quiz-score-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .quiz-score-label { font-size: 9px; color: #444466; letter-spacing: 2px; }
+    .quiz-score-val   { font-size: 14px; color: #00ffc8; font-weight: bold; letter-spacing: 2px; }
+
+    .quiz-progress {
+      width: 100%;
+      height: 3px;
+      background: #0a0a18;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: #00ffc8;
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .question-card {
+      background: #080818;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .question-numero {
+      font-size: 8px;
+      color: #333355;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .question-texte {
+      font-size: 13px;
+      color: #e0e0f0;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .question-categorie {
+      font-size: 8px;
+      color: #ff885540;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .reponses { display: flex; flex-direction: column; gap: 7px; }
+
+    .reponse-btn {
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
+      border-radius: 6px;
+      padding: 11px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.1s;
+    }
+
+    .reponse-btn:active { background: #0f0f22; }
+
+    .reponse-btn.correct {
+      border-color: #00ffc8;
+      background: #051510;
+      animation: correctPulse 0.4s ease;
+    }
+
+    .reponse-btn.incorrect {
+      border-color: #ff4466;
+      background: #150510;
+      opacity: 0.7;
+    }
+
+    .reponse-btn.disabled { pointer-events: none; }
+
+    @keyframes correctPulse {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .reponse-lettre {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #1e1e3a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #6060aa;
+      flex-shrink: 0;
+      font-weight: bold;
+    }
+
+    .reponse-btn.correct  .reponse-lettre { background: #00ffc8; color: #030306; }
+    .reponse-btn.incorrect .reponse-lettre { background: #ff4466; color: #030306; }
+
+    .reponse-texte { font-size: 11px; color: #c0c0dd; line-height: 1.4; }
+
+    /* FEEDBACK */
+    .feedback-zone {
+      padding: 10px 14px;
+      display: none;
+    }
+
+    .feedback-zone.visible { display: block; }
+
+    .feedback-card {
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .feedback-resultat {
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .feedback-resultat.ok  { color: #00ffc8; }
+    .feedback-resultat.ko  { color: #ff4466; }
+
+    .feedback-explication {
+      font-size: 10px;
+      color: #7070aa;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    /* Indice Corey */
+    .corey-indice {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .corey-indice-texte {
+      max-width: 85%;
+      background: #1a0f05;
+      border: 1px solid #ff885530;
+      border-radius: 14px 4px 14px 14px;
+      padding: 7px 11px;
+      font-size: 10px;
+      color: #cc9966;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .btn-suivant {
+      width: 100%;
+      background: #071a10;
+      border: 2px solid #00ffc8;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      color: #00ffc8;
+      letter-spacing: 3px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+    }
+
+    .btn-suivant:active { background: #0d2418; }
+
+    /* RÉSULTAT FINAL */
+    .resultat-final {
+      display: none;
+      padding: 16px 14px;
+    }
+
+    .resultat-final.visible { display: block; }
+
+    .resultat-card {
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .resultat-titre {
+      font-size: 10px;
+      color: #ff8855;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+
+    .resultat-score {
+      font-size: 48px;
+      font-weight: bold;
+      color: #00ffc8;
+      text-shadow: 0 0 20px #00ffc8;
+      margin-bottom: 4px;
+    }
+
+    .resultat-total {
+      font-size: 12px;
+      color: #444466;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+
+    .resultat-corey {
+      font-size: 12px;
+      color: #cc9966;
+      font-style: italic;
+      line-height: 1.6;
+      border-top: 1px solid #1e1e3a;
+      padding-top: 12px;
+    }
+
+    .btn-retour {
+      width: 100%;
+      background: #100508;
+      border: 1px solid #ff8855;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      color: #ff8855;
+      letter-spacing: 3px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .btn-retour:active { background: #180a05; }
+
+    /* BOTTOM BAR */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #030306;
+      border-top: 1px solid #0d0d1a;
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 6px;
+      z-index: 100;
+    }
+
+    .gauge-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .gauge-icon { font-size: 14px; }
+
+    .gauge-bar-container {
+      width: 100%; height: 4px;
+      background: #0f0f20;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .gauge-bar { height: 100%; border-radius: 2px; }
+    .gauge-bar.money  { background: #00ffc8; }
+    .gauge-bar.legal  { background: #ff8855; }
+    .gauge-bar.expo   { background: #ff4466; }
+    .gauge-bar.energy { background: #ffdd44; }
+
+    .gauge-value { font-size: 8px; color: #6060aa; letter-spacing: 1px; }
+
+    .fade-out { animation: fadeOut 0.5s forwards; }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="psycho-overlay" id="psycho-overlay">
+    <canvas id="psycho-canvas" style="width:100%;height:100%;opacity:0.15;"></canvas>
+  </div>
+
+  <div class="top-bar">
+    <div class="top-title">⏸ PAUSE DÉJEUNER</div>
+    <div class="top-right">
+      <div class="top-info" id="top-info">Jour 1 — S1</div>
+      <div class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- RITUEL -->
+    <div class="rituel-zone" id="rituel-zone">
+
+      <div class="rideau-label">▓ RIDEAU FERMÉ — 13H00 ▓</div>
+
+      <!-- JOINT -->
+      <div class="joint-scene" id="joint-scene">
+        <svg class="joint-svg" viewBox="0 0 120 24" id="joint-svg">
+          <!-- Corps du joint -->
+          <rect x="10" y="9" width="85" height="6" rx="3" fill="#e8d5a0"/>
+          <!-- Filtre -->
+          <rect x="95" y="8" width="18" height="8" rx="2" fill="#c4a882"/>
+          <!-- Torsade -->
+          <line x1="10" y1="12" x2="0" y2="8" stroke="#d4c090" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Braise — s'allume après -->
+          <circle id="braise" cx="7" cy="12" r="3" fill="#333" opacity="0"/>
+        </svg>
+        <div class="joint-status" id="joint-status">Corey sort le Sicilian Gold.</div>
+      </div>
+
+      <!-- BULLES BD RITUEL -->
+      <div class="bulles-rituel" id="bulles-rituel"></div>
+
+    </div>
+
+    <!-- SÉPARATEUR -->
+    <div class="quiz-sep" id="quiz-sep" style="display:none;">
+      <div class="quiz-sep-line"></div>
+      <div class="quiz-sep-label">📼 QUIZ CINÉMA</div>
+      <div class="quiz-sep-line"></div>
+    </div>
+
+    <!-- FRED + COREY PENDANT LE QUIZ -->
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#06060f;border-left:3px solid #00b4ff;border-radius:0 6px 6px 0;margin-bottom:8px;" id="fred-corey-quiz">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
+        <img id="fred-quiz-avatar" src="posters/fred.png" alt="Fred"
+             style="width:64px;height:64px;border-radius:50%;border:2px solid #00b4ff80;object-fit:cover;background:#080818;box-shadow:0 0 10px #00b4ff30;"
+             onerror="this.style.display='none'">
+        <div style="font-size:8px;color:#00b4ff;letter-spacing:2px;text-shadow:0 0 6px #00b4ff60;">FRED</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex:1;background:#06060f;border-left:3px solid #ff2d78;border-radius:0 6px 6px 0;padding:8px 10px;">
+        <img id="corey-quiz-avatar" src="posters/corey.png" alt="Corey"
+             style="width:64px;height:64px;border-radius:50%;border:2px solid #ff2d7880;object-fit:cover;background:#080818;box-shadow:0 0 10px #ff2d7830;flex-shrink:0;"
+             onerror="this.style.display='none'">
+        <div id="corey-quiz-texte" style="font-size:12px;color:#ffdd99;font-style:italic;line-height:1.5;">Alors. On joue ?</div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-zone" id="quiz-zone">
+      <div class="quiz-score-bar">
+        <span class="quiz-score-label">SCORE</span>
+        <span class="quiz-score-val" id="quiz-score-val">0 / 0</span>
+      </div>
+      <div class="quiz-progress">
+        <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="question-card" id="question-card">
+        <div class="question-numero" id="question-numero">QUESTION 1</div>
+        <div class="question-categorie" id="question-categorie"></div>
+        <div class="question-texte" id="question-texte">Chargement...</div>
+        <div class="reponses" id="reponses"></div>
+      </div>
+    </div>
+
+    <!-- FEEDBACK -->
+    <div class="feedback-zone" id="feedback-zone">
+      <div class="feedback-card">
+        <div class="feedback-resultat" id="feedback-resultat"></div>
+        <div class="feedback-explication" id="feedback-explication"></div>
+        <div class="corey-indice" id="corey-indice" style="display:none;">
+          <div class="corey-indice-texte" id="corey-indice-texte"></div>
+        </div>
+      </div>
+      <div class="btn-suivant" onclick="questionSuivante()">▶ SUIVANT</div>
+    </div>
+
+    <!-- RÉSULTAT FINAL -->
+    <div class="resultat-final" id="resultat-final">
+      <div class="resultat-card">
+        <div class="resultat-titre">▓ RÉSULTAT ▓</div>
+        <div class="resultat-score" id="resultat-score">0</div>
+        <div class="resultat-total" id="resultat-total">/ 10</div>
+        <div class="resultat-corey" id="resultat-corey"></div>
+      </div>
+      <div class="btn-retour" onclick="retournerAuJeu()">▶ REPRENDRE LE TRAVAIL</div>
+    </div>
+
+  </div>
+
+  <div class="bottom-bar">
+    <div class="gauge-item">
+      <span class="gauge-icon">💰</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar money" id="bar-money" style="width:40%"></div>
+      </div>
+      <span class="gauge-value" id="val-money">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">🎬</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar legal" id="bar-legal" style="width:0%"></div>
+      </div>
+      <span class="gauge-value" id="val-legal">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">👁</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar expo" id="bar-expo" style="width:0%"></div>
+      </div>
+      <span class="gauge-value" id="val-expo">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">⚡</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar energy" id="bar-energy" style="width:100%"></div>
+      </div>
+      <span class="gauge-value" id="val-energy">—</span>
+    </div>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="music/quiz.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+
+    // ===================================================
+    // ÉTAT
+    // ===================================================
+
+    let gameState       = {};
+    let questions       = [];
+    let questionIndex   = 0;
+    let score           = 0;
+    let reponduCette    = false;
+    let rituelTermine   = false;
+    let music           = null;
+    let isMuted         = false;
+
+    // ===================================================
+    // MUSIQUE
+    // ===================================================
+
+    function initMusic() {
+      music   = document.getElementById('bg-music');
+      isMuted = localStorage.getItem('rewind_muted') === 'true';
+      music.volume = 0.25;
+      music.muted  = isMuted;
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
+      const p = music.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          document.addEventListener('touchstart',
+            () => music.play(), { once: true });
+        });
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      if (music) music.muted = isMuted;
+      localStorage.setItem('rewind_muted', isMuted);
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
+    }
+
+    function fadeOutMusic(callback) {
+      if (!music || isMuted) { if (callback) callback(); return; }
+      let vol = music.volume;
+      const fade = setInterval(() => {
+        vol = Math.max(0, vol - 0.05);
+        music.volume = vol;
+        if (vol <= 0) { clearInterval(fade); music.pause(); if (callback) callback(); }
+      }, 50);
+    }
+
+    // ===================================================
+    // DIALOGUES DU RITUEL
+    // ===================================================
+
+    const DIALOGUES_PAUSE = [
+
+      // STONERS — DÉBATS ABSURDES
+      [
+        {perso:'corey', texte:"Die Hard c'est un film de Noël."},
+        {perso:'fred',  texte:"Non."},
+        {perso:'corey', texte:"Il neige. Il y a un sapin. Des cadeaux."},
+        {perso:'fred',  texte:"Y'a aussi des terroristes."},
+        {perso:'corey', texte:"Le Père Noël aussi fait peur aux enfants."},
+        {perso:'fred',  texte:"..."},
+        {perso:'corey', texte:"C'est un film de Noël Fred."}
+      ],
+
+      [
+        {perso:'fred',  texte:"Kubrick aurait fait quoi avec une caméra iPhone ?"},
+        {perso:'corey', texte:"Il l'aurait pas utilisée."},
+        {perso:'fred',  texte:"Pourquoi ?"},
+        {perso:'corey', texte:"Il aurait pas supporté que quelqu'un d'autre en ait une."},
+        {perso:'fred',  texte:"..."},
+        {perso:'fred',  texte:"C'est juste."}
+      ],
+
+      [
+        {perso:'corey', texte:"Tu crois que les personnages dans les films savent qu'ils sont dans un film ?"},
+        {perso:'fred',  texte:"Non."},
+        {perso:'corey', texte:"Et nous on sait qu'on est dans quoi ?"},
+        {perso:'fred',  texte:"Un vidéoclub."},
+        {perso:'corey', texte:"Ouais mais dans quoi d'autre ?"},
+        {perso:'fred',  texte:"Corey."},
+        {perso:'corey', texte:"Ouais."},
+        {perso:'fred',  texte:"Arrête."}
+      ],
+
+      [
+        {perso:'corey', texte:"Tarantino c'est le meilleur ou le pire ?"},
+        {perso:'fred',  texte:"Les deux."},
+        {perso:'corey', texte:"C'est pas une réponse."},
+        {perso:'fred',  texte:"C'est la seule réponse honnête."},
+        {perso:'corey', texte:"..."},
+        {perso:'corey', texte:"Ouais OK."}
+      ],
+
+      [
+        {perso:'fred',  texte:"Spielberg ou Kubrick ?"},
+        {perso:'corey', texte:"Pour quoi faire ?"},
+        {perso:'fred',  texte:"En général."},
+        {perso:'corey', texte:"Kubrick pour vivre. Spielberg pour mourir."},
+        {perso:'fred',  texte:"C'est quoi la différence ?"},
+        {perso:'corey', texte:"Un te laisse espérer. L'autre te dit la vérité."},
+        {perso:'fred',  texte:"Laquelle ?"},
+        {perso:'corey', texte:"Qu'on est seuls."}
+      ],
+
+      [
+        {perso:'corey', texte:"Chinatown c'est le même film que Bambi."},
+        {perso:'fred',  texte:"Non."},
+        {perso:'corey', texte:"Le père. La perte. La ville comme forêt hostile."},
+        {perso:'fred',  texte:"Bambi a pas de père à la fin."},
+        {perso:'corey', texte:"Exactement."},
+        {perso:'fred',  texte:"..."},
+        {perso:'corey', texte:"T'as compris."}
+      ],
+
+      [
+        {perso:'fred',  texte:"T'as déjà pleuré devant un film ?"},
+        {perso:'corey', texte:"Non."},
+        {perso:'fred',  texte:"Jamais ?"},
+        {perso:'corey', texte:"Une fois. Grave of the Fireflies."},
+        {perso:'fred',  texte:"C'est normal ça."},
+        {perso:'corey', texte:"J'avais huit ans."},
+        {perso:'fred',  texte:"C'est encore plus normal."},
+        {perso:'corey', texte:"Je l'ai regardé hier soir."}
+      ],
+
+      // NARRATION — DIMAGGIO
+      [
+        {perso:'fred',  texte:"Tu crois qu'il existe DiMaggio ?"},
+        {perso:'corey', texte:"Ramon existe."},
+        {perso:'fred',  texte:"C'est pas une réponse."},
+        {perso:'corey', texte:"Ramon vient pour Pretty Woman. Quelqu'un lui dit de venir."},
+        {perso:'fred',  texte:"DiMaggio ?"},
+        {perso:'corey', texte:"..."},
+        {perso:'fred',  texte:"Corey."},
+        {perso:'corey', texte:"DiMaggio existe Fred."}
+      ],
+
+      [
+        {perso:'corey', texte:"Ramon a regardé la réserve encore."},
+        {perso:'fred',  texte:"Je sais."},
+        {perso:'corey', texte:"Il compte les fois qu'il vient."},
+        {perso:'fred',  texte:"Arrête."},
+        {perso:'corey', texte:"C'est la cinquième."},
+        {perso:'fred',  texte:"Je sais Corey."},
+        {perso:'corey', texte:"À la sixième il entre."},
+        {perso:'fred',  texte:"T'en sais rien."},
+        {perso:'corey', texte:"Je sais."}
+      ],
+
+      [
+        {perso:'fred',  texte:"Si DiMaggio existe, il sait pour les micro-métrages ?"},
+        {perso:'corey', texte:"Il sait tout."},
+        {perso:'fred',  texte:"Et il fait rien ?"},
+        {perso:'corey', texte:"Il attend."},
+        {perso:'fred',  texte:"Qu'est-ce qu'il attend ?"},
+        {perso:'corey', texte:"Que t'aies quelque chose qui vaut la peine d'être pris."},
+        {perso:'fred',  texte:"..."},
+        {perso:'corey', texte:"Continue à bien couper Fred."}
+      ],
+
+      [
+        {perso:'corey', texte:"Jackson a dit un truc bizarre ce matin."},
+        {perso:'fred',  texte:"Il dit que des trucs bizarres."},
+        {perso:'corey', texte:"Il a dit que DiMaggio aimait bien notre travail."},
+        {perso:'fred',  texte:"Comment il saurait ?"},
+        {perso:'corey', texte:"..."},
+        {perso:'fred',  texte:"Corey."},
+        {perso:'corey', texte:"Ouais."},
+        {perso:'fred',  texte:"Jackson travaille pour qui ?"},
+        {perso:'corey', texte:"Mange ta pizza."}
+      ],
+
+      // NARRATION — CANOPI
+      [
+        {perso:'fred',  texte:"Canopi va finir par trouver."},
+        {perso:'corey', texte:"Il trouvera rien."},
+        {perso:'fred',  texte:"Il regarde tout."},
+        {perso:'corey', texte:"Regarder c'est pas trouver."},
+        {perso:'fred',  texte:"Pour lui si."},
+        {perso:'corey', texte:"..."},
+        {perso:'corey', texte:"T'as répondu quoi à sa question sur la réserve ?"},
+        {perso:'fred',  texte:"Stockage."},
+        {perso:'corey', texte:"Bien."}
+      ],
+
+      [
+        {perso:'corey', texte:"Canopi loue Ghost tous les jours."},
+        {perso:'fred',  texte:"Je sais."},
+        {perso:'corey', texte:"Il l'a jamais regardé."},
+        {perso:'fred',  texte:"Comment tu sais ?"},
+        {perso:'corey', texte:"Il repose jamais les questions sur le film."},
+        {perso:'fred',  texte:"Il repose des questions sur quoi ?"},
+        {perso:'corey', texte:"Sur toi."}
+      ],
+
+      [
+        {perso:'fred',  texte:"T'as vu ses yeux ce matin ?"},
+        {perso:'corey', texte:"Il a des yeux normaux."},
+        {perso:'fred',  texte:"Il a regardé derrière toi quand tu parlais."},
+        {perso:'corey', texte:"Les flics font ça."},
+        {perso:'fred',  texte:"Ça me rend nerveux."},
+        {perso:'corey', texte:"C'est fait pour ça."},
+        {perso:'fred',  texte:"Et toi ça te rend pas nerveux ?"},
+        {perso:'corey', texte:"Si."},
+        {perso:'fred',  texte:"..."},
+        {perso:'corey', texte:"Mais j'ai un bon poker face."}
+      ],
+
+      // CUTTER / MICRO-MÉTRAGES
+      [
+        {perso:'corey', texte:"Cutter a mis sept sur dix hier soir."},
+        {perso:'fred',  texte:"Je sais."},
+        {perso:'corey', texte:"T'es content ?"},
+        {perso:'fred',  texte:"Sept c'est bien."},
+        {perso:'corey', texte:"Sept c'est pas dix."},
+        {perso:'fred',  texte:"Rien c'est dix."},
+        {perso:'corey', texte:"Tarkovski c'est dix."},
+        {perso:'fred',  texte:"On fait pas du Tarkovski."},
+        {perso:'corey', texte:"Pas encore."}
+      ],
+
+      [
+        {perso:'fred',  texte:"Pourquoi on fait ça ?"},
+        {perso:'corey', texte:"Les micro-métrages ?"},
+        {perso:'fred',  texte:"Ouais."},
+        {perso:'corey', texte:"..."},
+        {perso:'corey', texte:"Pour Cutter."},
+        {perso:'fred',  texte:"Non mais vraiment."},
+        {perso:'corey', texte:"..."},
+        {perso:'corey', texte:"Parce que personne d'autre le fait."},
+        {perso:'fred',  texte:"C'est une bonne raison ?"},
+        {perso:'corey', texte:"C'est la seule."}
+      ],
+
+      [
+        {perso:'corey', texte:"T'as pensé à quoi tu couperais ce soir ?"},
+        {perso:'fred',  texte:"Pas encore."},
+        {perso:'corey', texte:"Moi j'ai pensé à la scène de l'escalier."},
+        {perso:'fred',  texte:"Y'a une scène d'escalier ?"},
+        {perso:'corey', texte:"Y'a toujours une scène d'escalier."},
+        {perso:'fred',  texte:"Dans quoi ?"},
+        {perso:'corey', texte:"Dans tout ce qui compte."}
+      ]
+
+    ];
+
+    // ===================================================
+    // QUESTIONS QUIZ — ÉTENDU
+    // ===================================================
+
+    const TOUTES_QUESTIONS = [
+
+      // CLASSIQUES
+      {q:"Dans Chinatown, quel est le dernier mot prononcé par Noah Cross ?",r:["«Autant pour moi»","«Elle était ma fille»","«Oublie ça Jake, c'est Chinatown»","«Je suis désolé»"],c:2,explication:"La réplique finale de Chinatown est une des plus célèbres du cinéma. Elle résume l'impuissance de Jake Gittes face à la corruption.",corey:"Polanski a changé la fin à la dernière minute. Towne voulait que Faye Dunaway survive.",cat:"POLANSKI"},
+
+      {q:"Quel réalisateur a dit : «Je fais des films pour ne pas aller chez le psychiatre» ?",r:["Fellini","Bergman","Woody Allen","Lynch"],c:2,explication:"Woody Allen a effectivement déclaré faire des films comme thérapie — bien qu'il voie aussi un vrai psychiatre depuis des décennies.",corey:"Il a sorti un film par an pendant quarante ans. C'est pas de la thérapie. C'est de la survie.",cat:"RÉALISATEURS"},
+
+      {q:"Dans Apocalypse Now, quelle est la dernière réplique de Kurtz ?",r:["«Brûlez tout»","«L'horreur... l'horreur»","«Tuez-les tous»","«Je veux mourir»"],c:1,explication:"«The horror... the horror» — Brando improvise en grande partie cette scène finale. Coppola avait perdu le contrôle du tournage depuis des semaines.",corey:"Brando est arrivé sur le tournage en ayant pas lu le scénario. Et c'est le meilleur truc du film.",cat:"COPPOLA"},
+
+      {q:"Kubrick a mis combien de temps à tourner The Shining ?",r:["3 mois","6 mois","13 mois","2 ans"],c:2,explication:"Stanley Kubrick a tourné The Shining pendant 13 mois — un record pour l'époque. Shelley Duvall a pleuré presque chaque jour de tournage.",corey:"Kubrick lui faisait recommencer la même scène 60 fois. Il appelait ça perfectionner.",cat:"KUBRICK"},
+
+      {q:"Dans Rear Window, que voit Jefferies par sa fenêtre qui lui fait suspecter un meurtre ?",r:["Une tache de sang","Une femme disparue","Un couteau","Des valises transportées la nuit"],c:1,explication:"L'absence de la femme de Thorwald — et non une preuve directe — est ce qui éveille les soupçons de Jefferies. Hitchcock joue sur ce qu'on ne voit pas.",corey:"Hitchcock disait que la peur du cinéma c'est l'anticipation. Pas le choc.",cat:"HITCHCOCK"},
+
+      {q:"Quel film a été tourné entièrement en temps réel ?",r:["Rope","Run Lola Run","Russian Ark","12 Angry Men"],c:0,explication:"Rope d'Hitchcock simule un plan-séquence unique — les coupures sont cachées dans des zooms sur des vêtements sombres. Russian Ark est lui vraiment un seul plan.",corey:"Hitchcock a dit que c'était une expérience de style. Et qu'il le referait jamais.",cat:"HITCHCOCK"},
+
+      {q:"Dans Taxi Driver, Travis Bickle parle à qui dans le miroir ?",r:["À Iris","À lui-même","À Betsy","À Sport"],c:1,explication:"«You talkin' to me?» est une improvisation de De Niro. Scorsese n'avait pas prévu cette scène — il n'y avait personne d'autre dans la pièce.",corey:"De Niro a pas dormi plusieurs jours pour préparer ce rôle. Ça se voit.",cat:"SCORSESE"},
+
+      {q:"Qui a composé la musique de Psycho ?",r:["Ennio Morricone","Bernard Herrmann","John Williams","Jerry Goldsmith"],c:1,explication:"Bernard Herrmann a composé la musique de Psycho — incluant la fameuse scène de la douche, jouée uniquement avec des cordes pour imiter des couteaux.",corey:"Hitchcock voulait pas de musique dans cette scène. Herrmann l'a convaincu. Heureusement.",cat:"MUSIQUE DE FILM"},
+
+      {q:"Dans 2001 l'Odyssée de l'Espace, que chante HAL avant d'être déconnecté ?",r:["Happy Birthday","Daisy Bell","Amazing Grace","Au clair de la lune"],c:1,explication:"HAL chante Daisy Bell (Bicycle Built for Two) en ralentissant progressivement. C'est la première chanson qu'un ordinateur a vraiment chantée — en 1961, à Bell Labs.",corey:"Kubrick savait ça. Il savait tout. C'est pour ça que c'est lui.",cat:"KUBRICK"},
+
+      {q:"Quel film de Terrence Malick n'a pas de dialogue pendant les 20 premières minutes ?",r:["Badlands","The Tree of Life","Days of Heaven","The Thin Red Line"],c:2,explication:"Days of Heaven s'ouvre sur une série d'images quasi silencieuses. Malick a remonté le film entièrement après le tournage, changeant complètement sa structure.",corey:"Le chef opérateur Néstor Almendros a tourné uniquement pendant la golden hour. Une heure par jour. Pendant des mois.",cat:"MALICK"},
+
+      // VHS / ANNÉES 90
+      {q:"Quelle est la durée maximale d'enregistrement d'une cassette VHS standard ?",r:["2 heures","4 heures","6 heures","8 heures"],c:2,explication:"En mode EP (Extended Play), une VHS standard pouvait enregistrer jusqu'à 6 heures — au prix d'une qualité d'image très dégradée.",corey:"Les gens enregistraient leurs films préférés à la télé en EP. On voyait tout à travers du brouillard.",cat:"VHS"},
+
+      {q:"Quelle guerre VHS a opposé deux formats dans les années 80 ?",r:["VHS contre Betamax","VHS contre LaserDisc","Betamax contre Video 2000","VHS contre CED"],c:0,explication:"La guerre VHS-Betamax a duré de 1976 à 1988. Le Betamax avait une meilleure qualité — mais VHS avait une durée d'enregistrement plus longue et un meilleur marketing.",corey:"Betamax était meilleur. VHS a gagné. C'est souvent comme ça.",cat:"VHS"},
+
+      {q:"Dans quels films Bruce Lee porte-t-il sa célèbre combinaison jaune ?",r:["Game of Death","Enter the Dragon","Fist of Fury","The Big Boss"],c:0,explication:"Bruce Lee porte sa combinaison jaune dans Game of Death (1978). Kill Bill de Tarantino lui rend hommage avec la même tenue portée par Uma Thurman.",corey:"Bruce Lee était tellement rapide que les caméras de l'époque pouvaient pas le filmer correctement.",cat:"KUNG-FU"},
+
+      {q:"Quel film Kubrick a-t-il adapté d'un roman de Stephen King contre la volonté de l'auteur ?",r:["It","Carrie","The Shining","Pet Sematary"],c:2,explication:"Stephen King déteste l'adaptation de Kubrick. Il a dit que Kubrick ne comprenait pas le roman. Il a ensuite produit sa propre version télévisée en 1997.",corey:"King avait raison sur certains points. Kubrick avait raison sur d'autres. Les deux ont fait deux films différents avec le même titre.",cat:"KUBRICK"},
+
+      {q:"Dans Pulp Fiction, qu'est-ce que Mia Wallace commande au Jack Rabbit Slim's ?",r:["Un milkshake au chocolat","Un Five Dollar Shake à la vanille","Un Royale with Cheese","Un Jack Daniel's"],c:1,explication:"Le Five Dollar Shake à la vanille — Uma Thurman boit vraiment le milkshake dans la scène. La paille était assez longue pour atteindre le sol.",corey:"Tarantino a dit que c'est la scène qui coûte le plus cher au mètre de pellicule dans toute sa carrière.",cat:"TARANTINO"},
+
+      {q:"Quel acteur a refusé le rôle de Han Solo dans Star Wars ?",r:["Sylvester Stallone","Al Pacino","Burt Reynolds","Jack Nicholson"],c:1,explication:"Al Pacino a refusé Han Solo car il ne comprenait pas le scénario. Harrison Ford, qui n'auditionne pas pour le rôle, l'obtient en lisant les répliques des autres.",corey:"Ford était menuisier sur le plateau de tournage de Lucas. C'est pour ça qu'il était là.",cat:"ANECDOTES"},
+
+      {q:"Dans Blade Runner, combien de réplicants Deckard doit-il retrouver ?",r:["4","5","6","7"],c:2,explication:"Six réplicants se sont échappés — mais un est mort avant l'arrivée de Deckard. Il doit donc en neutraliser cinq, dont Roy Batty.",corey:"Scott a jamais voulu qu'on sache si Deckard était un réplicant. Le doute c'est tout le film.",cat:"SCI-FI"},
+
+      {q:"Quelle est la phrase culte de Terminator que Schwarzenegger a failli ne pas dire ?",r:["«I'll be back»","«Hasta la vista baby»","«Come with me if you want to live»","«Talk to the hand»"],c:0,explication:"Schwarzenegger voulait dire «I will be back» — plus grammaticalement correct selon lui. Cameron a insisté pour la contraction. C'est devenu une des répliques les plus citées du cinéma.",corey:"Cameron et Schwarzenegger se sont disputés une heure là-dessus. Une heure.",cat:"ACTION"},
+
+      {q:"Dans Alien, qui voit l'alien en premier ?",r:["Ripley","Dallas","Kane","Brett"],c:3,explication:"Brett est le premier à voir l'alien adulte — il cherche le chat Jones dans la salle des machines. C'est lui la première victime.",corey:"Le chat s'en sort. C'est toujours comme ça dans les films d'horreur.",cat:"HORREUR"},
+
+      {q:"Quel réalisateur a tourné La 36ème Chambre de Shaolin ?",r:["Chang Cheh","Lau Kar-leung","John Woo","King Hu"],c:1,explication:"Lau Kar-leung (Liu Chia-liang) a réalisé ce classique du kung-fu en 1978. Il était lui-même un expert en arts martiaux Wing Chun.",corey:"Gordon Liu s'est vraiment rasé la tête pour le film. Et il a appris toutes les techniques montrées.",cat:"KUNG-FU"},
+
+      {q:"Dans Drunken Master, quel style Jackie Chan apprend-il ?",r:["Le style du serpent","Le style de la grue","Le style du dieu mendiant","Le style du tigre"],c:2,explication:"Jackie Chan apprend le style du dieu mendiant (Zui Ba Xian Quan) — un style basé sur l'ivresse simulée. Il a failli se tuer plusieurs fois pendant le tournage.",corey:"Jackie Chan fait ses propres cascades. Il a la liste de ses blessures à la fin de chaque film. C'est la seule filmographie qui compte les os cassés.",cat:"KUNG-FU"},
+
+      {q:"Ran de Kurosawa est une adaptation de quelle pièce de Shakespeare ?",r:["Hamlet","Macbeth","Le Roi Lear","Othello"],c:2,explication:"Ran est une transposition japonaise du Roi Lear au Japon féodal. Kurosawa a mis 10 ans à préparer le film — en dessinant lui-même chaque plan à l'aquarelle.",corey:"Kurosawa avait 75 ans quand il a tourné Ran. Et il devenait aveugle. Il dirigeait depuis un moniteur.",cat:"KUROSAWA"},
+
+      {q:"Dans Cinema Paradiso, que fait Alfredo avec les scènes coupées ?",r:["Il les brûle","Il les cache dans la cabine","Il les donne à Toto","Il les vend"],c:0,explication:"Alfredo brûle les scènes de baisers censurées par le curé — mais en garde en secret les plus belles, qu'il offre à Toto à sa mort.",corey:"Tornatore a d'abord sorti une version courte de 2h. Puis une version de 3h avec la fin complète. La version courte est meilleure.",cat:"ITALIE"},
+
+      {q:"Das Boot a été tourné dans quel espace ?",r:["Un vrai sous-marin","Un sous-marin en bois","Un décor de studio très étroit","Un sous-marin désaffecté modifié"],c:2,explication:"Wolfgang Petersen a fait construire deux décors identiques du sous-marin. Les acteurs ont tourné pendant des mois dans cet espace de 35 mètres de long.",corey:"Les acteurs ont grossi puis maigri volontairement pour montrer le temps qui passe. Petersen leur donnait plus ou moins à manger.",cat:"GUERRE"},
+
+      {q:"Dans Full Metal Jacket, qui a écrit la plupart des répliques du sergent Hartman ?",r:["Kubrick","Gustav Hasford","R. Lee Ermey lui-même","Michael Herr"],c:2,explication:"R. Lee Ermey, ancien sergent de l'USMC, a improvisé et proposé la majorité de ses répliques. Kubrick lui a donné carte blanche après avoir vu ses essais.",corey:"Ermey envoyait des cassettes audio à Kubrick depuis des mois avant le tournage. Kubrick les écoutait tous les jours.",cat:"KUBRICK"},
+
+      {q:"Quel film de guerre montre la prise d'Iwo Jima du côté japonais ?",r:["Letters from Iwo Jima","Flags of our Fathers","The Thin Red Line","Hacksaw Ridge"],c:0,explication:"Clint Eastwood a tourné deux films simultanément sur Iwo Jima — Flags of our Fathers (côté américain) et Letters from Iwo Jima (côté japonais), en japonais.",corey:"Letters from Iwo Jima est meilleur que Flags of our Fathers. Eastwood le sait.",cat:"GUERRE"},
+
+      {q:"Dans Apocalypse Now, quelle chanson joue pendant l'attaque de l'hélicoptère ?",r:["Paint it Black","Flight of the Valkyries","Fortunate Son","The End"],c:1,explication:"La chevauchée des Walkyries de Wagner — Kilgore fait jouer la musique depuis des haut-parleurs sur les hélicoptères pour terroriser l'ennemi.",corey:"Coppola a dit que c'est la scène qui lui a coûté le plus cher. Moralement et financièrement.",cat:"COPPOLA"},
+
+      {q:"Qui a refusé le César du meilleur film étranger pour Chinatown ?",r:["Roman Polanski","Jack Nicholson","Robert Evans","Faye Dunaway"],c:0,explication:"Polanski était en fuite depuis 1977 après sa condamnation et ne pouvait pas se rendre en France sans risque d'extradition.",corey:"Il vit à Paris depuis. Il continue de faire des films. C'est compliqué.",cat:"POLANSKI"},
+
+      {q:"Dans Blue Velvet, que trouve Jeffrey dans le champ au début ?",r:["Un couteau","Une oreille humaine","Une chaussure","Un appareil photo"],c:1,explication:"Jeffrey trouve une oreille humaine coupée dans l'herbe — infestée de fourmis. Lynch a dit qu'il voulait montrer ce qui se cache sous la surface du rêve américain.",corey:"Lynch filmait sa ville natale. Tout ce beau gazon bien taillé. Et en dessous.",cat:"LYNCH"},
+
+      {q:"Quel film de Lynch a été tourné sans dialogue pendant les 20 premières minutes ?",r:["Eraserhead","The Elephant Man","Mulholland Drive","Lost Highway"],c:0,explication:"Eraserhead s'ouvre sur une séquence de pure atmosphère — sans dialogue, presque sans son. Lynch a mis 5 ans à financer et terminer ce film.",corey:"Lynch vivait dans une maison délabrée à Philadelphie pendant le tournage. C'est pour ça que ça ressemble à ça.",cat:"LYNCH"},
+
+      {q:"Dans Evil Dead, comment s'appelle la cabane dans les bois ?",r:["La cabane du diable","Knowby Cabin","Dead Cabin","La cabane aux démons"],c:1,explication:"La Knowby Cabin — du nom du professeur qui y a trouvé le Necronomicon. Raimi a tourné dans une vraie cabane dans les bois du Tennessee.",corey:"Raimi avait pas d'argent. Il a filmé dans sa voiture, il a dormi sur place. Et c'est devenu un chef d'œuvre."},
+
+      {q:"Blow Out de De Palma est une référence directe à quel film ?",r:["Blow Up d'Antonioni","Conversation secrète de Coppola","Les deux","Ni l'un ni l'autre"],c:2,explication:"De Palma s'inspire à la fois de Blow Up (Antonioni, la photo) et The Conversation (Coppola, le son) pour créer Blow Out — un film sur un preneur de son qui enregistre un meurtre.",corey:"De Palma fait ça tout le temps. Il prend deux films et il fait quelque chose de nouveau avec. C'est du pillage ou de l'hommage. Les deux.",cat:"DE PALMA"},
+
+      {q:"Dans Short Cuts d'Altman, combien d'histoires entrecroisées y a-t-il ?",r:["5","7","9","22"],c:2,explication:"Short Cuts entrelace 9 histoires adaptées de nouvelles de Raymond Carver. Altman a tourné avec 22 acteurs principaux simultanément à Los Angeles.",corey:"Altman laissait les acteurs improviser entre eux même quand la caméra était sur quelqu'un d'autre. Il enregistrait tout.",cat:"ALTMAN"},
+
+      {q:"Qui joue Hannibal Lecter dans Le Silence des Agneaux ?",r:["Gary Oldman","Anthony Hopkins","Jeremy Irons","Brian Cox"],c:1,explication:"Anthony Hopkins n'apparaît que 16 minutes à l'écran dans Le Silence des Agneaux — et pourtant il remporte l'Oscar du meilleur acteur.",corey:"Brian Cox avait joué Lecter avant lui dans Manhunter. Tout le monde l'oublie. C'est injuste.",cat:"THRILLER"},
+
+      {q:"Dans La Strada de Fellini, qui joue Gelsomina ?",r:["Sophia Loren","Giulietta Masina","Monica Vitti","Anna Magnani"],c:1,explication:"Giulietta Masina joue Gelsomina — elle était la femme de Fellini dans la vraie vie. Il a dit qu'elle était le film.",corey:"Fellini pleurait à chaque projection. Il disait que c'était son film le plus honnête.",cat:"FELLINI"},
+
+      {q:"Quel acteur joue dans Enter the Dragon ET dans La 36ème Chambre de Shaolin ?",r:["Jackie Chan","Sammo Hung","Gordon Liu","Bolo Yeung"],c:3,explication:"Bolo Yeung apparaît dans les deux films — souvent comme antagoniste imposant. Il est culturiste professionnel en plus d'acteur.",corey:"Bolo Yeung a pas dit un mot dans Enter the Dragon. Il avait pas besoin.",cat:"KUNG-FU"},
+
+      {q:"Dans Forrest Gump, combien de paires de chaussures Nike Forrest use-t-il en courant ?",r:["5","12","Un nombre non précisé","Le film dit 100"],c:2,explication:"Le film ne précise pas le nombre — mais Nike a utilisé Forrest Gump comme publicité déguisée. Le directeur marketing de Nike a lui-même dit qu'ils avaient payé pour le placement.",corey:"Le film dure 2h22. Forrest court pendant 3 ans dans le film. C'est beaucoup de chaussures.",cat:"ANECDOTES"},
+
+      {q:"Quel réalisateur a fait ses débuts avec un film de kung-fu avant de devenir mondialement connu ?",r:["John Woo","Tsui Hark","Jackie Chan","Ang Lee"],c:0,explication:"John Woo a débuté avec des films d'arts martiaux à la Shaw Brothers avant de créer son style unique avec A Better Tomorrow en 1986.",corey:"Woo dit que ses films de kung-fu lui ont appris à chorégraphier la violence comme une danse. Ça se voit encore dans Face/Off.",cat:"RÉALISATEURS"},
+
+      {q:"Dans Thelma & Louise, qui réalise le film ?",r:["James Cameron","Ridley Scott","Tony Scott","Oliver Stone"],c:1,explication:"Ridley Scott a réalisé Thelma & Louise en 1991 — entre Black Rain et 1492. Le scénario de Callie Khouri a remporté l'Oscar.",corey:"Scott voulait pas faire ce film au départ. Il pensait que c'était trop petit pour lui. Il avait tort.",cat:"SCOTT"},
+
+      {q:"Qu'est-ce que le MacGuffin selon Hitchcock ?",r:["Le méchant du film","L'objet ou but que tout le monde veut mais qui importe peu","La fausse piste narrative","Le rebondissement final"],c:1,explication:"Le MacGuffin est ce que les personnages veulent — l'argent, les microfilms, les bijoux — mais qui n'a aucune importance en soi pour l'histoire. Seule la tension qu'il génère compte.",corey:"Dans Psycho le MacGuffin c'est l'argent volé. On oublie complètement après la douche. Hitchcock le savait.",cat:"HITCHCOCK"},
+
+      {q:"Quel film de John Carpenter a été tourné en 20 jours avec 325 000 dollars ?",r:["The Thing","Halloween","Escape from New York","Christine"],c:1,explication:"Halloween a été tourné en seulement 20 jours avec un budget minimal. Michael Myers porte un masque de William Shatner peint en blanc — faute de budget pour un vrai masque.",corey:"Le masque de Shatner a coûté 1,98 dollar. Halloween a rapporté 70 millions. C'est le meilleur retour sur investissement du cinéma.",cat:"HORREUR"},
+
+      {q:"Dans The Thing de Carpenter, dans quel pays se situe l'histoire ?",r:["Alaska","Canada","Norvège","Antarctique"],c:3,explication:"La station de recherche américaine Outpost 31 est en Antarctique. Le froid extrême et l'isolement sont centraux au film.",corey:"Carpenter a tourné en studio à Los Angeles. Les acteurs portaient des parkas sous 30 degrés. Ils souffraient pour de vrai.",cat:"HORREUR"},
+
+      {q:"Quel film de Scorsese n'a aucune scène de violence ?",r:["Kundun","The Age of Innocence","Hugo","Alice Doesn't Live Here Anymore"],c:1,explication:"The Age of Innocence (1993) est le seul film de Scorsese sans violence physique — mais il y voit la violence sociale de l'aristocratie new-yorkaise comme plus brutale.",corey:"Scorsese dit que c'est son film le plus violent. Tout se passe dans les regards.",cat:"SCORSESE"},
+
+      {q:"Qui a composé la musique d'Ennio Morricone la plus écoutée de l'histoire ?",r:["Le Bon la Brute et le Truand","Il était une fois dans l'Ouest","Cinema Paradiso","The Mission"],c:0,explication:"Le thème principal du Bon la Brute et le Truand est la composition de Morricone la plus identifiable au monde — sifflée, reconnaissable au premier accord.",corey:"Leone demandait la musique avant de tourner. Il faisait jouer la musique sur le plateau pendant les scènes. L'inverse de tout le monde.",cat:"MUSIQUE DE FILM"},
+
+      {q:"Dans Rain Man, où vont Charlie et Raymond en voiture ?",r:["De New York à Chicago","De Cincinnati à Los Angeles","De Los Angeles à Las Vegas","De Miami à New York"],c:1,explication:"Charlie et Raymond traversent les États-Unis de Cincinnati à Los Angeles — Raymond refusant de prendre l'avion après avoir cité des dizaines de crashs aériens.",corey:"Dustin Hoffman a passé un an avec des autistes pour préparer le rôle. Cruise a essayé de le battre aux Oscars avec Born on the Fourth of July. Hoffman a gagné.",cat:"DRAME"},
+
+      {q:"Quel est le dernier film que Kubrick a terminé avant sa mort ?",r:["Barry Lyndon","The Shining","Full Metal Jacket","Eyes Wide Shut"],c:3,explication:"Kubrick est mort 4 jours après avoir livré la version finale d'Eyes Wide Shut à Warner Bros. Le film est sorti 6 mois plus tard.",corey:"Kubrick a fait son dernier film avec Cruise et Kidman qui se séparaient dans la vraie vie pendant le tournage. Il savait.",cat:"KUBRICK"},
+
+      {q:"Dans Suspiria de Dario Argento, quelle académie visite l'héroïne ?",r:["Une académie de danse","Une académie de musique","Une académie de peinture","Une académie de théâtre"],c:0,explication:"Suzy Bannion arrive dans une académie de danse allemande qui cache un couvent de sorcières. Argento a utilisé des couleurs primaires saturées pour créer une atmosphère de conte de fées cauchemardesque.",corey:"Le directeur de la photo voulait recréer les couleurs des films Disney des années 50. C'est pour ça que c'est aussi beau et aussi flippant.",cat:"HORREUR"},
+
+      {q:"Quel acteur joue dans à la fois Apocalypse Now ET Le Parrain ?",r:["Robert De Niro","Al Pacino","Marlon Brando","James Caan"],c:2,explication:"Marlon Brando joue Vito Corleone dans Le Parrain et le colonel Kurtz dans Apocalypse Now — deux rôles mythiques avec Coppola.",corey:"Brando est arrivé sur Apocalypse Now sans avoir lu Conrad. Coppola lui a lu Heart of Darkness à voix haute dans sa tente.",cat:"COPPOLA"},
+
+      {q:"Dans Platoon d'Oliver Stone, le réalisateur a-t-il servi au Vietnam ?",r:["Non, il a fait de la recherche","Oui, deux tours de service","Non mais son père oui","Oui, un seul tour"],c:1,explication:"Oliver Stone a servi au Vietnam en 1967-1968 et a reçu la Bronze Star et Purple Heart. Platoon est autobiographique.",corey:"Stone a dit que Platoon était la seule façon pour lui d'en parler. Que les mots suffisaient pas.",cat:"GUERRE"},
+
+      {q:"Quelle est la durée du plan-séquence d'ouverture de Touch of Evil d'Orson Welles ?",r:["2 minutes","3 minutes","4 minutes","5 minutes"],c:1,explication:"Le plan-séquence d'ouverture de Touch of Evil dure environ 3 minutes 20 secondes — une des scènes d'ouverture les plus admirées de l'histoire du cinéma.",corey:"Welles a fait ça sans montage. Une seule prise. Enfin plusieurs prises mais sans couper. C'est pas pareil.",cat:"WELLES"},
+
+      {q:"Dans Vertigo, qui joue le personnage de Scottie Ferguson ?",r:["Cary Grant","Gregory Peck","James Stewart","Henry Fonda"],c:2,explication:"James Stewart joue Scottie — un ex-détective acrophobe obsédé par une femme. Hitchcock a voulu Cary Grant mais il refusait de jouer des personnages aussi sombres.",corey:"Stewart et Hitchcock ont fait quatre films ensemble. Hitchcock disait que Stewart était le seul acteur capable de jouer la culpabilité en étant sympathique.",cat:"HITCHCOCK"},
+
+      {q:"Quel film a inventé le split screen narratif populaire dans les années 70 ?",r:["Woodstock","The Boston Strangler","Grand Prix","Napoleon"],c:1,explication:"The Boston Strangler de Richard Fleischer (1968) a popularisé l'usage narratif du split screen — montrant plusieurs angles simultanément pour créer confusion et tension.",corey:"De Palma a repris ça dans presque tous ses films. Sisters, Dressed to Kill, Blow Out. Il a rendu ça sien.",cat:"TECHNIQUE"},
+
+      {q:"Dans Mulholland Drive de Lynch, combien de fins différentes coexistent ?",r:["1","2","3","Indéterminé"],c:3,explication:"Mulholland Drive n'a pas de nombre fixe de fins — Lynch refuse d'expliquer le film. Chaque spectateur en sort avec une interprétation différente.",corey:"Lynch a dit que si tu peux expliquer un de ses films en deux phrases il a raté quelque chose.",cat:"LYNCH"},
+
+      {q:"Quel acteur a joué Dracula, Frankenstein ET la Momie ?",r:["Boris Karloff","Bela Lugosi","Lon Chaney Jr","Peter Cushing"],c:2,explication:"Lon Chaney Jr. est le seul acteur à avoir incarné les quatre grands monstres Universal — Dracula, Frankenstein, la Momie et le Loup-Garou.",corey:"Son père Lon Chaney Sr. était le maître du maquillage. Le fils a hérité des monstres. C'est une bonne transmission.",cat:"HORREUR"},
+
+      {q:"Dans Eyes Wide Shut, pendant combien de jours se déroule l'action ?",r:["1 jour","2 jours","3 jours","Une semaine"],c:1,explication:"L'action se déroule sur 2 jours — une nuit de Noël à New York. Kubrick a recréé New York entièrement en studio à Londres.",corey:"Tom Cruise a conduit sa voiture dans le décor de New York pendant des semaines. Il tournait en rond dans un studio. Métaphore.",cat:"KUBRICK"},
+
+      {q:"Quel film est considéré comme le premier western spaghetti ?",r:["Pour une poignée de dollars","Et pour quelques dollars de plus","Le Bon la Brute et le Truand","Il était une fois dans l'Ouest"],c:0,explication:"Pour une poignée de dollars (1964) de Leone est généralement considéré comme le premier western spaghetti à succès — bien que des précédents existent.",corey:"Leone a d'abord refusé le projet. Puis il a vu Yojimbo de Kurosawa. Et il a compris ce qu'il voulait faire.",cat:"LEONE"},
+
+      {q:"Dans Grave of the Fireflies, qui produit le film ?",r:["Disney","Studio Ghibli","Madhouse","Toho"],c:1,explication:"Grave of the Fireflies est produit par Studio Ghibli et sorti le même jour que Mon Voisin Totoro — les deux films les plus opposés émotionnellement qu'on puisse imaginer.",corey:"Ils étaient dans le même programme double en Japan. Totoro d'abord. Puis ça. Personne a survécu.",cat:"ANIMATION"},
+
+      {q:"Qui a réalisé Le Pont de la Rivière Kwaï ?",r:["David Lean","John Huston","Billy Wilder","Fred Zinnemann"],c:0,explication:"David Lean a réalisé Le Pont de la Rivière Kwaï en 1957. Il a ensuite fait Lawrence d'Arabie et Docteur Jivago — formant une trilogie de l'épopée.",corey:"Lean était obsédé par la grandeur. Ses films durent toujours plus de 3 heures. C'est une maladie. La bonne sorte.",cat:"GUERRE"},
+
+      {q:"Dans Pretty Woman, quel film opéra voit-on Julia Roberts pleurer ?",r:["La Traviata","Tosca","Madame Butterfly","Carmen"],c:0,explication:"Vivian et Edward vont voir La Traviata à San Francisco — l'opéra d'une femme entretenue qui meurt à la fin. La mise en abyme est totalement intentionnelle.",corey:"Marshall avait une liste de 20 opéras. Il a choisi La Traviata parce que c'est le seul où le public pleure autant que l'héroïne.",cat:"DRAME"},
+
+      {q:"Quel film a inauguré le concept de blockbuster estival ?",r:["Star Wars","American Graffiti","Jaws","The Godfather"],c:2,explication:"Les Dents de la Mer (1975) est considéré comme le premier blockbuster — sorti en été, massivement distribué simultanément dans les salles. Un modèle qui n'existait pas avant.",corey:"Spielberg a failli pas finir le film. Le requin mécanique marchait jamais. Alors il a filmé le requin qu'on voit pas. C'est pour ça que c'est terrifiant.",cat:"SPIELBERG"}
+
+    ];
+
+    // ===================================================
+    // RÉPONSES COREY SELON SCORE
+    // ===================================================
+
+    const COREY_SCORES = {
+      parfait: [
+        "Dix sur dix. Soit tu trimes, soit t'es naturellement insupportable.",
+        "Personne score dix sur dix. T'as triché ou t'es cinéphile. C'est pareil.",
+        "Fred. On devrait faire ça chaque midi."
+      ],
+      excellent: [
+        "Huit ou neuf. Solide. Tu mérites ton sandwich.",
+        "T'as raté une ou deux. Les vraies difficiles. Ça compte.",
+        "Bien. Mais la prochaine fois les questions sur Lynch."
+      ],
+      moyen: [
+        "La moitié. C'est honnête. La moitié du cinéma c'est de la merde de toute façon.",
+        "Six sur dix. T'aurais pu louer plus de films au lieu de travailler.",
+        "Moyen. Comme un Spielberg sans la magie."
+      ],
+      faible: [
+        "Moins de cinq. Fred. Sérieusement.",
+        "On loue des films toute la journée. Comment t'arrives à si peu savoir ?",
+        "Trois ou quatre. Même Canopi ferait mieux. Et lui il regarde que Ghost."
+      ],
+      nul: [
+        "Un ou deux. Tu regardes les cassettes à l'envers ou quoi ?",
+        "Fred. C'est un vidéoclub. T'es censé aimer le cinéma.",
+        "Un sur dix. On reparle de ça ce soir dans la réserve."
+      ]
+    };
+
+    function getCoreyScore(s, total) {
+      const ratio = s / total;
+      if (ratio === 1)        return COREY_SCORES.parfait[Math.floor(Math.random()*3)];
+      if (ratio >= 0.8)       return COREY_SCORES.excellent[Math.floor(Math.random()*3)];
+      if (ratio >= 0.5)       return COREY_SCORES.moyen[Math.floor(Math.random()*3)];
+      if (ratio >= 0.3)       return COREY_SCORES.faible[Math.floor(Math.random()*3)];
+      return COREY_SCORES.nul[Math.floor(Math.random()*3)];
+    }
+
+    // ===================================================
+    // INIT
+    // ===================================================
+
+    window.onload = function() {
+      initMusic();
+
+      const save = localStorage.getItem('rewindParadise_save');
+      if (save) {
+        try {
+          gameState = JSON.parse(save);
+          updateUI();
+          document.getElementById('top-info').textContent =
+            `Jour ${gameState.jour||1} — S${gameState.semaine||1}`;
+        } catch(e) {}
+      }
+
+      lancerRituel();
+    };
+
+    // ===================================================
+    // RITUEL DU JOINT
+    // ===================================================
+
+    function lancerRituel() {
+      const scene  = document.getElementById('joint-scene');
+      const status = document.getElementById('joint-status');
+      const zone   = document.getElementById('bulles-rituel');
+      const braise = document.getElementById('braise');
+
+      // Phase 1 — Corey sort le joint
+      setTimeout(() => {
+        status.textContent = 'Corey sort le Sicilian Gold.';
+      }, 500);
+
+      // Phase 2 — Il l'allume
+      setTimeout(() => {
+        status.textContent = 'Il l\'allume.';
+        scene.classList.add('allume');
+        status.classList.add('allume');
+
+        // Braise qui s'allume
+        braise.setAttribute('fill', '#ff6600');
+        braise.setAttribute('opacity', '1');
+        braise.style.animation = 'none';
+
+        // Éclat orange
+        braise.setAttribute('fill', '#ff4400');
+        setTimeout(() => { braise.setAttribute('fill', '#ff8800'); }, 200);
+        setTimeout(() => { braise.setAttribute('fill', '#ff6600'); }, 400);
+
+        // Particules de fumée
+        lancerParticules(scene, 12);
+
+      }, 1800);
+
+      // Phase 3 — Effet psychédélique
+      setTimeout(() => {
+        status.textContent = 'Silence. La fumée monte.';
+        document.body.classList.add('psycho');
+        document.getElementById('psycho-overlay').classList.add('visible');
+        lancerPsychoCanvas();
+      }, 3500);
+
+      // Phase 4 — Premier dialogue
+      setTimeout(() => {
+        // Choisir un dialogue au hasard
+        const dialogueIndex = Math.floor(Math.random() * DIALOGUES_PAUSE.length);
+        const dialogue = DIALOGUES_PAUSE[dialogueIndex];
+        afficherDialoguePause(dialogue, zone, () => {
+          // Après le dialogue — lancer le quiz
+          setTimeout(lancerQuiz, 1500);
+        });
+      }, 5000);
+    }
+
+    function lancerParticules(container, nb) {
+      for (let i = 0; i < nb; i++) {
+        setTimeout(() => {
+          const p = document.createElement('div');
+          p.className = 'particule';
+          const colors = ['#44aa44','#88cc44','#cc9944','#aaaaff','#ffaa44'];
+          const color  = colors[Math.floor(Math.random() * colors.length)];
+          const dx     = (Math.random() - 0.5) * 40;
+          const dx2    = (Math.random() - 0.5) * 60;
+          const size   = Math.random() * 4 + 2;
+          const left   = 30 + Math.random() * 40;
+          p.style.cssText = `
+            background: ${color};
+            left: ${left}%;
+            bottom: 30%;
+            width: ${size}px;
+            height: ${size}px;
+            --dx: ${dx}px;
+            --dx2: ${dx2}px;
+            animation-duration: ${1.5 + Math.random()}s;
+            animation-delay: ${Math.random() * 0.5}s;
+          `;
+          container.appendChild(p);
+          setTimeout(() => p.remove(), 3000);
+        }, i * 150);
+      }
+    }
+
+    function lancerPsychoCanvas() {
+      const canvas  = document.getElementById('psycho-canvas');
+      const ctx     = canvas.getContext('2d');
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let t = 0;
+      function draw() {
+        if (!document.body.classList.contains('psycho')) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Cercles psychédéliques
+        for (let i = 0; i < 5; i++) {
+          const x = canvas.width/2 + Math.sin(t + i) * 80;
+          const y = canvas.height/2 + Math.cos(t * 0.7 + i) * 60;
+          const r = 30 + Math.sin(t * 2 + i) * 20;
+          const hue = (t * 30 + i * 60) % 360;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${hue}, 70%, 50%, 0.1)`;
+          ctx.fill();
+        }
+
+        t += 0.03;
+        requestAnimationFrame(draw);
+      }
+      draw();
+
+      // Arrêter après le rituel
+      setTimeout(() => {
+        document.body.classList.remove('psycho');
+        document.getElementById('psycho-overlay').classList.remove('visible');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }, 18000);
+    }
+
+    function afficherDialoguePause(dialogue, zone, callback) {
+      zone.innerHTML = '';
+      let index = 0;
+
+      function next() {
+        if (index >= dialogue.length) {
+          if (callback) callback();
+          return;
+        }
+
+        const rep = dialogue[index];
+        const div = document.createElement('div');
+        div.className = `bulle-pause ${rep.perso}`;
+        div.innerHTML = `<div class="bulle-pause-texte">${rep.texte}</div>`;
+        zone.appendChild(div);
+
+        // Scroll vers le bas
+        div.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+        const toutes = zone.querySelectorAll('.bulle-pause');
+        if (toutes.length > 4) toutes[0].remove();
+
+        index++;
+        const delai = Math.min(rep.texte.length * 50 + 600, 3200);
+        setTimeout(next, delai);
+      }
+
+      next();
+    }
+
+    // ===================================================
+    // QUIZ
+    // ===================================================
+
+    function lancerQuiz() {
+      // 3 questions via QUIZ.getQuestions
+      const qs = (typeof QUIZ !== 'undefined' && QUIZ.getQuestions)
+        ? QUIZ.getQuestions(gameState)
+        : [];
+      // Convertir format QUIZ → format local
+      questions = qs.map(q => ({
+        q:      q.question,
+        rep:    q.choix,
+        bonne:  q.bonneIndex,
+        cat:    q.categorie
+      }));
+      // Fallback si QUIZ pas dispo
+      if (!questions.length) {
+        questions = [
+          { q:"Dans Ghost, quel est le prénom du personnage de Patrick Swayze ?", rep:["Sam","Jack","Tom","Ray"], bonne:0, cat:"CATALOGUE" },
+          { q:"Qui a réalisé Psychose ?", rep:["Hitchcock","Kubrick","De Palma","Lynch"], bonne:0, cat:"CINÉMA" },
+          { q:"Que signifie VHS ?", rep:["Video Home System","Video High Speed","Visual Home Standard","Video Hi-Fi"], bonne:0, cat:"VHS" }
+        ];
+      }
+      questionIndex = 0;
+      score         = 0;
+
+      document.getElementById('quiz-sep').style.display = 'flex';
+      document.getElementById('quiz-zone').classList.add('visible');
+
+      afficherQuestion();
+    }
+
+    function afficherQuestion() {
+      if (questionIndex >= questions.length) {
+        afficherResultat();
+        return;
+      }
+
+      const q = questions[questionIndex];
+      reponduCette = false;
+
+      document.getElementById('question-numero').textContent =
+        `QUESTION ${questionIndex + 1} / ${questions.length}`;
+      
+      // Corey annonce la catégorie
+      const coreyTextes = {
+        CATALOGUE: ["Catalogue.", "On a le film sur l'etagere.", "C'est chez nous."],
+        CINEMA:    ["Culture generale.", "Kubrick savait ca.", "Hitchcock aussi."],
+        VHS:       ["On vit avec ca.", "Fonds de commerce.", "Pas d'excuse."],
+        REWIND:    ["C'est notre vie.", "Tu vis dedans.", "Celle-la c'est pour toi."],
+        COREY:     ["Question speciale.", "Celle-la vient de moi.", "Tu peux pas deviner."]
+      };
+      const catKey = (q.cat || 'CINEMA').replace(/[ÉÈÊ]/g,'E').replace(/[é]/g,'e').replace(/[À]/g,'A');
+      const pool = coreyTextes[catKey] || coreyTextes.CINEMA;
+      const texte = pool[Math.floor(Math.random()*pool.length)];
+      const coTexte = document.getElementById('corey-quiz-texte');
+      if (coTexte) coTexte.textContent = texte;
+      document.getElementById('question-categorie').textContent =
+        q.cat ? `▸ ${q.cat}` : '';
+      document.getElementById('question-texte').textContent = q.q;
+
+      // Progress bar
+      const pct = (questionIndex / questions.length) * 100;
+      document.getElementById('quiz-progress-fill').style.width = pct + '%';
+
+      // Score
+      document.getElementById('quiz-score-val').textContent =
+        `${score} / ${questionIndex}`;
+
+      // Réponses — mélanger
+      const lettres = ['A','B','C','D'];
+      const indices = [0,1,2,3].sort(() => Math.random() - 0.5);
+      const reponsesEl = document.getElementById('reponses');
+
+      reponsesEl.innerHTML = indices.map((idx, pos) => `
+        <div class="reponse-btn" onclick="repondre(${idx})" data-idx="${idx}">
+          <div class="reponse-lettre">${lettres[pos]}</div>
+          <div class="reponse-texte">${q.r[idx]}</div>
+        </div>
+      `).join('');
+
+      // Cacher feedback
+      document.getElementById('feedback-zone').classList.remove('visible');
+
+      // Indice Corey aléatoire (20% de chance)
+      if (Math.random() < 0.2 && questionIndex > 0) {
+        setTimeout(() => {
+          const indices_corey = [
+            "La réponse c'est pas la plus évidente.",
+            "Réfléchis à qui a réalisé ça.",
+            "C'est une question sur le tournage, pas le film.",
+            "Kubrick. La réponse est souvent Kubrick.",
+            "Pense à la date. Années 70 ou 80 ?",
+            "C'est une question de logique. Pas de mémoire.",
+            "J'aurais mis ma main à couper. Mais je te dis rien.",
+            "..."
+          ];
+          const zone = document.getElementById('bulles-rituel');
+          const div  = document.createElement('div');
+          div.className = 'bulle-pause corey';
+          div.innerHTML = `<div class="bulle-pause-texte">${indices_corey[Math.floor(Math.random()*indices_corey.length)]}</div>`;
+          zone.appendChild(div);
+          const toutes = zone.querySelectorAll('.bulle-pause');
+          if (toutes.length > 3) toutes[0].remove();
+        }, 3000);
+      }
+    }
+
+    function repondre(idx) {
+      if (reponduCette) return;
+      reponduCette = true;
+
+      const q       = questions[questionIndex];
+      const correct = idx === q.c;
+      const btns    = document.querySelectorAll('.reponse-btn');
+
+      btns.forEach(btn => {
+        btn.classList.add('disabled');
+        const btnIdx = parseInt(btn.dataset.idx);
+        if (btnIdx === q.c)  btn.classList.add('correct');
+        if (btnIdx === idx && idx !== q.c) btn.classList.add('incorrect');
+      });
+
+      if (correct) score++;
+
+      // Feedback
+      const feedbackZone = document.getElementById('feedback-zone');
+      document.getElementById('feedback-resultat').textContent =
+        correct ? '✓ CORRECT' : '✗ RATÉ';
+      document.getElementById('feedback-resultat').className =
+        `feedback-resultat ${correct ? 'ok' : 'ko'}`;
+      document.getElementById('feedback-explication').textContent =
+        q.explication || '';
+
+      // Indice Corey si disponible
+      if (q.corey) {
+        document.getElementById('corey-indice').style.display = 'flex';
+        document.getElementById('corey-indice-texte').textContent = q.corey;
+      } else {
+        document.getElementById('corey-indice').style.display = 'none';
+      }
+
+      feedbackZone.classList.add('visible');
+      feedbackZone.scrollIntoView({ behavior:'smooth' });
+    }
+
+    function questionSuivante() {
+      questionIndex++;
+      document.getElementById('feedback-zone').classList.remove('visible');
+      document.getElementById('question-card').scrollIntoView({ behavior:'smooth' });
+      setTimeout(afficherQuestion, 300);
+    }
+
+    function afficherResultat() {
+      document.getElementById('quiz-zone').classList.remove('visible');
+      document.getElementById('feedback-zone').classList.remove('visible');
+
+      const total   = questions.length;
+      const pct     = Math.round((score / total) * 100);
+      const couleur = score >= 8 ? '#00ffc8' : score >= 5 ? '#ff8855' : '#ff4466';
+
+      document.getElementById('resultat-score').textContent = score;
+      // Reset avatars au neutre
+      const fr = document.getElementById('fred-quiz-avatar');
+      const cr = document.getElementById('corey-quiz-avatar');
+      const ct = document.getElementById('corey-quiz-texte');
+      if (fr) fr.src = score === 3 ? 'posters/fred_fier.png' : 'posters/fred.png';
+      if (cr) cr.src = score === 3 ? 'posters/corey-heureux.png' : score === 0 ? 'posters/corey-colere1.png' : 'posters/corey.png';
+      document.getElementById('resultat-score').style.color = couleur;
+      document.getElementById('resultat-score').style.textShadow = `0 0 20px ${couleur}`;
+      document.getElementById('resultat-total').textContent = `/ ${total} — ${pct}%`;
+      document.getElementById('resultat-corey').textContent = getCoreyScore(score, total);
+
+      // Impact gameState
+      if (score >= 8) {
+        gameState.energie = Math.min(
+          gameState.energieMax||15,
+          (gameState.energie||0) + 3
+        );
+      } else if (score <= 3) {
+        gameState.energie = Math.max(0, (gameState.energie||0) - 1);
+      }
+
+      saveGame();
+
+      document.getElementById('resultat-final').classList.add('visible');
+      document.getElementById('resultat-final').scrollIntoView({ behavior:'smooth' });
+    }
+
+    function retournerAuJeu() {
+      gameState.phase_journee = 'apres_midi';
+      saveGame();
+      fadeOutMusic(() => {
+        document.body.classList.add('fade-out');
+        setTimeout(() => { window.location.href = 'game.html'; }, 500);
+      });
+    }
+
+    // ===================================================
+    // UI
+    // ===================================================
+
+    function updateUI() {
+      const gs = gameState;
+      document.getElementById('bar-money').style.width =
+        Math.min(100, ((gs.argent||0)/500)*100)+'%';
+      document.getElementById('val-money').textContent = (gs.argent||0)+'$';
+      document.getElementById('bar-legal').style.width = (gs.legalite||0)+'%';
+      document.getElementById('val-legal').textContent = (gs.legalite||0)+'%';
+      document.getElementById('bar-expo').style.width  = (gs.exposition||0)+'%';
+      document.getElementById('val-expo').textContent  = (gs.exposition||0)+'%';
+      const ePct = ((gs.energie||0)/(gs.energieMax||15))*100;
+      document.getElementById('bar-energy').style.width = ePct+'%';
+      document.getElementById('val-energy').textContent =
+        (gs.energie||0)+'/'+(gs.energieMax||15);
+    }
+
+    function saveGame() {
+      localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
+    }
+
+  </script>
+
+</body>
+</html>
