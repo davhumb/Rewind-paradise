@@ -24,8 +24,8 @@
       height: 100vh;
       overflow: hidden;
       font-family: 'Courier New', monospace;
-      background: #0a0a16;
-      color: #d0d0e8;
+      background: #080818;
+      color: #e8e8ff;
     }
 
     .top-bar {
@@ -34,8 +34,8 @@
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
-      background: #0d0d1c;
-      border-bottom: 1px solid #2a2a4a;
+      background: #080818;
+      border-bottom: 1px solid #ff2d7840;
     }
 
     .top-bar-left {
@@ -69,14 +69,14 @@
 
     .shop-title {
       font-size: 11px;
-      color: #00ffc8;
-      letter-spacing: 2px;
-      text-shadow: 0 0 8px #00ffc8;
+      color: #ffffff;
+      letter-spacing: 3px;
+      text-shadow: 0 0 8px #ff2d78, 0 0 16px #00b4ff, 0 0 24px #ff2d7840;
     }
 
     .day-info {
-      font-size: 9px;
-      color: #444466;
+      font-size: 10px;
+      color: #8888cc;
       letter-spacing: 1px;
     }
 
@@ -98,12 +98,12 @@
     }
 
     .shop-illustration {
-      background: #080810;
+      background: #080818;
       padding: 10px 12px;
       display: flex;
       gap: 10px;
       flex-shrink: 0;
-      border-bottom: 1px solid #1e1e3a;
+      border-bottom: 1px solid #00b4ff30;
       transition: background 0.5s;
     }
 
@@ -114,8 +114,8 @@
 
     .shelves {
       width: 78px;
-      background: #0a0a18;
-      border: 1px solid #1e1e3a;
+      background: #08081a;
+      border: 1px solid #00b4ff40;
       border-radius: 6px;
       padding: 6px 5px;
       flex-shrink: 0;
@@ -123,10 +123,11 @@
 
     .shelves-title {
       font-size: 8px;
-      color: #ff8855;
+      color: #00b4ff;
       letter-spacing: 2px;
       margin-bottom: 5px;
       text-align: center;
+      text-shadow: 0 0 6px #00b4ff60;
     }
 
     .shelf-item {
@@ -134,12 +135,12 @@
       justify-content: space-between;
       align-items: center;
       padding: 3px 2px;
-      border-bottom: 1px solid #0f0f20;
+      border-bottom: 1px solid #00b4ff20;
       cursor: pointer;
     }
 
-    .shelf-item:active { background: rgba(0,255,200,0.04); }
-    .shelf-genre { font-size: 7px; color: #6060aa; letter-spacing: 1px; }
+    .shelf-item:active { background: rgba(0,180,255,0.06); }
+    .shelf-genre { font-size: 8px; color: #88aaff; letter-spacing: 1px; }
     .shelf-count       { font-size: 9px; color: #00ffc8; font-weight: bold; }
     .shelf-count.low   { color: #ff8855; }
     .shelf-count.empty { color: #ff4466; }
@@ -165,8 +166,8 @@
     }
 
     .counter-top {
-      background: #0d0d20;
-      border: 1px solid #2a2a4a;
+      background: #08081a;
+      border: 1px solid #ff2d7840;
       border-radius: 6px;
       padding: 7px;
       flex: 1;
@@ -175,25 +176,26 @@
 
     .counter-label {
       font-size: 8px;
-      color: #ff9966;
+      color: #ff2d78;
       letter-spacing: 2px;
       margin-bottom: 5px;
+      text-shadow: 0 0 6px #ff2d7840;
     }
 
     .client-queue { display: flex; flex-direction: column; gap: 4px; }
 
     .client-card {
-      background: #131326;
-      border: 1px solid #2a2a4a;
+      background: #0c0c22;
+      border: 1px solid #00b4ff30;
       border-radius: 5px;
       padding: 6px 8px;
       cursor: pointer;
       transition: all 0.15s;
     }
 
-    .client-card:active        { background: #1a1a35; border-color: #00ffc8; }
-    .client-card.active-client { border-color: #00ffc8; background: #0a1e16; }
-    .client-card.ramon-card    { border-color: #3e2a3e; }
+    .client-card:active        { background: #0d1a30; border-color: #00b4ff; }
+    .client-card.active-client { border-color: #00b4ff; background: #08121e; box-shadow: 0 0 8px #00b4ff20; }
+    .client-card.ramon-card    { border-color: #ff2d7850; }
     .client-card.retour-card   { border-color: #1a3e1a; background: #0d140d; }
     .client-card.vip-card      { border-color: #aa880060; }
     .client-card.indecise-card { border-color: #aa44aa60; }
@@ -216,13 +218,13 @@
 
     .client-mood   { font-size: 14px; width: 20px; }
     .client-info   { flex: 1; }
-    .client-name   { font-size: 11px; color: #00ffc8; letter-spacing: 1px; }
+    .client-name   { font-size: 12px; color: #00ddff; letter-spacing: 1px; font-weight: bold; }
     .client-name.ramon    { color: #cc88cc; }
     .client-name.retour   { color: #44aa44; }
     .client-name.vip      { color: #aa8844; }
     .client-name.indecise { color: #aa44aa; }
     .client-name.canopi   { color: #9966aa; }
-    .client-demand { font-size: 9px; color: #a0a0cc; margin-top: 1px; line-height: 1.3; }
+    .client-demand { font-size: 10px; color: #c0c0ee; margin-top: 2px; line-height: 1.4; }
 
     .client-timer-bar {
       width: 100%;
@@ -290,11 +292,11 @@
       align-items: flex-end;
       justify-content: space-between;
       padding: 8px 8px 6px;
-      background: #0a0a18;
-      border-top: 1px solid #1a1a30;
+      background: #080818;
+      border-top: 1px solid #ff2d7830;
       position: relative;
       overflow: hidden;
-      min-height: 160px;
+      min-height: 180px;
       transition: background 0.5s;
     }
 
@@ -335,25 +337,28 @@
     }
 
     .bulle.fred .bulle-texte {
-      background: #12122e;
-      border: 1px solid #4a4a8a;
+      background: #10102e;
+      border: 1px solid #00b4ff60;
       border-radius: 4px 12px 12px 12px;
-      color: #a0a0dd;
+      color: #e0e0ff;
+      font-size: 12px;
     }
 
     .bulle.corey .bulle-texte {
-      background: #1e1205;
-      border: 1px solid #ff885540;
+      background: #1a1005;
+      border: 1px solid #ff2d7860;
       border-radius: 12px 4px 12px 12px;
-      color: #ddaa77;
+      color: #ffcc88;
+      font-size: 12px;
     }
 
     .bulle.client .bulle-texte {
-      background: #0e1e14;
-      border: 1px solid #00ffc840;
+      background: #0a1820;
+      border: 1px solid #00b4ff60;
       border-radius: 4px 12px 12px 12px;
-      color: #88ddbb;
-      font-style: normal;
+      color: #88ddff;
+      font-style: italic;
+      font-size: 12px;
     }
 
     .fred-portrait {
@@ -365,16 +370,16 @@
     }
 
     .fred-avatar {
-      width: 110px;
-      height: 110px;
+      width: 130px;
+      height: 130px;
       border-radius: 50%;
-      border: 2px solid #aa880060;
+      border: 3px solid #00b4ff80;
       object-fit: cover;
-      box-shadow: 0 0 20px #aa880030;
-      background: #0a0a18;
+      box-shadow: 0 0 20px #00b4ff30, 0 0 40px #00b4ff15;
+      background: #080818;
     }
 
-    .fred-name { font-size: 8px; color: #5555aa; letter-spacing: 2px; }
+    .fred-name { font-size: 9px; color: #00b4ff; letter-spacing: 2px; text-shadow: 0 0 6px #00b4ff60; }
 
     .corey-portrait {
       display: flex;
@@ -385,13 +390,13 @@
     }
 
     .corey-avatar-big {
-      width: 110px;
-      height: 110px;
+      width: 130px;
+      height: 130px;
       border-radius: 50%;
-      border: 2px solid #ff885560;
+      border: 3px solid #ff2d7880;
       object-fit: cover;
-      box-shadow: 0 0 20px #ff885530;
-      background: #0a0a18;
+      box-shadow: 0 0 20px #ff2d7830, 0 0 40px #ff2d7815;
+      background: #080818;
       transition: all 0.3s ease;
     }
 
@@ -408,7 +413,7 @@
       75%       { transform: translateX(4px); }
     }
 
-    .corey-name { font-size: 8px; color: #ff885580; letter-spacing: 2px; }
+    .corey-name { font-size: 9px; color: #ff2d78; letter-spacing: 2px; text-shadow: 0 0 6px #ff2d7860; }
 
     /* CLIENT AVATAR dans la zone dialogue */
     .client-dialogue-avatar {
@@ -438,13 +443,14 @@
       gap: 8px;
       padding: 6px 12px 8px;
       flex-shrink: 0;
-      background: #060610;
+      background: #080818;
+      border-top: 1px solid #ff2d7830;
     }
 
     .close-btn {
       flex: 1;
-      background: #100508;
-      border: 1px solid #3a1515;
+      background: #180a10;
+      border: 1px solid #ff2d7850;
       border-radius: 6px;
       padding: 9px;
       text-align: center;
@@ -473,8 +479,8 @@
       display: none;
       position: fixed;
       bottom: 65px; left: 0; right: 0;
-      background: #0c0c1e;
-      border-top: 2px solid #00ffc8;
+      background: #080818;
+      border-top: 2px solid #ff2d78;
       padding: 10px 12px 8px;
       z-index: 50;
       max-height: 80vh;
@@ -488,23 +494,23 @@
       gap: 12px;
       margin-bottom: 10px;
       padding-bottom: 10px;
-      border-bottom: 1px solid #2a2a4a;
+      border-bottom: 1px solid #00b4ff30;
       position: sticky;
       top: 0;
-      background: #0c0c1e;
+      background: #080818;
       z-index: 5;
       padding-top: 2px;
     }
 
     .avatar-client-big {
-      width: 88px;
-      height: 88px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      border: 2px solid #aa880060;
+      border: 3px solid #ff2d7880;
       object-fit: cover;
       flex-shrink: 0;
-      box-shadow: 0 0 16px #aa880030;
-      background: #0a0a18;
+      box-shadow: 0 0 20px #ff2d7830;
+      background: #080818;
       display: none;
     }
 
@@ -526,10 +532,11 @@
     .panel-header-info { flex: 1; }
 
     .panel-client-name {
-      font-size: 15px;
-      color: #00ffc8;
+      font-size: 16px;
+      color: #ffffff;
       letter-spacing: 2px;
       margin-bottom: 4px;
+      text-shadow: 0 0 8px #ff2d7840;
     }
 
     .panel-client-name.ramon    { color: #cc88cc; }
@@ -539,8 +546,8 @@
     .panel-client-name.canopi   { color: #9966aa; }
 
     .panel-client-demand {
-      font-size: 12px;
-      color: #d0d0ee;
+      font-size: 13px;
+      color: #e8e8ff;
       line-height: 1.5;
       font-style: italic;
     }
@@ -664,11 +671,7 @@
     .weed-btn { display: none !important; }
 
     .client-prefs {
-      background: #060610;
-      border: 1px solid #141428;
-      border-radius: 4px;
-      padding: 6px 8px;
-      margin-bottom: 8px;
+      display: none;
     }
 
     .prefs-label { font-size: 8px; color: #444466; letter-spacing: 1px; margin-bottom: 4px; }
@@ -685,12 +688,12 @@
     .pref-tag.aime    { background: #00100a; color: #00aa55; border: 1px solid #00aa5520; }
     .pref-tag.deteste { background: #100005; color: #aa0033; border: 1px solid #aa003320; }
 
-    .films-label { font-size: 9px; color: #666688; letter-spacing: 1px; margin-bottom: 6px; }
+    .films-label { font-size: 10px; color: #00b4ff; letter-spacing: 2px; margin-bottom: 8px; font-weight: bold; }
     .films-list  { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
 
     .film-option {
-      background: #0a0a18;
-      border: 1px solid #1e1e3a;
+      background: #0c0c22;
+      border: 1px solid #00b4ff30;
       border-radius: 5px;
       padding: 9px 10px;
       cursor: pointer;
@@ -700,16 +703,16 @@
     }
 
     .film-option:active         { background: #0f0f22; }
-    .film-option.meilleur       { border-color: #00ffc820; background: #051510; }
+    .film-option.meilleur       { border-color: #00b4ff60; background: #06121a; box-shadow: 0 0 6px #00b4ff20; }
     .film-option.meilleur-ramon { border-color: #cc88cc30; background: #100810; }
     .film-option.correct        { border-color: #ff882020; }
     .film-option.mauvais        { border-color: #ff002020; opacity: 0.6; }
 
     .film-info   { flex: 1; }
-    .film-titre  { font-size: 11px; color: #e0e0f0; letter-spacing: 0.5px; margin-bottom: 2px; }
-    .film-detail { font-size: 8px; color: #555577; letter-spacing: 1px; }
+    .film-titre  { font-size: 12px; color: #ffffff; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .film-detail { font-size: 9px; color: #8888bb; letter-spacing: 1px; }
     .film-match  { font-size: 9px; margin-left: 8px; flex-shrink: 0; }
-    .film-prix   { font-size: 10px; color: #00ffc8; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
+    .film-prix   { font-size: 11px; color: #00ddff; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
 
     .negociation-zone {
       background: #080818;
@@ -864,24 +867,25 @@
 
     .panel-alt {
       flex: 1;
-      background: #060610;
-      border: 1px solid #141428;
+      background: #0a0a20;
+      border: 1px solid #00b4ff30;
       border-radius: 4px;
       padding: 8px 6px;
       text-align: center;
       cursor: pointer;
       font-size: 9px;
-      color: #666688;
+      color: #aaaaee;
       letter-spacing: 1px;
+      font-size: 10px;
     }
 
-    .panel-alt:active { background: #0a0a18; }
-    .panel-alt.danger { color: #ff5533; border-color: #ff553315; }
+    .panel-alt:active { background: #0d0d28; }
+    .panel-alt.danger { color: #ff2d78; border-color: #ff553315; }
 
     .panel-close {
       text-align: center;
       font-size: 9px;
-      color: #333355;
+      color: #ff2d78;
       cursor: pointer;
       letter-spacing: 2px;
       padding: 8px;
@@ -1006,8 +1010,8 @@
     }
 
     .bottom-bar {
-      background: #080810;
-      border-top: 1px solid #1e1e3a;
+      background: #060616;
+      border-top: 1px solid #ff2d7840;
       padding: 8px 12px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -1038,7 +1042,7 @@
     .gauge-bar.expo   { background: #ff4466; }
     .gauge-bar.energy { background: #ffdd44; }
 
-    .gauge-value { font-size: 9px; color: #8080bb; letter-spacing: 1px; }
+    .gauge-value { font-size: 10px; color: #aaaadd; letter-spacing: 1px; font-weight: bold; }
 
     @keyframes gaugePulse {
       0%, 100% { opacity: 1; }
@@ -1240,7 +1244,6 @@
            style="display:none;">😐</div>
       <div class="panel-header-info">
         <div class="panel-client-name" id="panel-name">—</div>
-        <div class="panel-client-demand" id="panel-demand">—</div>
         <div class="panel-timer-bar">
           <div class="panel-timer-fill" id="panel-timer-fill"
                style="width:100%"></div>
@@ -2336,7 +2339,18 @@
         const vk = 'visite' + Math.min(visites + 1, 5);
         demande = client.dialogues[vk] || demande;
       }
-      document.getElementById('panel-demand').textContent = demande;
+      // Demande affichée en bulle dans la zone dialogue
+      const zoneDialogue = document.getElementById('bulles-zone');
+      if (zoneDialogue) {
+        setTimeout(() => {
+          const divClient = document.createElement('div');
+          divClient.className = 'bulle client';
+          divClient.innerHTML = `<div class="bulle-texte">${demande}</div>`;
+          zoneDialogue.appendChild(divClient);
+          const toutes = zoneDialogue.querySelectorAll('.bulle');
+          if (toutes.length > 3) toutes[0].remove();
+        }, 300);
+      }
 
       startPanelTimer(client.timer_seconds || 45);
 
@@ -2717,21 +2731,26 @@
     }
 
     function renderPrefs(client, visites) {
-      const prefs = document.getElementById('client-prefs');
-      if (visites === 0) {
-        prefs.innerHTML = `<div class="prefs-label">PREMIÈRE VISITE.</div>`;
-        return;
-      }
-      const tags = [];
-      client.aime.slice(0,3).forEach(id => {
-        const f = CATALOGUE.find(f => f.id === id);
-        if (f) tags.push(`<span class="pref-tag aime">♥ ${f.titre}</span>`);
-      });
-      client.deteste.slice(0,2).forEach(id => {
-        const f = CATALOGUE.find(f => f.id === id);
-        if (f) tags.push(`<span class="pref-tag deteste">✗ ${f.titre}</span>`);
-      });
-      prefs.innerHTML = `<div class="prefs-label">SES GOÛTS (${visites} visite${visites>1?'s':''}) :</div>${tags.join('')}`;
+      // Les goûts passent par les bulles de dialogue
+      const zone = document.getElementById('bulles-zone');
+      if (!zone) return;
+      if (visites === 0) return; // Première visite — pas d'info
+      
+      setTimeout(() => {
+        const aimes = client.aime.slice(0,2).map(id => {
+          const f = CATALOGUE.find(f => f.id === id);
+          return f ? f.titre : null;
+        }).filter(Boolean);
+        
+        if (aimes.length > 0) {
+          const div = document.createElement('div');
+          div.className = 'bulle fred';
+          div.innerHTML = `<div class="bulle-texte">Il aime : ${aimes.join(', ')}.</div>`;
+          zone.appendChild(div);
+          const toutes = zone.querySelectorAll('.bulle');
+          if (toutes.length > 4) toutes[0].remove();
+        }
+      }, 900);
     }
 
     function renderFilmsList(client) {
@@ -2740,7 +2759,7 @@
       const stock = gameState.stock;
       if (!client.isIndecise) {
         label.textContent = client.canNegociate
-          ? 'CHOISIR UN FILM (négociation) :' : 'CHOISIR UN FILM :';
+          ? '🤝 NÉGOCIATION — CHOISIR :' : '📼 CHOISIR UN FILM :';
       }
       const dispo = CATALOGUE.filter(film => {
         if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) return false;
