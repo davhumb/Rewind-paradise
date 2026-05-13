@@ -185,7 +185,86 @@
       text-shadow: 0 0 10px #ff2d78;
     }
 
-    .client-queue { display: flex; flex-direction: column; gap: 4px; }
+    .client-queue { display: flex; flex-direction: column; gap: 3px; }
+
+    /* NOM CLIENT — liste simple */
+    .client-nom {
+      background: #0c0c22;
+      border: 1px solid #00b4ff40;
+      border-radius: 4px;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .client-nom:active        { background: #0d1a30; }
+    .client-nom.actif         { border-color: #00b4ff; background: #08121e; box-shadow: 0 0 8px #00b4ff20; }
+    .client-nom.ramon-nom     { border-color: #ff2d7850; }
+    .client-nom.canopi-nom    { border-color: #9966aa; animation: canopiPulse 2s infinite; }
+    .client-nom.retour-nom    { border-color: #44aa4460; }
+    .client-nom-label {
+      font-size: 12px;
+      color: #ffffff;
+      letter-spacing: 1px;
+      font-weight: bold;
+      flex: 1;
+    }
+    .client-nom-label.canopi  { color: #9966aa; }
+    .client-nom-label.ramon   { color: #ff2d78; }
+    .client-nom-label.retour  { color: #44aa44; }
+    .client-nom-timer {
+      height: 3px;
+      border-radius: 2px;
+      margin-top: 3px;
+      background: #00b4ff;
+      transition: width 1s linear, background 0.3s;
+    }
+    .client-nom-timer.urgent  { background: #ff8855; }
+    .client-nom-timer.critique { background: #ff2d78; animation: critiquePulse 0.5s infinite; }
+
+    /* FILMS dans la file — remplacent les noms */
+    .film-nom {
+      background: #0c0c22;
+      border: 1px solid #00b4ff30;
+      border-radius: 4px;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.15s;
+    }
+    .film-nom:active           { background: #0d1a30; }
+    .film-nom.meilleur         { border-color: #00b4ff; box-shadow: 0 0 8px #00b4ff30; }
+    .film-nom.mauvais          { opacity: 0.5; }
+    .film-nom-titre            { font-size: 12px; color: #ffffff; letter-spacing: 0.5px; }
+    .film-nom-prix             { font-size: 12px; color: #00ffdd; font-weight: bold; }
+    .film-nom-match            { font-size: 11px; margin: 0 6px; }
+
+    /* AVATAR CLIENT dans la zone dialogue — remplace Fred */
+    .client-avatar-dialogue {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 3px solid #ff2d7880;
+      object-fit: cover;
+      box-shadow: 0 0 20px #ff2d7830;
+      background: #080818;
+      display: none;
+    }
+    .client-avatar-dialogue.visible { display: block; }
+    .client-avatar-nom {
+      font-size: 9px;
+      color: #ff4488;
+      letter-spacing: 1px;
+      font-weight: bold;
+      text-shadow: 0 0 6px #ff2d78;
+      display: none;
+      text-align: center;
+    }
+    .client-avatar-nom.visible { display: block; }
 
     .client-card {
       background: #0c0c22;
@@ -1023,7 +1102,7 @@
       box-shadow: 0 -4px 16px #ff2d7820;
       padding: 8px 12px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 6px;
       flex-shrink: 0;
     }
@@ -1052,6 +1131,12 @@
     .gauge-bar.energy { background: #ffdd44; }
 
     .gauge-value { font-size: 11px; color: #ffffff; letter-spacing: 1px; font-weight: bold; }
+
+    @keyframes upgradePulse {
+      0%, 100% { opacity: 1; color: #00ffdd; text-shadow: 0 0 8px #00ffc8; }
+      50%       { opacity: 0.4; color: #ffffff; text-shadow: none; }
+    }
+    .upgrade-pulse { animation: upgradePulse 0.8s infinite; font-size: 18px !important; }
 
     @keyframes gaugePulse {
       0%, 100% { opacity: 1; }
@@ -1159,8 +1244,8 @@
     <div class="top-bar-right">
       <div class="day-info" id="day-info">Jour 1 — S1</div>
       <div class="btn-icon" onclick="ACHIEVEMENTS.showPanel(gameState)">🏆</div>
-      <div class="btn-icon" onclick="UPGRADES.showPanel(gameState)" id="btn-upgrades">
-        🔧<span class="badge" id="upgrade-badge"></span>
+      <div class="btn-icon" onclick="showUpgrades()" id="btn-upgrades">
+        <span id="upgrade-icon">⬆</span><span class="badge" id="upgrade-badge"></span>
       </div>
       <div class="btn-icon" onclick="openStock()">📦</div>
       <div class="btn-icon" id="mute-btn" onclick="toggleMute()">🔊</div>
@@ -1225,10 +1310,13 @@
     </div>
 
     <div class="fred-corey-zone" id="fred-corey-zone">
-      <div class="fred-portrait">
+      <div class="fred-portrait" id="fred-portrait">
         <img class="fred-avatar" id="fred-avatar" src="posters/fred.png" alt="Fred"
              onerror="this.style.display='none'">
-        <div class="fred-name">FRED</div>
+        <div class="fred-name" id="fred-name-label">FRED</div>
+        <!-- Avatar client qui remplace Fred -->
+        <img class="client-avatar-dialogue" id="client-avatar-dialogue" src="" alt="">
+        <div class="client-avatar-nom" id="client-avatar-nom"></div>
       </div>
       <div class="bulles-zone" id="bulles-zone"></div>
       <div class="corey-portrait">
@@ -1319,13 +1407,7 @@
       </div>
       <span class="gauge-value" id="val-legal">0%</span>
     </div>
-    <div class="gauge-item" onclick="showTooltip('expo')">
-      <span class="gauge-icon">👁</span>
-      <div class="gauge-bar-container">
-        <div class="gauge-bar expo" id="bar-expo" style="width:0%"></div>
-      </div>
-      <span class="gauge-value" id="val-expo">0%</span>
-    </div>
+
     <div class="gauge-item" onclick="showTooltip('energy')">
       <span class="gauge-icon">⚡</span>
       <div class="gauge-bar-container">
@@ -1888,12 +1970,14 @@
 
     function checkUpgradeBadge() {
       const badge = document.getElementById('upgrade-badge');
-      if (!badge) return;
-      // Badge rouge si upgrades pas encore vus
+      const icon  = document.getElementById('upgrade-icon');
+      if (!badge || !icon) return;
       if (!gameState.upgradesVus) {
         badge.classList.add('visible');
+        icon.classList.add('upgrade-pulse');
       } else {
         badge.classList.remove('visible');
+        icon.classList.remove('upgrade-pulse');
       }
     }
 
@@ -2165,16 +2249,14 @@
       let remaining = secondsAjuste;
       clientTimers[index] = setInterval(() => {
         remaining--;
-        const card = document.querySelector(`.client-card[data-index="${index}"]`);
-        if (card) {
-          const fill = card.querySelector('.client-timer-fill');
-          if (fill) {
-            const pct = (remaining / secondsAjuste) * 100;
-            fill.style.width = pct + '%';
-            if (pct < 30) fill.className = 'client-timer-fill critique';
-            else if (pct < 60) fill.className = 'client-timer-fill urgent';
-            else fill.className = 'client-timer-fill';
-          }
+        // Timer dans la nouvelle liste de noms
+        const timerBar = document.getElementById(`timer-bar-${index}`);
+        if (timerBar) {
+          const pct = (remaining / secondsAjuste) * 100;
+          timerBar.style.width = pct + '%';
+          if (pct < 30) timerBar.className = 'client-nom-timer critique';
+          else if (pct < 60) timerBar.className = 'client-nom-timer urgent';
+          else timerBar.className = 'client-nom-timer';
         }
         if (remaining <= 0) {
           clearInterval(clientTimers[index]);
@@ -2223,7 +2305,7 @@
       afficherBulles('mauvaise_vente');
       setCoreyAvatar('colere3');
       setFredAvatar('pas_content');
-      if (activeClientIndex === index) closePanel();
+      if (activeClientIndex === index) { cacherAvatarClient(); closePanel(); }
       currentClients.splice(index, 1);
       if (activeClientIndex > index) activeClientIndex--;
       else if (activeClientIndex === index) activeClientIndex = -1;
@@ -2358,11 +2440,155 @@
     // RENDER QUEUE
     // ===================================================
 
+    // ===================================================
+    // FILMS DANS LA FILE — remplacent les noms
+    // ===================================================
+
+    function renderFilmsEnFile(client) {
+      const queue = document.getElementById('client-queue');
+      if (!queue) return;
+      const stock = gameState.stock;
+
+      // Weed option
+      let html = '';
+      const stockWeed = gameState.stock.weed || 0;
+      if (client.weedDemande && stockWeed > 0 && client.id !== 'canopi' && !client.isIndecise) {
+        html += `
+          <div class="film-nom meilleur" onclick="toggleWeed()" style="border-color:#44aa44;box-shadow:0 0 8px #44aa4430;">
+            <span class="film-nom-titre" style="color:#44cc44;">🌿 SICILIAN GOLD ${weedAjoutee?'✓':''}</span>
+            <span class="film-nom-prix" style="color:#44cc44;">${weedAjoutee?'✓':'+15$'}</span>
+          </div>`;
+      }
+
+      if (client.isRetour) {
+        // Retour — actions directement
+        html += renderRetourEnFile(client);
+      } else if (client.isIndecise) {
+        html += renderIndeciseEnFile(client);
+      } else {
+        // Films disponibles
+        const canopiPresent = currentClients.some(c => c.id === 'canopi');
+        const noiresDispo = (gameState.jour >= 3) && !canopiPresent && (stock.noires||0) > 0;
+        const dispo = CATALOGUE.filter(film => {
+          if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) return false;
+          if (film.genre === 'noires')             return noiresDispo;
+          if (film.genre === 'rarites')            return (stock.rarites||0) > 0;
+          if (film.genre === 'comedie_romantique') return (stock.comedie_romantique||0) > 0;
+          if (film.genre === 'guerre')             return (stock.guerre||0) > 0;
+          if (film.genre === 'kungfu')             return (stock.kungfu||0) > 0;
+          return (stock[film.genre]||0) > 0;
+        });
+        const tris = dispo.sort((a,b) => getFilmScore(client,b) - getFilmScore(client,a)).slice(0,8);
+        if (!tris.length) {
+          html += `<div class="no-clients">Stock épuisé.</div>`;
+        } else {
+          html += tris.map(film => {
+            let classe='', match='~', prix=film.prix;
+            if (client.aime.includes(film.id))    { classe='meilleur'; match='★'; prix++; }
+            else if (client.deteste.includes(film.id)) { classe='mauvais'; match='✗'; }
+            const prixAff = weedAjoutee ? prix+15 : prix;
+            return `<div class="film-nom ${classe}" onclick="filmClique('${film.id}')">
+              <span class="film-nom-titre">${film.titre}</span>
+              <span class="film-nom-match">${match}</span>
+              <span class="film-nom-prix">+${prixAff}$</span>
+            </div>`;
+          }).join('');
+        }
+        // Boutons alt
+        html += `<div style="display:flex;gap:6px;margin-top:4px;">
+          <div class="film-nom" style="flex:1;justify-content:center;" onclick="servirAleatoire()">🎲 HASARD</div>
+          <div class="film-nom" style="flex:1;justify-content:center;border-color:#ff2d7840;" onclick="fermerClientActif()">✕ RENVOYER</div>
+        </div>`;
+      }
+
+      // Bouton retour à la liste
+      html += `<div class="film-nom" style="border-color:#333355;margin-top:4px;" onclick="fermerClientActif()">
+        <span class="film-nom-titre" style="color:#8888aa;">← RETOUR</span>
+      </div>`;
+
+      queue.innerHTML = html;
+    }
+
+    function renderRetourEnFile(client) {
+      if (client.etat === 'normale') {
+        return `<div class="film-nom meilleur" onclick="traiterRetour('normale')"><span class="film-nom-titre">✓ ACCEPTER</span></div>`;
+      } else if (client.etat === 'non_rembobinee') {
+        return `<div class="film-nom" onclick="traiterRetour('penalite')"><span class="film-nom-titre">⚠ PÉNALITÉ +0.50$</span></div>
+                <div class="film-nom" onclick="traiterRetour('laisser')"><span class="film-nom-titre" style="color:#888;">IGNORER</span></div>`;
+      } else {
+        const pen = client.film.prix * 3;
+        return `<div class="film-nom" style="border-color:#ff2d7850;" onclick="traiterRetour('reclamer')"><span class="film-nom-titre" style="color:#ff2d78;">RÉCLAMER -${pen}$</span></div>
+                <div class="film-nom" onclick="traiterRetour('absorber')"><span class="film-nom-titre" style="color:#888;">ABSORBER</span></div>`;
+      }
+    }
+
+    function renderIndeciseEnFile(client) {
+      const essaisRestants = 3 - indeciseEssais;
+      let html = `<div style="font-size:10px;color:#aa44aa;letter-spacing:1px;padding:4px 0;">INDICES (${essaisRestants} essai${essaisRestants>1?'s':''}) :</div>`;
+      indeciseIndices.forEach(ind => {
+        html += `<div style="font-size:11px;color:#d0d0ee;font-style:italic;padding:4px 8px;background:#0f0f1e;border-radius:4px;margin-bottom:3px;">${ind}</div>`;
+      });
+      const dispo = CATALOGUE.filter(f => {
+        if (f.genre === 'drame') return (gameState.stock.drame||0) > 0;
+        if (f.genre === 'comedie_romantique') return (gameState.stock.comedie_romantique||0) > 0;
+        if (f.genre === 'rarites') return (gameState.stock.rarites||0) > 0;
+        return false;
+      });
+      html += dispo.slice(0,6).map(film =>
+        `<div class="film-nom" onclick="filmClique('${film.id}')">
+          <span class="film-nom-titre">${film.titre}</span>
+          <span class="film-nom-prix">+${film.prix}$</span>
+        </div>`).join('');
+      return html;
+    }
+
+    function fermerClientActif() {
+      if (activeClientIndex < 0) return;
+      // Remettre la liste des noms sans renvoyer le client
+      activeClientIndex = -1;
+      cacherAvatarClient();
+      renderQueue();
+    }
+
+    // ===================================================
+    // FONCTIONS AVATAR CLIENT DANS DIALOGUE
+    // ===================================================
+
+    function montrerAvatarClient(client) {
+      const fredAvatar = document.getElementById('fred-avatar');
+      const fredName   = document.getElementById('fred-name-label');
+      const clientAvatar = document.getElementById('client-avatar-dialogue');
+      const clientNom  = document.getElementById('client-avatar-nom');
+      if (!clientAvatar) return;
+
+      const avatarSrc = AVATARS_CLIENTS[client.id];
+      if (avatarSrc) {
+        clientAvatar.src = avatarSrc;
+        clientAvatar.classList.add('visible');
+        clientNom.textContent = client.name.split(' ')[0];
+        clientNom.classList.add('visible');
+        if (fredAvatar) fredAvatar.style.display = 'none';
+        if (fredName)   fredName.style.display = 'none';
+      }
+    }
+
+    function cacherAvatarClient() {
+      const fredAvatar = document.getElementById('fred-avatar');
+      const fredName   = document.getElementById('fred-name-label');
+      const clientAvatar = document.getElementById('client-avatar-dialogue');
+      const clientNom  = document.getElementById('client-avatar-nom');
+      if (clientAvatar) clientAvatar.classList.remove('visible');
+      if (clientNom)    clientNom.classList.remove('visible');
+      if (fredAvatar)   fredAvatar.style.display = '';
+      if (fredName)     fredName.style.display = '';
+    }
+
     function renderQueue() {
       const queue = document.getElementById('client-queue');
       const phase = gameState.phase_journee || 'matin';
 
       if (currentClients.length === 0) {
+        cacherAvatarClient();
         queue.innerHTML = `<div class="no-clients">░ PLUS DE CLIENTS ░</div>`;
         // Easter egg — Corey mime Taxi Driver
         if (!gameState._taxi_driver_joue && Math.random() < 0.15) {
@@ -2423,45 +2649,25 @@
       if (phase === 'matin' && clientsServis >= 3)
         document.getElementById('pause-btn').classList.add('visible');
 
+      // Si un client est actif — afficher les films
+      if (activeClientIndex >= 0) {
+        renderFilmsEnFile(currentClients[activeClientIndex]);
+        return;
+      }
+
+      // Sinon — afficher juste les noms
       queue.innerHTML = currentClients.map((client, i) => {
-        const demande = typeof client.demande === 'string'
-          ? client.demande : getDemande(client.id);
         const isCanopi = client.id === 'canopi';
+        const nomClass = isCanopi ? 'canopi-nom' : client.isRamon ? 'ramon-nom' : client.isRetour ? 'retour-nom' : '';
+        const labelClass = isCanopi ? 'canopi' : client.isRamon ? 'ramon' : client.isRetour ? 'retour' : '';
+        const icone = client.isVIP ? '⭐ ' : client.isRetour ? '📼 ' : client.isIndecise ? '🤔 ' : client.canNegociate ? '🤝 ' : '';
         return `
-          <div class="client-card
-               ${client.isRamon    ? 'ramon-card'    : ''}
-               ${client.isRetour   ? 'retour-card'   : ''}
-               ${client.isVIP      ? 'vip-card'      : ''}
-               ${client.isIndecise ? 'indecise-card' : ''}
-               ${isCanopi          ? 'canopi-card'   : ''}
-               ${i===activeClientIndex ? 'active-client' : ''}"
-               data-index="${i}"
-               onclick="selectClient(${i})">
-            <div class="client-card-top">
-              <span class="client-mood">${client.mood}</span>
-              <div class="client-info">
-                <div class="client-name
-                     ${client.isRamon    ? 'ramon'    : ''}
-                     ${client.isRetour   ? 'retour'   : ''}
-                     ${client.isVIP      ? 'vip'      : ''}
-                     ${client.isIndecise ? 'indecise' : ''}
-                     ${isCanopi          ? 'canopi'   : ''}">
-                  ${client.name}
-                  ${client.canNegociate ? ' 🤝' : ''}
-                  ${client.isRetour     ? ' 📼' : ''}
-                  ${client.isVIP        ? ' ⭐' : ''}
-                  ${client.isIndecise   ? ' 🤔' : ''}
-                </div>
-                <div class="client-demand">
-                  ${demande.substring(0,40)}...
-                </div>
-              </div>
+          <div class="client-nom ${nomClass}" data-index="${i}" onclick="selectClient(${i})">
+            <div style="flex:1;">
+              <div class="client-nom-label ${labelClass}">${icone}${client.name}</div>
+              <div class="client-nom-timer" id="timer-bar-${i}" style="width:100%"></div>
             </div>
-            <div class="client-timer-bar">
-              <div class="client-timer-fill" style="width:100%"></div>
-            </div>
-          </div>
-        `;
+          </div>`;
       }).join('');
 
       setTimeout(startAllTimers, 100);
@@ -2481,16 +2687,15 @@
 
       const isCanopi = client.id === 'canopi';
 
+      // Montrer avatar client à gauche (remplace Fred)
+      montrerAvatarClient(client);
+
+      // Afficher les films dans la file
+      renderFilmsEnFile(client);
+
       if (isCanopi) {
         setCoreyAvatar('peur');
         setFredAvatar('stress');
-        // Avatar Canopi avec loupe
-        const avatarImg = document.getElementById('avatar-client-big');
-        if (avatarImg) {
-          avatarImg.src = 'posters/canopi-loupe.png';
-          avatarImg.classList.add('visible');
-          document.getElementById('avatar-client-emoji').style.display = 'none';
-        }
         afficherClientDansZone(client);
         afficherBulles('canopi_arrive');
       } else if (client.isCollectionneur) {
@@ -2640,32 +2845,7 @@
       if (client.isRamon && gameState.semaine >= 3) tension.classList.add('visible');
       else tension.classList.remove('visible');
 
-      let panelClass = 'client-panel visible';
-      if (client.isRamon)    panelClass += ' ramon-panel';
-      if (client.isRetour)   panelClass += ' retour-panel';
-      if (client.isVIP)      panelClass += ' vip-panel';
-      if (client.isIndecise) panelClass += ' indecise-panel';
-      if (isCanopi)          panelClass += ' canopi-panel';
-      document.getElementById('client-panel').className = panelClass;
-
-      if (client.isRetour) {
-        renderRetour(client);
-        document.getElementById('films-label').textContent = '';
-        document.getElementById('films-list').innerHTML    = '';
-        document.getElementById('client-prefs').innerHTML  = '';
-        document.getElementById('panel-alts').innerHTML    = '';
-        document.getElementById('indecise-zone-container').innerHTML = '';
-      } else if (client.isIndecise) {
-        renderIndecise();
-        document.getElementById('retour-zone-container').innerHTML = '';
-      } else {
-        renderPrefs(client, visites);
-        renderFilmsList(client);
-        renderAlts(client);
-        document.getElementById('retour-zone-container').innerHTML   = '';
-        document.getElementById('indecise-zone-container').innerHTML = '';
-      }
-
+      // Pas d'ouverture du panel — les films sont dans la file
       renderQueue();
     }
 
@@ -2942,6 +3122,7 @@
       currentClients.splice(activeClientIndex, 1);
       activeClientIndex = -1;
       if (wasCanopi) desactiverAmbianceCanopi();
+      cacherAvatarClient();
       closePanel();
       showNotif(resultat.msg, resultat.positif);
       updateUI(); updateSuspicion(); renderQueue(); saveGame();
@@ -3139,10 +3320,11 @@
       else if(action==='laisser')   { gameState.stock[client.genre]=Math.min(max,(gameState.stock[client.genre]||0)+1);msg='Fred rembobine.';positif=true; }
       else if(action==='reclamer')  { const pen=client.film.prix*3;if(gameState.argent>=pen)gameState.argent-=pen;msg=`-${pen}$`;positif=false;afficherBulles('retour_abimee'); }
       else if(action==='absorber')  { gameState.stock[client.genre]=Math.max(0,(gameState.stock[client.genre]||0)-1);gameState.reputation=Math.max(0,gameState.reputation-0.1);msg='Cassette perdue.';positif=false; }
-      setCoreyAvatar(positif?'joie':'colere');
+      setCoreyAvatar(positif?'ok':'contrarie');
       clearClientTimer(activeClientIndex);
       currentClients.splice(activeClientIndex, 1);
       activeClientIndex = -1;
+      cacherAvatarClient();
       closePanel(); showNotif(msg, positif);
       updateUI(); renderQueue(); saveGame();
     }
@@ -3155,6 +3337,7 @@
       document.getElementById('indecise-zone-container').innerHTML = '';
       if (panelTimerInterval) { clearInterval(panelTimerInterval); panelTimerInterval = null; }
       activeClientIndex=-1; negoFilmId=null;
+      cacherAvatarClient();
       weedAjoutee=false; pendingFilmId=null;
       indeciseEssais=0; indeciseCible=null; indeciseIndices=[];
       renderQueue();
@@ -3351,8 +3534,6 @@
       document.getElementById('val-money').textContent=gs.argent+'$';
       document.getElementById('bar-legal').style.width=gs.legalite+'%';
       document.getElementById('val-legal').textContent=gs.legalite+'%';
-      document.getElementById('bar-expo').style.width=gs.exposition+'%';
-      document.getElementById('val-expo').textContent=gs.exposition+'%';
       const ePct=(gs.energie/(gs.energieMax||15))*100;
       document.getElementById('bar-energy').style.width=ePct+'%';
       document.getElementById('val-energy').textContent=gs.energie+'/'+(gs.energieMax||15);
@@ -3436,7 +3617,6 @@
       const messages={
         money:`Caisse : ${gs.argent}$ — Collecte Jackson mercredi`,
         legal:`Légalité : ${gs.legalite}%`,
-        expo:`Exposition : ${gs.exposition}%`,
         energy:`Énergie : ${gs.energie}/${gs.energieMax||15}`,
         stock_action:`Action : ${gs.stock.action||0}/10`,
         stock_horreur:`Horreur : ${gs.stock.horreur||0}/10`,
@@ -3602,20 +3782,6 @@
       } else {
         legalBar.style.animation = '';
         legalVal.style.color = '';
-      }
-
-      // Exposition
-      const expoBar = document.getElementById('bar-expo');
-      const expoVal = document.getElementById('val-expo');
-      if (gs.exposition >= 80) {
-        expoBar.style.animation = 'gaugePulse 0.5s infinite';
-        expoVal.style.color = '#ff4466';
-      } else if (gs.exposition >= 65) {
-        expoBar.style.animation = 'gaugePulse 1s infinite';
-        expoVal.style.color = '#ff8855';
-      } else {
-        expoBar.style.animation = '';
-        expoVal.style.color = '';
       }
 
       // Énergie
