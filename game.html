@@ -24,6 +24,8 @@
       height: 100vh;
       overflow: hidden;
       font-family: 'Courier New', monospace;
+      background: #0a0a16;
+      color: #d0d0e8;
     }
 
     .top-bar {
@@ -32,8 +34,8 @@
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
-      background: #080810;
-      border-bottom: 1px solid #1e1e3a;
+      background: #0d0d1c;
+      border-bottom: 1px solid #2a2a4a;
     }
 
     .top-bar-left {
@@ -163,8 +165,8 @@
     }
 
     .counter-top {
-      background: #0a0a18;
-      border: 1px solid #1e1e3a;
+      background: #0d0d20;
+      border: 1px solid #2a2a4a;
       border-radius: 6px;
       padding: 7px;
       flex: 1;
@@ -173,7 +175,7 @@
 
     .counter-label {
       font-size: 8px;
-      color: #ff8855;
+      color: #ff9966;
       letter-spacing: 2px;
       margin-bottom: 5px;
     }
@@ -181,23 +183,23 @@
     .client-queue { display: flex; flex-direction: column; gap: 4px; }
 
     .client-card {
-      background: #0f0f1e;
-      border: 1px solid #1e1e3a;
+      background: #131326;
+      border: 1px solid #2a2a4a;
       border-radius: 5px;
       padding: 6px 8px;
       cursor: pointer;
       transition: all 0.15s;
     }
 
-    .client-card:active        { background: #141428; border-color: #00ffc8; }
-    .client-card.active-client { border-color: #00ffc8; background: #071a14; }
-    .client-card.ramon-card    { border-color: #2e1a2e; }
-    .client-card.retour-card   { border-color: #1a2e1a; background: #0a0f0a; }
-    .client-card.vip-card      { border-color: #aa880040; }
-    .client-card.indecise-card { border-color: #aa44aa40; }
+    .client-card:active        { background: #1a1a35; border-color: #00ffc8; }
+    .client-card.active-client { border-color: #00ffc8; background: #0a1e16; }
+    .client-card.ramon-card    { border-color: #3e2a3e; }
+    .client-card.retour-card   { border-color: #1a3e1a; background: #0d140d; }
+    .client-card.vip-card      { border-color: #aa880060; }
+    .client-card.indecise-card { border-color: #aa44aa60; }
     .client-card.canopi-card   {
-      border-color: #2e1a2e;
-      background: #080610;
+      border-color: #3e2a3e;
+      background: #0c0812;
       animation: canopiPulse 2s infinite;
     }
 
@@ -214,17 +216,17 @@
 
     .client-mood   { font-size: 14px; width: 20px; }
     .client-info   { flex: 1; }
-    .client-name   { font-size: 10px; color: #00ffc8; letter-spacing: 1px; }
+    .client-name   { font-size: 11px; color: #00ffc8; letter-spacing: 1px; }
     .client-name.ramon    { color: #cc88cc; }
     .client-name.retour   { color: #44aa44; }
     .client-name.vip      { color: #aa8844; }
     .client-name.indecise { color: #aa44aa; }
     .client-name.canopi   { color: #9966aa; }
-    .client-demand { font-size: 8px; color: #9090bb; margin-top: 1px; line-height: 1.3; }
+    .client-demand { font-size: 9px; color: #a0a0cc; margin-top: 1px; line-height: 1.3; }
 
     .client-timer-bar {
       width: 100%;
-      height: 2px;
+      height: 3px;
       background: #1e1e3a;
       border-radius: 1px;
       margin-top: 4px;
@@ -239,11 +241,16 @@
     }
 
     .client-timer-fill.urgent   { background: #ff8855; }
-    .client-timer-fill.critique { background: #ff4466; }
+    .client-timer-fill.critique { background: #ff4466; animation: critiquePulse 0.5s infinite; }
+
+    @keyframes critiquePulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.5; }
+    }
 
     .no-clients {
       font-size: 9px;
-      color: #333355;
+      color: #4a4a7a;
       text-align: center;
       padding: 10px;
       letter-spacing: 1px;
@@ -282,32 +289,23 @@
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      padding: 8px 12px 6px;
-      background: #060610;
-      border-top: 1px solid #0f0f20;
+      padding: 8px 8px 6px;
+      background: #0a0a18;
+      border-top: 1px solid #1a1a30;
       position: relative;
       overflow: hidden;
-      min-height: 130px;
+      min-height: 160px;
       transition: background 0.5s;
     }
 
     .fred-corey-zone.canopi-mode {
-      background: #060408;
+      background: #080610;
       border-top-color: #1a0a1a;
-    }
-
-    .fred-corey-zone::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 50px;
-      background: linear-gradient(transparent, #030308);
-      pointer-events: none;
     }
 
     .bulles-zone {
       flex: 1;
-      margin: 0 10px;
+      margin: 0 6px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -317,9 +315,11 @@
       overflow: hidden;
     }
 
+    /* Bulle client — côté gauche comme Fred */
     .bulle { display: flex; animation: bulleAppear 0.3s ease; }
-    .bulle.fred  { justify-content: flex-start; }
-    .bulle.corey { justify-content: flex-end; }
+    .bulle.fred   { justify-content: flex-start; }
+    .bulle.corey  { justify-content: flex-end; }
+    .bulle.client { justify-content: flex-start; }
 
     @keyframes bulleAppear {
       from { opacity: 0; transform: translateY(4px); }
@@ -327,25 +327,33 @@
     }
 
     .bulle-texte {
-      max-width: 85%;
-      padding: 6px 10px;
-      font-size: 10px;
+      max-width: 88%;
+      padding: 7px 11px;
+      font-size: 11px;
       font-style: italic;
       line-height: 1.5;
     }
 
     .bulle.fred .bulle-texte {
-      background: #0f0f2a;
-      border: 1px solid #3a3a6a;
+      background: #12122e;
+      border: 1px solid #4a4a8a;
       border-radius: 4px 12px 12px 12px;
-      color: #9090cc;
+      color: #a0a0dd;
     }
 
     .bulle.corey .bulle-texte {
-      background: #1a0f05;
-      border: 1px solid #ff885530;
+      background: #1e1205;
+      border: 1px solid #ff885540;
       border-radius: 12px 4px 12px 12px;
-      color: #cc9966;
+      color: #ddaa77;
+    }
+
+    .bulle.client .bulle-texte {
+      background: #0e1e14;
+      border: 1px solid #00ffc840;
+      border-radius: 4px 12px 12px 12px;
+      color: #88ddbb;
+      font-style: normal;
     }
 
     .fred-portrait {
@@ -357,16 +365,16 @@
     }
 
     .fred-avatar {
-      width: 88px;
-      height: 88px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
-      border: 2px solid #aa880040;
+      border: 2px solid #aa880060;
       object-fit: cover;
-      box-shadow: 0 0 16px #aa880020;
+      box-shadow: 0 0 20px #aa880030;
       background: #0a0a18;
     }
 
-    .fred-name { font-size: 8px; color: #333355; letter-spacing: 2px; }
+    .fred-name { font-size: 8px; color: #5555aa; letter-spacing: 2px; }
 
     .corey-portrait {
       display: flex;
@@ -377,20 +385,20 @@
     }
 
     .corey-avatar-big {
-      width: 88px;
-      height: 88px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
-      border: 2px solid #ff885540;
+      border: 2px solid #ff885560;
       object-fit: cover;
-      box-shadow: 0 0 16px #ff885520;
+      box-shadow: 0 0 20px #ff885530;
       background: #0a0a18;
       transition: all 0.3s ease;
     }
 
-    .corey-avatar-big.peur   { border-color: #ff444660; box-shadow: 0 0 20px #ff444630; }
+    .corey-avatar-big.peur   { border-color: #ff444680; box-shadow: 0 0 24px #ff444640; }
     .corey-avatar-big.colere {
-      border-color: #ff222260;
-      box-shadow: 0 0 20px #ff222230;
+      border-color: #ff222280;
+      box-shadow: 0 0 24px #ff222240;
       animation: coreyShake 0.4s ease;
     }
 
@@ -400,7 +408,30 @@
       75%       { transform: translateX(4px); }
     }
 
-    .corey-name { font-size: 8px; color: #ff885560; letter-spacing: 2px; }
+    .corey-name { font-size: 8px; color: #ff885580; letter-spacing: 2px; }
+
+    /* CLIENT AVATAR dans la zone dialogue */
+    .client-dialogue-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #00ffc840;
+      object-fit: cover;
+      box-shadow: 0 0 12px #00ffc820;
+      background: #0a0a18;
+      margin-bottom: 4px;
+      display: none;
+    }
+
+    .client-dialogue-avatar.visible { display: block; }
+    .client-dialogue-name {
+      font-size: 7px;
+      color: #00ffc860;
+      letter-spacing: 1px;
+      text-align: center;
+      display: none;
+    }
+    .client-dialogue-name.visible { display: block; }
 
     .bottom-buttons {
       display: flex;
@@ -442,38 +473,37 @@
       display: none;
       position: fixed;
       bottom: 65px; left: 0; right: 0;
-      background: #080812;
+      background: #0c0c1e;
       border-top: 2px solid #00ffc8;
-      padding: 12px 12px 10px;
+      padding: 10px 12px 8px;
       z-index: 50;
-      max-height: 78vh;
+      max-height: 80vh;
       overflow-y: auto;
     }
 
-    .client-panel.visible       { display: block; }
-    .client-panel.ramon-panel   { border-top-color: #cc88cc; }
-    .client-panel.retour-panel  { border-top-color: #44aa44; }
-    .client-panel.vip-panel     { border-top-color: #aa8844; }
-    .client-panel.indecise-panel { border-top-color: #aa44aa; }
-    .client-panel.canopi-panel  { border-top-color: #9966aa; }
-
+    /* HEADER TOUJOURS STICKY EN HAUT DU PANEL */
     .panel-header-row {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       margin-bottom: 10px;
       padding-bottom: 10px;
-      border-bottom: 1px solid #1e1e3a;
+      border-bottom: 1px solid #2a2a4a;
+      position: sticky;
+      top: 0;
+      background: #0c0c1e;
+      z-index: 5;
+      padding-top: 2px;
     }
 
     .avatar-client-big {
-      width: 72px;
-      height: 72px;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
       border: 2px solid #aa880060;
       object-fit: cover;
       flex-shrink: 0;
-      box-shadow: 0 0 14px #aa880030;
+      box-shadow: 0 0 16px #aa880030;
       background: #0a0a18;
       display: none;
     }
@@ -481,25 +511,25 @@
     .avatar-client-big.visible { display: block; }
 
     .avatar-client-emoji {
-      width: 72px;
-      height: 72px;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
-      border: 2px solid #1e1e3a;
-      background: #0a0a18;
+      border: 2px solid #2a2a4a;
+      background: #0d0d20;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
+      font-size: 36px;
       flex-shrink: 0;
     }
 
     .panel-header-info { flex: 1; }
 
     .panel-client-name {
-      font-size: 14px;
+      font-size: 15px;
       color: #00ffc8;
       letter-spacing: 2px;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     .panel-client-name.ramon    { color: #cc88cc; }
@@ -509,8 +539,8 @@
     .panel-client-name.canopi   { color: #9966aa; }
 
     .panel-client-demand {
-      font-size: 11px;
-      color: #c0c0dd;
+      font-size: 12px;
+      color: #d0d0ee;
       line-height: 1.5;
       font-style: italic;
     }
@@ -1008,7 +1038,12 @@
     .gauge-bar.expo   { background: #ff4466; }
     .gauge-bar.energy { background: #ffdd44; }
 
-    .gauge-value { font-size: 8px; color: #6060aa; letter-spacing: 1px; }
+    .gauge-value { font-size: 9px; color: #8080bb; letter-spacing: 1px; }
+
+    @keyframes gaugePulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
 
     .gauge-tooltip {
       display: none;
@@ -1111,6 +1146,7 @@
       </div>
       <div class="btn-icon" onclick="openStock()">📦</div>
       <div class="btn-icon" id="mute-btn" onclick="toggleMute()">🔊</div>
+      <div class="btn-icon" id="save-btn" onclick="saveGameManuel()" title="Sauvegarder">📼</div>
     </div>
   </div>
 
@@ -1172,14 +1208,14 @@
 
     <div class="fred-corey-zone" id="fred-corey-zone">
       <div class="fred-portrait">
-        <img class="fred-avatar" src="posters/fred.png" alt="Fred"
+        <img class="fred-avatar" id="fred-avatar" src="posters/Fred/fred.png" alt="Fred"
              onerror="this.style.display='none'">
         <div class="fred-name">FRED</div>
       </div>
       <div class="bulles-zone" id="bulles-zone"></div>
       <div class="corey-portrait">
-        <img class="corey-avatar-big joie" id="corey-avatar"
-             src="posters/joie.png" alt="Corey"
+        <img class="corey-avatar-big" id="corey-avatar"
+             src="posters/corey/corey.png" alt="Corey"
              onerror="this.style.display='none'">
         <div class="corey-name">COREY</div>
       </div>
@@ -1447,27 +1483,84 @@
       'femme_seule':    'posters/marie.png',
       'etudiant':       'posters/etudiant.png',
       'inconnu':        'posters/inconnu.png',
-      'concurrent':     'posters/concurrent.png',
+      'concurrent':     'posters/concurent.png',
       'journaliste':    'posters/journaliste.png',
       'sam_raimi':      'posters/inconnu.png',
       'indecise':       'posters/indecise.png',
       'kungfu':         'posters/kungfu.png',
       'marine':         'posters/marine.png',
       'fan_vo':         'posters/vo.png',
-      'henderson':      'posters/henderson.png'
+      'henderson':      'posters/henderson.png',
+      'dimaggio':       'posters/dimaggio.png',
+      'cuter':          'posters/cuter.png'
     };
 
     const COREY_AVATARS = {
-      joie:   'posters/joie.png',
-      peur:   'posters/peur.png',
-      colere: 'posters/colere.png'
+      neutre:          'posters/corey/corey.png',
+      joie:            'posters/corey/corey-heureux.png',
+      ok:              'posters/corey/corey-ok.png',
+      peur:            'posters/corey/corey-peur.png',
+      peur2:           'posters/corey/corey-peur2.png',
+      colere:          'posters/corey/corey-colere1.png',
+      colere2:         'posters/corey/corey-colere2.png',
+      colere3:         'posters/corey/corey-colere3.png',
+      colere4:         'posters/corey/corey-colere4.png',
+      high:            'posters/corey/corey-high.png',
+      illumine:        'posters/corey/corey-illumine.png',
+      conspirationiste:'posters/corey/corey-conspirationiste.png',
+      depite:          'posters/corey/corey-depite.png',
+      fatigue:         'posters/corey/corey-fatigue.png',
+      contrarie:       'posters/corey/corey-contrarie.png',
+      tete:            'posters/corey/corey-tete.png'
     };
+
+    const FRED_AVATARS = {
+      neutre:      'posters/Fred/fred.png',
+      doute:       'posters/Fred/fred_doute.png',
+      fier:        'posters/Fred/fred_fier.png',
+      stress:      'posters/Fred/fred_stress.png',
+      triste:      'posters/Fred/fred-triste.png',
+      attentif:    'posters/Fred/fred-attentif.png',
+      amuse:       'posters/Fred/fred-amuse.png',
+      non:         'posters/Fred/fred-non.png',
+      observateur: 'posters/Fred/fred-observateur.png',
+      pas_content: 'posters/Fred/fred-pas-content.png',
+      tranquille:  'posters/Fred/fred-tranquille.png',
+      tete:        'posters/Fred/fred-tete.png'
+    };
+
+    let fredAvatarCourant = 'neutre';
+
+    function setFredAvatar(humeur) {
+      const el = document.getElementById('fred-avatar');
+      if (!el) return;
+      el.src = FRED_AVATARS[humeur] || FRED_AVATARS.neutre;
+      fredAvatarCourant = humeur;
+    }
 
     function setCoreyAvatar(humeur) {
       const el = document.getElementById('corey-avatar');
       if (!el) return;
-      el.src = COREY_AVATARS[humeur] || COREY_AVATARS.joie;
+      el.src = COREY_AVATARS[humeur] || COREY_AVATARS.neutre;
       el.className = `corey-avatar-big ${humeur}`;
+    }
+
+    // ===================================================
+    // CLIENT DANS LA ZONE DIALOGUE
+    // ===================================================
+
+    function afficherClientDansZone(client) {
+      // Afficher le client dans la bulle comme s'il parlait à Fred
+      const zone = document.getElementById('bulles-zone');
+      if (!zone) return;
+      const demande = typeof client.demande === 'string'
+        ? client.demande : getDemande(client.id);
+      const div = document.createElement('div');
+      div.className = 'bulle client';
+      div.innerHTML = `<div class="bulle-texte">${demande}</div>`;
+      zone.appendChild(div);
+      const toutes = zone.querySelectorAll('.bulle');
+      if (toutes.length > 3) toutes[0].remove();
     }
 
     // ===================================================
@@ -1641,7 +1734,11 @@
     // ===================================================
 
     const CLIENT_TYPES = [
-      {id:'canopi',name:'INSPECTEUR CANOPI',mood:'😐',get demande(){return getDemande('canopi');},aime:['ghost','kramer','rain_man'],deteste:['arme_fatale','predator','terminator','die_hard','halloween','alien','suspiria','exorciste'],accepte:['drame'],energie:1,timer_seconds:68,thought:"Il revient. Évidemment qu'il revient.",canNegociate:false,weedDemande:false,
+      // ===================================================
+      // TIMERS x2.5
+      // ===================================================
+      const TIMER_MULT = 2.5;
+      {id:'canopi',name:'INSPECTEUR CANOPI',mood:'😐',get demande(){return getDemande('canopi');},aime:['ghost','kramer','rain_man'],deteste:['arme_fatale','predator','terminator','die_hard','halloween','alien','suspiria','exorciste'],accepte:['drame'],energie:1,timer_seconds:Math.round(68*TIMER_MULT),thought:"Il revient. Évidemment qu'il revient.",canNegociate:false,weedDemande:false,
         onServi:(gs,film,prix)=>{if(film.id==='ghost'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.ghost_loue_aujourd_hui=true;gs.legalite=Math.max(0,gs.legalite-2);gs.reputation=Math.min(5,gs.reputation+0.3);gs.argent+=2;return{msg:'+2$ — Ghost trouvé.',positif:true};}else if(film.genre==='drame'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.argent+=2;return{msg:'+2$ — Il accepte.',positif:true};}gs.legalite=Math.min(100,gs.legalite+2);return{msg:'Mauvais choix.',positif:false};}},
       {id:'ramon',name:'RAMON',mood:'🤵',demande:'"Pretty Woman. Vous l\'avez ?"',aime:['pretty_woman','dirty_dancing','quand_harry','nuits_blanches','officier'],deteste:['arme_fatale','predator','terminator','halloween','alien','exorciste'],accepte:['comedie_romantique'],energie:2,timer_seconds:60,thought:"Cet homme a des mains qui ont réglé des problèmes.",isRamon:true,canNegociate:false,weedDemande:false,
         dialogues:{visite1:'"Pretty Woman. Vous l\'avez ?"',visite2:'"Dirty Dancing cette fois."',visite3:'"Quand Harry rencontre Sally. M. DiMaggio aime bien ce film."',visite4:'"Bel endroit. Bien tenu." Il regarde la réserve.',visite5:'"M. DiMaggio voudrait vous rencontrer."'},
@@ -1672,6 +1769,11 @@
         onServi:(gs,film,prix)=>{if(film.genre==='drame'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;gs.exposition=Math.min(100,gs.exposition+3);return{msg:`+${prix||film.prix}$ — Elle prend des notes.`,positif:true};}return{msg:'Elle repart.',positif:false};},
         actionSpeciale:{titre:'🎙 RÉPONDRE À SES QUESTIONS',detail:'Interview. Exposition ++ / Crédibilité +.',effet:(gs)=>{gs.exposition=Math.min(100,gs.exposition+8);gs.credibilite=Math.min(100,gs.credibilite+5);gs.reputation=Math.min(5,gs.reputation+0.8);return{msg:'Interview accordée.',positif:true};}}},
       {id:'collectionneur',name:'M. BEAUMONT',mood:'🎩',get demande(){return getDemande('collectionneur');},aime:['blow_out','boxcar','short_cuts','blue_velvet','noir_01','noir_02','evil_dead','ran','das_boot'],deteste:['roi_lion','aladdin','home_alone'],accepte:['rarites','noires'],energie:2,timer_seconds:75,isCollectionneur:true,thought:"Il veut acheter, pas louer.",canNegociate:true,weedDemande:false,
+        dialogues_bd:[
+          [{perso:'corey',texte:"C'est Sam Raimi."},{perso:'fred',texte:"C'est M. Beaumont."},{perso:'corey',texte:"La mâchoire. Les yeux."},{perso:'fred',texte:"Il s'appelle Beaumont."},{perso:'corey',texte:"C'est un alias."}],
+          [{perso:'corey',texte:"Il a demandé Evil Dead."},{perso:'fred',texte:"C'est un collectionneur."},{perso:'corey',texte:"Un collectionneur qui connaît Evil Dead de l'intérieur."},{perso:'fred',texte:"Beaucoup de gens connaissent Evil Dead."},{perso:'corey',texte:"Pas comme ça."}],
+          [{perso:'corey',texte:"Si c'est lui je lui demande un autographe."},{perso:'fred',texte:"C'est M. Beaumont."},{perso:'corey',texte:"Et si c'est lui ?"},{perso:'fred',texte:"C'est M. Beaumont."},{perso:'corey',texte:"..."},{perso:'fred',texte:"C'est peut-être lui."}]
+        ],
         negoConfig:{prixMin:10,prixMax:60,prixIdeal:35,tolerance:15},
         onServi:(gs,film,prix)=>{if(film.genre==='rarites'||film.genre==='noires'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||35;gs.credibilite=Math.min(100,gs.credibilite+3);return{msg:`+${prix||35}$ — M. Beaumont repart satisfait.`,positif:true};}return{msg:'M. Beaumont repart sans rien.',positif:false};},
         actionSpeciale:{titre:'💎 LUI VENDRE UNE RARETÉ',detail:'+35$ mais vous perdez la cassette.',effet:(gs)=>{if((gs.stock.rarites||0)<=0)return{msg:'Plus de raretés.',positif:false};gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=35;gs.credibilite=Math.min(100,gs.credibilite+3);return{msg:'+35$ — M. Beaumont repart satisfait.',positif:true};}}},
@@ -1815,6 +1917,11 @@
     function startDay() {
       generateClients();
 
+      // Onboarding jour 1
+      if (gameState.jour === 1) {
+        lancerOnboarding();
+      }
+
       // Jour 1 — bulle Corey pour les upgrades
       if (gameState.jour === 1 && !gameState.upgradesVus) {
         setTimeout(() => {
@@ -1905,16 +2012,17 @@
     }
 
     function startClientTimer(index, seconds) {
-      if (seconds >= 999) return;
+      const secondsAjuste = Math.round(seconds * 2.5);
+      if (secondsAjuste >= 999) return;
       if (clientTimers[index]) clearInterval(clientTimers[index]);
-      let remaining = seconds;
+      let remaining = secondsAjuste;
       clientTimers[index] = setInterval(() => {
         remaining--;
         const card = document.querySelector(`.client-card[data-index="${index}"]`);
         if (card) {
           const fill = card.querySelector('.client-timer-fill');
           if (fill) {
-            const pct = (remaining / seconds) * 100;
+            const pct = (remaining / secondsAjuste) * 100;
             fill.style.width = pct + '%';
             if (pct < 30) fill.className = 'client-timer-fill critique';
             else if (pct < 60) fill.className = 'client-timer-fill urgent';
@@ -1930,16 +2038,17 @@
     }
 
     function startPanelTimer(seconds) {
-      if (seconds >= 999) return;
+      const secondsAjuste = Math.round(seconds * 2.5);
+      if (secondsAjuste >= 999) return;
       if (panelTimerInterval) clearInterval(panelTimerInterval);
-      let remaining = seconds;
+      let remaining = secondsAjuste;
       const fill = document.getElementById('panel-timer-fill');
       if (!fill) return;
       fill.style.width = '100%';
       fill.className = 'panel-timer-fill';
       panelTimerInterval = setInterval(() => {
         remaining--;
-        const pct = (remaining / seconds) * 100;
+        const pct = (remaining / secondsAjuste) * 100;
         fill.style.width = pct + '%';
         if (pct < 30) fill.className = 'panel-timer-fill critique';
         else if (pct < 60) fill.className = 'panel-timer-fill urgent';
@@ -1965,7 +2074,8 @@
       gameState.reputation = Math.max(0, gameState.reputation - 0.3);
       comboCount = 0;
       afficherBulles('mauvaise_vente');
-      setCoreyAvatar('colere');
+      setCoreyAvatar('colere3');
+      setFredAvatar('pas_content');
       if (activeClientIndex === index) closePanel();
       currentClients.splice(index, 1);
       if (activeClientIndex > index) activeClientIndex--;
@@ -2159,21 +2269,39 @@
 
       if (isCanopi) {
         setCoreyAvatar('peur');
+        setFredAvatar('stress');
+        // Afficher avatar Canopi dans la zone dialogue
+        afficherClientDansZone(client);
         afficherBulles('canopi_arrive');
+      } else if (client.isCollectionneur) {
+        setCoreyAvatar('conspirationiste');
+        setFredAvatar('doute');
+        afficherClientDansZone(client);
+        if (client.dialogues_bd) afficherBullesCustom(client.dialogues_bd);
       } else if (client.isVIP) {
-        setCoreyAvatar('joie');
+        setCoreyAvatar('conspirationiste');
+        setFredAvatar('doute');
+        afficherClientDansZone(client);
         afficherBullesCustom(client.dialogues_bd);
       } else if (client.isIndecise) {
-        setCoreyAvatar('peur');
+        setCoreyAvatar('depite');
+        setFredAvatar('attentif');
+        afficherClientDansZone(client);
         initIndecise(client);
       } else if (client.isRetour) {
-        setCoreyAvatar(client.etat==='normale'?'joie':'colere');
+        setCoreyAvatar(client.etat==='normale'?'ok':'contrarie');
+        setFredAvatar(client.etat==='normale'?'tranquille':'pas_content');
+        afficherClientDansZone(client);
         afficherBulles(`retour_${client.etat==='normale'?'normal':client.etat}`);
       } else if (client.id==='ramon' && visites>=2) {
-        setCoreyAvatar('joie');
+        setCoreyAvatar('peur2');
+        setFredAvatar('observateur');
+        afficherClientDansZone(client);
         afficherBulles('ramon_arrive');
       } else {
-        setCoreyAvatar('joie');
+        setCoreyAvatar('ok');
+        setFredAvatar('tranquille');
+        afficherClientDansZone(client);
         if (Math.random() > 0.6) {
           const s = ['bonne_vente','argent_serre','beaulieu'];
           afficherBulles(s[Math.floor(Math.random()*s.length)]);
@@ -2505,7 +2633,8 @@
         gameState.suspicion = Math.min(100, (gameState.suspicion||0) + 5);
       if (resultat.positif) {
         comboCount++;
-        setCoreyAvatar('joie');
+        setCoreyAvatar('illumine');
+        setFredAvatar('fier');
         if (comboCount >= 3) {
           gameState.reputation = Math.min(5, gameState.reputation + 0.5);
           const combo = document.getElementById('combo-notif');
@@ -2516,7 +2645,8 @@
         if (Math.random() > 0.5) afficherBulles('bonne_vente');
       } else {
         comboCount = 0;
-        setCoreyAvatar('colere');
+        setCoreyAvatar('colere2');
+        setFredAvatar('pas_content');
         if (Math.random() > 0.5) afficherBulles('mauvaise_vente');
       }
       if (resultat.positif && typeof SOUNDS !== 'undefined') SOUNDS.caisse();
@@ -2984,10 +3114,141 @@
       setTimeout(()=>{notif.className='notif';},2500);
     }
 
+    function saveGameManuel() {
+      saveGame();
+      const btn = document.getElementById('save-btn');
+      if (btn) {
+        btn.textContent = '✓';
+        btn.style.color = '#00ffc8';
+        setTimeout(() => {
+          btn.textContent = '📼';
+          btn.style.color = '';
+        }, 1000);
+      }
+    }
+
+    // ===================================================
+    // ONBOARDING — 5 BULLES CONTEXTUELLES
+    // ===================================================
+
+    function lancerOnboarding() {
+      if (!gameState.tutoVu) gameState.tutoVu = [];
+
+      const bulles = [
+        {
+          id: 'queue',
+          cible: '.client-queue',
+          texte: 'Appuie sur un client pour voir sa demande.',
+          delai: 1500
+        },
+        {
+          id: 'stock',
+          cible: '#btn-upgrades',
+          texte: 'Commande des cassettes ici avant d\'être en rupture. 📦',
+          delai: 4000
+        },
+        {
+          id: 'upgrades',
+          cible: '#btn-upgrades',
+          texte: 'Jackson peut améliorer le vidéoclub. Jette un œil. 🔧',
+          delai: 7000
+        },
+        {
+          id: 'jauges',
+          cible: '.bottom-bar',
+          texte: 'Surveille ton énergie ⚡ et ta suspicion 👁',
+          delai: 10000
+        }
+      ];
+
+      bulles.forEach(b => {
+        if (gameState.tutoVu.includes(b.id)) return;
+        setTimeout(() => {
+          afficherBulleTuto(b.texte);
+          gameState.tutoVu.push(b.id);
+          saveGame();
+        }, b.delai);
+      });
+    }
+
+    function afficherBulleTuto(texte) {
+      const zone = document.getElementById('bulles-zone');
+      if (!zone) return;
+      const div = document.createElement('div');
+      div.className = 'bulle corey';
+      div.innerHTML = `<div class="bulle-texte" style="background:#0a1a0a;border-color:#44aa4440;color:#88cc88;">💡 ${texte}</div>`;
+      zone.appendChild(div);
+      const toutes = zone.querySelectorAll('.bulle');
+      if (toutes.length > 3) toutes[0].remove();
+    }
+
+    // ===================================================
+    // JAUGES CLIGNOTANTES
+    // ===================================================
+
+    function checkGaugesCritiques() {
+      const gs = gameState;
+
+      // Argent
+      const moneyBar = document.getElementById('bar-money');
+      const moneyVal = document.getElementById('val-money');
+      if (gs.argent < 50) {
+        moneyBar.style.animation = 'gaugePulse 0.8s infinite';
+        moneyVal.style.color = '#ff4466';
+      } else {
+        moneyBar.style.animation = '';
+        moneyVal.style.color = '';
+      }
+
+      // Légalité
+      const legalBar = document.getElementById('bar-legal');
+      const legalVal = document.getElementById('val-legal');
+      if (gs.legalite >= 85) {
+        legalBar.style.animation = 'gaugePulse 0.5s infinite';
+        legalVal.style.color = '#ff4466';
+      } else if (gs.legalite >= 70) {
+        legalBar.style.animation = 'gaugePulse 1s infinite';
+        legalVal.style.color = '#ff8855';
+      } else {
+        legalBar.style.animation = '';
+        legalVal.style.color = '';
+      }
+
+      // Exposition
+      const expoBar = document.getElementById('bar-expo');
+      const expoVal = document.getElementById('val-expo');
+      if (gs.exposition >= 80) {
+        expoBar.style.animation = 'gaugePulse 0.5s infinite';
+        expoVal.style.color = '#ff4466';
+      } else if (gs.exposition >= 65) {
+        expoBar.style.animation = 'gaugePulse 1s infinite';
+        expoVal.style.color = '#ff8855';
+      } else {
+        expoBar.style.animation = '';
+        expoVal.style.color = '';
+      }
+
+      // Énergie
+      const energyBar = document.getElementById('bar-energy');
+      const energyVal = document.getElementById('val-energy');
+      const ePct = (gs.energie / (gs.energieMax||15)) * 100;
+      if (ePct <= 15) {
+        energyBar.style.animation = 'gaugePulse 0.5s infinite';
+        energyVal.style.color = '#ff4466';
+      } else if (ePct <= 30) {
+        energyBar.style.animation = 'gaugePulse 1s infinite';
+        energyVal.style.color = '#ff8855';
+      } else {
+        energyBar.style.animation = '';
+        energyVal.style.color = '';
+      }
+    }
+
     function saveGame() {
       if(typeof ACHIEVEMENTS!=='undefined')ACHIEVEMENTS.checkAndNotify(gameState);
       window.gameStateRef=gameState;
       localStorage.setItem('rewindParadise_save',JSON.stringify(gameState));
+      checkGaugesCritiques();
     }
 
   </script>
