@@ -1049,6 +1049,11 @@
       50%       { opacity: 0.4; }
     }
 
+    @keyframes suspicionPulse {
+      0%, 100% { opacity: 1; filter: brightness(1); }
+      50%       { opacity: 0.6; filter: brightness(2); }
+    }
+
     .gauge-tooltip {
       display: none;
       position: fixed;
@@ -1204,22 +1209,22 @@
         </div>
       </div>
 
-      <div class="tv-small">
-        <div class="tv-small-screen">📺</div>
-        <div class="tv-small-label">AUCUNE<br>CASSETTE</div>
+      <div class="tv-small" id="tv-small" onclick="tapperTV()">
+        <div class="tv-small-screen" id="tv-screen">📺</div>
+        <div class="tv-small-label" id="tv-label">AUCUNE<br>CASSETTE</div>
       </div>
     </div>
 
     <div class="fred-corey-zone" id="fred-corey-zone">
       <div class="fred-portrait">
-        <img class="fred-avatar" id="fred-avatar" src="posters/Fred/fred.png" alt="Fred"
+        <img class="fred-avatar" id="fred-avatar" src="posters/fred.png" alt="Fred"
              onerror="this.style.display='none'">
         <div class="fred-name">FRED</div>
       </div>
       <div class="bulles-zone" id="bulles-zone"></div>
       <div class="corey-portrait">
         <img class="corey-avatar-big" id="corey-avatar"
-             src="posters/corey/corey.png" alt="Corey"
+             src="posters/corey.png" alt="Corey"
              onerror="this.style.display='none'">
         <div class="corey-name">COREY</div>
       </div>
@@ -1458,6 +1463,7 @@
         legalite: 0, exposition: 0, reputation: 3,
         credibilite: 0, suspicion: 0,
         phase_journee: 'matin',
+        meteo: 'normal',
         stock: {
           action: 8, horreur: 6, drame: 4,
           enfants: 6, comedie_romantique: 5,
@@ -1495,41 +1501,43 @@
       'fan_vo':         'posters/vo.png',
       'henderson':      'posters/henderson.png',
       'dimaggio':       'posters/dimaggio.png',
-      'cuter':          'posters/cuter.png'
+      'cuter':          'posters/cuter.png',
+      'jessica':        'posters/jessica.png',
+      'lucious':        'posters/lucious.png'
     };
 
     const COREY_AVATARS = {
-      neutre:          'posters/corey/corey.png',
-      joie:            'posters/corey/corey-heureux.png',
-      ok:              'posters/corey/corey-ok.png',
-      peur:            'posters/corey/corey-peur.png',
-      peur2:           'posters/corey/corey-peur2.png',
-      colere:          'posters/corey/corey-colere1.png',
-      colere2:         'posters/corey/corey-colere2.png',
-      colere3:         'posters/corey/corey-colere3.png',
-      colere4:         'posters/corey/corey-colere4.png',
-      high:            'posters/corey/corey-high.png',
-      illumine:        'posters/corey/corey-illumine.png',
-      conspirationiste:'posters/corey/corey-conspirationiste.png',
-      depite:          'posters/corey/corey-depite.png',
-      fatigue:         'posters/corey/corey-fatigue.png',
-      contrarie:       'posters/corey/corey-contrarie.png',
-      tete:            'posters/corey/corey-tete.png'
+      neutre:          'posters/corey.png',
+      joie:            'posters/corey-heureux.png',
+      ok:              'posters/corey-ok.png',
+      peur:            'posters/corey-peur.png',
+      peur2:           'posters/corey-peur2.png',
+      colere:          'posters/corey-colere1.png',
+      colere2:         'posters/corey-colere2.png',
+      colere3:         'posters/corey-colere3.png',
+      colere4:         'posters/corey-colere4.png',
+      high:            'posters/corey-high.png',
+      illumine:        'posters/corey-illumine.png',
+      conspirationiste:'posters/corey-conspirationiste.png',
+      depite:          'posters/corey-depite.png',
+      fatigue:         'posters/corey-fatigue.png',
+      contrarie:       'posters/corey-contrarie.png',
+      tete:            'posters/corey-tete.png'
     };
 
     const FRED_AVATARS = {
-      neutre:      'posters/Fred/fred.png',
-      doute:       'posters/Fred/fred_doute.png',
-      fier:        'posters/Fred/fred_fier.png',
-      stress:      'posters/Fred/fred_stress.png',
-      triste:      'posters/Fred/fred-triste.png',
-      attentif:    'posters/Fred/fred-attentif.png',
-      amuse:       'posters/Fred/fred-amuse.png',
-      non:         'posters/Fred/fred-non.png',
-      observateur: 'posters/Fred/fred-observateur.png',
-      pas_content: 'posters/Fred/fred-pas-content.png',
-      tranquille:  'posters/Fred/fred-tranquille.png',
-      tete:        'posters/Fred/fred-tete.png'
+      neutre:      'posters/fred.png',
+      doute:       'posters/fred_doute.png',
+      fier:        'posters/fred_fier.png',
+      stress:      'posters/fred_stress.png',
+      triste:      'posters/fred-triste.png',
+      attentif:    'posters/fred-attentif.png',
+      amuse:       'posters/fred-amuse.png',
+      non:         'posters/fred-non.png',
+      observateur: 'posters/fred-observateur.png',
+      pas_content: 'posters/fred-pas-content.png',
+      tranquille:  'posters/fred-tranquille.png',
+      tete:        'posters/fred-tete.png'
     };
 
     let fredAvatarCourant = 'neutre';
@@ -1825,6 +1833,31 @@
       if (gameState.upgradesVus === undefined) gameState.upgradesVus = false;
 
       gameState.ghost_loue_aujourd_hui = false;
+      
+      // BOÎTE AUX LETTRES — retours de la nuit
+      if (gameState.jour > 1) {
+        const retoursMatin = gameState.retours_boite || [];
+        if (retoursMatin.length > 0) {
+          setTimeout(() => {
+            let html = '<div style="font-size:10px;color:#00b4ff;letter-spacing:2px;margin-bottom:10px;">📬 RETOURS DE LA NUIT</div>';
+            retoursMatin.forEach(r => {
+              const etat = r.etat === 'normale' ? '✓' : '⚠';
+              const color = r.etat === 'normale' ? '#00ffc8' : '#ff8855';
+              html += `<div style="padding:6px 0;border-bottom:1px solid #1a1a30;font-size:11px;color:${color};">${etat} ${r.titre}</div>`;
+              if (gameState.stock[r.genre] !== undefined) {
+                gameState.stock[r.genre] = Math.min(10, (gameState.stock[r.genre]||0) + 1);
+              }
+            });
+            gameState.retours_boite = [];
+            
+            const panel = document.createElement('div');
+            panel.style.cssText = `position:fixed;top:60px;left:12px;right:12px;background:#080818;border:2px solid #00b4ff;border-radius:8px;padding:14px;z-index:300;font-family:'Courier New',monospace;`;
+            panel.innerHTML = html + `<div onclick="this.parentElement.remove();updateUI();" style="margin-top:10px;text-align:center;font-size:10px;color:#00b4ff;cursor:pointer;letter-spacing:2px;">▶ OK</div>`;
+            document.body.appendChild(panel);
+            updateUI(); saveGame();
+          }, 800);
+        }
+      }
 
       if (typeof UPGRADES !== 'undefined') UPGRADES.appliquerEffetsActifs(gameState);
 
@@ -1887,8 +1920,60 @@
       });
     }
 
+    function proposerCoreySeul() {
+      if ((gameState.energie || 0) > (gameState.energieMax || 15) * 0.2) return;
+      if (gameState.corey_seul_propose) return;
+      gameState.corey_seul_propose = true;
+      
+      const panel = document.createElement('div');
+      panel.style.cssText = `position:fixed;bottom:120px;left:12px;right:12px;background:#0c0c1e;border:2px solid #ff2d78;border-radius:8px;padding:12px;z-index:200;font-family:'Courier New',monospace;`;
+      panel.innerHTML = `
+        <div style="font-size:10px;color:#ff2d78;letter-spacing:1px;margin-bottom:8px;">⚡ ÉNERGIE CRITIQUE</div>
+        <div style="font-size:12px;color:#e8e8ff;font-style:italic;margin-bottom:10px;">"Tu veux que je gère ?"</div>
+        <div style="display:flex;gap:8px;">
+          <div onclick="activerCoreySeul();this.parentElement.parentElement.remove();" 
+               style="flex:1;background:#1a0a10;border:1px solid #ff2d78;border-radius:4px;padding:8px;text-align:center;cursor:pointer;font-size:10px;color:#ff2d78;">OUI</div>
+          <div onclick="this.parentElement.parentElement.remove();" 
+               style="flex:1;background:#0a0a18;border:1px solid #333355;border-radius:4px;padding:8px;text-align:center;cursor:pointer;font-size:10px;color:#666688;">NON</div>
+        </div>`;
+      document.body.appendChild(panel);
+    }
+
+    function activerCoreySeul() {
+      gameState.energie = Math.min(gameState.energieMax || 15, (gameState.energie || 0) + 5);
+      gameState.corey_seul_actif = true;
+      setCoreyAvatar('illumine');
+      setFredAvatar('tranquille');
+      showNotif('Corey gère. Fred récupère. +5 énergie.', true);
+      
+      // Corey fait une erreur comique
+      setTimeout(() => {
+        const erreurs = [
+          "Corey a donné Alien aux Henderson.",
+          "Corey a expliqué le plot de Die Hard à Ramon.",
+          "Corey a proposé la weed à la mauvaise personne.",
+          "Corey a rangé les cassettes dans le mauvais ordre."
+        ];
+        const err = erreurs[Math.floor(Math.random()*erreurs.length)];
+        showNotif(err, false);
+        const zone = document.getElementById('bulles-zone');
+        if (zone) {
+          const div = document.createElement('div');
+          div.className = 'bulle corey';
+          div.innerHTML = '<div class="bulle-texte">J'ai géré.</div>';
+          zone.appendChild(div);
+        }
+      }, 8000);
+      
+      updateUI(); saveGame();
+    }
+
     function closingTime() {
       clearAllTimers();
+      gameState.corey_seul_propose = false;
+      gameState.corey_seul_actif = false;
+      gameState._fredonne = false;
+      gameState._taxi_driver_joue = false;
       if (typeof SOUNDS !== 'undefined') SOUNDS.rideauFer();
       if (currentClients.length > 0) {
         const lost = currentClients.filter(c => !c.isRetour).length;
@@ -1901,6 +1986,31 @@
       setCoreyAvatar('joie');
       afficherBulles('fermeture');
       gameState.ghost_loue_aujourd_hui = false;
+      
+      // BOÎTE AUX LETTRES — retours de la nuit
+      if (gameState.jour > 1) {
+        const retoursMatin = gameState.retours_boite || [];
+        if (retoursMatin.length > 0) {
+          setTimeout(() => {
+            let html = '<div style="font-size:10px;color:#00b4ff;letter-spacing:2px;margin-bottom:10px;">📬 RETOURS DE LA NUIT</div>';
+            retoursMatin.forEach(r => {
+              const etat = r.etat === 'normale' ? '✓' : '⚠';
+              const color = r.etat === 'normale' ? '#00ffc8' : '#ff8855';
+              html += `<div style="padding:6px 0;border-bottom:1px solid #1a1a30;font-size:11px;color:${color};">${etat} ${r.titre}</div>`;
+              if (gameState.stock[r.genre] !== undefined) {
+                gameState.stock[r.genre] = Math.min(10, (gameState.stock[r.genre]||0) + 1);
+              }
+            });
+            gameState.retours_boite = [];
+            
+            const panel = document.createElement('div');
+            panel.style.cssText = `position:fixed;top:60px;left:12px;right:12px;background:#080818;border:2px solid #00b4ff;border-radius:8px;padding:14px;z-index:300;font-family:'Courier New',monospace;`;
+            panel.innerHTML = html + `<div onclick="this.parentElement.remove();updateUI();" style="margin-top:10px;text-align:center;font-size:10px;color:#00b4ff;cursor:pointer;letter-spacing:2px;">▶ OK</div>`;
+            document.body.appendChild(panel);
+            updateUI(); saveGame();
+          }, 800);
+        }
+      }
       gameState.phase_journee = 'matin';
       gameState.sam_raimi_visite = false;
       switchToGame();
@@ -1918,6 +2028,24 @@
     // ===================================================
 
     function startDay() {
+      // MÉTÉO DU JOUR
+      const meteos = ['normal','normal','normal','pluie','pluie','canicule'];
+      gameState.meteo = meteos[Math.floor(Math.random() * meteos.length)];
+      
+      if (gameState.meteo === 'pluie') {
+        document.getElementById('shop-illustration').style.filter = 'brightness(0.85)';
+        setTimeout(() => afficherBulleTuto('🌧 Il pleut. Moins de clients. Canopi sort quand même.'), 2000);
+      } else if (gameState.meteo === 'canicule') {
+        setTimeout(() => afficherBulleTuto('☀️ Canicule. Les clients sont de mauvaise humeur.'), 2000);
+      }
+
+      // PROMOTION DU JOUR — genre aléatoire
+      const promoGenres = ['action','horreur','drame','enfants','guerre','kungfu'];
+      if (!gameState.promo_jour || gameState.promo_jour_num !== gameState.jour) {
+        gameState.promo_jour = promoGenres[Math.floor(Math.random()*promoGenres.length)];
+        gameState.promo_jour_num = gameState.jour;
+      }
+
       generateClients();
 
       // Onboarding jour 1
@@ -2159,6 +2287,21 @@
         }
       }
 
+      // CASSETTE MAUDITE — 1x par semaine
+      if (!gameState.cassette_maudite_semaine || 
+          gameState.cassette_maudite_semaine < gameState.semaine) {
+        if (Math.random() < 0.3) {
+          gameState.cassette_maudite_semaine = gameState.semaine;
+          const genres = ['action','horreur','drame'];
+          const g = genres[Math.floor(Math.random()*genres.length)];
+          const films = CATALOGUE.filter(f => f.genre === g);
+          if (films.length) {
+            const film = films[Math.floor(Math.random()*films.length)];
+            gameState.cassette_maudite_id = film.id;
+          }
+        }
+      }
+
       renderQueue();
       setTimeout(startAllTimers, 500);
     }
@@ -2205,7 +2348,59 @@
 
       if (currentClients.length === 0) {
         queue.innerHTML = `<div class="no-clients">░ PLUS DE CLIENTS ░</div>`;
+        // Easter egg — Corey mime Taxi Driver
+        if (!gameState._taxi_driver_joue && Math.random() < 0.15) {
+          gameState._taxi_driver_joue = true;
+          setTimeout(() => {
+            const zone = document.getElementById('bulles-zone');
+            if (zone) {
+              setCoreyAvatar('tete');
+              const div = document.createElement('div');
+              div.className = 'bulle corey';
+              div.innerHTML = '<div class="bulle-texte">You talkin' to me ?</div>';
+              zone.appendChild(div);
+              setTimeout(() => {
+                const div2 = document.createElement('div');
+                div2.className = 'bulle fred';
+                div2.innerHTML = '<div class="bulle-texte">T'es en train de faire quoi ?</div>';
+                zone.appendChild(div2);
+                setTimeout(() => {
+                  const div3 = document.createElement('div');
+                  div3.className = 'bulle corey';
+                  div3.innerHTML = '<div class="bulle-texte">Taxi Driver. La scène du miroir.</div>';
+                  zone.appendChild(div3);
+                }, 1500);
+              }, 1500);
+            }
+          }, 5000);
+        } else {
+          gameState._taxi_driver_joue = false;
+        }
         if (phase === 'matin') document.getElementById('pause-btn').classList.add('visible');
+        
+        // Fred qui fredonne — conditions : énergie 100%, argent > 400$
+        if ((gameState.energie||0) >= (gameState.energieMax||15) && 
+            (gameState.argent||0) > 400 && 
+            !gameState._fredonne) {
+          gameState._fredonne = true;
+          setTimeout(() => {
+            setFredAvatar('amuse');
+            const zone = document.getElementById('bulles-zone');
+            if (zone) {
+              const div = document.createElement('div');
+              div.className = 'bulle fred';
+              div.innerHTML = '<div class="bulle-texte">♪ ♫ ♪</div>';
+              zone.appendChild(div);
+              setTimeout(() => {
+                setCoreyAvatar('tete');
+                const div2 = document.createElement('div');
+                div2.className = 'bulle corey';
+                div2.innerHTML = '<div class="bulle-texte">...</div>';
+                zone.appendChild(div2);
+              }, 2000);
+            }
+          }, 3000);
+        }
         return;
       }
 
@@ -2273,7 +2468,13 @@
       if (isCanopi) {
         setCoreyAvatar('peur');
         setFredAvatar('stress');
-        // Afficher avatar Canopi dans la zone dialogue
+        // Avatar Canopi avec loupe
+        const avatarImg = document.getElementById('avatar-client-big');
+        if (avatarImg) {
+          avatarImg.src = 'posters/canopi-loupe.png';
+          avatarImg.classList.add('visible');
+          document.getElementById('avatar-client-emoji').style.display = 'none';
+        }
         afficherClientDansZone(client);
         afficherBulles('canopi_arrive');
       } else if (client.isCollectionneur) {
@@ -2306,8 +2507,39 @@
         setFredAvatar('tranquille');
         afficherClientDansZone(client);
         if (Math.random() > 0.6) {
-          const s = ['bonne_vente','argent_serre','beaulieu'];
-          afficherBulles(s[Math.floor(Math.random()*s.length)]);
+          // Dialogue code caché — 5% de chance
+          if (Math.random() < 0.05 && !gameState.code_cache_dialogue_vu) {
+            gameState.code_cache_dialogue_vu = true;
+            setTimeout(() => {
+              const zone = document.getElementById('bulles-zone');
+              if (!zone) return;
+              const dialogue = [
+                {perso:'corey', texte:"T'as vu le dernier Celluloïd Scalpel ?"},
+                {perso:'corey', texte:"Y'a un truc zarb sur la couverture."},
+                {perso:'corey', texte:"Des symboles. Œil, dollar, dollar, éclair..."},
+                {perso:'fred',  texte:"C'est Cutter. Cherche pas."},
+                {perso:'corey', texte:"T'as essayé ?"},
+                {perso:'fred',  texte:"Non."},
+                {perso:'corey', texte:"Moi si."}
+              ];
+              let i = 0;
+              function nextLine() {
+                if (i >= dialogue.length) return;
+                const div = document.createElement('div');
+                div.className = `bulle ${dialogue[i].perso}`;
+                div.innerHTML = `<div class="bulle-texte">${dialogue[i].texte}</div>`;
+                zone.appendChild(div);
+                const toutes = zone.querySelectorAll('.bulle');
+                if (toutes.length > 4) toutes[0].remove();
+                i++;
+                setTimeout(nextLine, 2000);
+              }
+              nextLine();
+            }, 3000);
+          } else {
+            const s = ['bonne_vente','argent_serre','beaulieu'];
+            afficherBulles(s[Math.floor(Math.random()*s.length)]);
+          }
         }
       }
 
@@ -2640,6 +2872,9 @@
         showNotif('Ghost est déjà sorti.', false); return;
       }
       gameState.energie = Math.max(0, gameState.energie - client.energie);
+      if ((gameState.energie || 0) < (gameState.energieMax || 15) * 0.2) {
+        setTimeout(proposerCoreySeul, 2000);
+      }
       let prixTotal = prixFinal || film.prix;
       if (weedAjoutee) prixTotal += 15;
       const resultat = client.onServi(gameState, film, prixTotal);
@@ -2664,6 +2899,23 @@
         if (Math.random() > 0.5) afficherBulles('mauvaise_vente');
       }
       if (resultat.positif && typeof SOUNDS !== 'undefined') SOUNDS.caisse();
+      
+      // CASSETTE MAUDITE
+      if (gameState.cassette_maudite_id && filmId === gameState.cassette_maudite_id) {
+        setTimeout(() => {
+          showNotif('📼 La cassette se bloque dans son magnéto...', false);
+          const zone = document.getElementById('bulles-zone');
+          if (zone) {
+            const div = document.createElement('div');
+            div.className = 'bulle corey';
+            div.innerHTML = '<div class="bulle-texte">Il va revenir furieux demain.</div>';
+            zone.appendChild(div);
+          }
+          gameState.cassette_maudite_active = true;
+          gameState.cassette_maudite_film = filmId;
+          gameState.cassette_maudite_id = null;
+        }, 1500);
+      }
       const key = 'client_' + client.id + '_count';
       gameState[key] = (gameState[key]||0) + 1;
       clientsServis++;
@@ -2761,9 +3013,12 @@
         label.textContent = client.canNegociate
           ? '🤝 NÉGOCIATION — CHOISIR :' : '📼 CHOISIR UN FILM :';
       }
+      const canopiPresent = currentClients.some(c => c.id === 'canopi');
+      const noiresDispo = (gameState.jour >= 3) && !canopiPresent && (stock.noires||0) > 0;
+      
       const dispo = CATALOGUE.filter(film => {
         if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) return false;
-        if (film.genre === 'noires')             return (stock.noires||0) > 0;
+        if (film.genre === 'noires')             return noiresDispo;
         if (film.genre === 'rarites')            return (stock.rarites||0) > 0;
         if (film.genre === 'comedie_romantique') return (stock.comedie_romantique||0) > 0;
         if (film.genre === 'guerre')             return (stock.guerre||0) > 0;
@@ -2999,7 +3254,16 @@
     function updateSuspicion() {
       const pct  = Math.min(100, gameState.suspicion||0);
       const fill = document.getElementById('suspicion-fill');
-      if (fill) fill.style.width = pct+'%';
+      if (!fill) return;
+      fill.style.width = pct+'%';
+      // Pulse selon niveau
+      if (pct >= 70) {
+        fill.style.animation = 'suspicionPulse 0.4s infinite';
+      } else if (pct >= 40) {
+        fill.style.animation = 'suspicionPulse 0.8s infinite';
+      } else {
+        fill.style.animation = '';
+      }
     }
 
     function openStock() {
@@ -3104,7 +3368,54 @@
         `Jour ${gameState.jour} — S${gameState.semaine}`;
     }
 
+    // ===================================================
+    // CODE CACHÉ — séquence jauges
+    // ===================================================
+    let codeSequence = [];
+    const CODE_SECRET = ['money','money','legal','expo','energy','expo','money','energy'];
+    let codeTimer = null;
+
+    function checkCodeCache(type) {
+      codeSequence.push(type);
+      if (codeSequence.length > CODE_SECRET.length) {
+        codeSequence.shift();
+      }
+      if (codeTimer) clearTimeout(codeTimer);
+      codeTimer = setTimeout(() => { codeSequence = []; }, 3000);
+      
+      if (JSON.stringify(codeSequence) === JSON.stringify(CODE_SECRET)) {
+        codeSequence = [];
+        // CODE TROUVÉ
+        gameState.argent += 50;
+        gameState.energie = gameState.energieMax || 15;
+        updateUI(); saveGame();
+        showNotif('🎮 PARTY ON WAYNE. +50$ Énergie pleine.', true);
+        setTimeout(() => {
+          const zone = document.getElementById('bulles-zone');
+          if (zone) {
+            const div = document.createElement('div');
+            div.className = 'bulle corey';
+            div.innerHTML = '<div class="bulle-texte">T'as trouvé le code.</div>';
+            zone.appendChild(div);
+            setTimeout(() => {
+              const div2 = document.createElement('div');
+              div2.className = 'bulle fred';
+              div2.innerHTML = '<div class="bulle-texte">Quel code ?</div>';
+              zone.appendChild(div2);
+              setTimeout(() => {
+                const div3 = document.createElement('div');
+                div3.className = 'bulle corey';
+                div3.innerHTML = '<div class="bulle-texte">Exactement.</div>';
+                zone.appendChild(div3);
+              }, 1500);
+            }, 1500);
+          }
+        }, 500);
+      }
+    }
+
     function showTooltip(type) {
+      checkCodeCache(type);
       const gs=gameState;
       const messages={
         money:`Caisse : ${gs.argent}$ — Collecte Jackson mercredi`,
@@ -3131,6 +3442,50 @@
       notif.textContent=message;
       notif.className='notif visible'+(positive?'':' negative');
       setTimeout(()=>{notif.className='notif';},2500);
+    }
+
+    // ===================================================
+    // EASTER EGG — TV
+    // ===================================================
+    let tvTaps = 0;
+    let tvEteinte = false;
+    let tvTimer = null;
+
+    function tapperTV() {
+      if (tvEteinte) return;
+      tvTaps++;
+      if (tvTimer) clearTimeout(tvTimer);
+      tvTimer = setTimeout(() => { tvTaps = 0; }, 2000);
+      
+      if (tvTaps === 5) {
+        const zone = document.getElementById('bulles-zone');
+        if (zone) {
+          const div = document.createElement('div');
+          div.className = 'bulle corey';
+          div.innerHTML = '<div class="bulle-texte">Arrête de taper sur la télé.</div>';
+          zone.appendChild(div);
+        }
+      }
+      
+      if (tvTaps >= 6) {
+        tvEteinte = true;
+        tvTaps = 0;
+        document.getElementById('tv-screen').textContent = '📵';
+        document.getElementById('tv-label').textContent = 'ÉTEINTE';
+        const zone = document.getElementById('bulles-zone');
+        if (zone) {
+          const div = document.createElement('div');
+          div.className = 'bulle corey';
+          div.innerHTML = '<div class="bulle-texte">Je t'avais dit.</div>';
+          zone.appendChild(div);
+        }
+        // Rallumer après 1 heure de jeu = 60 clients servis ou 30 minutes réelles
+        setTimeout(() => {
+          tvEteinte = false;
+          document.getElementById('tv-screen').textContent = '📺';
+          document.getElementById('tv-label').textContent = 'AUCUNE CASSETTE';
+        }, 30 * 60 * 1000);
+      }
     }
 
     function saveGameManuel() {
