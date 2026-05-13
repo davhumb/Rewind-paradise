@@ -201,15 +201,7 @@
       100% { top: 105%; opacity: 0; }
     }
 
-    .scene-timecode {
-      position: absolute;
-      bottom: 8px; right: 10px;
-      font-size: 9px;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 1px;
-      z-index: 11;
-      font-family: 'Courier New', monospace;
-    }
+
 
     /* PROGRESS BAR — subtile, juste l'ambiance */
     .progress-bar {
@@ -478,8 +470,6 @@
       </div>
       <div class="monitor-screen">
         <img class="scene-image" id="scene-image" src="" alt="">
-        <div class="scanlines"></div>
-        <div class="tracking-line" id="tracking-line"></div>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" id="progress-fill"></div>
@@ -682,7 +672,7 @@
       document.getElementById('btn-lancer').classList.add('hidden');
       document.getElementById('cut-btn').classList.add('visible');
       document.getElementById('monitor-rec').classList.add('visible');
-      document.getElementById('tracking-line').classList.add('visible');
+      
 
       cutMade      = false;
       filmEnCours  = true;
@@ -755,7 +745,7 @@
     function finaliserCoupe(segIdx) {
       filmEnCours = false;
       document.getElementById('monitor-rec').classList.remove('visible');
-      document.getElementById('tracking-line').classList.remove('visible');
+      
       document.getElementById('cut-btn').classList.remove('visible');
 
       // Calculer la note
