@@ -974,7 +974,11 @@
         <span class="monitor-rec" id="monitor-rec">● REC</span>
       </div>
       <div class="monitor-screen" id="monitor-screen">
-        <div class="scene-bg"     id="scene-bg"></div>
+        <img id="scene-image" src="" alt=""
+             style="position:absolute;top:0;left:0;width:100%;height:100%;
+                    object-fit:cover;z-index:2;opacity:0;
+                    transition:opacity 0.4s;">
+        <div class="scene-bg" id="scene-bg"></div>
         <div class="scene-content" id="scene-content">
           <span class="scene-icon-big" id="scene-icon">📼</span>
           <div class="scene-personnage"   id="scene-personnage"></div>
