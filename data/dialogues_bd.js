@@ -1,6 +1,8 @@
 // ===================================================
-// REWIND PARADISE — DIALOGUES BD
+// REWIND PARADISE — DIALOGUES BD v2
 // Fred et Corey. Fidèles au roman.
+// Plus de situations. Plus de mordant.
+// Timing calibré.
 // ===================================================
 
 const DIALOGUES_BD = {
@@ -39,6 +41,27 @@ const DIALOGUES_BD = {
       { perso: 'corey', texte: "Y'a pas de journée normale." },
       { perso: 'fred',  texte: "Aujourd'hui si." },
       { perso: 'corey', texte: "C'est ce que dit le personnage au début du deuxième acte." }
+    ],
+    [
+      { perso: 'corey', texte: "J'ai rêvé de Kubrick cette nuit." },
+      { perso: 'fred',  texte: "Et ?" },
+      { perso: 'corey', texte: "Il m'a pas parlé." },
+      { perso: 'fred',  texte: "Kubrick parle à personne." },
+      { perso: 'corey', texte: "Même dans les rêves." }
+    ],
+    [
+      { perso: 'fred',  texte: "Stock correct." },
+      { perso: 'corey', texte: "On a plus de Alien." },
+      { perso: 'fred',  texte: "Je sais." },
+      { perso: 'corey', texte: "Dans l'espace personne t'entend commander des cassettes." },
+      { perso: 'fred',  texte: "Je vais appeler le fournisseur." }
+    ],
+    [
+      { perso: 'corey', texte: "Matin." },
+      { perso: 'fred',  texte: "Oui." },
+      { perso: 'corey', texte: "Déjà." },
+      { perso: 'fred',  texte: "Comme tous les matins." },
+      { perso: 'corey', texte: "Ça fait beaucoup de matins." }
     ]
   ],
 
@@ -80,6 +103,19 @@ const DIALOGUES_BD = {
       { perso: 'fred',  texte: "T'as l'air d'un suspect dans un Preminger." },
       { perso: 'corey', texte: "Les suspects de Preminger avaient de la classe." },
       { perso: 'fred',  texte: "Exactement." }
+    ],
+    [
+      { perso: 'corey', texte: "Il scrute." },
+      { perso: 'fred',  texte: "C'est son travail." },
+      { perso: 'corey', texte: "Scruter c'est un travail ?" },
+      { perso: 'fred',  texte: "Apparemment." }
+    ],
+    [
+      { perso: 'fred',  texte: "Bonjour Inspecteur." },
+      { perso: 'corey', texte: "..." },
+      { perso: 'fred',  texte: "Voilà." },
+      { perso: 'corey', texte: "C'est tout ce qu'on dit ?" },
+      { perso: 'fred',  texte: "C'est tout ce qu'on dit." }
     ]
   ],
 
@@ -107,6 +143,20 @@ const DIALOGUES_BD = {
       { perso: 'fred',  texte: "Ghost est sorti." },
       { perso: 'corey', texte: "Comme d'habitude." },
       { perso: 'fred',  texte: "Comme d'habitude." }
+    ],
+    [
+      { perso: 'corey', texte: "Il reviendra." },
+      { perso: 'fred',  texte: "Il revient toujours." },
+      { perso: 'corey', texte: "Comme dans Terminator." },
+      { perso: 'fred',  texte: "Canopi c'est pas le Terminator." },
+      { perso: 'corey', texte: "T'en es sûr ?" }
+    ],
+    [
+      { perso: 'fred',  texte: "Respire." },
+      { perso: 'corey', texte: "Je respire." },
+      { perso: 'fred',  texte: "Par le nez." },
+      { perso: 'corey', texte: "Je respire par le nez." },
+      { perso: 'fred',  texte: "Bien." }
     ]
   ],
 
@@ -138,6 +188,12 @@ const DIALOGUES_BD = {
       { perso: 'fred',  texte: "Je sais." },
       { perso: 'corey', texte: "C'est un truc de gangster ou de cinéphile ?" },
       { perso: 'fred',  texte: "Les deux." }
+    ],
+    [
+      { perso: 'corey', texte: "Il sourit." },
+      { perso: 'fred',  texte: "Oui." },
+      { perso: 'corey', texte: "C'est pire quand il sourit." },
+      { perso: 'fred',  texte: "Je sais." }
     ]
   ],
 
@@ -159,6 +215,14 @@ const DIALOGUES_BD = {
       { perso: 'corey', texte: "Le joueur de baseball ?" },
       { perso: 'fred',  texte: "Non." },
       { perso: 'corey', texte: "..." }
+    ],
+    [
+      { perso: 'corey', texte: "Il a regardé la réserve en partant." },
+      { perso: 'fred',  texte: "Je sais." },
+      { perso: 'corey', texte: "Longtemps." },
+      { perso: 'fred',  texte: "Je sais." },
+      { perso: 'corey', texte: "On fait quoi ?" },
+      { perso: 'fred',  texte: "On ouvre demain matin." }
     ]
   ],
 
@@ -190,6 +254,30 @@ const DIALOGUES_BD = {
       { perso: 'fred',  texte: "Caisse correcte." },
       { perso: 'corey', texte: "Pour une fois." },
       { perso: 'fred',  texte: "Pour une fois." }
+    ],
+    [
+      { perso: 'corey', texte: "Il est content." },
+      { perso: 'fred',  texte: "C'est le but." },
+      { perso: 'corey', texte: "Le but c'est qu'il revienne." },
+      { perso: 'fred',  texte: "C'est la même chose." }
+    ],
+    [
+      { perso: 'corey', texte: "Vous avez quelque chose de romantique ?" },
+      { perso: 'fred',  texte: "Non. Mais on a des gens qui meurent ensemble." },
+      { perso: 'corey', texte: "Rayon 3. Entre les vampires et les divorces." }
+    ],
+    [
+      { perso: 'fred',  texte: "Il a pris The Thing." },
+      { perso: 'corey', texte: "Bon goût." },
+      { perso: 'fred',  texte: "Il avait l'air d'un comptable." },
+      { perso: 'corey', texte: "Les comptables ont le meilleur goût. Kubrick le savait." }
+    ],
+    [
+      { perso: 'corey', texte: "Rareté vendue." },
+      { perso: 'fred',  texte: "On en a moins." },
+      { perso: 'corey', texte: "On en a moins." },
+      { perso: 'fred',  texte: "C'est bien ou c'est mal ?" },
+      { perso: 'corey', texte: "C'est de l'argent." }
     ]
   ],
 
@@ -216,33 +304,63 @@ const DIALOGUES_BD = {
       { perso: 'corey', texte: "Madame Henderson est scandalisée." },
       { perso: 'fred',  texte: "J'ai mis Suspiria dans la section enfants." },
       { perso: 'corey', texte: "C'est une erreur." },
-      { perso: 'fred',  texte: "Argento dirait que c'est un compliment." }
+      { perso: 'fred',  texte: "Oui." },
+      { perso: 'corey', texte: "Dario Argento l'aurait appréciée quand même." }
+    ],
+    [
+      { perso: 'corey', texte: "Il est reparti sans film." },
+      { perso: 'fred',  texte: "Il voulait quelque chose qu'on n'a pas." },
+      { perso: 'corey', texte: "Qu'est-ce qu'on n'a pas ?" },
+      { perso: 'fred',  texte: "Le bon film au bon moment." },
+      { perso: 'corey', texte: "C'est le plus dur à stocker." }
+    ],
+    [
+      { perso: 'fred',  texte: "Réputation en baisse." },
+      { perso: 'corey', texte: "De combien ?" },
+      { perso: 'fred',  texte: "Assez." },
+      { perso: 'corey', texte: "C'est quoi assez ?" },
+      { perso: 'fred',  texte: "Assez pour qu'on fasse mieux demain." }
+    ],
+    [
+      { perso: 'corey', texte: "Loser de l'année." },
+      { perso: 'fred',  texte: "C'est moi ou le film ?" },
+      { perso: 'corey', texte: "Le film était bien choisi." },
+      { perso: 'fred',  texte: "..." },
+      { perso: 'corey', texte: "C'est toi." }
     ]
   ],
 
   // ===================================================
-  // STOCK ÉPUISÉ
+  // STOCK VIDE
   // ===================================================
 
   stock_vide: [
     [
-      { perso: 'fred',  texte: "Plus de drame." },
-      { perso: 'corey', texte: "On est dans un vidéoclub ou dans un Bergman ?" },
-      { perso: 'fred',  texte: "Les deux." }
-    ],
-    [
-      { perso: 'corey', texte: "Le stock action est vide." },
+      { perso: 'corey', texte: "On a plus rien dans ce genre." },
       { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Les clients vont être déçus." },
-      { perso: 'fred',  texte: "Les clients sont toujours déçus." },
-      { perso: 'corey', texte: "Moins d'habitude." }
+      { perso: 'corey', texte: "C'est mauvais." },
+      { perso: 'fred',  texte: "Oui." },
+      { perso: 'corey', texte: "On commande ?" },
+      { perso: 'fred',  texte: "On commande." }
     ],
     [
-      { perso: 'fred',  texte: "Plus de Ghost." },
-      { perso: 'corey', texte: "Canopi va pas aimer." },
-      { perso: 'fred',  texte: "Non." },
-      { perso: 'corey', texte: "C'est le problème avec les hommes d'habitudes." },
-      { perso: 'fred',  texte: "C'est un des problèmes." }
+      { perso: 'fred',  texte: "Stock épuisé." },
+      { perso: 'corey', texte: "Comme à la fin de Scarface." },
+      { perso: 'fred',  texte: "Scarface c'est pas une histoire de stock." },
+      { perso: 'corey', texte: "Tout est une histoire de stock." }
+    ],
+    [
+      { perso: 'corey', texte: "On a plus de drame." },
+      { perso: 'fred',  texte: "On en a plein ici." },
+      { perso: 'corey', texte: "Je parle des cassettes." },
+      { perso: 'fred',  texte: "Je sais." }
+    ],
+    [
+      { perso: 'fred',  texte: "Rayon vide." },
+      { perso: 'corey', texte: "Minimalism." },
+      { perso: 'fred',  texte: "C'est pas du minimalism." },
+      { perso: 'corey', texte: "Non. C'est de la mauvaise gestion." },
+      { perso: 'fred',  texte: "Merci." }
     ]
   ],
 
@@ -253,382 +371,218 @@ const DIALOGUES_BD = {
   weed_vendue: [
     [
       { perso: 'corey', texte: "Sicilian Gold." },
-      { perso: 'fred',  texte: "Dans le boîtier." },
-      { perso: 'corey', texte: "Comme d'hab." },
-      { perso: 'fred',  texte: "Comme d'hab." }
-    ],
-    [
-      { perso: 'corey', texte: "Miguel repart avec un bonus." },
-      { perso: 'fred',  texte: "Miguel apprécie les bonus." },
-      { perso: 'corey', texte: "Tout le monde apprécie les bonus." },
-      { perso: 'fred',  texte: "Canopi apprécie pas les bonus." },
-      { perso: 'corey', texte: "Canopi est pas tout le monde." }
-    ],
-    [
       { perso: 'fred',  texte: "Discret." },
-      { perso: 'corey', texte: "Toujours." },
-      { perso: 'fred',  texte: "Le boîtier est opaque ?" },
-      { perso: 'corey', texte: "Le boîtier est toujours opaque." }
-    ]
-  ],
-
-  // ===================================================
-  // WEED À CANOPI — GAME OVER
-  // ===================================================
-
-  weed_canopi: [
-    [
-      { perso: 'corey', texte: "Fred." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "T'as mis du Sicilian Gold dans le boîtier de Canopi." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "C'est l'inspecteur Canopi." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "..." },
-      { perso: 'fred',  texte: "..." }
-    ]
-  ],
-
-  // ===================================================
-  // BONNE NOTE CUTTER
-  // ===================================================
-
-  bonne_note: [
-    [
-      { perso: 'corey', texte: "Sept sur dix." },
-      { perso: 'fred',  texte: "C'est bien." },
-      { perso: 'corey', texte: "C'est pas dix." },
-      { perso: 'fred',  texte: "Non." },
-      { perso: 'corey', texte: "Mais c'est bien." },
-      { perso: 'fred',  texte: "Oui." }
+      { perso: 'corey', texte: "Toujours." }
     ],
     [
-      { perso: 'corey', texte: "T'as vu le moment ?" },
-      { perso: 'fred',  texte: "Oui." },
-      { perso: 'corey', texte: "Cassavetes aurait coupé deux secondes avant." },
-      { perso: 'fred',  texte: "Cassavetes coupait jamais." },
-      { perso: 'corey', texte: "C'est pour ça que ses films durent trois heures." }
-    ],
-    [
-      { perso: 'corey', texte: "Cutter commence à s'intéresser." },
-      { perso: 'fred',  texte: "Cutter s'intéresse à tout." },
-      { perso: 'corey', texte: "Non. Cutter s'intéresse à très peu de choses." },
-      { perso: 'fred',  texte: "Alors c'est bien." },
-      { perso: 'corey', texte: "Ou dangereux." }
-    ],
-    [
-      { perso: 'fred',  texte: "Huit." },
-      { perso: 'corey', texte: "Oui." },
-      { perso: 'fred',  texte: "C'est la première fois." },
-      { perso: 'corey', texte: "Non." },
-      { perso: 'fred',  texte: "Deuxième." },
-      { perso: 'corey', texte: "Deuxième." }
-    ]
-  ],
-
-  // ===================================================
-  // MAUVAISE NOTE CUTTER
-  // ===================================================
-
-  mauvaise_note: [
-    [
-      { perso: 'corey', texte: "Deux sur dix." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "C'est le score de Ed Wood sur ses propres films." },
-      { perso: 'fred',  texte: "Ed Wood assumait." },
-      { perso: 'corey', texte: "..." }
-    ],
-    [
-      { perso: 'fred',  texte: "Trop tôt." },
-      { perso: 'corey', texte: "Ou trop tard." },
-      { perso: 'fred',  texte: "Trop tôt." },
-      { perso: 'corey', texte: "Le pire c'est qu'on saura jamais." },
-      { perso: 'fred',  texte: "On sait." },
-      { perso: 'corey', texte: "Cutter sait." }
-    ],
-    [
-      { perso: 'corey', texte: "Trois sur dix." },
-      { perso: 'fred',  texte: "Hmm." },
-      { perso: 'corey', texte: "Uwe Boll a eu trois sur dix une fois." },
-      { perso: 'fred',  texte: "C'est qui Uwe Boll ?" },
+      { perso: 'corey', texte: "J'ai glissé une tête dans le boîtier." },
+      { perso: 'fred',  texte: "Je vois pas ce dont tu parles." },
       { perso: 'corey', texte: "Exactement." }
     ],
     [
-      { perso: 'corey', texte: "On recommence demain." },
-      { perso: 'fred',  texte: "Oui." },
-      { perso: 'corey', texte: "Demain sera mieux." },
-      { perso: 'fred',  texte: "Peut-être." },
-      { perso: 'corey', texte: "Sûrement." },
-      { perso: 'fred',  texte: "Peut-être." }
+      { perso: 'fred',  texte: "Corey." },
+      { perso: 'corey', texte: "Fred." },
+      { perso: 'fred',  texte: "Discret." },
+      { perso: 'corey', texte: "Comme un film de Lynch." },
+      { perso: 'fred',  texte: "Lynch c'est pas discret." },
+      { perso: 'corey', texte: "C'est ce qu'il veut que tu crois." }
     ]
   ],
 
   // ===================================================
-  // NOTE PARFAITE — 10/10
-  // ===================================================
-
-  note_parfaite: [
-    [
-      { perso: 'corey', texte: "Dix." },
-      { perso: 'fred',  texte: "Oui." },
-      { perso: 'corey', texte: "Dix sur dix." },
-      { perso: 'fred',  texte: "Oui." },
-      { perso: 'corey', texte: "..." },
-      { perso: 'fred',  texte: "..." },
-      { perso: 'corey', texte: "Repose-toi." }
-    ],
-    [
-      { perso: 'corey', texte: "Je comprends pas comment t'as trouvé ça." },
-      { perso: 'fred',  texte: "Moi non plus." },
-      { perso: 'corey', texte: "C'est le genre de coupe que Tarkovski aurait faite." },
-      { perso: 'fred',  texte: "Tarkovski aurait pas coupé là." },
-      { perso: 'corey', texte: "Non. Mais il aurait voulu." }
-    ]
-  ],
-
-  // ===================================================
-  // COREY ET LA BEAULIEU
-  // ===================================================
-
-  beaulieu: [
-    [
-      { perso: 'corey', texte: "La Beaulieu est encore dans la vitrine." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Quelqu'un va l'acheter." },
-      { perso: 'fred',  texte: "Pas nous." },
-      { perso: 'corey', texte: "Pas encore." }
-    ],
-    [
-      { perso: 'corey', texte: "Avec une Beaulieu 16mm on ferait du vrai cinéma." },
-      { perso: 'fred',  texte: "On fait du vrai cinéma." },
-      { perso: 'corey', texte: "On fait du micro-métrage dans une réserve." },
-      { perso: 'fred',  texte: "C'est du vrai cinéma." },
-      { perso: 'corey', texte: "..." },
-      { perso: 'fred',  texte: "Godard a commencé avec moins." },
-      { perso: 'corey', texte: "Godard avait une Cameflex." },
-      { perso: 'fred',  texte: "Et des idées." },
-      { perso: 'corey', texte: "On a des idées." },
-      { perso: 'fred',  texte: "Oui." }
-    ],
-    [
-      { perso: 'corey', texte: "Je vérifie tous les matins." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Elle bouge pas." },
-      { perso: 'fred',  texte: "Elle attend." },
-      { perso: 'corey', texte: "Quoi ?" },
-      { perso: 'fred',  texte: "Nous." }
-    ]
-  ],
-
-  // ===================================================
-  // JACKSON ET L'ARGENT
-  // ===================================================
-
-  jackson_collecte: [
-    [
-      { perso: 'corey', texte: "Mercredi." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "La caisse est correcte ?" },
-      { perso: 'fred',  texte: "Correcte." },
-      { perso: 'corey', texte: "Bien." },
-      { perso: 'fred',  texte: "Bien." }
-    ],
-    [
-      { perso: 'corey', texte: "Jackson passe ce soir." },
-      { perso: 'fred',  texte: "Oui." },
-      { perso: 'corey', texte: "T'as l'air inquiet." },
-      { perso: 'fred',  texte: "Je suis pas inquiet." },
-      { perso: 'corey', texte: "T'as l'air inquiet." },
-      { perso: 'fred',  texte: "Un peu." }
-    ]
-  ],
-
-  jackson_manque: [
-    [
-      { perso: 'fred',  texte: "Il manque de l'argent." },
-      { perso: 'corey', texte: "Combien ?" },
-      { perso: 'fred',  texte: "Assez." },
-      { perso: 'corey', texte: "Jackson va pas aimer." },
-      { perso: 'fred',  texte: "Non." },
-      { perso: 'corey', texte: "C'est un euphémisme ?" },
-      { perso: 'fred',  texte: "Oui." }
-    ]
-  ],
-
-  // ===================================================
-  // DIMAGGIO MENTIONNÉ
-  // ===================================================
-
-  dimaggio: [
-    [
-      { perso: 'corey', texte: "Ramon a dit DiMaggio." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Comme si c'était anodin." },
-      { perso: 'fred',  texte: "C'est jamais anodin." },
-      { perso: 'corey', texte: "Non." }
-    ],
-    [
-      { perso: 'corey', texte: "DiMaggio. Le joueur de baseball ?" },
-      { perso: 'fred',  texte: "Non." },
-      { perso: 'corey', texte: "..." },
-      { perso: 'fred',  texte: "Non." }
-    ],
-    [
-      { perso: 'fred',  texte: "Ce nom revient trop souvent." },
-      { perso: 'corey', texte: "Dans les bons films les noms reviennent." },
-      { perso: 'fred',  texte: "On est dans un bon film ?" },
-      { perso: 'corey', texte: "On est dans un film. Je sais pas encore si il est bon." }
-    ]
-  ],
-
-  // ===================================================
-  // FERMETURE — FIN DE JOURNÉE
-  // ===================================================
-
-  fermeture: [
-    [
-      { perso: 'corey', texte: "Rideau." },
-      { perso: 'fred',  texte: "Rideau." },
-      { perso: 'corey', texte: "Bonne journée ?" },
-      { perso: 'fred',  texte: "Journée." },
-      { perso: 'corey', texte: "Ouais. Journée." }
-    ],
-    [
-      { perso: 'fred',  texte: "La réserve nous attend." },
-      { perso: 'corey', texte: "La réserve nous attend toujours." },
-      { perso: 'fred',  texte: "C'est rassurant." },
-      { perso: 'corey', texte: "Ou inquiétant." },
-      { perso: 'fred',  texte: "Les deux." }
-    ],
-    [
-      { perso: 'corey', texte: "Ce soir on fait quoi comme cassette ?" },
-      { perso: 'fred',  texte: "Celle qu'on a." },
-      { perso: 'corey', texte: "Mystère complet." },
-      { perso: 'fred',  texte: "Le bon cinéma c'est toujours un mystère complet." },
-      { perso: 'corey', texte: "T'as inventé ça aussi ?" },
-      { perso: 'fred',  texte: "Truffaut." },
-      { perso: 'corey', texte: "Truffaut a jamais dit ça." },
-      { perso: 'fred',  texte: "Il aurait dû." }
-    ],
-    [
-      { perso: 'corey', texte: "T'as pas oublié Ghost ?" },
-      { perso: 'fred',  texte: "Ghost est rentré." },
-      { perso: 'corey', texte: "Bien." },
-      { perso: 'fred',  texte: "Canopi demain." },
-      { perso: 'corey', texte: "Canopi toujours." }
-    ]
-  ],
-
-  // ===================================================
-  // RETOUR DE CASSETTE
+  // RETOUR CASSETTE NORMALE
   // ===================================================
 
   retour_normal: [
     [
-      { perso: 'corey', texte: "Rembobinée." },
-      { perso: 'fred',  texte: "Miracle." },
-      { perso: 'corey', texte: "Il lit les panneaux." },
-      { perso: 'fred',  texte: "Rare." }
+      { perso: 'corey', texte: "Retour propre." },
+      { perso: 'fred',  texte: "Ça fait du bien." },
+      { perso: 'corey', texte: "Rare." }
+    ],
+    [
+      { perso: 'fred',  texte: "Rembobiné." },
+      { perso: 'corey', texte: "Un gentleman." },
+      { perso: 'fred',  texte: "Ou quelqu'un qui a peur des pénalités." },
+      { perso: 'corey', texte: "C'est la même chose." }
+    ],
+    [
+      { perso: 'corey', texte: "Il a rendu Taxi Driver." },
+      { perso: 'fred',  texte: "En quel état ?" },
+      { perso: 'corey', texte: "Impeccable. Il a même rembobiné jusqu'au titre." },
+      { perso: 'fred',  texte: "Ce client-là on le garde." }
     ]
   ],
+
+  // ===================================================
+  // RETOUR CASSETTE NON REMBOBINÉE
+  // ===================================================
 
   retour_non_rembobinee: [
     [
       { perso: 'corey', texte: "Pas rembobinée." },
-      { perso: 'fred',  texte: "Le panneau dit pourtant." },
-      { perso: 'corey', texte: "Les gens lisent pas les panneaux." },
-      { perso: 'fred',  texte: "Non." },
-      { perso: 'corey', texte: "C'est pour ça que le cinéma muet a disparu." },
-      { perso: 'fred',  texte: "C'est pas pour ça." },
-      { perso: 'corey', texte: "En partie." }
+      { perso: 'fred',  texte: "Je sais." },
+      { perso: 'corey', texte: "C'est le signe d'une âme paresseuse." },
+      { perso: 'fred',  texte: "C'est cinquante centimes." }
     ],
     [
-      { perso: 'fred',  texte: "Encore." },
-      { perso: 'corey', texte: "Toujours." },
-      { perso: 'fred',  texte: "Je rembobine." },
-      { perso: 'corey', texte: "Comme d'hab." }
+      { perso: 'fred',  texte: "Be kind rewind." },
+      { perso: 'corey', texte: "Il a pas lu l'affiche." },
+      { perso: 'fred',  texte: "L'affiche est partout." },
+      { perso: 'corey', texte: "Certains gens regardent pas les affiches." },
+      { perso: 'fred',  texte: "Ceux-là paient la pénalité." }
     ]
   ],
+
+  // ===================================================
+  // RETOUR CASSETTE ABÎMÉE
+  // ===================================================
 
   retour_abimee: [
     [
-      { perso: 'corey', texte: "La bande est fichue." },
-      { perso: 'fred',  texte: "Oui." },
-      { perso: 'corey', texte: "Comme la fin de Videodrome." },
-      { perso: 'fred',  texte: "Videodrome se termine pas avec une cassette abîmée." },
-      { perso: 'corey', texte: "Émotionnellement si." }
+      { perso: 'corey', texte: "Abîmée." },
+      { perso: 'fred',  texte: "Combien ?" },
+      { perso: 'corey', texte: "Trois fois le prix de location." },
+      { perso: 'fred',  texte: "C'est la règle." },
+      { perso: 'corey', texte: "Il va aimer la règle." }
     ],
     [
-      { perso: 'fred',  texte: "Abîmée." },
-      { perso: 'corey', texte: "Complètement." },
-      { perso: 'fred',  texte: "Il va payer." },
-      { perso: 'corey', texte: "Il va dire que c'était comme ça." },
-      { perso: 'fred',  texte: "Oui." },
-      { perso: 'corey', texte: "Ils disent toujours que c'était comme ça." }
+      { perso: 'fred',  texte: "La bande est sortie." },
+      { perso: 'corey', texte: "Complètement ?" },
+      { perso: 'fred',  texte: "Complètement." },
+      { perso: 'corey', texte: "Quel film c'était ?" },
+      { perso: 'fred',  texte: "Alien." },
+      { perso: 'corey', texte: "Dans l'espace personne t'entend rembobiner." }
     ]
   ],
 
   // ===================================================
-  // CUTTER MENTIONNÉ
+  // FERMETURE
   // ===================================================
 
-  cutter: [
+  fermeture: [
     [
-      { perso: 'corey', texte: "Cutter a écrit quelque chose dans le Scalpel." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Il parle de nous." },
-      { perso: 'fred',  texte: "Peut-être." },
-      { perso: 'corey', texte: "Il dit pas nos noms." },
-      { perso: 'fred',  texte: "Non." },
-      { perso: 'corey', texte: "C'est mieux ou c'est pire ?" },
-      { perso: 'fred',  texte: "Je sais pas encore." }
+      { perso: 'fred',  texte: "Rideau." },
+      { perso: 'corey', texte: "On a fait combien ?" },
+      { perso: 'fred',  texte: "Assez." },
+      { perso: 'corey', texte: "C'est quoi assez ?" },
+      { perso: 'fred',  texte: "Assez pour demain." }
     ],
     [
-      { perso: 'corey', texte: "The Glitch. C'est son pseudo." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Personne sait qui c'est." },
-      { perso: 'fred',  texte: "Quelqu'un sait." },
-      { perso: 'corey', texte: "Lui." },
-      { perso: 'fred',  texte: "Et peut-être nous bientôt." }
+      { perso: 'corey', texte: "On ferme ?" },
+      { perso: 'fred',  texte: "On ferme." },
+      { perso: 'corey', texte: "Les gens dehors ont pas vu de film ce soir." },
+      { perso: 'fred',  texte: "Ils ont pas poussé la porte." },
+      { perso: 'corey', texte: "C'est leur problème." }
+    ],
+    [
+      { perso: 'fred',  texte: "Bonne journée ?" },
+      { perso: 'corey', texte: "Canopi est venu. Ramon est venu." },
+      { perso: 'fred',  texte: "Et alors ?" },
+      { perso: 'corey', texte: "On est encore là." },
+      { perso: 'fred',  texte: "Oui." },
+      { perso: 'corey', texte: "C'est une bonne journée." }
+    ],
+    [
+      { perso: 'corey', texte: "Tu rembobines ce soir ?" },
+      { perso: 'fred',  texte: "Non." },
+      { perso: 'corey', texte: "Moi non plus." },
+      { perso: 'fred',  texte: "Demain." },
+      { perso: 'corey', texte: "Demain." }
     ]
   ],
 
   // ===================================================
-  // AVANT LE MICRO-MÉTRAGE
+  // ARGENT SERRÉ
   // ===================================================
 
-  avant_micro: [
+  argent_serre: [
     [
-      { perso: 'corey', texte: "Prêt ?" },
-      { perso: 'fred',  texte: "Non." },
-      { perso: 'corey', texte: "Moi non plus." },
-      { perso: 'fred',  texte: "On y va quand même." },
-      { perso: 'corey', texte: "On y va toujours quand même." }
-    ],
-    [
-      { perso: 'corey', texte: "Ce soir c'est du drame américain." },
-      { perso: 'fred',  texte: "Le drame américain c'est quoi ?" },
-      { perso: 'corey', texte: "Un homme qui rate quelque chose d'important." },
-      { perso: 'fred',  texte: "C'est tous les films." },
-      { perso: 'corey', texte: "C'est tous les bons films." }
-    ],
-    [
-      { perso: 'corey', texte: "Cinq étoiles Fred. Cinq." },
-      { perso: 'fred',  texte: "Je vois." },
-      { perso: 'corey', texte: "T'as une idée de où couper ?" },
-      { perso: 'fred',  texte: "Non." },
-      { perso: 'corey', texte: "Moi non plus." },
-      { perso: 'fred',  texte: "C'est rassurant." },
-      { perso: 'corey', texte: "Vraiment ?" },
+      { perso: 'corey', texte: "La caisse est maigre." },
+      { perso: 'fred',  texte: "Je sais." },
+      { perso: 'corey', texte: "Jackson collecte mercredi." },
+      { perso: 'fred',  texte: "Je sais." },
+      { perso: 'corey', texte: "T'as un plan ?" },
       { perso: 'fred',  texte: "Non." }
     ],
     [
-      { perso: 'corey', texte: "Rareté ce soir." },
+      { perso: 'fred',  texte: "On vend tout ce qu'on peut." },
+      { perso: 'corey', texte: "Dans quel ordre ?" },
+      { perso: 'fred',  texte: "Le plus cher d'abord." },
+      { perso: 'corey', texte: "Les raretés." },
+      { perso: 'fred',  texte: "Les raretés." }
+    ],
+    [
+      { perso: 'corey', texte: "On a un problème." },
+      { perso: 'fred',  texte: "Je vois la caisse." },
+      { perso: 'corey', texte: "Et ?" },
+      { perso: 'fred',  texte: "Et on travaille." },
+      { perso: 'corey', texte: "Simple." },
+      { perso: 'fred',  texte: "Simple." }
+    ]
+  ],
+
+  // ===================================================
+  // SUSPICION HAUTE
+  // ===================================================
+
+  suspicion_haute: [
+    [
+      { perso: 'corey', texte: "Canopi regarde les étagères différemment." },
       { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Cutter va regarder de près." },
-      { perso: 'fred',  texte: "Cutter regarde toujours de près." },
-      { perso: 'corey', texte: "Ce soir encore plus près." },
-      { perso: 'fred',  texte: "Alors on fait attention." }
+      { perso: 'corey', texte: "Comme s'il cherchait quelque chose de précis." },
+      { perso: 'fred',  texte: "Il cherche toujours quelque chose de précis." },
+      { perso: 'corey', texte: "Cette fois c'est plus Ghost." }
+    ],
+    [
+      { perso: 'fred',  texte: "On ralentit." },
+      { perso: 'corey', texte: "Combien de temps ?" },
+      { perso: 'fred',  texte: "Le temps que ça passe." },
+      { perso: 'corey', texte: "Et si ça passe pas ?" },
+      { perso: 'fred',  texte: "On avisera." }
+    ],
+    [
+      { perso: 'corey', texte: "Il sait quelque chose." },
+      { perso: 'fred',  texte: "Il sait rien." },
+      { perso: 'corey', texte: "Il sait quelque chose." },
+      { perso: 'fred',  texte: "Il sait rien de précis." },
+      { perso: 'corey', texte: "C'est suffisant pour un inspecteur." }
+    ]
+  ],
+
+  // ===================================================
+  // WEED + CANOPI — GAME OVER
+  // ===================================================
+
+  weed_canopi: [
+    [
+      { perso: 'corey', texte: "J'ai glissé la tête dans le mauvais boîtier." },
+      { perso: 'fred',  texte: "..." },
+      { perso: 'corey', texte: "Le mauvais boîtier c'est celui de Ghost." },
+      { perso: 'fred',  texte: "Corey." },
+      { perso: 'corey', texte: "Fred." },
+      { perso: 'fred',  texte: "On est foutus." },
+      { perso: 'corey', texte: "Complètement." }
+    ]
+  ],
+
+  // ===================================================
+  // BEAULIEU — DIALOGUE RÉCURRENT
+  // ===================================================
+
+  beaulieu: [
+    [
+      { perso: 'corey', texte: "T'as vu Beaulieu passer ?" },
+      { perso: 'fred',  texte: "Non." },
+      { perso: 'corey', texte: "Il avait l'air pressé." },
+      { perso: 'fred',  texte: "Beaulieu est toujours pressé." },
+      { perso: 'corey', texte: "Un jour il sera pressé d'arriver quelque part." }
+    ],
+    [
+      { perso: 'corey', texte: "Beaulieu m'a regardé." },
+      { perso: 'fred',  texte: "Et ?" },
+      { perso: 'corey', texte: "Longtemps." },
+      { perso: 'fred',  texte: "C'est son droit." },
+      { perso: 'corey', texte: "Pas aussi longtemps." }
     ]
   ],
 
@@ -657,47 +611,94 @@ const DIALOGUES_BD = {
   ],
 
   // ===================================================
-  // SUSPICION HAUTE
+  // THE GLITCH / FANZINE
   // ===================================================
 
-  suspicion_haute: [
+  cutter: [
     [
-      { perso: 'corey', texte: "Canopi regarde les étagères différemment." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Comme s'il cherchait quelque chose de précis." },
-      { perso: 'fred',  texte: "Il cherche toujours quelque chose de précis." },
-      { perso: 'corey', texte: "Cette fois c'est plus Ghost." }
+      { perso: 'corey', texte: "T'as vu le dernier Celluloïd Scalpel ?" },
+      { perso: 'fred',  texte: "Non." },
+      { perso: 'corey', texte: "Y'a un truc zarb sur la couverture." },
+      { perso: 'fred',  texte: "Zarb comment ?" },
+      { perso: 'corey', texte: "Des symboles. Œil, dollar, dollar, éclair..." },
+      { perso: 'fred',  texte: "C'est The Glitch. Cherche pas." },
+      { perso: 'corey', texte: "T'as essayé ?" },
+      { perso: 'fred',  texte: "Non." },
+      { perso: 'corey', texte: "Moi si." }
     ],
     [
-      { perso: 'fred',  texte: "On ralentit." },
-      { perso: 'corey', texte: "Combien de temps ?" },
-      { perso: 'fred',  texte: "Le temps que ça passe." },
-      { perso: 'corey', texte: "Et si ça passe pas ?" },
-      { perso: 'fred',  texte: "On avisera." }
+      { perso: 'corey', texte: "The Glitch a écrit quelque chose sur nous." },
+      { perso: 'fred',  texte: "Il dit pas nos noms." },
+      { perso: 'corey', texte: "Non." },
+      { perso: 'fred',  texte: "C'est mieux." },
+      { perso: 'corey', texte: "Ou c'est pire." },
+      { perso: 'fred',  texte: "Je sais pas encore." }
+    ],
+    [
+      { perso: 'corey', texte: "The Glitch. C'est son pseudo." },
+      { perso: 'fred',  texte: "Je sais." },
+      { perso: 'corey', texte: "Personne sait qui c'est." },
+      { perso: 'fred',  texte: "Quelqu'un sait." },
+      { perso: 'corey', texte: "Lui." },
+      { perso: 'fred',  texte: "Et peut-être nous bientôt." }
     ]
   ],
 
   // ===================================================
-  // ARGENT SERRÉ
+  // COLLECTIONNEUR / SAM RAIMI
   // ===================================================
 
-  argent_serre: [
+  sam_raimi: [
     [
-      { perso: 'corey', texte: "La caisse est maigre." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "Jackson collecte mercredi." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "C'est dans deux jours." },
-      { perso: 'fred',  texte: "Je sais." },
-      { perso: 'corey', texte: "T'as un plan ?" },
-      { perso: 'fred',  texte: "Non." }
+      { perso: 'corey', texte: "C'est Sam Raimi." },
+      { perso: 'fred',  texte: "C'est M. Beaumont." },
+      { perso: 'corey', texte: "La mâchoire. Les yeux." },
+      { perso: 'fred',  texte: "Il s'appelle Beaumont." },
+      { perso: 'corey', texte: "C'est un alias." }
     ],
     [
-      { perso: 'fred',  texte: "On vend tout ce qu'on peut." },
-      { perso: 'corey', texte: "Dans quel ordre ?" },
-      { perso: 'fred',  texte: "Le plus cher d'abord." },
-      { perso: 'corey', texte: "Les raretés." },
-      { perso: 'fred',  texte: "Les raretés." }
+      { perso: 'corey', texte: "Il a demandé Evil Dead." },
+      { perso: 'fred',  texte: "C'est un collectionneur." },
+      { perso: 'corey', texte: "Un collectionneur qui connaît Evil Dead de l'intérieur." },
+      { perso: 'fred',  texte: "Beaucoup de gens connaissent Evil Dead." },
+      { perso: 'corey', texte: "Pas comme ça." }
+    ],
+    [
+      { perso: 'corey', texte: "Si c'est lui je lui demande un autographe." },
+      { perso: 'fred',  texte: "C'est M. Beaumont." },
+      { perso: 'corey', texte: "Et si c'est lui ?" },
+      { perso: 'fred',  texte: "C'est M. Beaumont." },
+      { perso: 'corey', texte: "..." },
+      { perso: 'fred',  texte: "C'est peut-être lui." }
+    ]
+  ],
+
+  // ===================================================
+  // AVANT LE MICRO-MÉTRAGE
+  // ===================================================
+
+  avant_micro: [
+    [
+      { perso: 'corey', texte: "Prêt ?" },
+      { perso: 'fred',  texte: "Non." },
+      { perso: 'corey', texte: "Moi non plus." },
+      { perso: 'fred',  texte: "On y va quand même." },
+      { perso: 'corey', texte: "On y va toujours quand même." }
+    ],
+    [
+      { perso: 'corey', texte: "Ce soir c'est du drame américain." },
+      { perso: 'fred',  texte: "Le drame américain c'est quoi ?" },
+      { perso: 'corey', texte: "Un homme qui rate quelque chose d'important." },
+      { perso: 'fred',  texte: "C'est tous les films." },
+      { perso: 'corey', texte: "C'est tous les bons films." }
+    ],
+    [
+      { perso: 'corey', texte: "T'as une idée de où couper ?" },
+      { perso: 'fred',  texte: "Non." },
+      { perso: 'corey', texte: "Moi non plus." },
+      { perso: 'fred',  texte: "C'est rassurant." },
+      { perso: 'corey', texte: "Vraiment ?" },
+      { perso: 'fred',  texte: "Non." }
     ]
   ]
 
@@ -714,7 +715,9 @@ function getDialogueBD(situation) {
 }
 
 // ===================================================
-// AFFICHER LES BULLES BD
+// AFFICHER LES BULLES BD — timing calibré
+// Délai = longueur du texte × 38ms + 500ms pause
+// Max 2200ms entre deux répliques
 // ===================================================
 
 function afficherBullesBD(situation, container, callback) {
@@ -729,7 +732,6 @@ function afficherBullesBD(situation, container, callback) {
 
   function afficherReplique() {
     if (index >= dialogue.length) {
-      // Effacer après lecture
       setTimeout(() => {
         container.style.opacity = '0';
         container.style.transition = 'opacity 0.5s';
@@ -738,7 +740,7 @@ function afficherBullesBD(situation, container, callback) {
           container.style.opacity = '1';
           if (callback) callback();
         }, 500);
-      }, 2000);
+      }, 2200);
       return;
     }
 
@@ -750,23 +752,20 @@ function afficherBullesBD(situation, container, callback) {
       display: flex;
       justify-content: ${isFred ? 'flex-start' : 'flex-end'};
       margin-bottom: 6px;
-      animation: bulleAppear 0.2s ease;
+      animation: bulleAppear 0.25s ease;
     `;
 
     bulle.innerHTML = `
       <div style="
-        max-width: 75%;
-        background: ${isFred ? '#0f0f2a' : '#1a0f05'};
-        border: 1px solid ${isFred ? '#3a3a6a' : '#ff885530'};
-        border-radius: ${isFred
-          ? '4px 12px 12px 12px'
-          : '12px 4px 12px 12px'};
-        padding: 7px 10px;
-        position: relative;
-        font-size: 11px;
-        color: ${isFred ? '#9090cc' : '#cc9966'};
+        max-width: 78%;
+        background: ${isFred ? '#10102e' : '#1a1005'};
+        border: 1px solid ${isFred ? '#00b4ff60' : '#ff2d7860'};
+        border-radius: ${isFred ? '4px 12px 12px 12px' : '12px 4px 12px 12px'};
+        padding: 8px 12px;
+        font-size: 13px;
+        color: ${isFred ? '#ffffff' : '#ffdd99'};
         font-style: italic;
-        line-height: 1.4;
+        line-height: 1.5;
         letter-spacing: 0.3px;
       ">
         ${rep.texte}
@@ -774,10 +773,15 @@ function afficherBullesBD(situation, container, callback) {
     `;
 
     container.appendChild(bulle);
-    index++;
 
-    const delai = rep.texte.length * 30 + 400;
-    setTimeout(afficherReplique, Math.min(delai, 2000));
+    // Garder max 3 bulles visibles
+    const toutes = container.querySelectorAll('div[style*="flex"]');
+    if (toutes.length > 3) toutes[0].remove();
+
+    index++;
+    // Timing calibré par longueur de réplique
+    const delai = Math.min(rep.texte.length * 38 + 500, 2200);
+    setTimeout(afficherReplique, delai);
   }
 
   afficherReplique();
