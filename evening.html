@@ -18,9 +18,9 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      background: #030306;
+      background: #080818;
       font-family: 'Courier New', monospace;
-      color: #f0f0ff;
+      color: #ffffff;
     }
 
     /* TOP */
@@ -30,8 +30,9 @@
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
-      background: #050508;
-      border-bottom: 1px solid #0d0d1a;
+      background: #080818;
+      border-bottom: 2px solid #00b4ff;
+      box-shadow: 0 2px 12px #00b4ff30;
       position: sticky;
       top: 0;
       z-index: 50;
@@ -39,9 +40,9 @@
 
     .reserve-title {
       font-size: 10px;
-      color: #ff8855;
+      color: #ffffff;
       letter-spacing: 3px;
-      text-shadow: 0 0 8px #ff885540;
+      text-shadow: 0 0 8px #ff2d78, 0 0 16px #00b4ff;
     }
 
     .top-bar-right {
@@ -52,7 +53,7 @@
 
     .night-info {
       font-size: 9px;
-      color: #333355;
+      color: #aaaadd;
       letter-spacing: 1px;
     }
 
@@ -110,8 +111,9 @@
 
     /* CASSETTE SOURCE */
     .cassette-source {
-      background: #080810;
-      border: 1px solid #ff885520;
+      background: #0a0a1a;
+      border: 2px solid #ff2d78;
+      box-shadow: 0 0 10px #ff2d7830;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
@@ -135,9 +137,9 @@
     }
 
     .cassette-info { flex: 1; }
-    .cassette-label { font-size: 8px; color: #ff8855; letter-spacing: 2px; margin-bottom: 3px; }
-    .cassette-title { font-size: 13px; color: #f0f0ff; letter-spacing: 1px; margin-bottom: 3px; }
-    .cassette-meta  { font-size: 9px; color: #6060aa; letter-spacing: 1px; }
+    .cassette-label { font-size: 9px; color: #ff2d78; letter-spacing: 2px; margin-bottom: 3px; text-shadow: 0 0 6px #ff2d7840; }
+    .cassette-title { font-size: 14px; color: #ffffff; letter-spacing: 1px; margin-bottom: 3px; font-weight: bold; }
+    .cassette-meta  { font-size: 10px; color: #aaaadd; letter-spacing: 1px; }
 
     .cassette-difficulte {
       display: flex;
@@ -153,39 +155,77 @@
 
     .diff-dot.active { background: #ff8855; }
 
-    /* COREY AVANT */
-    .corey-avant {
-      background: #060610;
-      border-left: 3px solid #ff885530;
-      padding: 8px 10px;
-      border-radius: 0 4px 4px 0;
+    /* FRED + COREY AVANT */
+    .fred-corey-avant {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      background: #06060f;
+      border: 1px solid #00b4ff30;
+      border-left: 3px solid #00b4ff;
+      border-radius: 0 6px 6px 0;
+      padding: 10px 12px;
+      margin-bottom: 4px;
+    }
+    .fred-reserve-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+    .fred-reserve-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid #00b4ff80;
+      object-fit: cover;
+      background: #080818;
+      box-shadow: 0 0 12px #00b4ff30;
+    }
+    .fred-reserve-name {
+      font-size: 8px;
+      color: #00b4ff;
+      letter-spacing: 2px;
+      text-shadow: 0 0 6px #00b4ff60;
+    }
+
+    /* COREY AVANT */
+    .corey-avant {
+      background: #06060f;
+      border: 1px solid #ff2d7830;
+      border-left: 3px solid #ff2d78;
+      padding: 10px 12px;
+      border-radius: 0 6px 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .corey-reserve-avatar {
-      width: 38px;
-      height: 38px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      border: 1px solid #ff885530;
+      border: 2px solid #ff2d7880;
       object-fit: cover;
       flex-shrink: 0;
-      background: #0a0a18;
+      background: #080818;
+      box-shadow: 0 0 12px #ff2d7830;
     }
 
     .corey-avant-text {
-      font-size: 10px;
-      color: #cc9966;
+      font-size: 12px;
+      color: #ffdd99;
       font-style: italic;
-      line-height: 1.4;
+      line-height: 1.5;
       flex: 1;
     }
 
     /* MONITEUR */
     .monitor-wrapper {
-      background: #0a0a18;
-      border: 1px solid #1e1e3a;
+      background: #08081a;
+      border: 2px solid #00b4ff;
+      box-shadow: 0 0 12px #00b4ff30;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
@@ -357,8 +397,9 @@
 
     /* TIMELINE FLUIDE */
     .timeline-section {
-      background: #0a0a18;
-      border: 1px solid #1e1e3a;
+      background: #08081a;
+      border: 2px solid #ff2d78;
+      box-shadow: 0 0 10px #ff2d7830;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
@@ -366,11 +407,12 @@
 
     .timeline-label {
       font-size: 8px;
-      color: #ff8855;
+      color: #ff2d78;
       letter-spacing: 2px;
       margin-bottom: 8px;
       display: flex;
       justify-content: space-between;
+      text-shadow: 0 0 6px #ff2d7840;
     }
 
     .timeline-duration {
@@ -544,8 +586,9 @@
 
     /* ZONE COUPE */
     .cut-zone {
-      background: #0a0a18;
-      border: 1px solid #1e1e3a;
+      background: #08081a;
+      border: 2px solid #00b4ff;
+      box-shadow: 0 0 10px #00b4ff20;
       border-radius: 8px;
       padding: 10px 12px;
       flex-shrink: 0;
@@ -634,13 +677,14 @@
     }
 
     .corey-reaction-avatar {
-      width: 44px;
-      height: 44px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      border: 1px solid #ff885530;
+      border: 2px solid #ff2d7880;
       object-fit: cover;
       flex-shrink: 0;
-      background: #0a0a18;
+      background: #080818;
+      box-shadow: 0 0 12px #ff2d7830;
     }
 
     .corey-reaction-content { flex: 1; }
@@ -789,8 +833,9 @@
     .bottom-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: #030306;
-      border-top: 1px solid #0d0d1a;
+      background: #080818;
+      border-top: 2px solid #ff2d78;
+      box-shadow: 0 -4px 16px #ff2d7820;
       padding: 8px 12px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -903,12 +948,21 @@
           <div class="cassette-difficulte" id="cassette-difficulte"></div>
         </div>
       </div>
-      <div class="corey-avant">
-        <img class="corey-reserve-avatar" id="corey-avant-avatar"
-             src="posters/joie.png" alt="Corey"
-             onerror="this.style.display='none'">
-        <div class="corey-avant-text" id="corey-avant-text">
-          Corey prépare le magnéto...
+      <!-- FRED + COREY AVANT LE FILM -->
+      <div class="fred-corey-avant">
+        <div class="fred-reserve-portrait">
+          <img class="fred-reserve-avatar" id="fred-reserve-avatar"
+               src="posters/fred.png" alt="Fred"
+               onerror="this.style.display='none'">
+          <div class="fred-reserve-name">FRED</div>
+        </div>
+        <div class="corey-avant" style="flex:1;margin:0;border-radius:6px;">
+          <img class="corey-reserve-avatar" id="corey-avant-avatar"
+               src="posters/corey.png" alt="Corey"
+               onerror="this.style.display='none'">
+          <div class="corey-avant-text" id="corey-avant-text">
+            Corey prépare le magnéto...
+          </div>
         </div>
       </div>
     </div>
@@ -1221,6 +1275,16 @@
     // FALLBACK CASSETTE
     // ===================================================
 
+    function getCassetteAleatoire(semaine) {
+      const dispo = CASSETTES_DATA.filter(c => c.semaine_min <= semaine);
+      if (!dispo.length) return CASSETTES_DATA[0];
+      // Éviter de rejouer la même
+      const dejouees = gameState.cassettes_jouees || [];
+      const nonJouees = dispo.filter(c => !dejouees.includes(c.id));
+      const pool = nonJouees.length > 0 ? nonJouees : dispo;
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
     function getFallbackCassette() {
       return {
         id:'fallback',
@@ -1261,15 +1325,22 @@
       diffEl.innerHTML = Array(5).fill(0).map((_, i) =>
         `<div class="diff-dot ${i < diff ? 'active' : ''}"></div>`
       ).join('');
-      diffTxt.textContent = ['','FACILE','CORRECT','DIFFICILE','EXPERT','MAÎTRE'][diff] || '';
+      diffTxt.textContent = ['AUCUNE','FACILE','CORRECT','DIFFICILE','EXPERT','MAÎTRE'][diff] || '';
 
-      // Corey avant
+      // Corey avant — texte spécifique au MM
       document.getElementById('corey-avant-text').textContent =
         c.corey_avant || 'Corey charge la cassette en silence.';
 
-      // Humeur Corey selon difficulté
-      if (diff >= 4) setCoreyAvant('peur');
-      else setCoreyAvant('joie');
+      // Humeur Corey + Fred selon difficulté
+      if (diff >= 4)      { setCoreyAvant('peur');    setFredReserve('stress'); }
+      else if (diff >= 3) { setCoreyAvant('ok');      setFredReserve('attentif'); }
+      else                { setCoreyAvant('illumine'); setFredReserve('neutre'); }
+
+      // Mémoriser la cassette jouée
+      if (!gameState.cassettes_jouees) gameState.cassettes_jouees = [];
+      if (!gameState.cassettes_jouees.includes(c.id)) {
+        gameState.cassettes_jouees.push(c.id);
+      }
     }
 
     // ===================================================
@@ -1539,6 +1610,21 @@
     // ===================================================
 
     function lancerPhaseCoupe() {
+      // LES REQUINS DU BRONX — pas de coupe possible
+      if (currentCassette.pasDeCoupe) {
+        // Afficher message Corey directement
+        setTimeout(() => {
+          document.getElementById('corey-text').textContent = currentCassette.corey_reussi;
+          const avatarEl = document.getElementById('corey-reaction-avatar');
+          avatarEl.src = 'posters/corey-illumine.png';
+          document.getElementById('corey-reaction').classList.add('visible');
+          setFredReserve('attentif');
+          document.getElementById('cut-btn').style.display = 'none';
+          // Aller directement au jugement — note max
+          setTimeout(() => showCutterJudgement(10, currentCassette.segments[0], 0), 2000);
+        }, 500);
+        return;
+      }
       document.getElementById('btn-lancer').classList.add('hidden');
       document.getElementById('cut-btn').classList.add('visible');
       document.getElementById('cut-btn').classList.remove('disabled');
@@ -1650,7 +1736,29 @@
     // ===================================================
 
     function calculerNoteProximite(cutPosition, ideal, segIdx, segments) {
-      // Distance entre la coupe et le moment idéal
+      // OCR — coupe n'importe où = bon score
+      if (currentCassette.id === 'ocr') return 8;
+
+      // Calcul par index de segment (nouveau système)
+      const c = currentCassette;
+      if (c.coupesIdeal && c.coupesIdeal.length > 0) {
+        // Trouver la distance minimale à un index idéal
+        const minDist = Math.min(...c.coupesIdeal.map(ideal => Math.abs(segIdx - ideal)));
+        let note;
+        if (minDist === 0) note = 10;
+        else if (minDist === 1) note = 7;
+        else if (minDist === 2) note = 5;
+        else note = Math.max(1, 5 - minDist);
+        // Coupe acceptable
+        if (c.coupeAcceptable && Array.isArray(c.coupeAcceptable)) {
+          const acceptDist = Math.min(...c.coupeAcceptable.map(a => Math.abs(segIdx - a)));
+          if (acceptDist === 0 && note < 6) note = 6;
+        }
+        note = Math.max(1, Math.min(10, note + rembBonus));
+        return note;
+      }
+
+      // Ancien système fallback
       const distance = Math.abs(cutPosition - ideal);
       const variance = currentCassette.coupeVariance || 15;
 
@@ -1700,8 +1808,22 @@
       document.getElementById('scene-bg').style.background =
         `radial-gradient(ellipse at center, ${style.accent}55 0%, ${style.bg} 70%)`;
 
+      // Image du segment si disponible
+      const imgEl = document.getElementById('scene-image');
+      if (imgEl && seg.image) {
+        imgEl.src = seg.image;
+        imgEl.style.opacity = '1';
+        // Fond semi-transparent pour les textes
+        document.getElementById('scene-bg').style.background =
+          `linear-gradient(to bottom, rgba(8,8,24,0.1) 0%, rgba(8,8,24,0.8) 100%)`;
+      } else if (imgEl) {
+        imgEl.style.opacity = '0';
+        document.getElementById('scene-bg').style.background =
+          `radial-gradient(ellipse at center, ${style.accent}55 0%, ${style.bg} 70%)`;
+      }
+
       document.getElementById('scene-icon').textContent =
-        seg.icon || '📼';
+        seg.icon || '';
       document.getElementById('scene-personnage').textContent =
         seg.personnage || '';
       document.getElementById('scene-lieu').textContent =
@@ -1709,7 +1831,7 @@
       document.getElementById('scene-description').textContent =
         seg.texte || '';
       document.getElementById('scene-label').textContent =
-        style.label || seg.zone;
+        style.label || seg.label || seg.zone;
 
       if (seg.zone === 'rouge') {
         document.getElementById('glitch-overlay').classList.add('active');
@@ -1724,34 +1846,60 @@
 
     function setCoreyAvant(humeur) {
       const avatars = {
-        joie:   'posters/joie.png',
-        peur:   'posters/peur.png',
-        colere: 'posters/colere.png'
+        joie:   'posters/corey-heureux.png',
+        ok:     'posters/corey-ok.png',
+        peur:   'posters/corey-peur.png',
+        colere: 'posters/corey-colere1.png',
+        depite: 'posters/corey-depite.png',
+        illumine: 'posters/corey-illumine.png'
       };
       const el = document.getElementById('corey-avant-avatar');
-      if (el) el.src = avatars[humeur] || avatars.joie;
+      if (el) el.src = avatars[humeur] || avatars.ok;
+    }
+
+    function setFredReserve(humeur) {
+      const avatars = {
+        neutre:    'posters/fred.png',
+        attentif:  'posters/fred-attentif.png',
+        fier:      'posters/fred_fier.png',
+        stress:    'posters/fred_stress.png',
+        doute:     'posters/fred_doute.png'
+      };
+      const el = document.getElementById('fred-reserve-avatar');
+      if (el) el.src = avatars[humeur] || avatars.neutre;
     }
 
     function afficherCoreyReaction(note, zone) {
-      let cat = 'tension';
-      if (note === 10)       cat = 'parfait';
-      else if (note >= 8)    cat = 'bascule';
-      else if (note >= 6)    cat = 'tension';
-      else if (note >= 4)    cat = zone === 'orange' ? 'tension' : 'mise_en_place';
-      else if (note >= 2)    cat = 'resolution';
-      else                   cat = 'mauvais';
+      const c = currentCassette;
+      let txt = '';
 
-      if (zone === 'bleu' && note < 5)  cat = 'trop_tot';
-      if (zone === 'vert' && note < 5)  cat = 'resolution';
-
-      const pool = COREY_REACTIONS[cat] || COREY_REACTIONS.tension;
-      const txt  = pool[Math.floor(Math.random() * pool.length)];
+      // Priorité : texte spécifique du MM
+      if (note >= 8 && c.corey_reussi) {
+        txt = c.corey_reussi;
+      } else if (note >= 6 && c.coupeAcceptable !== null && c.corey_rate_acceptable) {
+        txt = c.corey_rate_acceptable;
+      } else if (note < 5 && c.corey_rate) {
+        txt = c.corey_rate;
+      } else {
+        // Fallback pool générique
+        let cat = 'tension';
+        if (note === 10)       cat = 'parfait';
+        else if (note >= 8)    cat = 'bascule';
+        else if (note >= 6)    cat = 'tension';
+        else if (note >= 4)    cat = zone === 'orange' ? 'tension' : 'mise_en_place';
+        else if (note >= 2)    cat = 'resolution';
+        else                   cat = 'mauvais';
+        if (zone === 'bleu' && note < 5) cat = 'trop_tot';
+        if (zone === 'vert' && note < 5) cat = 'resolution';
+        const pool = COREY_REACTIONS[cat] || COREY_REACTIONS.tension;
+        txt = pool[Math.floor(Math.random() * pool.length)];
+      }
 
       // Avatar Corey selon note
       const avatarEl = document.getElementById('corey-reaction-avatar');
-      if (note >= 7)     avatarEl.src = 'posters/joie.png';
-      else if (note <= 3) avatarEl.src = 'posters/colere.png';
-      else               avatarEl.src = 'posters/peur.png';
+      if (note >= 7)      { avatarEl.src = 'posters/corey-heureux.png'; setFredReserve('fier'); }
+      else if (note <= 3) { avatarEl.src = 'posters/corey-colere1.png'; setFredReserve('doute'); }
+      else                { avatarEl.src = 'posters/corey-peur.png';    setFredReserve('attentif'); }
 
       document.getElementById('corey-text').textContent = txt;
       document.getElementById('corey-reaction').classList.add('visible');
