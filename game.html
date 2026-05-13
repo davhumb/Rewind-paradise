@@ -35,7 +35,8 @@
       align-items: center;
       flex-shrink: 0;
       background: #080818;
-      border-bottom: 1px solid #ff2d7840;
+      border-bottom: 2px solid #00b4ff;
+      box-shadow: 0 2px 12px #00b4ff30;
     }
 
     .top-bar-left {
@@ -76,7 +77,7 @@
 
     .day-info {
       font-size: 10px;
-      color: #8888cc;
+      color: #ccccff;
       letter-spacing: 1px;
     }
 
@@ -87,8 +88,8 @@
       letter-spacing: 1px;
     }
 
-    .phase-badge.matin      { background: #0a1808; color: #ffdd44; border: 1px solid #ffdd4430; }
-    .phase-badge.apres_midi { background: #080818; color: #00ffc8; border: 1px solid #00ffc830; }
+    .phase-badge.matin      { background: #0a1808; color: #ffff00; border: 1px solid #ffdd44; text-shadow: 0 0 6px #ffdd44; }
+    .phase-badge.apres_midi { background: #080818; color: #00ffdd; border: 1px solid #00ffc8; text-shadow: 0 0 6px #00ffc8; }
 
     .main-area {
       flex: 1;
@@ -103,7 +104,7 @@
       display: flex;
       gap: 10px;
       flex-shrink: 0;
-      border-bottom: 1px solid #00b4ff30;
+      border-bottom: 2px solid #00b4ff50;
       transition: background 0.5s;
     }
 
@@ -115,7 +116,8 @@
     .shelves {
       width: 78px;
       background: #08081a;
-      border: 1px solid #00b4ff40;
+      border: 2px solid #00b4ff;
+      box-shadow: 0 0 10px #00b4ff30, inset 0 0 10px #00b4ff08;
       border-radius: 6px;
       padding: 6px 5px;
       flex-shrink: 0;
@@ -140,8 +142,8 @@
     }
 
     .shelf-item:active { background: rgba(0,180,255,0.06); }
-    .shelf-genre { font-size: 8px; color: #88aaff; letter-spacing: 1px; }
-    .shelf-count       { font-size: 9px; color: #00ffc8; font-weight: bold; }
+    .shelf-genre { font-size: 9px; color: #ffffff; letter-spacing: 1px; }
+    .shelf-count       { font-size: 11px; color: #00ffdd; font-weight: bold; }
     .shelf-count.low   { color: #ff8855; }
     .shelf-count.empty { color: #ff4466; }
 
@@ -167,7 +169,8 @@
 
     .counter-top {
       background: #08081a;
-      border: 1px solid #ff2d7840;
+      border: 2px solid #ff2d78;
+      box-shadow: 0 0 10px #ff2d7830, inset 0 0 10px #ff2d7808;
       border-radius: 6px;
       padding: 7px;
       flex: 1;
@@ -179,14 +182,14 @@
       color: #ff2d78;
       letter-spacing: 2px;
       margin-bottom: 5px;
-      text-shadow: 0 0 6px #ff2d7840;
+      text-shadow: 0 0 10px #ff2d78;
     }
 
     .client-queue { display: flex; flex-direction: column; gap: 4px; }
 
     .client-card {
       background: #0c0c22;
-      border: 1px solid #00b4ff30;
+      border: 1px solid #00b4ff60;
       border-radius: 5px;
       padding: 6px 8px;
       cursor: pointer;
@@ -218,13 +221,13 @@
 
     .client-mood   { font-size: 14px; width: 20px; }
     .client-info   { flex: 1; }
-    .client-name   { font-size: 12px; color: #00ddff; letter-spacing: 1px; font-weight: bold; }
+    .client-name   { font-size: 13px; color: #ffffff; letter-spacing: 1px; font-weight: bold; }
     .client-name.ramon    { color: #cc88cc; }
     .client-name.retour   { color: #44aa44; }
     .client-name.vip      { color: #aa8844; }
     .client-name.indecise { color: #aa44aa; }
     .client-name.canopi   { color: #9966aa; }
-    .client-demand { font-size: 10px; color: #c0c0ee; margin-top: 2px; line-height: 1.4; }
+    .client-demand { font-size: 11px; color: #e8e8ff; margin-top: 2px; line-height: 1.4; }
 
     .client-timer-bar {
       width: 100%;
@@ -252,7 +255,7 @@
 
     .no-clients {
       font-size: 9px;
-      color: #4a4a7a;
+      color: #8888aa;
       text-align: center;
       padding: 10px;
       letter-spacing: 1px;
@@ -296,8 +299,9 @@
       border-top: 1px solid #ff2d7830;
       position: relative;
       overflow: hidden;
-      min-height: 180px;
+      min-height: 190px;
       transition: background 0.5s;
+      background: #06060f;
     }
 
     .fred-corey-zone.canopi-mode {
@@ -340,25 +344,25 @@
       background: #10102e;
       border: 1px solid #00b4ff60;
       border-radius: 4px 12px 12px 12px;
-      color: #e0e0ff;
-      font-size: 12px;
+      color: #ffffff;
+      font-size: 13px;
     }
 
     .bulle.corey .bulle-texte {
       background: #1a1005;
       border: 1px solid #ff2d7860;
       border-radius: 12px 4px 12px 12px;
-      color: #ffcc88;
-      font-size: 12px;
+      color: #ffdd99;
+      font-size: 13px;
     }
 
     .bulle.client .bulle-texte {
       background: #0a1820;
       border: 1px solid #00b4ff60;
       border-radius: 4px 12px 12px 12px;
-      color: #88ddff;
+      color: #aaeeff;
       font-style: italic;
-      font-size: 12px;
+      font-size: 13px;
     }
 
     .fred-portrait {
@@ -379,7 +383,7 @@
       background: #080818;
     }
 
-    .fred-name { font-size: 9px; color: #00b4ff; letter-spacing: 2px; text-shadow: 0 0 6px #00b4ff60; }
+    .fred-name { font-size: 10px; color: #00ddff; letter-spacing: 2px; font-weight: bold; text-shadow: 0 0 8px #00b4ff; }
 
     .corey-portrait {
       display: flex;
@@ -413,7 +417,7 @@
       75%       { transform: translateX(4px); }
     }
 
-    .corey-name { font-size: 9px; color: #ff2d78; letter-spacing: 2px; text-shadow: 0 0 6px #ff2d7860; }
+    .corey-name { font-size: 10px; color: #ff4488; letter-spacing: 2px; font-weight: bold; text-shadow: 0 0 8px #ff2d78; }
 
     /* CLIENT AVATAR dans la zone dialogue */
     .client-dialogue-avatar {
@@ -444,7 +448,8 @@
       padding: 6px 12px 8px;
       flex-shrink: 0;
       background: #080818;
-      border-top: 1px solid #ff2d7830;
+      border-top: 2px solid #00b4ff;
+      box-shadow: 0 -4px 12px #00b4ff20;
     }
 
     .close-btn {
@@ -473,14 +478,15 @@
 
     .pause-btn.visible { display: block; }
     .pause-btn:active  { background: #121800; }
-    .pause-btn-text    { font-size: 10px; color: #ffdd44; letter-spacing: 2px; }
+    .pause-btn-text    { font-size: 11px; color: #ffffff; letter-spacing: 2px; text-shadow: 0 0 6px #ffdd44; }
 
     .client-panel {
       display: none;
       position: fixed;
       bottom: 65px; left: 0; right: 0;
       background: #080818;
-      border-top: 2px solid #ff2d78;
+      border-top: 3px solid #ff2d78;
+      box-shadow: 0 -4px 20px #ff2d7830;
       padding: 10px 12px 8px;
       z-index: 50;
       max-height: 80vh;
@@ -532,11 +538,11 @@
     .panel-header-info { flex: 1; }
 
     .panel-client-name {
-      font-size: 16px;
+      font-size: 17px;
       color: #ffffff;
       letter-spacing: 2px;
       margin-bottom: 4px;
-      text-shadow: 0 0 8px #ff2d7840;
+      text-shadow: 0 0 10px #ff2d7870;
     }
 
     .panel-client-name.ramon    { color: #cc88cc; }
@@ -546,8 +552,8 @@
     .panel-client-name.canopi   { color: #9966aa; }
 
     .panel-client-demand {
-      font-size: 13px;
-      color: #e8e8ff;
+      font-size: 14px;
+      color: #ffffff;
       line-height: 1.5;
       font-style: italic;
     }
@@ -688,12 +694,12 @@
     .pref-tag.aime    { background: #00100a; color: #00aa55; border: 1px solid #00aa5520; }
     .pref-tag.deteste { background: #100005; color: #aa0033; border: 1px solid #aa003320; }
 
-    .films-label { font-size: 10px; color: #00b4ff; letter-spacing: 2px; margin-bottom: 8px; font-weight: bold; }
+    .films-label { font-size: 11px; color: #00ddff; letter-spacing: 2px; margin-bottom: 8px; font-weight: bold; text-shadow: 0 0 6px #00b4ff; }
     .films-list  { display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px; }
 
     .film-option {
       background: #0c0c22;
-      border: 1px solid #00b4ff30;
+      border: 1px solid #00b4ff60;
       border-radius: 5px;
       padding: 9px 10px;
       cursor: pointer;
@@ -703,14 +709,14 @@
     }
 
     .film-option:active         { background: #0f0f22; }
-    .film-option.meilleur       { border-color: #00b4ff60; background: #06121a; box-shadow: 0 0 6px #00b4ff20; }
+    .film-option.meilleur       { border-color: #00b4ff; background: #06121a; box-shadow: 0 0 10px #00b4ff40; }
     .film-option.meilleur-ramon { border-color: #cc88cc30; background: #100810; }
     .film-option.correct        { border-color: #ff882020; }
     .film-option.mauvais        { border-color: #ff002020; opacity: 0.6; }
 
     .film-info   { flex: 1; }
-    .film-titre  { font-size: 12px; color: #ffffff; letter-spacing: 0.5px; margin-bottom: 2px; }
-    .film-detail { font-size: 9px; color: #8888bb; letter-spacing: 1px; }
+    .film-titre  { font-size: 13px; color: #ffffff; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .film-detail { font-size: 10px; color: #aaaacc; letter-spacing: 1px; }
     .film-match  { font-size: 9px; margin-left: 8px; flex-shrink: 0; }
     .film-prix   { font-size: 11px; color: #00ddff; font-weight: bold; margin-left: 8px; flex-shrink: 0; }
 
@@ -885,11 +891,12 @@
     .panel-close {
       text-align: center;
       font-size: 9px;
-      color: #ff2d78;
+      color: #ff4488;
       cursor: pointer;
-      letter-spacing: 2px;
-      padding: 8px;
+      letter-spacing: 3px;
+      padding: 10px;
       margin-top: 4px;
+      font-size: 11px;
     }
 
     .suspicion-bar {
@@ -903,8 +910,9 @@
 
     .suspicion-fill {
       height: 100%;
-      background: linear-gradient(90deg, #44aa44, #ffdd44, #ff4466);
+      background: linear-gradient(90deg, #00ffc8, #ffdd44, #ff2d78);
       transition: width 0.5s ease;
+      box-shadow: 0 0 8px currentColor;
     }
 
     .combo-notif {
@@ -1011,7 +1019,8 @@
 
     .bottom-bar {
       background: #060616;
-      border-top: 1px solid #ff2d7840;
+      border-top: 2px solid #ff2d78;
+      box-shadow: 0 -4px 16px #ff2d7820;
       padding: 8px 12px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -1042,7 +1051,7 @@
     .gauge-bar.expo   { background: #ff4466; }
     .gauge-bar.energy { background: #ffdd44; }
 
-    .gauge-value { font-size: 10px; color: #aaaadd; letter-spacing: 1px; font-weight: bold; }
+    .gauge-value { font-size: 11px; color: #ffffff; letter-spacing: 1px; font-weight: bold; }
 
     @keyframes gaugePulse {
       0%, 100% { opacity: 1; }
@@ -1833,6 +1842,10 @@
       if (gameState.upgradesVus === undefined) gameState.upgradesVus = false;
 
       gameState.ghost_loue_aujourd_hui = false;
+      // FIX — si phase bloquée sur 'pause', remettre à 'matin'
+      if (gameState.phase_journee === 'pause') {
+        gameState.phase_journee = 'matin';
+      }
       
       // BOÎTE AUX LETTRES — retours de la nuit
       if (gameState.jour > 1) {
@@ -1986,6 +1999,10 @@
       setCoreyAvatar('joie');
       afficherBulles('fermeture');
       gameState.ghost_loue_aujourd_hui = false;
+      // FIX — si phase bloquée sur 'pause', remettre à 'matin'
+      if (gameState.phase_journee === 'pause') {
+        gameState.phase_journee = 'matin';
+      }
       
       // BOÎTE AUX LETTRES — retours de la nuit
       if (gameState.jour > 1) {
