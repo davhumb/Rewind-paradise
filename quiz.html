@@ -1218,7 +1218,7 @@
       reponsesEl.innerHTML = indices.map((idx, pos) => `
         <div class="reponse-btn" onclick="repondre(${idx})" data-idx="${idx}">
           <div class="reponse-lettre">${lettres[pos]}</div>
-          <div class="reponse-texte">${q.r[idx]}</div>
+          <div class="reponse-texte">${q.rep[idx]}</div>
         </div>
       `).join('');
 
