@@ -1753,12 +1753,11 @@
     // CLIENTS — timers x1.5
     // ===================================================
 
+    // Timers x2.5
+    const TIMER_MULT = 2.5;
+
     const CLIENT_TYPES = [
-      // ===================================================
-      // TIMERS x2.5
-      // ===================================================
-      const TIMER_MULT = 2.5;
-      {id:'canopi',name:'INSPECTEUR CANOPI',mood:'😐',get demande(){return getDemande('canopi');},aime:['ghost','kramer','rain_man'],deteste:['arme_fatale','predator','terminator','die_hard','halloween','alien','suspiria','exorciste'],accepte:['drame'],energie:1,timer_seconds:Math.round(68*TIMER_MULT),thought:"Il revient. Évidemment qu'il revient.",canNegociate:false,weedDemande:false,
+      {id:'canopi',name:'INSPECTEUR CANOPI',mood:'😐',get demande(){return getDemande('canopi');},aime:['ghost','kramer','rain_man'],deteste:['arme_fatale','predator','terminator','die_hard','halloween','alien','suspiria','exorciste'],accepte:['drame'],energie:1,timer_seconds:170,thought:"Il revient. Évidemment qu'il revient.",canNegociate:false,weedDemande:false,
         onServi:(gs,film,prix)=>{if(film.id==='ghost'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.ghost_loue_aujourd_hui=true;gs.legalite=Math.max(0,gs.legalite-2);gs.reputation=Math.min(5,gs.reputation+0.3);gs.argent+=2;return{msg:'+2$ — Ghost trouvé.',positif:true};}else if(film.genre==='drame'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.argent+=2;return{msg:'+2$ — Il accepte.',positif:true};}gs.legalite=Math.min(100,gs.legalite+2);return{msg:'Mauvais choix.',positif:false};}},
       {id:'ramon',name:'RAMON',mood:'🤵',demande:'"Pretty Woman. Vous l\'avez ?"',aime:['pretty_woman','dirty_dancing','quand_harry','nuits_blanches','officier'],deteste:['arme_fatale','predator','terminator','halloween','alien','exorciste'],accepte:['comedie_romantique'],energie:2,timer_seconds:60,thought:"Cet homme a des mains qui ont réglé des problèmes.",isRamon:true,canNegociate:false,weedDemande:false,
         dialogues:{visite1:'"Pretty Woman. Vous l\'avez ?"',visite2:'"Dirty Dancing cette fois."',visite3:'"Quand Harry rencontre Sally. M. DiMaggio aime bien ce film."',visite4:'"Bel endroit. Bien tenu." Il regarde la réserve.',visite5:'"M. DiMaggio voudrait vous rencontrer."'},
@@ -1973,7 +1972,7 @@
         if (zone) {
           const div = document.createElement('div');
           div.className = 'bulle corey';
-          div.innerHTML = '<div class="bulle-texte">J'ai géré.</div>';
+          div.innerHTML = `<div class="bulle-texte">J'ai géré.</div>`;
           zone.appendChild(div);
         }
       }, 8000);
@@ -2374,12 +2373,12 @@
               setCoreyAvatar('tete');
               const div = document.createElement('div');
               div.className = 'bulle corey';
-              div.innerHTML = '<div class="bulle-texte">You talkin' to me ?</div>';
+              div.innerHTML = `<div class="bulle-texte">You talkin' to me ?</div>`;
               zone.appendChild(div);
               setTimeout(() => {
                 const div2 = document.createElement('div');
                 div2.className = 'bulle fred';
-                div2.innerHTML = '<div class="bulle-texte">T'es en train de faire quoi ?</div>';
+                div2.innerHTML = `<div class="bulle-texte">T'es en train de faire quoi ?</div>`;
                 zone.appendChild(div2);
                 setTimeout(() => {
                   const div3 = document.createElement('div');
@@ -3412,7 +3411,7 @@
           if (zone) {
             const div = document.createElement('div');
             div.className = 'bulle corey';
-            div.innerHTML = '<div class="bulle-texte">T'as trouvé le code.</div>';
+            div.innerHTML = `<div class="bulle-texte">T'as trouvé le code.</div>`;
             zone.appendChild(div);
             setTimeout(() => {
               const div2 = document.createElement('div');
@@ -3493,7 +3492,7 @@
         if (zone) {
           const div = document.createElement('div');
           div.className = 'bulle corey';
-          div.innerHTML = '<div class="bulle-texte">Je t'avais dit.</div>';
+          div.innerHTML = `<div class="bulle-texte">Je t'avais dit.</div>`;
           zone.appendChild(div);
         }
         // Rallumer après 1 heure de jeu = 60 clients servis ou 30 minutes réelles
