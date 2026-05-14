@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, 
+        initial-scale=1.0, maximum-scale=1.0, 
+        user-scalable=no">
+  <title>Rewind Paradise — Pause Déjeuner</title>
+  <style>
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #030306;
+      font-family: 'Courier New', monospace;
+      color: #f0f0ff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 2s;
+    }
+
+    body.psycho {
+      animation: psychoBg 8s ease infinite;
+    }
+
+    @keyframes psychoBg {
+      0%   { background: #030306; }
+      25%  { background: #050210; }
+      50%  { background: #020808; }
+      75%  { background: #080205; }
+      100% { background: #030306; }
+    }
+
+    /* SCANLINES */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* PSYCHO OVERLAY */
+    .psycho-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .psycho-overlay.visible { display: block; }
+
+    /* TOP BAR */
+    .top-bar {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #050508;
+      border-bottom: 1px solid #0d0d1a;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .top-title {
+      font-size: 10px;
+      color: #ff8855;
+      letter-spacing: 3px;
+      text-shadow: 0 0 8px #ff885540;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top-info {
+      font-size: 9px;
+      color: #333355;
+      letter-spacing: 1px;
+    }
+
+    .mute-btn {
+      font-size: 16px;
+      cursor: pointer;
+      opacity: 0.5;
+    }
+
+    /* MAIN */
+    .main {
+      padding: 0 0 100px;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* RITUEL */
+    .rituel-zone {
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rideau-label {
+      font-size: 8px;
+      color: #333355;
+      letter-spacing: 3px;
+      text-align: center;
+      padding: 8px;
+      border: 1px solid #0d0d1a;
+      border-radius: 4px;
+    }
+
+    /* JOINT ANIMATION */
+    .joint-scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px;
+      background: #050510;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+      min-height: 120px;
+    }
+
+    .joint-scene.allume {
+      border-color: #44aa4440;
+      background: #030a03;
+    }
+
+    .joint-svg {
+      width: 80px;
+      height: 24px;
+      margin-top: 8px;
+    }
+
+    .joint-status {
+      font-size: 9px;
+      color: #333355;
+      letter-spacing: 2px;
+    }
+
+    .joint-status.allume { color: #44aa44; }
+
+    /* PARTICULES */
+    .particule {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: particuleMonte linear forwards;
+    }
+
+    @keyframes particuleMonte {
+      0%   { opacity: 1; transform: translateY(0) translateX(0) scale(1); }
+      50%  { opacity: 0.6; transform: translateY(-30px) translateX(var(--dx)) scale(0.8); }
+      100% { opacity: 0; transform: translateY(-60px) translateX(var(--dx2)) scale(0.3); }
+    }
+
+    /* BULLES BD */
+    .bulles-rituel {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 0 4px;
+    }
+
+    .bulle-pause {
+      display: flex;
+      animation: bulleIn 0.3s ease;
+    }
+
+    .bulle-pause.fred  { justify-content: flex-start; }
+    .bulle-pause.corey { justify-content: flex-end; }
+
+    @keyframes bulleIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .bulle-pause-texte {
+      max-width: 88%;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-style: italic;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .bulle-pause.fred .bulle-pause-texte {
+      background: #0f0f2a;
+      border: 1px solid #3a3a6a;
+      border-radius: 4px 14px 14px 14px;
+      color: #9090cc;
+    }
+
+    .bulle-pause.corey .bulle-pause-texte {
+      background: #1a0f05;
+      border: 1px solid #ff885530;
+      border-radius: 14px 4px 14px 14px;
+      color: #cc9966;
+    }
+
+    /* Effet psychédélique sur les bulles */
+    .psycho .bulle-pause-texte {
+      animation: psychoText 3s ease infinite;
+    }
+
+    @keyframes psychoText {
+      0%, 100% { filter: none; }
+      50%       { filter: hue-rotate(20deg) brightness(1.1); }
+    }
+
+    /* SÉPARATEUR QUIZ */
+    .quiz-sep {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px 0;
+    }
+
+    .quiz-sep-line      { flex: 1; height: 1px; background: #1e1e3a; }
+    .quiz-sep-label     { font-size: 8px; color: #ff8855; letter-spacing: 3px; flex-shrink: 0; }
+
+    /* QUIZ */
+    .quiz-zone {
+      padding: 12px 14px;
+      display: none;
+    }
+
+    .quiz-zone.visible { display: block; }
+
+    .quiz-score-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .quiz-score-label { font-size: 9px; color: #444466; letter-spacing: 2px; }
+    .quiz-score-val   { font-size: 14px; color: #00ffc8; font-weight: bold; letter-spacing: 2px; }
+
+    .quiz-progress {
+      width: 100%;
+      height: 3px;
+      background: #0a0a18;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: #00ffc8;
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .question-card {
+      background: #080818;
+      border: 1px solid #1e1e3a;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .question-numero {
+      font-size: 8px;
+      color: #333355;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    .question-texte {
+      font-size: 13px;
+      color: #e0e0f0;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .question-categorie {
+      font-size: 8px;
+      color: #ff885540;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .reponses { display: flex; flex-direction: column; gap: 7px; }
+
+    .reponse-btn {
+      background: #0a0a18;
+      border: 1px solid #1e1e3a;
+      border-radius: 6px;
+      padding: 11px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.1s;
+    }
+
+    .reponse-btn:active { background: #0f0f22; }
+
+    .reponse-btn.correct {
+      border-color: #00ffc8;
+      background: #051510;
+      animation: correctPulse 0.4s ease;
+    }
+
+    .reponse-btn.incorrect {
+      border-color: #ff4466;
+      background: #150510;
+      opacity: 0.7;
+    }
+
+    .reponse-btn.disabled { pointer-events: none; }
+
+    @keyframes correctPulse {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .reponse-lettre {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #1e1e3a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: #6060aa;
+      flex-shrink: 0;
+      font-weight: bold;
+    }
+
+    .reponse-btn.correct  .reponse-lettre { background: #00ffc8; color: #030306; }
+    .reponse-btn.incorrect .reponse-lettre { background: #ff4466; color: #030306; }
+
+    .reponse-texte { font-size: 11px; color: #c0c0dd; line-height: 1.4; }
+
+    /* FEEDBACK */
+    .feedback-zone {
+      padding: 10px 14px;
+      display: none;
+    }
+
+    .feedback-zone.visible { display: block; }
+
+    .feedback-card {
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .feedback-resultat {
+      font-size: 12px;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .feedback-resultat.ok  { color: #00ffc8; }
+    .feedback-resultat.ko  { color: #ff4466; }
+
+    .feedback-explication {
+      font-size: 10px;
+      color: #7070aa;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    /* Indice Corey */
+    .corey-indice {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .corey-indice-texte {
+      max-width: 85%;
+      background: #1a0f05;
+      border: 1px solid #ff885530;
+      border-radius: 14px 4px 14px 14px;
+      padding: 7px 11px;
+      font-size: 10px;
+      color: #cc9966;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .btn-suivant {
+      width: 100%;
+      background: #071a10;
+      border: 2px solid #00ffc8;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      color: #00ffc8;
+      letter-spacing: 3px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+    }
+
+    .btn-suivant:active { background: #0d2418; }
+
+    /* RÉSULTAT FINAL */
+    .resultat-final {
+      display: none;
+      padding: 16px 14px;
+    }
+
+    .resultat-final.visible { display: block; }
+
+    .resultat-card {
+      background: #080818;
+      border: 1px solid #2e2e50;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .resultat-titre {
+      font-size: 10px;
+      color: #ff8855;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+
+    .resultat-score {
+      font-size: 48px;
+      font-weight: bold;
+      color: #00ffc8;
+      text-shadow: 0 0 20px #00ffc8;
+      margin-bottom: 4px;
+    }
+
+    .resultat-total {
+      font-size: 12px;
+      color: #444466;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+
+    .resultat-corey {
+      font-size: 12px;
+      color: #cc9966;
+      font-style: italic;
+      line-height: 1.6;
+      border-top: 1px solid #1e1e3a;
+      padding-top: 12px;
+    }
+
+    .btn-retour {
+      width: 100%;
+      background: #100508;
+      border: 1px solid #ff8855;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      color: #ff8855;
+      letter-spacing: 3px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .btn-retour:active { background: #180a05; }
+
+    /* BOTTOM BAR */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #030306;
+      border-top: 1px solid #0d0d1a;
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 6px;
+      z-index: 100;
+    }
+
+    .gauge-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .gauge-icon { font-size: 14px; }
+
+    .gauge-bar-container {
+      width: 100%; height: 4px;
+      background: #0f0f20;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .gauge-bar { height: 100%; border-radius: 2px; }
+    .gauge-bar.money  { background: #00ffc8; }
+    .gauge-bar.legal  { background: #ff8855; }
+    .gauge-bar.expo   { background: #ff4466; }
+    .gauge-bar.energy { background: #ffdd44; }
+
+    .gauge-value { font-size: 8px; color: #6060aa; letter-spacing: 1px; }
+
+    .fade-out { animation: fadeOut 0.5s forwards; }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="psycho-overlay" id="psycho-overlay">
+    <canvas id="psycho-canvas" style="width:100%;height:100%;opacity:0.15;"></canvas>
+  </div>
+
+  <div class="top-bar">
+    <div class="top-title">⏸ PAUSE DÉJEUNER</div>
+    <div class="top-right">
+      <div class="top-info" id="top-info">Jour 1 — S1</div>
+      <div class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- RITUEL -->
+    <div class="rituel-zone" id="rituel-zone">
+
+      <div class="rideau-label">▓ RIDEAU FERMÉ — 13H00 ▓</div>
+
+      <!-- JOINT -->
+      <div class="joint-scene" id="joint-scene">
+        <svg class="joint-svg" viewBox="0 0 120 24" id="joint-svg">
+          <!-- Corps du joint -->
+          <rect x="10" y="9" width="85" height="6" rx="3" fill="#e8d5a0"/>
+          <!-- Filtre -->
+          <rect x="95" y="8" width="18" height="8" rx="2" fill="#c4a882"/>
+          <!-- Torsade -->
+          <line x1="10" y1="12" x2="0" y2="8" stroke="#d4c090" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Braise — s'allume après -->
+          <circle id="braise" cx="7" cy="12" r="3" fill="#333" opacity="0"/>
+        </svg>
+        <div class="joint-status" id="joint-status">Corey sort le Sicilian Gold.</div>
+      </div>
+
+      <!-- BULLES BD RITUEL -->
+      <div class="bulles-rituel" id="bulles-rituel"></div>
+
+    </div>
+
+    <!-- SÉPARATEUR -->
+    <div class="quiz-sep" id="quiz-sep" style="display:none;">
+      <div class="quiz-sep-line"></div>
+      <div class="quiz-sep-label">📼 QUIZ CINÉMA</div>
+      <div class="quiz-sep-line"></div>
+    </div>
+
+    <!-- FRED + COREY PENDANT LE QUIZ -->
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:#06060f;border-left:3px solid #00b4ff;border-radius:0 6px 6px 0;margin-bottom:8px;" id="fred-corey-quiz">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
+        <img id="fred-quiz-avatar" src="posters/fred.png" alt="Fred"
+             style="width:64px;height:64px;border-radius:50%;border:2px solid #00b4ff80;object-fit:cover;background:#080818;box-shadow:0 0 10px #00b4ff30;"
+             onerror="this.style.display='none'">
+        <div style="font-size:8px;color:#00b4ff;letter-spacing:2px;text-shadow:0 0 6px #00b4ff60;">FRED</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex:1;background:#06060f;border-left:3px solid #ff2d78;border-radius:0 6px 6px 0;padding:8px 10px;">
+        <img id="corey-quiz-avatar" src="posters/corey.png" alt="Corey"
+             style="width:64px;height:64px;border-radius:50%;border:2px solid #ff2d7880;object-fit:cover;background:#080818;box-shadow:0 0 10px #ff2d7830;flex-shrink:0;"
+             onerror="this.style.display='none'">
+        <div id="corey-quiz-texte" style="font-size:12px;color:#ffdd99;font-style:italic;line-height:1.5;">Alors. On joue ?</div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-zone" id="quiz-zone">
+      <div class="quiz-score-bar">
+        <span class="quiz-score-label">SCORE</span>
+        <span class="quiz-score-val" id="quiz-score-val">0 / 0</span>
+      </div>
+      <div class="quiz-progress">
+        <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+      </div>
+      <div class="question-card" id="question-card">
+        <div class="question-numero" id="question-numero">QUESTION 1</div>
+        <div class="question-categorie" id="question-categorie"></div>
+        <div class="question-texte" id="question-texte">Chargement...</div>
+        <div class="reponses" id="reponses"></div>
+      </div>
+    </div>
+
+    <!-- FEEDBACK -->
+    <div class="feedback-zone" id="feedback-zone">
+      <div class="feedback-card">
+        <div class="feedback-resultat" id="feedback-resultat"></div>
+        <div class="feedback-explication" id="feedback-explication"></div>
+        <div class="corey-indice" id="corey-indice" style="display:none;">
+          <div class="corey-indice-texte" id="corey-indice-texte"></div>
+        </div>
+      </div>
+      <div class="btn-suivant" onclick="questionSuivante()">▶ SUIVANT</div>
+    </div>
+
+    <!-- RÉSULTAT FINAL -->
+    <div class="resultat-final" id="resultat-final">
+      <div class="resultat-card">
+        <div class="resultat-titre">▓ RÉSULTAT ▓</div>
+        <div class="resultat-score" id="resultat-score">0</div>
+        <div class="resultat-total" id="resultat-total">/ 10</div>
+        <div class="resultat-corey" id="resultat-corey"></div>
+      </div>
+      <div class="btn-retour" onclick="retournerAuJeu()">▶ REPRENDRE LE TRAVAIL</div>
+    </div>
+
+  </div>
+
+  <div class="bottom-bar">
+    <div class="gauge-item">
+      <span class="gauge-icon">💰</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar money" id="bar-money" style="width:40%"></div>
+      </div>
+      <span class="gauge-value" id="val-money">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">🎬</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar legal" id="bar-legal" style="width:0%"></div>
+      </div>
+      <span class="gauge-value" id="val-legal">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">👁</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar expo" id="bar-expo" style="width:0%"></div>
+      </div>
+      <span class="gauge-value" id="val-expo">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">⚡</span>
+      <div class="gauge-bar-container">
+        <div class="gauge-bar energy" id="bar-energy" style="width:100%"></div>
+      </div>
+      <span class="gauge-value" id="val-energy">—</span>
+    </div>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="music/quiz.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="data/quiz.js"></script>
+
+  <script>
+
+    // ===================================================
+    // ÉTAT
+    // ===================================================
+
+    let gameState       = {};
+    let questions       = [];
+    let questionIndex   = 0;
+    let score           = 0;
+    let reponduCette    = false;
+    let rituelTermine   = false;
+    let music           = null;
+    let isMuted         = false;
+
+    // ===================================================
+    // MUSIQUE
+    // ===================================================
+
+    function initMusic() {
+      music   = document.getElementById('bg-music');
+      isMuted = localStorage.getItem('rewind_muted') === 'true';
+      music.volume = 0.25;
+      music.muted  = isMuted;
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
+      const p = music.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          document.addEventListener('touchstart',
+            () => music.play(), { once: true });
+        });
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      if (music) music.muted = isMuted;
+      localStorage.setItem('rewind_muted', isMuted);
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
+    }
+
+    function fadeOutMusic(callback) {
+      if (!music || isMuted) { if (callback) callback(); return; }
+      let vol = music.volume;
+      const fade = setInterval(() => {
+        vol = Math.max(0, vol - 0.05);
+        music.volume = vol;
+        if (vol <= 0) { clearInterval(fade); music.pause(); if (callback) callback(); }
+      }, 50);
+    }
+
+    // ===================================================
+    // DIALOGUES DU RITUEL
+    // ===================================================
+
+    const DIALOGUES_PAUSE = [
+
+      // STONERS — DÉBATS ABSURDES
+      [
+        {perso:'corey', texte:"Die Hard c'est un film de Noël."},
+        {perso:'fred',  texte:"Non."},
+        {perso:'corey', texte:"Il neige. Il y a un sapin. Des cadeaux."},
+        {perso:'fred',  texte:"Y'a aussi des terroristes."},
+        {perso:'corey', texte:"Le Père Noël aussi fait peur aux enfants."},
+        {perso:'fred',  texte:"..."},
+        {perso:'corey', texte:"C'est un film de Noël Fred."}
+      ],
+
+      [
+        {perso:'fred',  texte:"Kubrick aurait fait quoi avec une caméra iPhone ?"},
+        {perso:'corey', texte:"Il l'aurait pas utilisée."},
+        {perso:'fred',  texte:"Pourquoi ?"},
+        {perso:'corey', texte:"Il aurait pas supporté que quelqu'un d'autre en ait une."},
+        {perso:'fred',  texte:"..."},
+        {perso:'fred',  texte:"C'est juste."}
+      ],
+
+      [
+        {perso:'corey', texte:"Tu crois que les personnages dans les films savent qu'ils sont dans un film ?"},
+        {perso:'fred',  texte:"Non."},
+        {perso:'corey', texte:"Et nous on sait qu'on est dans quoi ?"},
+        {perso:'fred',  texte:"Un vidéoclub."},
+        {perso:'corey', texte:"Ouais mais dans quoi d'autre ?"},
+        {perso:'fred',  texte:"Corey."},
+        {perso:'corey', texte:"Ouais."},
+        {perso:'fred',  texte:"Arrête."}
+      ],
+
+      [
+        {perso:'corey', texte:"Tarantino c'est le meilleur ou le pire ?"},
+        {perso:'fred',  texte:"Les deux."},
+        {perso:'corey', texte:"C'est pas une réponse."},
+        {perso:'fred',  texte:"C'est la seule réponse honnête."},
+        {perso:'corey', texte:"..."},
+        {perso:'corey', texte:"Ouais OK."}
+      ],
+
+      [
+        {perso:'fred',  texte:"Spielberg ou Kubrick ?"},
+        {perso:'corey', texte:"Pour quoi faire ?"},
+        {perso:'fred',  texte:"En général."},
+        {perso:'corey', texte:"Kubrick pour vivre. Spielberg pour mourir."},
+        {perso:'fred',  texte:"C'est quoi la différence ?"},
+        {perso:'corey', texte:"Un te laisse espérer. L'autre te dit la vérité."},
+        {perso:'fred',  texte:"Laquelle ?"},
+        {perso:'corey', texte:"Qu'on est seuls."}
+      ],
+
+      [
+        {perso:'corey', texte:"Chinatown c'est le même film que Bambi."},
+        {perso:'fred',  texte:"Non."},
+        {perso:'corey', texte:"Le père. La perte. La ville comme forêt hostile."},
+        {perso:'fred',  texte:"Bambi a pas de père à la fin."},
+        {perso:'corey', texte:"Exactement."},
+        {perso:'fred',  texte:"..."},
+        {perso:'corey', texte:"T'as compris."}
+      ],
+
+      [
+        {perso:'fred',  texte:"T'as déjà pleuré devant un film ?"},
+        {perso:'corey', texte:"Non."},
+        {perso:'fred',  texte:"Jamais ?"},
+        {perso:'corey', texte:"Une fois. Grave of the Fireflies."},
+        {perso:'fred',  texte:"C'est normal ça."},
+        {perso:'corey', texte:"J'avais huit ans."},
+        {perso:'fred',  texte:"C'est encore plus normal."},
+        {perso:'corey', texte:"Je l'ai regardé hier soir."}
+      ],
+
+      // NARRATION — DIMAGGIO
+      [
+        {perso:'fred',  texte:"Tu crois qu'il existe DiMaggio ?"},
+        {perso:'corey', texte:"Ramon existe."},
+        {perso:'fred',  texte:"C'est pas une réponse."},
+        {perso:'corey', texte:"Ramon vient pour Pretty Woman. Quelqu'un lui dit de venir."},
+        {perso:'fred',  texte:"DiMaggio ?"},
+        {perso:'corey', texte:"..."},
+        {perso:'fred',  texte:"Corey."},
+        {perso:'corey', texte:"DiMaggio existe Fred."}
+      ],
+
+      [
+        {perso:'corey', texte:"Ramon a regardé la réserve encore."},
+        {perso:'fred',  texte:"Je sais."},
+        {perso:'corey', texte:"Il compte les fois qu'il vient."},
+        {perso:'fred',  texte:"Arrête."},
+        {perso:'corey', texte:"C'est la cinquième."},
+        {perso:'fred',  texte:"Je sais Corey."},
+        {perso:'corey', texte:"À la sixième il entre."},
+        {perso:'fred',  texte:"T'en sais rien."},
+        {perso:'corey', texte:"Je sais."}
+      ],
+
+      [
+        {perso:'fred',  texte:"Si DiMaggio existe, il sait pour les micro-métrages ?"},
+        {perso:'corey', texte:"Il sait tout."},
+        {perso:'fred',  texte:"Et il fait rien ?"},
+        {perso:'corey', texte:"Il attend."},
+        {perso:'fred',  texte:"Qu'est-ce qu'il attend ?"},
+        {perso:'corey', texte:"Que t'aies quelque chose qui vaut la peine d'être pris."},
+        {perso:'fred',  texte:"..."},
+        {perso:'corey', texte:"Continue à bien couper Fred."}
+      ],
+
+      [
+        {perso:'corey', texte:"Jackson a dit un truc bizarre ce matin."},
+        {perso:'fred',  texte:"Il dit que des trucs bizarres."},
+        {perso:'corey', texte:"Il a dit que DiMaggio aimait bien notre travail."},
+        {perso:'fred',  texte:"Comment il saurait ?"},
+        {perso:'corey', texte:"..."},
+        {perso:'fred',  texte:"Corey."},
+        {perso:'corey', texte:"Ouais."},
+        {perso:'fred',  texte:"Jackson travaille pour qui ?"},
+        {perso:'corey', texte:"Mange ta pizza."}
+      ],
+
+      // NARRATION — CANOPI
+      [
+        {perso:'fred',  texte:"Canopi va finir par trouver."},
+        {perso:'corey', texte:"Il trouvera rien."},
+        {perso:'fred',  texte:"Il regarde tout."},
+        {perso:'corey', texte:"Regarder c'est pas trouver."},
+        {perso:'fred',  texte:"Pour lui si."},
+        {perso:'corey', texte:"..."},
+        {perso:'corey', texte:"T'as répondu quoi à sa question sur la réserve ?"},
+        {perso:'fred',  texte:"Stockage."},
+        {perso:'corey', texte:"Bien."}
+      ],
+
+      [
+        {perso:'corey', texte:"Canopi loue Ghost tous les jours."},
+        {perso:'fred',  texte:"Je sais."},
+        {perso:'corey', texte:"Il l'a jamais regardé."},
+        {perso:'fred',  texte:"Comment tu sais ?"},
+        {perso:'corey', texte:"Il repose jamais les questions sur le film."},
+        {perso:'fred',  texte:"Il repose des questions sur quoi ?"},
+        {perso:'corey', texte:"Sur toi."}
+      ],
+
+      [
+        {perso:'fred',  texte:"T'as vu ses yeux ce matin ?"},
+        {perso:'corey', texte:"Il a des yeux normaux."},
+        {perso:'fred',  texte:"Il a regardé derrière toi quand tu parlais."},
+        {perso:'corey', texte:"Les flics font ça."},
+        {perso:'fred',  texte:"Ça me rend nerveux."},
+        {perso:'corey', texte:"C'est fait pour ça."},
+        {perso:'fred',  texte:"Et toi ça te rend pas nerveux ?"},
+        {perso:'corey', texte:"Si."},
+        {perso:'fred',  texte:"..."},
+        {perso:'corey', texte:"Mais j'ai un bon poker face."}
+      ],
+
+      // CUTTER / MICRO-MÉTRAGES
+      [
+        {perso:'corey', texte:"Cutter a mis sept sur dix hier soir."},
+        {perso:'fred',  texte:"Je sais."},
+        {perso:'corey', texte:"T'es content ?"},
+        {perso:'fred',  texte:"Sept c'est bien."},
+        {perso:'corey', texte:"Sept c'est pas dix."},
+        {perso:'fred',  texte:"Rien c'est dix."},
+        {perso:'corey', texte:"Tarkovski c'est dix."},
+        {perso:'fred',  texte:"On fait pas du Tarkovski."},
+        {perso:'corey', texte:"Pas encore."}
+      ],
+
+      [
+        {perso:'fred',  texte:"Pourquoi on fait ça ?"},
+        {perso:'corey', texte:"Les micro-métrages ?"},
+        {perso:'fred',  texte:"Ouais."},
+        {perso:'corey', texte:"..."},
+        {perso:'corey', texte:"Pour Cutter."},
+        {perso:'fred',  texte:"Non mais vraiment."},
+        {perso:'corey', texte:"..."},
+        {perso:'corey', texte:"Parce que personne d'autre le fait."},
+        {perso:'fred',  texte:"C'est une bonne raison ?"},
+        {perso:'corey', texte:"C'est la seule."}
+      ],
+
+      [
+        {perso:'corey', texte:"T'as pensé à quoi tu couperais ce soir ?"},
+        {perso:'fred',  texte:"Pas encore."},
+        {perso:'corey', texte:"Moi j'ai pensé à la scène de l'escalier."},
+        {perso:'fred',  texte:"Y'a une scène d'escalier ?"},
+        {perso:'corey', texte:"Y'a toujours une scène d'escalier."},
+        {perso:'fred',  texte:"Dans quoi ?"},
+        {perso:'corey', texte:"Dans tout ce qui compte."}
+      ]
+
+    ];
+
+    // ===================================================
+    // QUESTIONS QUIZ — ÉTENDU
+    // ===================================================
+
+
+
+    // ===================================================
+    // RÉPONSES COREY SELON SCORE
+    // ===================================================
+
+    const COREY_SCORES = {
+      parfait: [
+        "Dix sur dix. Soit tu trimes, soit t'es naturellement insupportable.",
+        "Personne score dix sur dix. T'as triché ou t'es cinéphile. C'est pareil.",
+        "Fred. On devrait faire ça chaque midi."
+      ],
+      excellent: [
+        "Huit ou neuf. Solide. Tu mérites ton sandwich.",
+        "T'as raté une ou deux. Les vraies difficiles. Ça compte.",
+        "Bien. Mais la prochaine fois les questions sur Lynch."
+      ],
+      moyen: [
+        "La moitié. C'est honnête. La moitié du cinéma c'est de la merde de toute façon.",
+        "Six sur dix. T'aurais pu louer plus de films au lieu de travailler.",
+        "Moyen. Comme un Spielberg sans la magie."
+      ],
+      faible: [
+        "Moins de cinq. Fred. Sérieusement.",
+        "On loue des films toute la journée. Comment t'arrives à si peu savoir ?",
+        "Trois ou quatre. Même Canopi ferait mieux. Et lui il regarde que Ghost."
+      ],
+      nul: [
+        "Un ou deux. Tu regardes les cassettes à l'envers ou quoi ?",
+        "Fred. C'est un vidéoclub. T'es censé aimer le cinéma.",
+        "Un sur dix. On reparle de ça ce soir dans la réserve."
+      ]
+    };
+
+    function getCoreyScore(s, total) {
+      const ratio = s / total;
+      if (ratio === 1)        return COREY_SCORES.parfait[Math.floor(Math.random()*3)];
+      if (ratio >= 0.8)       return COREY_SCORES.excellent[Math.floor(Math.random()*3)];
+      if (ratio >= 0.5)       return COREY_SCORES.moyen[Math.floor(Math.random()*3)];
+      if (ratio >= 0.3)       return COREY_SCORES.faible[Math.floor(Math.random()*3)];
+      return COREY_SCORES.nul[Math.floor(Math.random()*3)];
+    }
+
+    // ===================================================
+    // INIT
+    // ===================================================
+
+    window.onload = function() {
+      initMusic();
+
+      const save = localStorage.getItem('rewindParadise_save');
+      if (save) {
+        try {
+          gameState = JSON.parse(save);
+          updateUI();
+          document.getElementById('top-info').textContent =
+            `Jour ${gameState.jour||1} — S${gameState.semaine||1}`;
+        } catch(e) {}
+      }
+
+      lancerRituel();
+    };
+
+    // ===================================================
+    // RITUEL DU JOINT
+    // ===================================================
+
+    function lancerRituel() {
+      const scene  = document.getElementById('joint-scene');
+      const status = document.getElementById('joint-status');
+      const zone   = document.getElementById('bulles-rituel');
+      const braise = document.getElementById('braise');
+
+      // Phase 1 — Corey sort le joint
+      setTimeout(() => {
+        status.textContent = 'Corey sort le Sicilian Gold.';
+      }, 500);
+
+      // Phase 2 — Il l'allume
+      setTimeout(() => {
+        status.textContent = 'Il l\'allume.';
+        scene.classList.add('allume');
+        status.classList.add('allume');
+
+        // Braise qui s'allume
+        braise.setAttribute('fill', '#ff6600');
+        braise.setAttribute('opacity', '1');
+        braise.style.animation = 'none';
+
+        // Éclat orange
+        braise.setAttribute('fill', '#ff4400');
+        setTimeout(() => { braise.setAttribute('fill', '#ff8800'); }, 200);
+        setTimeout(() => { braise.setAttribute('fill', '#ff6600'); }, 400);
+
+        // Particules de fumée
+        lancerParticules(scene, 12);
+
+      }, 1800);
+
+      // Phase 3 — Effet psychédélique
+      setTimeout(() => {
+        status.textContent = 'Silence. La fumée monte.';
+        document.body.classList.add('psycho');
+        document.getElementById('psycho-overlay').classList.add('visible');
+        lancerPsychoCanvas();
+      }, 3500);
+
+      // Phase 4 — Premier dialogue
+      setTimeout(() => {
+        // Choisir un dialogue au hasard
+        const dialogueIndex = Math.floor(Math.random() * DIALOGUES_PAUSE.length);
+        const dialogue = DIALOGUES_PAUSE[dialogueIndex];
+        afficherDialoguePause(dialogue, zone, () => {
+          // Après le dialogue — lancer le quiz
+          setTimeout(lancerQuiz, 1500);
+        });
+      }, 5000);
+    }
+
+    function lancerParticules(container, nb) {
+      for (let i = 0; i < nb; i++) {
+        setTimeout(() => {
+          const p = document.createElement('div');
+          p.className = 'particule';
+          const colors = ['#44aa44','#88cc44','#cc9944','#aaaaff','#ffaa44'];
+          const color  = colors[Math.floor(Math.random() * colors.length)];
+          const dx     = (Math.random() - 0.5) * 40;
+          const dx2    = (Math.random() - 0.5) * 60;
+          const size   = Math.random() * 4 + 2;
+          const left   = 30 + Math.random() * 40;
+          p.style.cssText = `
+            background: ${color};
+            left: ${left}%;
+            bottom: 30%;
+            width: ${size}px;
+            height: ${size}px;
+            --dx: ${dx}px;
+            --dx2: ${dx2}px;
+            animation-duration: ${1.5 + Math.random()}s;
+            animation-delay: ${Math.random() * 0.5}s;
+          `;
+          container.appendChild(p);
+          setTimeout(() => p.remove(), 3000);
+        }, i * 150);
+      }
+    }
+
+    function lancerPsychoCanvas() {
+      const canvas  = document.getElementById('psycho-canvas');
+      const ctx     = canvas.getContext('2d');
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let t = 0;
+      function draw() {
+        if (!document.body.classList.contains('psycho')) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Cercles psychédéliques
+        for (let i = 0; i < 5; i++) {
+          const x = canvas.width/2 + Math.sin(t + i) * 80;
+          const y = canvas.height/2 + Math.cos(t * 0.7 + i) * 60;
+          const r = 30 + Math.sin(t * 2 + i) * 20;
+          const hue = (t * 30 + i * 60) % 360;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${hue}, 70%, 50%, 0.1)`;
+          ctx.fill();
+        }
+
+        t += 0.03;
+        requestAnimationFrame(draw);
+      }
+      draw();
+
+      // Arrêter après le rituel
+      setTimeout(() => {
+        document.body.classList.remove('psycho');
+        document.getElementById('psycho-overlay').classList.remove('visible');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }, 18000);
+    }
+
+    function afficherDialoguePause(dialogue, zone, callback) {
+      zone.innerHTML = '';
+      let index = 0;
+
+      function next() {
+        if (index >= dialogue.length) {
+          if (callback) callback();
+          return;
+        }
+
+        const rep = dialogue[index];
+        const div = document.createElement('div');
+        div.className = `bulle-pause ${rep.perso}`;
+        div.innerHTML = `<div class="bulle-pause-texte">${rep.texte}</div>`;
+        zone.appendChild(div);
+
+        // Scroll vers le bas
+        div.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+        const toutes = zone.querySelectorAll('.bulle-pause');
+        if (toutes.length > 4) toutes[0].remove();
+
+        index++;
+        const delai = Math.min(rep.texte.length * 50 + 600, 3200);
+        setTimeout(next, delai);
+      }
+
+      next();
+    }
+
+    // ===================================================
+    // QUIZ
+    // ===================================================
+
+    function lancerQuiz() {
+      // 3 questions via QUIZ.getQuestions
+      const qs = (typeof QUIZ !== 'undefined' && QUIZ.getQuestions)
+        ? QUIZ.getQuestions(gameState)
+        : [];
+      // Convertir format QUIZ → format local
+      questions = qs.map(q => ({
+        q:      q.question,
+        rep:    q.choix,
+        bonne:  q.bonneIndex,
+        cat:    q.categorie
+      }));
+      // Fallback si QUIZ pas dispo
+      if (!questions.length) {
+        questions = [
+          { q:"Dans Ghost, quel est le prénom du personnage de Patrick Swayze ?", rep:["Sam","Jack","Tom","Ray"], bonne:0, cat:"CATALOGUE" },
+          { q:"Qui a réalisé Psychose ?", rep:["Hitchcock","Kubrick","De Palma","Lynch"], bonne:0, cat:"CINÉMA" },
+          { q:"Que signifie VHS ?", rep:["Video Home System","Video High Speed","Visual Home Standard","Video Hi-Fi"], bonne:0, cat:"VHS" }
+        ];
+      }
+      questionIndex = 0;
+      score         = 0;
+
+      document.getElementById('quiz-sep').style.display = 'flex';
+      document.getElementById('quiz-zone').classList.add('visible');
+
+      afficherQuestion();
+    }
+
+    function afficherQuestion() {
+      if (questionIndex >= questions.length) {
+        afficherResultat();
+        return;
+      }
+
+      const q = questions[questionIndex];
+      reponduCette = false;
+
+      document.getElementById('question-numero').textContent =
+        `QUESTION ${questionIndex + 1} / ${questions.length}`;
+      
+      // Corey annonce la catégorie
+      const coreyTextes = {
+        CATALOGUE: ["Catalogue.", "On a le film sur l'etagere.", "C'est chez nous."],
+        CINEMA:    ["Culture generale.", "Kubrick savait ca.", "Hitchcock aussi."],
+        VHS:       ["On vit avec ca.", "Fonds de commerce.", "Pas d'excuse."],
+        REWIND:    ["C'est notre vie.", "Tu vis dedans.", "Celle-la c'est pour toi."],
+        COREY:     ["Question speciale.", "Celle-la vient de moi.", "Tu peux pas deviner."]
+      };
+      const catKey = (q.cat || 'CINEMA').replace(/[ÉÈÊ]/g,'E').replace(/[é]/g,'e').replace(/[À]/g,'A');
+      const pool = coreyTextes[catKey] || coreyTextes.CINEMA;
+      const texte = pool[Math.floor(Math.random()*pool.length)];
+      const coTexte = document.getElementById('corey-quiz-texte');
+      if (coTexte) coTexte.textContent = texte;
+      document.getElementById('question-categorie').textContent =
+        q.cat ? `▸ ${q.cat}` : '';
+      document.getElementById('question-texte').textContent = q.q;
+
+      // Progress bar
+      const pct = (questionIndex / questions.length) * 100;
+      document.getElementById('quiz-progress-fill').style.width = pct + '%';
+
+      // Score
+      document.getElementById('quiz-score-val').textContent =
+        `${score} / ${questionIndex}`;
+
+      // Réponses — mélanger
+      const lettres = ['A','B','C','D'];
+      const indices = [0,1,2,3].sort(() => Math.random() - 0.5);
+      const reponsesEl = document.getElementById('reponses');
+
+      reponsesEl.innerHTML = indices.map((idx, pos) => `
+        <div class="reponse-btn" onclick="repondre(${idx})" data-idx="${idx}">
+          <div class="reponse-lettre">${lettres[pos]}</div>
+          <div class="reponse-texte">${q.rep[idx]}</div>
+        </div>
+      `).join('');
+
+      // Cacher feedback
+      document.getElementById('feedback-zone').classList.remove('visible');
+
+      // Indice Corey aléatoire (20% de chance)
+      if (Math.random() < 0.2 && questionIndex > 0) {
+        setTimeout(() => {
+          const indices_corey = [
+            "La réponse c'est pas la plus évidente.",
+            "Réfléchis à qui a réalisé ça.",
+            "C'est une question sur le tournage, pas le film.",
+            "Kubrick. La réponse est souvent Kubrick.",
+            "Pense à la date. Années 70 ou 80 ?",
+            "C'est une question de logique. Pas de mémoire.",
+            "J'aurais mis ma main à couper. Mais je te dis rien.",
+            "..."
+          ];
+          const zone = document.getElementById('bulles-rituel');
+          const div  = document.createElement('div');
+          div.className = 'bulle-pause corey';
+          div.innerHTML = `<div class="bulle-pause-texte">${indices_corey[Math.floor(Math.random()*indices_corey.length)]}</div>`;
+          zone.appendChild(div);
+          const toutes = zone.querySelectorAll('.bulle-pause');
+          if (toutes.length > 3) toutes[0].remove();
+        }, 3000);
+      }
+    }
+
+    function repondre(idx) {
+      if (reponduCette) return;
+      reponduCette = true;
+
+      const q       = questions[questionIndex];
+      const correct = idx === q.bonne;
+      const btns    = document.querySelectorAll('.reponse-btn');
+
+      btns.forEach(btn => {
+        btn.classList.add('disabled');
+        const btnIdx = parseInt(btn.dataset.idx);
+        if (btnIdx === q.bonne)  btn.classList.add('correct');
+        if (btnIdx === idx && idx !== q.c) btn.classList.add('incorrect');
+      });
+
+      if (correct) score++;
+
+      // Feedback
+      const feedbackZone = document.getElementById('feedback-zone');
+      document.getElementById('feedback-resultat').textContent =
+        correct ? '✓ CORRECT' : '✗ RATÉ';
+      document.getElementById('feedback-resultat').className =
+        `feedback-resultat ${correct ? 'ok' : 'ko'}`;
+      document.getElementById('feedback-explication').textContent =
+        q.explication || '';
+
+      // Indice Corey si disponible
+      if (q.corey) {
+        document.getElementById('corey-indice').style.display = 'flex';
+        document.getElementById('corey-indice-texte').textContent = q.corey;
+      } else {
+        document.getElementById('corey-indice').style.display = 'none';
+      }
+
+      feedbackZone.classList.add('visible');
+      feedbackZone.scrollIntoView({ behavior:'smooth' });
+    }
+
+    function questionSuivante() {
+      questionIndex++;
+      document.getElementById('feedback-zone').classList.remove('visible');
+      document.getElementById('question-card').scrollIntoView({ behavior:'smooth' });
+      setTimeout(afficherQuestion, 300);
+    }
+
+    function afficherResultat() {
+      document.getElementById('quiz-zone').classList.remove('visible');
+      document.getElementById('feedback-zone').classList.remove('visible');
+
+      const total   = 3;
+      const pct     = Math.round((score / total) * 100);
+      const couleur = score === 3 ? '#00ffc8' : score >= 2 ? '#ff8855' : '#ff4466';
+
+      document.getElementById('resultat-score').textContent = score;
+      // Reset avatars au neutre
+      const fr = document.getElementById('fred-quiz-avatar');
+      const cr = document.getElementById('corey-quiz-avatar');
+      const ct = document.getElementById('corey-quiz-texte');
+      if (fr) fr.src = score === 3 ? 'posters/fred_fier.png' : 'posters/fred.png';
+      if (cr) cr.src = score === 3 ? 'posters/corey-heureux.png' : score === 0 ? 'posters/corey-colere1.png' : 'posters/corey.png';
+      document.getElementById('resultat-score').style.color = couleur;
+      document.getElementById('resultat-score').style.textShadow = `0 0 20px ${couleur}`;
+      document.getElementById('resultat-total').textContent = `/ 3`;
+      document.getElementById('resultat-corey').textContent = getCoreyScore(score, total);
+
+      // Impact gameState
+      if (score >= 8) {
+        gameState.energie = Math.min(
+          gameState.energieMax||15,
+          (gameState.energie||0) + 3
+        );
+      } else if (score <= 3) {
+        gameState.energie = Math.max(0, (gameState.energie||0) - 1);
+      }
+
+      saveGame();
+
+      document.getElementById('resultat-final').classList.add('visible');
+      document.getElementById('resultat-final').scrollIntoView({ behavior:'smooth' });
+    }
+
+    function retournerAuJeu() {
+      gameState.phase_journee = 'apres_midi';
+      saveGame();
+      fadeOutMusic(() => {
+        document.body.classList.add('fade-out');
+        setTimeout(() => { window.location.href = 'game.html'; }, 500);
+      });
+    }
+
+    // ===================================================
+    // UI
+    // ===================================================
+
+    function updateUI() {
+      const gs = gameState;
+      document.getElementById('bar-money').style.width =
+        Math.min(100, ((gs.argent||0)/500)*100)+'%';
+      document.getElementById('val-money').textContent = (gs.argent||0)+'$';
+      document.getElementById('bar-legal').style.width = (gs.legalite||0)+'%';
+      document.getElementById('val-legal').textContent = (gs.legalite||0)+'%';
+      document.getElementById('bar-expo').style.width  = (gs.exposition||0)+'%';
+      document.getElementById('val-expo').textContent  = (gs.exposition||0)+'%';
+      const ePct = ((gs.energie||0)/(gs.energieMax||15))*100;
+      document.getElementById('bar-energy').style.width = ePct+'%';
+      document.getElementById('val-energy').textContent =
+        (gs.energie||0)+'/'+(gs.energieMax||15);
+    }
+
+    function saveGame() {
+      localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
+    }
+
+  </script>
+
+</body>
+</html>
