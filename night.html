@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rewind Paradise — La Nuit</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      color: #e8e8ff;
+      min-height: 100vh;
+      background: url('posters/nuit-fond.png') center/cover fixed;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(4,4,12,0.0);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* TOP */
+    .top-bar {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(4,4,12,0.90);
+      border-bottom: 1px solid #ffffff15;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .top-title {
+      font-size: 10px;
+      color: #9999bb;
+      letter-spacing: 4px;
+    }
+
+    .top-right { display: flex; align-items: center; gap: 12px; }
+    .top-info  { font-size: 9px; color: #333355; letter-spacing: 1px; }
+    .mute-btn  { font-size: 16px; cursor: pointer; opacity: 0.5; }
+
+    /* MAIN */
+    .main { padding: 0 0 100px; }
+
+    /* SCÈNE VERTICALE */
+    .scene-zone {
+      display: flex;
+      flex-direction: column;
+      padding: 8px 0;
+    }
+
+    /* Perso haut */
+    .perso-haut {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px 4px;
+    }
+
+    .bulle-haut {
+      flex: 1;
+      padding: 9px 13px;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.5;
+      background: rgba(8,8,30,0.92);
+      border: 1px solid #00b4ff40;
+      border-radius: 4px 12px 12px 12px;
+      color: #ffffff;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+
+    .bulle-haut.jackson-bulle {
+      background: rgba(20,12,4,0.92);
+      border-color: #cc880040;
+      color: #cc9966;
+    }
+
+    /* Perso bas */
+    .perso-bas {
+      display: flex;
+      align-items: center;
+      flex-direction: row-reverse;
+      gap: 10px;
+      padding: 4px 12px 8px;
+    }
+
+    .bulle-bas {
+      flex: 1;
+      padding: 9px 13px;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.5;
+      background: rgba(20,12,3,0.92);
+      border: 1px solid #ff2d7840;
+      border-radius: 12px 4px 12px 12px;
+      color: #ffdd99;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+
+    .scene-middle { min-height: 12px; }
+
+    .avatar-img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #080818;
+      flex-shrink: 0;
+    }
+
+    .avatar-img.fred-style    { border: 3px solid #00b4ff60; box-shadow: 0 0 16px #00b4ff30; }
+    .avatar-img.corey-style   { border: 3px solid #ff2d7860; box-shadow: 0 0 16px #ff2d7830; }
+    .avatar-img.jackson-style { border: 3px solid #cc880060; box-shadow: 0 0 16px #cc880030; }
+
+    .avatar-bloc {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .avatar-name {
+      font-size: 8px;
+      letter-spacing: 3px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .fred-name    { color: #00ddff; }
+    .corey-name   { color: #ff4488; }
+    .jackson-name { color: #cc9966; }
+
+    /* SÉPARATEUR */
+    .sep {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffffff10, transparent);
+      margin: 8px 14px;
+    }
+
+    /* JACKSON SECTION */
+    .jackson-section {
+      background: rgba(10,8,4,0.88);
+      border-top: 1px solid #cc880020;
+      border-bottom: 1px solid #cc880020;
+      padding: 12px 14px;
+      margin: 8px 0;
+    }
+
+    .jackson-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .jackson-avatar-sm {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #cc880050;
+      background: #080808;
+    }
+
+    .jackson-label {
+      font-size: 8px;
+      color: #cc8800;
+      letter-spacing: 3px;
+      margin-bottom: 3px;
+    }
+
+    .jackson-montant {
+      font-size: 16px;
+      color: #cc9966;
+      font-weight: bold;
+    }
+
+    /* BOUTON NUIT */
+    .btn-nuit {
+      margin: 12px 14px 0;
+      background: linear-gradient(180deg, #080612, #050410);
+      border: 1px solid #4444aa50;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px;
+      color: #8888bb;
+      letter-spacing: 3px;
+      font-family: 'Courier New', monospace;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-nuit::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(136,136,187,0.08), transparent);
+      animation: shimmerNuit 3s infinite;
+    }
+    @keyframes shimmerNuit { 0% { left:-60%; } 100% { left:160%; } }
+
+    .btn-lendemain {
+      margin: 8px 14px 0;
+      background: linear-gradient(180deg, #060616, #040410);
+      border: 2px solid #00b4ff50;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      color: #00b4ff;
+      letter-spacing: 3px;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      display: none;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 14px #00b4ff20;
+    }
+    .btn-lendemain::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,180,255,0.1), transparent);
+      animation: shimmerNuit 2.5s infinite;
+    }
+    .btn-lendemain.visible { display: block; }
+
+    /* NOTIF */
+    .notif {
+      display: none;
+      position: fixed;
+      top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #071a10;
+      border: 2px solid #00ffc8;
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-size: 11px;
+      color: #00ffc8;
+      letter-spacing: 1px;
+      z-index: 500;
+      text-align: center;
+      max-width: 85vw;
+      font-family: 'Courier New', monospace;
+    }
+    .notif.visible { display: block; animation: notifAnim 2.5s forwards; }
+    @keyframes notifAnim { 0%{opacity:0} 12%{opacity:1} 75%{opacity:1} 100%{opacity:0} }
+
+    /* BOTTOM */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(4,4,12,0.95);
+      border-top: 1px solid #ffffff10;
+      padding: 8px 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .gauge-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .gauge-icon { font-size: 14px; }
+    .gauge-bar-container { width: 100%; height: 4px; background: #0f0f20; border-radius: 2px; overflow: hidden; }
+    .gauge-bar { height: 100%; border-radius: 2px; }
+    .gauge-bar.money  { background: #00ffc8; }
+    .gauge-bar.legal  { background: #ff8855; }
+    .gauge-value { font-size: 10px; color: #666688; letter-spacing: 1px; }
+
+    .fade-out { animation: fadeOut 0.5s forwards; }
+    @keyframes fadeOut { from{opacity:1} to{opacity:0} }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="top-title">▓ LA NUIT ▓</div>
+    <div class="top-right">
+      <div class="top-info" id="top-info">Jour 1</div>
+      <div class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊</div>
+    </div>
+  </div>
+
+  <div class="main" id="main-content">
+
+    <!-- SCÈNE PRINCIPALE — Fred haut, Corey bas -->
+    <div class="scene-zone" id="scene-zone">
+
+      <div class="perso-haut" id="perso-haut">
+        <div class="avatar-bloc">
+          <img class="avatar-img fred-style" id="img-fred" src="posters/fred.png" alt=""
+               onerror="this.src='posters/fred.png'">
+          <div class="avatar-name fred-name">FRED</div>
+        </div>
+        <div class="bulle-haut" id="bulle-haut">&nbsp;</div>
+      </div>
+
+      <div class="scene-middle"></div>
+
+      <div class="perso-bas" id="perso-bas">
+        <div class="avatar-bloc">
+          <img class="avatar-img corey-style" id="img-corey" src="posters/corey-high.png" alt=""
+               onerror="this.src='posters/corey.png'">
+          <div class="avatar-name corey-name">COREY</div>
+        </div>
+        <div class="bulle-bas" id="bulle-bas">&nbsp;</div>
+      </div>
+
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- JACKSON SECTION -->
+    <div class="jackson-section" id="jackson-section" style="display:none;">
+      <div class="jackson-header">
+        <img class="jackson-avatar-sm" id="jackson-avatar-sm" src="posters/jackson.png" alt="Jackson"
+             onerror="this.style.opacity='0'">
+        <div>
+          <div class="jackson-label">JACKSON</div>
+          <div class="jackson-montant" id="jackson-montant">—</div>
+        </div>
+      </div>
+      <!-- Bulle Jackson -->
+      <div id="bulle-jackson" style="
+        font-size:12px;color:#cc9966;font-style:italic;
+        line-height:1.6;padding:6px 0;
+      ">—</div>
+    </div>
+
+    <!-- BOUTONS NUIT -->
+    <div id="btns-nuit" style="display:none;">
+      <div class="btn-nuit" id="btn-continuer" onclick="suiteDialogue()">
+        ▶ CONTINUER
+      </div>
+    </div>
+
+    <div class="btn-lendemain" id="btn-lendemain" onclick="allerAuLendemain()">
+      ▶ LE LENDEMAIN
+    </div>
+
+  </div>
+
+  <div class="notif" id="notif"></div>
+
+  <div class="bottom-bar">
+    <div class="gauge-item">
+      <span class="gauge-icon">💰</span>
+      <div class="gauge-bar-container"><div class="gauge-bar money" id="bar-money" style="width:40%"></div></div>
+      <span class="gauge-value" id="val-money">—</span>
+    </div>
+    <div class="gauge-item">
+      <span class="gauge-icon">🎬</span>
+      <div class="gauge-bar-container"><div class="gauge-bar legal" id="bar-legal" style="width:0%"></div></div>
+      <span class="gauge-value" id="val-legal">—</span>
+    </div>
+  </div>
+
+  <audio id="bg-music" loop src="music/night.mp3"></audio>
+
+  <script>
+
+    // ===================================================
+    // STATE
+    // ===================================================
+    let gameState = {};
+    let isMuted   = false;
+    let music     = null;
+    let sceneIndex = 0;
+    let scenesNuit = [];
+
+    // ===================================================
+    // AVATARS
+    // ===================================================
+    const COREY_AV = {
+      neutre:'posters/corey.png', high:'posters/corey-high.png',
+      illumine:'posters/corey-illumine.png', pensif:'posters/corey-pensif.png',
+      conspirationiste:'posters/corey-conspirationiste.png',
+      ecarquille:'posters/corey-ecarquille.png', dort:'posters/corey-dort.png',
+      mange:'posters/corey-mange.png', depite:'posters/corey-depite.png',
+      mcqueen:'posters/corey-mcqueen.png', fatigue:'posters/corey-fatigue.png',
+      deniro:'posters/corey-deniro.png', peur:'posters/corey-peur.png',
+      joie:'posters/corey-heureux.png', tete:'posters/corey-tete.png',
+      ferris:'posters/corey-ferris.png', contrarie:'posters/corey-contrarie.png',
+    };
+    const FRED_AV = {
+      neutre:'posters/fred.png', lit:'posters/fred.png',
+      sceptique:'posters/fred_doute.png', tranquille:'posters/fred-tranquille.png',
+      doute:'posters/fred_doute.png', attentif:'posters/fred-attentif.png',
+      soupir:'posters/fred-soupir.png', non:'posters/fred-non.png',
+      amuse:'posters/fred-amuse.png', concentre:'posters/fred-concentre.png',
+      tete:'posters/fred-tete.png', observateur:'posters/fred-observateur.png',
+    };
+    const JACKSON_AV = {
+      neutre:'posters/jackson.png',
+      cool:'posters/jackson-cool.png',
+      tendu:'posters/jackson-tendu.png',
+      sourire:'posters/jackson-sourire.png',
+    };
+
+    function setFred(h)    { document.getElementById('img-fred').src   = FRED_AV[h]    || FRED_AV.neutre; }
+    function setCorey(h)   { document.getElementById('img-corey').src  = COREY_AV[h]   || COREY_AV.neutre; }
+    function setJackson(h) { document.getElementById('jackson-avatar-sm').src = JACKSON_AV[h] || JACKSON_AV.neutre; }
+
+    function setBulleHaut(texte, isJackson) {
+      const b = document.getElementById('bulle-haut');
+      b.textContent = texte;
+      b.className = isJackson ? 'bulle-haut jackson-bulle' : 'bulle-haut';
+    }
+    function setBulleBas(texte)  { document.getElementById('bulle-bas').textContent = texte; }
+
+    // ===================================================
+    // DIALOGUES — TOUTES LES SCÈNES DE LA NUIT
+    // ===================================================
+
+    const SCENES_NUIT = [
+
+      // ===================================================
+      // OUVERTURE — APRÈS LE MICRO-MÉTRAGE
+      // ===================================================
+      {
+        id: 'ouverture',
+        dialogues: [
+          [
+            {perso:'fred',  av:'tranquille', texte:"C'est fini."},
+            {perso:'corey', av:'high',       texte:"C'est fini."},
+            {perso:'fred',  av:'tranquille', texte:"Bonne nuit."},
+            {perso:'corey', av:'pensif',     texte:"Attends."},
+            {perso:'fred',  av:'doute',      texte:"Quoi ?"},
+            {perso:'corey', av:'high',       texte:"Je sais plus quel jour on est."},
+            {perso:'fred',  av:'sceptique',  texte:"C'est bon signe ou mauvais signe ?"},
+            {perso:'corey', av:'pensif',     texte:"C'est un signe."},
+          ],
+          [
+            {perso:'corey', av:'high',       texte:"T'as vu la coupe qu'on a faite ce soir ?"},
+            {perso:'fred',  av:'tranquille', texte:"J'étais là."},
+            {perso:'corey', av:'illumine',   texte:"Cutter va noter haut."},
+            {perso:'fred',  av:'doute',      texte:"Peut-être."},
+            {perso:'corey', av:'ecarquille', texte:"Sûrement."},
+            {perso:'fred',  av:'tranquille', texte:"On verra."},
+            {perso:'corey', av:'high',       texte:"On verra."},
+          ],
+          [
+            {perso:'fred',  av:'lit',        texte:"..."},
+            {perso:'corey', av:'pensif',     texte:"T'es réveillé ?"},
+            {perso:'fred',  av:'sceptique',  texte:"Je lisais."},
+            {perso:'corey', av:'high',       texte:"T'arrives à lire comme ça ?"},
+            {perso:'fred',  av:'tranquille', texte:"Je lis pas vraiment. Je tiens le livre."},
+            {perso:'corey', av:'illumine',   texte:"C'est déjà quelque chose."},
+          ],
+        ],
+      },
+
+      // ===================================================
+      // MÉLANCOLIQUE — ET SI ON FERME
+      // ===================================================
+      {
+        id: 'melancolie',
+        dialogues: [
+          [
+            {perso:'corey', av:'pensif',     texte:"Et si on ferme ?"},
+            {perso:'fred',  av:'tranquille', texte:"On ferme pas."},
+            {perso:'corey', av:'conspirationiste', texte:"Mais si on ferme."},
+            {perso:'fred',  av:'sceptique',  texte:"On ferme pas Corey."},
+            {perso:'corey', av:'depite',     texte:"Galaxy Video a ouvert. Les gens vont là-bas."},
+            {perso:'fred',  av:'doute',      texte:"Certains."},
+            {perso:'corey', av:'pensif',     texte:"Et les nôtres ?"},
+            {perso:'fred',  av:'tranquille', texte:"Les nôtres viennent ici."},
+            {perso:'corey', av:'high',       texte:"Ouais."},
+            {perso:'fred',  av:'tranquille', texte:"Ouais."},
+          ],
+          [
+            {perso:'corey', av:'pensif',     texte:"Et si Coppola arrête ?"},
+            {perso:'fred',  av:'sceptique',  texte:"Il arrête pas."},
+            {perso:'corey', av:'depite',     texte:"Il a arrêté une fois."},
+            {perso:'fred',  av:'doute',      texte:"Il est revenu."},
+            {perso:'corey', av:'conspirationiste', texte:"Et si cette fois c'est différent."},
+            {perso:'fred',  av:'tranquille', texte:"On fait nos micro-métrages. Lui il fait ses films."},
+            {perso:'corey', av:'illumine',   texte:"On est pareils."},
+            {perso:'fred',  av:'amuse',      texte:"On est pas pareils."},
+            {perso:'corey', av:'high',       texte:"Artisans du cinéma."},
+            {perso:'fred',  av:'sceptique',  texte:"Lui avec un budget."},
+            {perso:'corey', av:'pensif',     texte:"C'est un détail."},
+          ],
+          [
+            {perso:'corey', av:'depite',     texte:"Personne regarde nos films."},
+            {perso:'fred',  av:'tranquille', texte:"Si."},
+            {perso:'corey', av:'pensif',     texte:"Qui ?"},
+            {perso:'fred',  av:'tranquille', texte:"Cutter."},
+            {perso:'corey', av:'ecarquille', texte:"Cutter c'est une personne."},
+            {perso:'fred',  av:'tranquille', texte:"C'est suffisant."},
+            {perso:'corey', av:'high',       texte:"..."},
+            {perso:'corey', av:'illumine',   texte:"C'est suffisant."},
+          ],
+          [
+            {perso:'corey', av:'fatigue',    texte:"On aurait pu faire autre chose."},
+            {perso:'fred',  av:'doute',      texte:"Quoi par exemple."},
+            {perso:'corey', av:'pensif',     texte:"Je sais pas. Autre chose."},
+            {perso:'fred',  av:'tranquille', texte:"On fait des films."},
+            {perso:'corey', av:'high',       texte:"Des micro-métrages."},
+            {perso:'fred',  av:'tranquille', texte:"C'est des films."},
+            {perso:'corey', av:'joie',       texte:"Ouais. C'est des films."},
+          ],
+        ],
+      },
+
+      // ===================================================
+      // JACKSON ARRIVE
+      // ===================================================
+      {
+        id: 'jackson',
+        avecJackson: true,
+        dialogues: [
+          [
+            {perso:'corey', av:'ecarquille', texte:"Jackson."},
+            {perso:'fred',  av:'tranquille', texte:"Je sais."},
+            {perso:'jackson', av:'cool',     texte:"Bonsoir messieurs."},
+            {perso:'corey', av:'high',       texte:"T'as une clé."},
+            {perso:'jackson', av:'cool',     texte:"Depuis le début."},
+            {perso:'fred',  av:'sceptique',  texte:"On t'a jamais donné de clé."},
+            {perso:'jackson', av:'sourire',  texte:"..."},
+          ],
+          [
+            {perso:'jackson', av:'cool',     texte:"La soirée était bonne ?"},
+            {perso:'corey', av:'illumine',   texte:"La coupe était parfaite."},
+            {perso:'fred',  av:'doute',      texte:"Elle était bien."},
+            {perso:'jackson', av:'cool',     texte:"Cutter va passer."},
+            {perso:'corey', av:'ecarquille', texte:"Quand ?"},
+            {perso:'jackson', av:'sourire',  texte:"Quand il sera prêt."},
+            {perso:'fred',  av:'attentif',   texte:"Tu le connais ?"},
+            {perso:'jackson', av:'cool',     texte:"Je connais beaucoup de monde."},
+          ],
+          [
+            {perso:'jackson', av:'tendu',    texte:"DiMaggio a demandé des nouvelles."},
+            {perso:'corey', av:'conspirationiste', texte:"De nous ?"},
+            {perso:'jackson', av:'cool',     texte:"Du travail."},
+            {perso:'fred',  av:'concentre',  texte:"Il a dit quoi."},
+            {perso:'jackson', av:'cool',     texte:"Il a dit continuez."},
+            {perso:'corey', av:'high',       texte:"C'est bien ou c'est mal."},
+            {perso:'jackson', av:'sourire',  texte:"Avec DiMaggio c'est toujours bien."},
+            {perso:'fred',  av:'sceptique',  texte:"T'en sais rien."},
+            {perso:'jackson', av:'cool',     texte:"Non."},
+          ],
+          [
+            {perso:'corey', av:'conspirationiste', texte:"Ramon travaille pour DiMaggio ?"},
+            {perso:'jackson', av:'cool',     texte:"..."},
+            {perso:'corey', av:'ecarquille', texte:"C'est oui."},
+            {perso:'jackson', av:'sourire',  texte:"C'est une question à pas poser."},
+            {perso:'fred',  av:'observateur',texte:"Mais c'est oui."},
+            {perso:'jackson', av:'cool',     texte:"Continuez à bien faire votre travail."},
+            {perso:'corey', av:'high',       texte:"C'est un oui."},
+          ],
+        ],
+      },
+
+      // ===================================================
+      // CANOPI — LA NUIT ILS EN PARLENT
+      // ===================================================
+      {
+        id: 'canopi_nuit',
+        dialogues: [
+          [
+            {perso:'corey', av:'conspirationiste', texte:"Canopi a un numéro de téléphone ?"},
+            {perso:'fred',  av:'tranquille', texte:"Tout le monde a un numéro."},
+            {perso:'corey', av:'pensif',     texte:"Il appelle jamais. Il vient."},
+            {perso:'fred',  av:'sceptique',  texte:"C'est son méthode."},
+            {perso:'corey', av:'high',       texte:"Il vient chaque jour pour Ghost."},
+            {perso:'fred',  av:'doute',      texte:"Il vient pas pour Ghost."},
+            {perso:'corey', av:'ecarquille', texte:"Je sais."},
+            {perso:'fred',  av:'tranquille', texte:"Je sais."},
+          ],
+          [
+            {perso:'fred',  av:'lit',        texte:"Canopi a regardé la réserve encore aujourd'hui."},
+            {perso:'corey', av:'conspirationiste', texte:"Il regarde toujours la réserve."},
+            {perso:'fred',  av:'concentre',  texte:"Cette fois c'était différent."},
+            {perso:'corey', av:'peur',       texte:"Comment différent."},
+            {perso:'fred',  av:'tranquille', texte:"Il a pas regardé. Il a calculé."},
+            {perso:'corey', av:'high',       texte:"Calculé quoi."},
+            {perso:'fred',  av:'sceptique',  texte:"L'espace. Le volume."},
+            {perso:'corey', av:'pensif',     texte:"..."},
+            {perso:'corey', av:'conspirationiste', texte:"Il cherche les cassettes."},
+            {perso:'fred',  av:'tranquille', texte:"Il sait qu'elles sont là."},
+          ],
+          [
+            {perso:'corey', av:'high',       texte:"Et si on donnait Ghost à Canopi."},
+            {perso:'fred',  av:'non',        texte:"Non."},
+            {perso:'corey', av:'pensif',     texte:"Il vient tous les jours pour ça."},
+            {perso:'fred',  av:'sceptique',  texte:"Il vient tous les jours pour nous surveiller."},
+            {perso:'corey', av:'illumine',   texte:"Et si on lui donnait Ghost. Et qu'il arrêtait de venir."},
+            {perso:'fred',  av:'doute',      texte:"Il arrêterait pas."},
+            {perso:'corey', av:'depite',     texte:"Non."},
+            {perso:'fred',  av:'tranquille', texte:"Non."},
+          ],
+        ],
+      },
+
+      // ===================================================
+      // DRÔLE — COREY FAIT SES SCÈNES
+      // ===================================================
+      {
+        id: 'comique',
+        dialogues: [
+          [
+            {perso:'corey', av:'mcqueen',    texte:"..."},
+            {perso:'fred',  av:'sceptique',  texte:"T'es qui là."},
+            {perso:'corey', av:'mcqueen',    texte:"Bullitt. Steve McQueen. L'homme le plus cool de l'histoire du cinéma."},
+            {perso:'fred',  av:'amuse',      texte:"T'as l'air d'avoir trop fumé."},
+            {perso:'corey', av:'high',       texte:"McQueen fumait."},
+            {perso:'fred',  av:'tranquille', texte:"McQueen courait. Conduisait. Agissait."},
+            {perso:'corey', av:'mcqueen',    texte:"Il attendait aussi. L'attente c'est de l'action."},
+          ],
+          [
+            {perso:'corey', av:'deniro',     texte:"You talkin' to me ?"},
+            {perso:'fred',  av:'sceptique',  texte:"Non."},
+            {perso:'corey', av:'deniro',     texte:"You talkin' to me ?"},
+            {perso:'fred',  av:'tranquille', texte:"Corey."},
+            {perso:'corey', av:'deniro',     texte:"You talkin' to me ?"},
+            {perso:'fred',  av:'amuse',      texte:"T'as compté combien de fois t'as fait ça ce mois-ci."},
+            {perso:'corey', av:'high',       texte:"DeNiro a fait cette scène 127 fois."},
+            {perso:'fred',  av:'sceptique',  texte:"C'est Kubrick les 127 prises."},
+            {perso:'corey', av:'pensif',     texte:"Kubrick et DeNiro dans le même film. Le monde aurait explosé."},
+          ],
+          [
+            {perso:'corey', av:'ferris',     texte:"La vie va vite. Si tu t'arrêtes pas pour regarder tu rates tout."},
+            {perso:'fred',  av:'lit',        texte:"Mmh."},
+            {perso:'corey', av:'high',       texte:"T'as même pas levé les yeux."},
+            {perso:'fred',  av:'amuse',      texte:"Je regardais."},
+            {perso:'corey', av:'illumine',   texte:"T'avais la tête dans ton livre."},
+            {perso:'fred',  av:'tranquille', texte:"Je regardais les mots. C'est regarder."},
+            {perso:'corey', av:'pensif',     texte:"..."},
+            {perso:'corey', av:'high',       texte:"Philosophie."},
+          ],
+          [
+            {perso:'corey', av:'conspirationiste', texte:"Tu crois que Jackson travaille pour Brando."},
+            {perso:'fred',  av:'sceptique',  texte:"Brando est mort."},
+            {perso:'corey', av:'ecarquille', texte:"Exactement ce que quelqu'un qui travaille pour Brando dirait."},
+            {perso:'fred',  av:'doute',      texte:"C'est un argument ?"},
+            {perso:'corey', av:'high',       texte:"Jackson arrive toujours la nuit. Brando aimait la nuit."},
+            {perso:'fred',  av:'amuse',      texte:"Arrête."},
+            {perso:'corey', av:'conspirationiste', texte:"Brando aimait les vidéoclubs."},
+            {perso:'fred',  av:'non',        texte:"Brando aimait pas les vidéoclubs."},
+            {perso:'corey', av:'pensif',     texte:"T'en sais rien."},
+          ],
+          [
+            {perso:'corey', av:'high',       texte:"Si j'avais un dollar pour chaque fois que Canopi prend Ghost."},
+            {perso:'fred',  av:'tranquille', texte:"T'aurais beaucoup de dollars."},
+            {perso:'corey', av:'illumine',   texte:"T'as calculé."},
+            {perso:'fred',  av:'sceptique',  texte:"Un peu."},
+            {perso:'corey', av:'ecarquille', texte:"Combien."},
+            {perso:'fred',  av:'amuse',      texte:"Assez pour commander du stock."},
+            {perso:'corey', av:'high',       texte:"On devrait lui facturer Canopi."},
+            {perso:'fred',  av:'tranquille', texte:"Il vient pour rembobiner. Il repose jamais rembobiné."},
+            {perso:'corey', av:'depite',     texte:"On devrait lui facturer le rembobinage."},
+          ],
+        ],
+      },
+
+      // ===================================================
+      // SICILIAN GOLD — ILS FUMENT
+      // ===================================================
+      {
+        id: 'weed_nuit',
+        dialogues: [
+          [
+            {perso:'corey', av:'high',       texte:"Le Sicilian Gold cette nuit. Vraiment bon."},
+            {perso:'fred',  av:'tranquille', texte:"Mmh."},
+            {perso:'corey', av:'illumine',   texte:"Tu sens la différence avec le mois dernier ?"},
+            {perso:'fred',  av:'doute',      texte:"Un peu."},
+            {perso:'corey', av:'high',       texte:"Jackson a dit que c'était le meilleur stock depuis deux ans."},
+            {perso:'fred',  av:'sceptique',  texte:"Jackson dit ça pour vendre."},
+            {perso:'corey', av:'pensif',     texte:"Ou il dit la vérité."},
+            {perso:'fred',  av:'tranquille', texte:"Les deux peuvent être vrais."},
+          ],
+          [
+            {perso:'corey', av:'high',       texte:"T'as une théorie sur pourquoi ça s'appelle Sicilian Gold."},
+            {perso:'fred',  av:'lit',        texte:"Non."},
+            {perso:'corey', av:'conspirationiste', texte:"Moi j'ai une théorie."},
+            {perso:'fred',  av:'doute',      texte:"Je l'entends."},
+            {perso:'corey', av:'illumine',   texte:"DiMaggio vient de Sicile."},
+            {perso:'fred',  av:'sceptique',  texte:"DiMaggio c'est un nom américain."},
+            {perso:'corey', av:'high',       texte:"Joe DiMaggio. Origine sicilienne."},
+            {perso:'fred',  av:'amuse',      texte:"On parle pas du vrai DiMaggio."},
+            {perso:'corey', av:'pensif',     texte:"T'en sais rien."},
+          ],
+          [
+            {perso:'fred',  av:'tranquille', texte:"On devrait pas vendre ça aux clients."},
+            {perso:'corey', av:'high',       texte:"On vend pas. On offre."},
+            {perso:'fred',  av:'sceptique',  texte:"On facture quinze dollars."},
+            {perso:'corey', av:'illumine',   texte:"C'est un service. Pas une vente."},
+            {perso:'fred',  av:'doute',      texte:"La différence est subtile pour Canopi."},
+            {perso:'corey', av:'conspirationiste', texte:"Canopi a jamais eu le service."},
+            {perso:'fred',  av:'tranquille', texte:"Exactement."},
+          ],
+        ],
+      },
+
+      // ===================================================
+      // FIN DE NUIT — COREY S'ENDORT
+      // ===================================================
+      {
+        id: 'fin_nuit',
+        dialogues: [
+          [
+            {perso:'corey', av:'fatigue',    texte:"..."},
+            {perso:'fred',  av:'lit',        texte:"Corey."},
+            {perso:'corey', av:'dort',       texte:"..."},
+            {perso:'fred',  av:'tranquille', texte:"Bonne nuit."},
+          ],
+          [
+            {perso:'corey', av:'fatigue',    texte:"Je dors pas. Je réfléchis."},
+            {perso:'fred',  av:'amuse',      texte:"T'as les yeux fermés."},
+            {perso:'corey', av:'fatigue',    texte:"C'est pour mieux réfléchir."},
+            {perso:'fred',  av:'tranquille', texte:"Bonne nuit Corey."},
+            {perso:'corey', av:'dort',       texte:"..."},
+          ],
+          [
+            {perso:'corey', av:'pensif',     texte:"On fait des bons films."},
+            {perso:'fred',  av:'tranquille', texte:"Ouais."},
+            {perso:'corey', av:'fatigue',    texte:"Des vrais films."},
+            {perso:'fred',  av:'tranquille', texte:"Dors."},
+            {perso:'corey', av:'dort',       texte:"..."},
+            {perso:'fred',  av:'lit',        texte:"..."},
+          ],
+        ],
+      },
+
+    ];
+
+    // ===================================================
+    // MUSIQUE
+    // ===================================================
+    function initMusic() {
+      music   = document.getElementById('bg-music');
+      isMuted = localStorage.getItem('rewind_muted') === 'true';
+      music.volume = 0.2;
+      music.muted  = isMuted;
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
+      music.play().catch(() => document.addEventListener('touchstart', () => music.play(), {once:true}));
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      music.muted = isMuted;
+      localStorage.setItem('rewind_muted', isMuted);
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
+    }
+
+    function fadeOutMusic(cb) {
+      if (!music || isMuted) { if (cb) cb(); return; }
+      let v = music.volume;
+      const f = setInterval(() => {
+        v = Math.max(0, v - 0.04);
+        music.volume = v;
+        if (v <= 0) { clearInterval(f); music.pause(); if (cb) cb(); }
+      }, 50);
+    }
+
+    // ===================================================
+    // INIT
+    // ===================================================
+    window.onload = function() {
+      initMusic();
+      const save = localStorage.getItem('rewindParadise_save');
+      if (!save) { window.location.href = 'game.html'; return; }
+      try { gameState = JSON.parse(save); } catch(e) { window.location.href = 'game.html'; return; }
+
+      document.getElementById('top-info').textContent = `Jour ${gameState.jour||1} — Nuit`;
+      updateUI();
+
+      // Construire les scènes de la nuit
+      construireNuit();
+    };
+
+    // ===================================================
+    // CONSTRUCTION DE LA NUIT
+    // ===================================================
+    function construireNuit() {
+      // Choisir 4-5 scènes parmi toutes
+      const toutes = [...SCENES_NUIT];
+      // Mélanger sauf fin_nuit qui est toujours la dernière
+      const finNuit = toutes.find(s => s.id === 'fin_nuit');
+      const reste   = toutes.filter(s => s.id !== 'fin_nuit');
+
+      // Toujours : ouverture + jackson + 2 aléatoires + fin
+      const ouverture = reste.find(s => s.id === 'ouverture');
+      const jackson   = reste.find(s => s.id === 'jackson');
+      const autres    = reste.filter(s => !['ouverture','jackson'].includes(s.id));
+
+      // Mélanger autres
+      for (let i = autres.length-1; i > 0; i--) {
+        const j = Math.floor(Math.random()*(i+1));
+        [autres[i], autres[j]] = [autres[j], autres[i]];
+      }
+
+      scenesNuit = [ouverture, jackson, autres[0], autres[1], finNuit].filter(Boolean);
+      sceneIndex = 0;
+
+      lancerSceneSuivante();
+    }
+
+    // ===================================================
+    // FLUX
+    // ===================================================
+    let dialogueIndex = 0;
+    let sceneActuelle = null;
+    let ligneActuelle = 0;
+    let lignes        = [];
+
+    function lancerSceneSuivante() {
+      if (sceneIndex >= scenesNuit.length) {
+        finirNuit();
+        return;
+      }
+
+      sceneActuelle = scenesNuit[sceneIndex];
+      sceneIndex++;
+
+      // Choisir un dialogue aléatoire dans la scène
+      const pool = sceneActuelle.dialogues;
+      lignes = pool[Math.floor(Math.random() * pool.length)];
+      ligneActuelle = 0;
+
+      // Jackson visible si scène avec Jackson
+      if (sceneActuelle.avecJackson) {
+        afficherJackson();
+      }
+
+      afficherLigneSuivante();
+    }
+
+    function afficherJackson() {
+      const section = document.getElementById('jackson-section');
+      section.style.display = 'block';
+      // Collecte Jackson
+      const collecte = Math.floor((gameState.argent||200) * 0.15);
+      gameState.argent = Math.max(0, (gameState.argent||0) - collecte);
+      document.getElementById('jackson-montant').textContent = `-${collecte}$ collectés`;
+      document.getElementById('bulle-jackson').textContent = 'Il entre sans frapper.';
+      saveGame();
+      updateUI();
+    }
+
+    function afficherLigneSuivante() {
+      if (ligneActuelle >= lignes.length) {
+        // Scène terminée — bouton continuer ou fin
+        const btns = document.getElementById('btns-nuit');
+        btns.style.display = 'block';
+        return;
+      }
+
+      const l = lignes[ligneActuelle];
+      ligneActuelle++;
+
+      // Mettre à jour avatars et bulles
+      if (l.perso === 'fred') {
+        setFred(l.av || 'neutre');
+        setBulleHaut(l.texte, false);
+      } else if (l.perso === 'corey') {
+        setCorey(l.av || 'neutre');
+        setBulleBas(l.texte);
+      } else if (l.perso === 'jackson') {
+        setJackson(l.av || 'cool');
+        setBulleHaut(l.texte, true);
+        document.getElementById('bulle-jackson').textContent = l.texte;
+      }
+
+      const delai = Math.min(l.texte.length * 48 + 500, 2400);
+      setTimeout(afficherLigneSuivante, delai);
+    }
+
+    function suiteDialogue() {
+      document.getElementById('btns-nuit').style.display = 'none';
+      lancerSceneSuivante();
+    }
+
+    function finirNuit() {
+      // Corey dort, Fred lit
+      setCorey('dort');
+      setFred('lit');
+      setBulleHaut('...', false);
+      setBulleBas('...');
+
+      setTimeout(() => {
+        document.getElementById('btn-lendemain').classList.add('visible');
+      }, 1200);
+    }
+
+    // ===================================================
+    // NAVIGATION
+    // ===================================================
+    function allerAuLendemain() {
+      // Incrémenter le jour
+      gameState.jour = (gameState.jour||1) + 1;
+      gameState.semaine = Math.ceil(gameState.jour / 7);
+      gameState.phase_journee = 'matin';
+      gameState.ghost_loue_aujourd_hui = false;
+      gameState.clients_vus_matin  = [];
+      gameState.clients_vus_apmidi = [];
+      if (gameState.energieBonusTomorrow) {
+        gameState.energie = Math.min(
+          gameState.energieMax||15,
+          (gameState.energie||0) + gameState.energieBonusTomorrow
+        );
+        gameState.energieBonusTomorrow = 0;
+      }
+      saveGame();
+      fadeOutMusic(() => {
+        document.body.classList.add('fade-out');
+        setTimeout(() => { window.location.href = 'game.html'; }, 500);
+      });
+    }
+
+    // ===================================================
+    // UI
+    // ===================================================
+    function updateUI() {
+      const gs = gameState;
+      document.getElementById('bar-money').style.width = Math.min(100,((gs.argent||0)/500)*100)+'%';
+      document.getElementById('val-money').textContent = (gs.argent||0)+'$';
+      document.getElementById('bar-legal').style.width = (gs.legalite||0)+'%';
+      document.getElementById('val-legal').textContent = (gs.legalite||0)+'%';
+    }
+
+    function showNotif(msg) {
+      const n = document.getElementById('notif');
+      n.textContent = msg;
+      n.className = 'notif visible';
+      setTimeout(() => { n.className = 'notif'; }, 2500);
+    }
+
+    function saveGame() {
+      if (typeof ACHIEVEMENTS !== 'undefined') ACHIEVEMENTS.checkAndNotify(gameState);
+      localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
+    }
+
+  </script>
+</body>
+</html>
