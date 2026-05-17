@@ -1116,7 +1116,74 @@
       {id:'indecise', name:'DAME INDÉCISE',mood:'🤔', aime:['ghost','dirty_dancing','cinema_paradiso','forrest','pretty_woman','thelma'], deteste:['halloween','alien','exorciste','full_metal'], accepte:['drame','comedie_romantique','rarites'], energie:1, isIndecise:true,
         onServi:(gs,film,prix)=>{
           if(film.genre==='drame'||film.genre==='comedie_romantique'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.reputation=Math.min(5,gs.reputation+0.5);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "C'est exactement ça."`,positif:true};}
-          return{msg:'"Non non. C\'est pas ça."',positif:false};}}
+          return{msg:'"Non non. C\'est pas ça."',positif:false};}},
+
+      {id:'amie', name:"L'AMIE", mood:'😊', aime:['ghost','dirty_dancing','thelma','forrest','cinema_paradiso'], deteste:[], accepte:['drame','comedie_romantique'], energie:0, isPote:true,
+        onServi:(gs,film,prix)=>{
+          if(Math.random()<0.3&&(film.genre==='drame'||film.genre==='comedie_romantique')){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Elle repart avec un sourire.`,positif:true};}
+          gs.reputation=Math.min(5,(gs.reputation||3)+0.2);return{msg:"Elle repart sans louer.",positif:true};}},
+
+      {id:'cowboy', name:'LE COWBOY', mood:'🤠', aime:['shane','magnificent','dollars','high_noon','outlaw'], deteste:['roi_lion','dirty_dancing','ghost'], accepte:['western'], energie:1, weedDemande:true,
+        onServi:(gs,film,prix)=>{
+          if(film.genre==='western'){gs.stock.western=Math.max(0,(gs.stock.western||3)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Beaucoup obligé, partenaire."`,positif:true};}
+          return{msg:'"Ce film-là, pas intéressé, fils."',positif:false};}},
+
+      {id:'debbie', name:'DEBBIE', mood:'🎙️', aime:['blow_out','conversation','blow_up','rear_window','das_boot'], deteste:['roi_lion','aladdin'], accepte:['rarites'], energie:1, isPote:true,
+        onServi:(gs,film,prix)=>{
+          if(['blow_out','conversation','blow_up','rear_window','das_boot'].includes(film.id)){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;gs.client_debbie_son_count=(gs.client_debbie_son_count||0)+1;return{msg:`+${prix||film.prix}$ — "La prise de son est remarquable."`,positif:true};}
+          else if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Elle prend.`,positif:true};}
+          return{msg:'Elle repart. Pas assez de travail sur le son.',positif:false};}},
+
+      {id:'femme', name:'LA CLIENTE', mood:'👩‍💼', aime:['thelma','blow_out','short_cuts','forrest','taxi_driver'], deteste:[], accepte:['drame','rarites'], energie:1,
+        onServi:(gs,film,prix)=>{
+          if(film.genre==='drame'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Rapide.`,positif:true};}
+          return{msg:"Pas ce qu'elle cherche.",positif:false};}},
+
+      {id:'gordon', name:'GORDON', mood:'🎬', aime:['blow_out','suspiria','blue_velvet','evil_dead','shining'], deteste:['roi_lion','dirty_dancing','die_hard','commando'], accepte:['rarites','horreur'], energie:2,
+        onServi:(gs,film,prix)=>{
+          if(film.genre==='rarites'||film.genre==='horreur'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Mouais."`,positif:true};}
+          return{msg:'Gordon repart.',positif:false};}},
+
+      {id:'goth', name:'LA GOTH', mood:'🖤', aime:['dirty_dozen','flashdance','grease','dirty_dancing','pretty_woman'], deteste:[], accepte:['comedie_romantique'], energie:1,
+        onServi:(gs,film,prix)=>{
+          if(film.genre==='comedie_romantique'){gs.stock.comedie_romantique=Math.max(0,(gs.stock.comedie_romantique||5)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Elle prend discrètement.`,positif:true};}
+          return{msg:'Elle repart.',positif:false};}},
+
+      {id:'mere', name:'MADAME CHEN', mood:'😅', aime:['halloween','alien','exorciste','shining','evil_dead'], deteste:['roi_lion','aladdin'], accepte:['horreur'], energie:1,
+        onServi:(gs,film,prix)=>{
+          if(film.genre==='horreur'){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "C'est un documentaire ?"`,positif:true};}
+          return{msg:'Elle repart.',positif:false};}},
+
+      {id:'muscle', name:'LE MUSCLE', mood:'💪', aime:['arme_fatale','predator','terminator','die_hard','commando','robocop'], deteste:['ghost','pretty_woman','dirty_dancing','kramer','rain_man'], accepte:['action'], energie:1,
+        onServi:(gs,film,prix)=>{
+          if(film.genre==='action'){gs.stock.action=Math.max(0,gs.stock.action-1);gs.argent+=prix||film.prix;gs.client_muscle_positif=(gs.client_muscle_positif||0)+1;return{msg:`+${prix||film.prix}$ — Il approuve.`,positif:true};}
+          gs.reputation=Math.max(0,(gs.reputation||3)-0.3);return{msg:'Il pose la cassette et repart.',positif:false};}},
+
+      {id:'prof', name:'M. ARCAND', mood:'📚', aime:['cinema_paradiso','la_strada','ran','das_boot','blow_up'], deteste:['die_hard','commando','arme_fatale'], accepte:['rarites'], energie:2,
+        onServi:(gs,film,prix)=>{
+          if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Pas mal."`,positif:true};}
+          return{msg:'"Décevant."',positif:false};}},
+
+      {id:'sam', name:'SAM', mood:'😎', aime:['taxi_driver','arme_fatale','predator','blow_out','apocalypse_now'], deteste:[], accepte:['action','drame','rarites'], energie:1, isPote:true,
+        onServi:(gs,film,prix)=>{
+          gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;
+          return{msg:`+${prix||film.prix}$ — "Je vais répéter les répliques."`,positif:true};}},
+
+      {id:'sf', name:'LE FAN SF', mood:'👽', aime:['blade_runner','2001','close_encounters','escape_ny','alien','the_fly_new'], deteste:['dirty_dancing','pretty_woman','roi_lion'], accepte:['sf','horreur'], energie:1,
+        onServi:(gs,film,prix)=>{
+          if(['blade_runner','2001','close_encounters','escape_ny','alien','the_fly_new','predator','terminator'].includes(film.id)){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Ils nous surveillent."`,positif:true};}
+          return{msg:'Il repart. Signal codé.',positif:false};}},
+
+      {id:'sensible', name:'LE SENSIBLE', mood:'🥹', aime:['ghost','cinema_paradiso','forrest','la_strada','thelma'], deteste:[], accepte:['drame','rarites'], energie:1,
+        onServi:(gs,film,prix)=>{
+          if(film.genre==='drame'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;gs.client_sensible_pleure=(gs.client_sensible_pleure||0)+1;return{msg:`+${prix||film.prix}$ — Une larme.`,positif:true};}
+          return{msg:'Il repart. Presque en pleurant.',positif:false};}},
+
+      {id:'tim', name:'TIM', mood:'🧪', aime:['evil_dead','thing','alien','shining','halloween'], deteste:['ghost','dirty_dancing'], accepte:['horreur','rarites'], energie:1, isPote:true,
+        onServi:(gs,film,prix)=>{
+          gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;
+          if(Math.random()<0.4) gs.tim_cassette_abimee=(gs.tim_cassette_abimee||0)+1;
+          return{msg:`+${prix||film.prix}$ — Quelque chose colle sur le comptoir.`,positif:true};}}
     ];
 
     // ===================================================
