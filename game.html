@@ -533,6 +533,14 @@
         <span class="stock-genre">KUNG-FU</span>
         <span class="stock-val" id="stock-kungfu">4</span>
       </div>
+      <div class="stock-item" onclick="openStock()">
+        <span class="stock-genre">WESTERN</span>
+        <span class="stock-val" id="stock-western">3</span>
+      </div>
+      <div class="stock-item" onclick="openStock()">
+        <span class="stock-genre">SF</span>
+        <span class="stock-val" id="stock-sf">3</span>
+      </div>
       <div class="stock-item" id="stock-weed-item" style="display:none;" onclick="openStock()">
         <span class="stock-genre">🌿 SG</span>
         <span class="stock-weed-val" id="stock-weed">0</span>
@@ -835,6 +843,7 @@
       peur2:'posters/corey-peur2.png', colere1:'posters/corey-colere1.png',
       colere:'posters/corey-colere1.png',
       colere2:'posters/corey-colere2.png', colere3:'posters/corey-colere3.png',
+      colere4:'posters/corey-colere4.png',
       depite:'posters/corey-depite.png',
       illumine:'posters/corey-illumine.png', conspirationiste:'posters/corey-conspirationiste.png',
       contrarie:'posters/corey-contrarie.png', fatigue:'posters/corey-fatigue.png',
@@ -849,15 +858,18 @@
     };
 
     const FRED_AVATARS = {
-      neutre:'posters/fred.png', doute:'posters/fred_doute.png',
-      fier:'posters/fred_fier.png', stress:'posters/fred_stress.png',
+      neutre:'posters/fred.png', doute:'posters/fred-doute.png',
+      fier:'posters/fred-fier.png', stress:'posters/fred-stress.png',
       attentif:'posters/fred-attentif.png', amuse:'posters/fred-amuse.png',
       non:'posters/fred-non.png', observateur:'posters/fred-observateur.png',
       pas_content:'posters/fred-pas-content.png', tranquille:'posters/fred-tranquille.png',
       tete:'posters/fred-tete.png', soupir:'posters/fred-soupir.png',
-      concentre:'posters/fred-concentre.png',
-      lit:'posters/fred-lit.png', sceptique:'posters/fred-sceptique.png',
-      sourit:'posters/fred-sourit.png', clint:'posters/fred-clint.png',
+      concentre:'posters/fred-concentre.png', cash:'posters/fred-cash.png',
+      lit:'posters/fred-lit.png', sceptique:'posters/fred-septique.png',
+      sourit:'posters/fred-sourit.png', clint:'posters/fred-eastwood.png',
+      rire:'posters/fred-rire.png', enerve:'posters/fred-énervé.png',
+      regarde_dehors:'posters/fred-regarde-dehors.png',
+      fier_corey:'posters/fred-fier-de-corey.png',
     };
 
     function setFredAvatar(h) {
@@ -1386,6 +1398,7 @@
         effet: (gs) => {
           gs.argent = Math.max(0, (gs.argent||0) - 20);
           gs.exposition = Math.min(100, (gs.exposition||0) + 5);
+          gs._jackson_passe = true;
         }
       },
       {
@@ -1456,6 +1469,51 @@
       ],
     };
 
+    function verifierRetoursCassettes() {
+      const retours = gameState.retours_cassettes || [];
+      const aujourdhui = gameState.jour || 1;
+      const duJour = retours.filter(r => r.jour_retour === aujourdhui);
+      if (!duJour.length) return;
+      gameState.retours_cassettes = retours.filter(r => r.jour_retour !== aujourdhui);
+
+      duJour.forEach((r, i) => {
+        setTimeout(() => {
+          let dlg;
+          if (r.abimee) {
+            gameState.retour_abimee_count = (gameState.retour_abimee_count||0) + 1;
+            gameState.argent = Math.max(0, (gameState.argent||0) - 2);
+            dlg = [
+              {perso:'fred',  texte:`${r.film_titre} est revenu abîmé.`},
+              {perso:'corey', texte:"Encore."},
+              {perso:'fred',  texte:"On facture."},
+              {perso:'corey', texte:"On peut pas facturer."},
+              {perso:'fred',  texte:"Non."},
+            ];
+            setCoreyAvatar('depite');
+          } else if (!r.rembobinee) {
+            gameState.retour_non_rembobinee_count = (gameState.retour_non_rembobinee_count||0) + 1;
+            dlg = [
+              {perso:'corey', texte:`${r.film_titre}. Pas rembobiné.`},
+              {perso:'fred',  texte:"Encore."},
+              {perso:'corey', texte:"Être gentil avec les gens c'est une erreur."},
+              {perso:'fred',  texte:"On rembobine."},
+              {perso:'corey', texte:"On rembobine."},
+            ];
+            setCoreyAvatar('contrarie');
+          } else {
+            // Retour normal — parfois avec commentaire
+            if (Math.random() < 0.4) {
+              dlg = [
+                {perso:'corey', texte:`${r.film_titre} est revenu.`},
+                {perso:'fred',  texte:"Bien."},
+              ];
+            } else return;
+          }
+          if (dlg) jouerDialogue(dlg, () => { updateUI(); saveGame(); });
+        }, i * 3000);
+      });
+    }
+
     function verifierRetoursMMClient() {
       const retours = gameState.retours_mm_en_attente || [];
       const aujourdhui = gameState.jour || 1;
@@ -1525,8 +1583,15 @@
       clientIndex   = 0;
       clientsServis = 0;
 
-      // Retours MM — clients qui reviennent J+2
+      // Retours MM et cassettes normales
       verifierRetoursMMClient();
+      verifierRetoursCassettes();
+
+      // Jackson passé dans la nuit — dialogue le matin
+      if (gameState._jackson_passe) {
+        delete gameState._jackson_passe;
+        setTimeout(() => jouerSituation('pote_jackson', () => {}), 2000);
+      }
 
       if (gameState.jour === 1 && !gameState.tutoFait) {
         gameState.tutoFait = true;
@@ -1539,6 +1604,19 @@
         if (galaxyArc && !galaxyArcDejaJoue(gameState)) {
           marquerGalaxyArcJoue(gameState);
           jouerDialogue(galaxyArc, () => {
+            jouerSituation('ouverture', lancerProchainClient);
+          });
+        } else if (Math.random() < 0.35 && gameState.semaine >= 2) {
+          // Dialogue quotidien Galaxy Video
+          jouerSituation('galaxy_quotidien', () => {
+            jouerSituation('ouverture', lancerProchainClient);
+          });
+        } else if (Math.random() < 0.2 && gameState.semaine >= 3) {
+          jouerSituation('menace_concurrent', () => {
+            jouerSituation('ouverture', lancerProchainClient);
+          });
+        } else if (Math.random() < 0.25) {
+          jouerSituation('matin_fatigue', () => {
             jouerSituation('ouverture', lancerProchainClient);
           });
         } else {
@@ -2025,12 +2103,14 @@
         if (peutProposerMM) {
           proposerMicroMetrage(client, () => {
             if (client.weedDemande && (gameState.stock.weed||0) > 0) afficherWeedToggle(true);
+            ajouterCommentaireCorey(client);
             ouvrirVHSPanel(client);
           });
         } else {
           if (client.weedDemande && (gameState.stock.weed||0) > 0 && !client.isCanopi) {
             afficherWeedToggle(true);
           }
+          ajouterCommentaireCorey(client);
           ouvrirVHSPanel(client);
         }
       });
@@ -2134,6 +2214,50 @@
     }
 
     // ===================================================
+    // COMMENTAIRE COREY AVANT LE CHOIX
+    // ===================================================
+
+    function ajouterCommentaireCorey(client) {
+      const commentaires = {
+        henderson:    [{av:'ok',        txt:"On a de quoi les contenter."},{av:'fier',       txt:"Rayon enfants. On assure."}],
+        cinephile:    [{av:'fier',       txt:"Il sait qu'on a ce qu'il faut."},{av:'pensif',    txt:"Notre sélection parle d'elle-même."}],
+        marine:       [{av:'ok',        txt:"Du solide. Du vrai."},{av:'eastwood',   txt:"Il sait ce qu'il veut."}],
+        muscle:       [{av:'ok',        txt:"Action garantie."},{av:'robocop',    txt:"On a de quoi lui faire plaisir."}],
+        cowboy:       [{av:'eastwood',   txt:"Leone ou Ford. On a les deux."},{av:'mcqueen',   txt:"Du bon western. Comme il faut."}],
+        sf:           [{av:'conspirationiste', txt:"Ils ont tout caché dans ces films."},{av:'pensif',    txt:"De la SF qui tient la route."}],
+        debbie:       [{av:'illumine',   txt:"Le son. C'est tout."},{av:'pensif',    txt:"Blow Out. La scène du micro."}],
+        sensible:     [{av:'ok',        txt:"Quelque chose qui touche."},{av:'pensif',    txt:"Il va pleurer. C'est bien."}],
+        gordon:       [{av:'depite',     txt:"Il prend ce qu'on a. Comme tout le monde."},{av:'contrarie', txt:"Son dernier film était surestimé."}],
+        goth:         [{av:'sarcastique',txt:"Pour une amie. Bien sûr."},{av:'illumine',   txt:"Elle a bon goût. En secret."}],
+        mere:         [{av:'conspirationiste', txt:"Les lions d'Afrique. Oui oui."},{av:'pensif',    txt:"Les gamins ont bien choisi leur camp."}],
+        prof:         [{av:'depite',     txt:"Il va encore trouver quelque chose à redire."},{av:'sarcastique', txt:"Pas mal pour un vidéoclub."}],
+        sam:          [{av:'fier',       txt:"T'as du talent Sam. Utilise-le."},{av:'illumine',   txt:"Chaque film est une leçon."}],
+        tim:          [{av:'pensif',     txt:"Il va encore coller quelque chose dessus."},{av:'ok',        txt:"Les effets pratiques. C'est l'âme du cinéma."}],
+        amie:         [{av:'high',       txt:"..."},{av:'pensif',    txt:"Elle reste jamais longtemps."}],
+        inconnu:      [{av:'conspirationiste', txt:"Il sait ce qu'il cherche."},{av:'chuchotant',  txt:"Discret. J'aime ça."}],
+        miguel:       [{av:'illumine',   txt:"Un client qui comprend."},{av:'chuchotant',  txt:"On a ce qu'il faut."}],
+        concurrent:   [{av:'sarcastique',txt:"Galaxy Video a pas ça."},{av:'contrarie',   txt:"Il vient ici pour une raison."}],
+        journaliste:  [{av:'pensif',     txt:"Elle prend des notes sur nous."},{av:'fier',       txt:"On mérite un article."}],
+        collectionneur:[{av:'conspirationiste', txt:"Sam Raimi."},{av:'pensif',    txt:"Il cherche quelque chose de précis."}],
+        etudiant:     [{av:'ok',        txt:"Du rapide et efficace."},{av:'fatigue',    txt:"Il a une heure."}],
+        gamin_horreur:[{av:'ok',        txt:"Théa sait ce qu'elle veut."},{av:'sarcastique', txt:"Elle a l'âge."}],
+        femme_seule:  [{av:'pensif',     txt:"Quelque chose de beau."},{av:'ok',        txt:"On a ce qu'il faut."}],
+        fan_vo:       [{av:'fier',       txt:"La version originale. La seule."},{av:'depite',     txt:"Le doublage c'est du mensonge."}],
+        kungfu:       [{av:'ok',        txt:"Bruce Lee aurait approuvé."},{av:'fier',       txt:"La 36ème chambre. Un monument."}],
+      };
+
+      const pool = commentaires[client.id];
+      if (!pool || client.isCanopi || client.isRamon || client.isIndecise) return;
+      if (Math.random() < 0.6) {
+        const c = pool[Math.floor(Math.random()*pool.length)];
+        setTimeout(() => {
+          setCoreyAvatar(c.av);
+          ajouterBulle('corey', c.txt);
+        }, 200);
+      }
+    }
+
+    // ===================================================
     // PANNEAU VHS
     // ===================================================
 
@@ -2157,6 +2281,8 @@
         if (film.genre === 'comedie_romantique') return (stock.comedie_romantique||0) > 0;
         if (film.genre === 'guerre')             return (stock.guerre||0) > 0;
         if (film.genre === 'kungfu')             return (stock.kungfu||0) > 0;
+        if (film.genre === 'western')            return (stock.western||0) > 0;
+        if (film.genre === 'sf')                 return (stock.sf||0) > 0;
         return (stock[film.genre]||0) > 0;
       });
 
@@ -2271,13 +2397,21 @@
       if (film.genre === 'noires') {
         gameState.suspicion = Math.min(100, (gameState.suspicion||0) + 5);
         gameState.noires_distribuees = (gameState.noires_distribuees||0) + 1;
-        // Tracker pour retour client J+2
         if (!gameState.retours_mm_en_attente) gameState.retours_mm_en_attente = [];
         gameState.retours_mm_en_attente.push({
-          client_id: client.id,
-          client_name: client.name,
-          film_titre: film.titre,
+          client_id: client.id, client_name: client.name,
+          film_titre: film.titre, jour_retour: (gameState.jour||1) + 2,
+        });
+      } else if (resultat.positif && Math.random() < 0.35) {
+        // Retour cassette normale J+2 — rembobinage/état aléatoire
+        if (!gameState.retours_cassettes) gameState.retours_cassettes = [];
+        const etatRetour = Math.random();
+        gameState.retours_cassettes.push({
+          client_id: client.id, client_name: client.name,
+          film_titre: film.titre, genre: film.genre,
           jour_retour: (gameState.jour||1) + 2,
+          rembobinee: etatRetour > 0.3,
+          abimee: etatRetour < 0.15,
         });
       }
 
@@ -2287,6 +2421,7 @@
         // Varier les expressions positives
         const posExpCorey = ['joie','illumine','ok'];
         const posExpFred  = ['fier','amuse','tranquille'];
+        gameState.mauvaises_ventes_suite = 0;
         setCoreyAvatar(posExpCorey[comboCount % posExpCorey.length]);
         setFredAvatar(posExpFred[comboCount % posExpFred.length]);
         if (comboCount >= 3) {
@@ -2309,11 +2444,16 @@
         comboCount = 0;
         gameState.mauvaises_ventes_suite = (gameState.mauvaises_ventes_suite||0) + 1;
         let negCorey = 'contrarie';
-        if (gameState.mauvaises_ventes_suite >= 4) negCorey = 'colere3';
-        else if (gameState.mauvaises_ventes_suite >= 3) negCorey = 'colere2';
-        else if (gameState.mauvaises_ventes_suite >= 2) negCorey = 'colere1';
+        const serie = gameState.mauvaises_ventes_suite;
+        if (serie >= 6)      negCorey = 'colere4';
+        else if (serie >= 4) negCorey = 'colere3';
+        else if (serie >= 3) negCorey = 'colere2';
+        else if (serie >= 2) negCorey = 'colere1';
         else negCorey = ['contrarie','depite'][Math.floor(Math.random()*2)];
         setCoreyAvatar(negCorey);
+        // Fred réagit aussi à la colère de Corey
+        if (serie >= 4) setFredAvatar('enerve');
+        else if (serie >= 2) setFredAvatar('pas_content');
         const negExpFred = ['pas_content','doute','non','soupir'];
         setFredAvatar(negExpFred[Math.floor(Math.random()*negExpFred.length)]);
       }
@@ -2561,6 +2701,10 @@
         jouerSituation('file_vide', () => {});
       }
       jouerSituation('fermeture', () => {
+        // Bilan fin de journée
+        if (Math.random() < 0.4) {
+          jouerSituation('fin_journee_bilan', () => {});
+        }
         document.getElementById('pause-btn').classList.add('visible');
 
         // Easter eggs fin de journée — plusieurs possibles
@@ -2704,7 +2848,7 @@
       document.getElementById('val-money').textContent = gs.argent+'$';
       document.getElementById('bar-legal').style.width = (gs.legalite||0)+'%';
       document.getElementById('val-legal').textContent = (gs.legalite||0)+'%';
-      ['action','horreur','drame','enfants','rarites','guerre','kungfu'].forEach(g => {
+      ['action','horreur','drame','enfants','rarites','guerre','kungfu','western','sf'].forEach(g => {
         const el  = document.getElementById('stock-'+g);
         if (!el) return;
         const max = g==='rarites'?3:10;
@@ -2803,7 +2947,8 @@
         {id:'action',label:'ACTION',max:10,prix:12},{id:'horreur',label:'HORREUR',max:10,prix:8},
         {id:'drame',label:'DRAME',max:10,prix:6},{id:'enfants',label:'ENFANTS',max:10,prix:5},
         {id:'comedie_romantique',label:'COM. ROM.',max:8,prix:7},{id:'rarites',label:'RARETÉS',max:3,prix:25},
-        {id:'guerre',label:'GUERRE',max:8,prix:10},{id:'kungfu',label:'KUNG-FU',max:8,prix:9}
+        {id:'guerre',label:'GUERRE',max:8,prix:10},{id:'kungfu',label:'KUNG-FU',max:8,prix:9},
+        {id:'western',label:'WESTERN',max:6,prix:8},{id:'sf',label:'SF',max:6,prix:10}
       ];
       const html = genres.map(g => {
         const val=gs.stock[g.id]||0,pct=(val/g.max)*100;
@@ -2829,8 +2974,8 @@
     function commanderStock(genre, prix) {
       if (gameState.argent < prix) { showNotif("Pas assez d'argent.", false); return; }
       gameState.argent -= prix;
-      const max = {action:10,horreur:10,drame:10,enfants:10,comedie_romantique:8,rarites:3,guerre:8,kungfu:8};
-      const add = {action:2,horreur:2,drame:2,enfants:2,comedie_romantique:2,rarites:1,guerre:2,kungfu:2};
+      const max = {action:10,horreur:10,drame:10,enfants:10,comedie_romantique:8,rarites:3,guerre:8,kungfu:8,western:6,sf:6};
+      const add = {action:2,horreur:2,drame:2,enfants:2,comedie_romantique:2,rarites:1,guerre:2,kungfu:2,western:2,sf:2};
       gameState.stock[genre] = Math.min(max[genre]||10, (gameState.stock[genre]||0)+(add[genre]||2));
       updateUI(); saveGame(); showNotif(`Commande passée. -${prix}$`, true);
       const p = document.getElementById('stock-panel');
