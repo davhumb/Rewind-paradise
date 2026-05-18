@@ -835,6 +835,8 @@
       sf:             'posters/sf.png',
       sensible:       'posters/sensible.png',
       tim:            'posters/tim.png',
+      jessica:        'posters/jessica.png',
+      wang:           'posters/wang.png',
     };
 
     const COREY_AVATARS = {
@@ -984,6 +986,7 @@
       {id:'la_strada',      titre:'La Strada',                  genre:'rarites',            ambiance:['drame','italie','poesie'],     prix:5},
       {id:'noir_01',        titre:'[MICRO-MÉTRAGE #1]',         genre:'noires',             ambiance:['underground','court'],         prix:8},
       {id:'noir_02',        titre:'[MICRO-MÉTRAGE #2]',         genre:'noires',             ambiance:['underground','court'],         prix:8},
+      {id:'eraserhead',     titre:'Eraserhead',                  genre:'rarites',            ambiance:['lynch','etrange','nuit'],      prix:6},
       // WESTERNS
       {id:'shane',          titre:'Shane',                       genre:'western',            ambiance:['honneur','duel','melancolie'],  prix:3},
       {id:'magnificent',    titre:'Les 7 Mercenaires',           genre:'western',            ambiance:['action','group','honneur'],     prix:3},
@@ -1130,7 +1133,7 @@
           if(film.genre==='drame'||film.genre==='comedie_romantique'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.reputation=Math.min(5,gs.reputation+0.5);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "C'est exactement ça."`,positif:true};}
           return{msg:'"Non non. C\'est pas ça."',positif:false};}},
 
-      {id:'amie', name:"L'AMIE", mood:'😊', aime:['ghost','dirty_dancing','thelma','hannah','cinema_paradiso'], deteste:[], accepte:['drame','comedie_romantique'], energie:0, isPote:true,
+      {id:'amie', name:'AMY', mood:'😊', aime:['ghost','dirty_dancing','thelma','hannah','cinema_paradiso'], deteste:[], accepte:['drame','comedie_romantique'], energie:0, isPote:true,
         onServi:(gs,film,prix)=>{
           if(Math.random()<0.3&&(film.genre==='drame'||film.genre==='comedie_romantique')){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Elle repart avec un sourire.`,positif:true};}
           gs.reputation=Math.min(5,(gs.reputation||3)+0.2);return{msg:"Elle repart sans louer.",positif:true};}},
@@ -1593,6 +1596,12 @@
         setTimeout(() => jouerSituation('pote_jackson', () => {}), 2000);
       }
 
+      // JOUR 7 — FIN DU JEU
+      if ((gameState.jour||1) >= 7) {
+        lancerJour7();
+        return;
+      }
+
       if (gameState.jour === 1 && !gameState.tutoFait) {
         gameState.tutoFait = true;
         lancerTutoJour1(() => {
@@ -1700,6 +1709,14 @@
       // Dame indécise 1 fois
       if (((gameState.jour-1)%7) === 5)
         clientQueue.push(Object.assign({}, CLIENT_TYPES.find(c => c.id === 'indecise')));
+
+      // JOUR 6 — Jessica et Wang
+      if ((gameState.jour||1) === 6) {
+        const jessica = CLIENT_TYPES.find(c => c.id === 'jessica');
+        const wang    = CLIENT_TYPES.find(c => c.id === 'wang');
+        if (jessica) clientQueue.push(Object.assign({}, jessica));
+        if (wang)    clientQueue.push(Object.assign({}, wang));
+      }
 
       // Potes — apparaissent aléatoirement
       if (Math.random() < 0.35) {
@@ -2017,6 +2034,19 @@
             {perso:'client', texte: demande},
             {perso:'corey',  texte: "Un article sur les videoclubs... pourquoi maintenant ?"},
             {perso:'client', texte: "Parce que vous allez disparaitre. Je veux garder une trace."},
+          ],
+          jessica: [
+            {perso:'client', texte: '"Eraserhead. Lynch."'},
+            {perso:'corey',  texte: "Bon choix."},
+            {perso:'client', texte: "Vous l'avez ?"},
+            {perso:'fred',   texte: "On l'a."},
+          ],
+          wang: [
+            {perso:'client', texte: '"..."'},
+            {perso:'corey',  texte: "Votre amie a pris Eraserhead."},
+            {perso:'client', texte: "Je sais."},
+            {perso:'corey',  texte: "Bon choix."},
+            {perso:'client', texte: "C'est elle qui choisit."},
           ],
           amie: [
             {perso:'client', texte: demande},
@@ -2801,6 +2831,12 @@
         viderBulles();
         resetFredAvatar();
 
+        // Jour 7 — utiliser la navigation spéciale
+        if ((gameState.jour||1) >= 7) {
+          lancerProchainClientJour7();
+          return;
+        }
+
         const transition = TRANSITIONS_POST[Math.floor(Math.random() * TRANSITIONS_POST.length)];
         const dlgPostVente = getDialoguePostVente(client, film, resultat.positif);
 
@@ -3040,6 +3076,140 @@
         document.body.classList.add('fade-out');
         setTimeout(() => { window.location.href = 'quiz.html'; }, 500);
       });
+    }
+
+    // ===================================================
+    // JOUR 7 — FIN DU ROMAN
+    // ===================================================
+    function lancerJour7() {
+      // Séquence narrative complète
+      const acte1 = [
+        {perso:'fred',  texte:"Le rideau. Encore. Tous les matins le même vacarme."},
+        {perso:'fred',  texte:"Les néons. La moquette bleue. Le Compaq qui démarre."},
+      ];
+
+      const acte2_arrivee = [
+        {perso:'corey', texte:"'Lu..."},
+        {perso:'fred',  texte:"T'es en retard."},
+        {perso:'corey', texte:"C'est relatif."},
+      ];
+
+      const acte3_jeu = [
+        {perso:'fred',  texte:"Danny Glover et Kiefer Sutherland. Trois minutes."},
+        {perso:'corey', texte:"Sérieux ?"},
+        {perso:'fred',  texte:"Deux minutes."},
+        {perso:'corey', texte:"T'abuses..."},
+        {perso:'fred',  texte:"Une minute."},
+        {perso:'corey', texte:"Glover et Harrison Ford dans Witness. Ford et Hauer dans Blade Runner. Hauer et Broderick dans Ladyhawke. Broderick et Sheen dans Ferris Bueller. Sheen et Sutherland dans... Young Guns !"},
+        {perso:'fred',  texte:"Bien joué."},
+        {perso:'corey', texte:"..."},
+      ];
+
+      const acte4_journee = [
+        {perso:'fred',  texte:"Journée normale."},
+        {perso:'corey', texte:"Comme les autres."},
+        {perso:'fred',  texte:"Ouais."},
+      ];
+
+      const acte5_bruit = [
+        {perso:'fred',  texte:"..."},
+        {perso:'fred',  texte:"T'as entendu ça ?"},
+        {perso:'corey', texte:"Quoi ?"},
+        {perso:'fred',  texte:"Un bruit. Dans la réserve."},
+      ];
+
+      const acte6_vol = [
+        {perso:'fred',  texte:"Putain."},
+        {perso:'corey', texte:"Quoi ? Qu'est-ce qu'il y a ?"},
+        {perso:'fred',  texte:"La beuh. Et le fric. Plus rien."},
+        {perso:'corey', texte:"Quoi ?! Combien y'avait ?"},
+        {perso:'fred',  texte:"Tout le fric de la semaine. Deux cents balles. Peut-être plus."},
+        {perso:'corey', texte:"Merde... Jackson passe demain..."},
+      ];
+
+      const acte7_nain = [
+        {perso:'fred',  texte:"La boîte est plus là Corey. Tu peux fouiller tout le vidéoclub, ça changera rien."},
+        {perso:'corey', texte:"Et t'as rien vu ?"},
+        {perso:'fred',  texte:"Non."},
+        {perso:'corey', texte:"Si c'est pas toi, c'est qui ?"},
+        {perso:'corey', texte:"Attends... Et si... et si c'était un nain ?"},
+        {perso:'fred',  texte:"Pardon ?"},
+        {perso:'corey', texte:"Un nain, mec ! Hyper petit. Il aurait rampé. On l'aurait pas vu ! C'est logique, non ?"},
+        {perso:'fred',  texte:"Et pourquoi il ramperait s'il est déjà petit ?"},
+        {perso:'corey', texte:"Ben pour être encore plus discret, non ?"},
+        {perso:'fred',  texte:"On n'a plus un rond, Jackson va nous éclater, et toi tu me parles de nains ?"},
+        {perso:'corey', texte:"..."},
+        {perso:'fred',  texte:"Putain Corey... Jackson va péter un câble. On est mort."},
+      ];
+
+      setFredAvatar('tranquille');
+      setCoreyAvatar('neutre');
+      viderBulles();
+
+      jouerDialogue(acte1, () => {
+        jouerDialogue(acte2_arrivee, () => {
+          setCoreyAvatar('high');
+          jouerDialogue(acte3_jeu, () => {
+            setCoreyAvatar('joie');
+            setTimeout(() => {
+              setCoreyAvatar('neutre');
+              generateClientQueue();
+              clientIndex = 0;
+              clientsServis = 0;
+              jouerDialogue(acte4_journee, () => {
+                lancerProchainClientJour7();
+              });
+            }, 2000);
+          });
+        });
+      });
+
+      // Après les clients — le bruit
+      window._jour7_acte5 = () => {
+        setFredAvatar('attentif');
+        setCoreyAvatar('pensif');
+        viderBulles();
+        jouerDialogue(acte5_bruit, () => {
+          setTimeout(() => {
+            setFredAvatar('stress');
+            jouerDialogue(acte6_vol, () => {
+              setCoreyAvatar('conspirationiste');
+              jouerDialogue(acte7_nain, () => {
+                // Écran noir puis page finale
+                setTimeout(() => {
+                  document.body.style.transition = 'opacity 2s';
+                  document.body.style.opacity = '0';
+                  setTimeout(() => {
+                    window.location.href = 'ending.html';
+                  }, 2000);
+                }, 3000);
+              });
+            });
+          }, 1000);
+        });
+      };
+    }
+
+    function lancerProchainClientJour7() {
+      if (clientIndex >= clientQueue.length) {
+        // Fini — déclencher le bruit
+        if (window._jour7_acte5) window._jour7_acte5();
+        return;
+      }
+      // Clients normaux mais limités
+      clientActuel = clientQueue[clientIndex];
+      clientIndex++;
+      if (clientIndex > 3) {
+        // Assez de clients pour le dernier jour
+        if (window._jour7_acte5) window._jour7_acte5();
+        return;
+      }
+      viderBulles();
+      const annonce = ANNONCES_COREY[Math.floor(Math.random()*ANNONCES_COREY.length)];
+      resetFredAvatar();
+      setCoreyAvatar('ok');
+      if (typeof SOUNDS !== 'undefined') SOUNDS.sonnette();
+      jouerDialogue(annonce, () => dialogueAvecClient());
     }
 
     function closingTime() {

@@ -416,6 +416,12 @@
       rire:'posters/jackson-rire.png',
       surpris:'posters/jackson-surpris.png',
     };
+    const VISITEUR_AV = {
+      amy:   'posters/amie.png',
+      tim:   'posters/tim.png',
+      sam:   'posters/sam.png',
+      debbie:'posters/debbie.png',
+    };
 
     function setFred(h)    { document.getElementById('img-fred').src   = FRED_AV[h]    || FRED_AV.neutre; }
     function setCorey(h)   { document.getElementById('img-corey').src  = COREY_AV[h]   || COREY_AV.neutre; }
@@ -757,6 +763,122 @@
       },
 
       // ===================================================
+      // VISITEURS NOCTURNES
+      // ===================================================
+      {
+        id: 'visite_amy',
+        dialogues: [
+          [
+            {perso:'corey', av:'high',       texte:"Amy est passée."},
+            {perso:'fred',  av:'tranquille', texte:"Je sais."},
+            {perso:'corey', av:'pensif',     texte:"Elle est restée deux heures."},
+            {perso:'fred',  av:'amuse',      texte:"T'as rien dit pendant deux heures."},
+            {perso:'corey', av:'high',       texte:"J'avais des choses à faire."},
+            {perso:'fred',  av:'sceptique',  texte:"T'avais rien à faire."},
+            {perso:'corey', av:'pensif',     texte:"..."},
+            {perso:'corey', av:'high',       texte:"Elle a bien."},
+            {perso:'fred',  av:'tranquille', texte:"Ouais."},
+          ],
+          [
+            {perso:'corey', av:'ecarquille', texte:"Amy."},
+            {perso:'fred',  av:'tranquille', texte:"Je sais."},
+            {perso:'corey', av:'pensif',     texte:"Elle a apporté des sandwichs."},
+            {perso:'fred',  av:'amuse',      texte:"C'est la première fois."},
+            {perso:'corey', av:'high',       texte:"Elle pense à nous."},
+            {perso:'fred',  av:'tranquille', texte:"Elle pense surtout à toi."},
+            {perso:'corey', av:'depite',     texte:"C'est pas vrai."},
+            {perso:'fred',  av:'amuse',      texte:"Non."},
+          ],
+          [
+            {perso:'fred',  av:'lit',        texte:"Amy a demandé des nouvelles du film."},
+            {perso:'corey', av:'high',       texte:"Le Retour des Croque-Mort Vivants."},
+            {perso:'fred',  av:'doute',      texte:"Elle veut jouer dedans."},
+            {perso:'corey', av:'ecarquille', texte:"Elle a dit ça ?"},
+            {perso:'fred',  av:'tranquille', texte:"Elle a dit que ça avait l'air intéressant."},
+            {perso:'corey', av:'illumine',   texte:"C'est la même chose."},
+          ],
+        ],
+      },
+      {
+        id: 'visite_tim',
+        dialogues: [
+          [
+            {perso:'corey', av:'ecarquille', texte:"Tim est passé."},
+            {perso:'fred',  av:'sceptique',  texte:"Il a laissé quelque chose."},
+            {perso:'corey', av:'high',       texte:"De la glycérine. Pour les effets."},
+            {perso:'fred',  av:'doute',      texte:"On a pas demandé de glycérine."},
+            {perso:'corey', av:'illumine',   texte:"Il prévoit."},
+            {perso:'fred',  av:'tranquille', texte:"Pour quoi."},
+            {perso:'corey', av:'pensif',     texte:"Le Retour des Croque-Mort Vivants."},
+            {perso:'fred',  av:'amuse',      texte:"On a pas encore de scénario."},
+            {perso:'corey', av:'high',       texte:"Il prévoit."},
+          ],
+          [
+            {perso:'corey', av:'conspirationiste', texte:"Tim voulait tester des effets sur le parking."},
+            {perso:'fred',  av:'non',        texte:"Non."},
+            {perso:'corey', av:'high',       texte:"Juste quelques trucs avec du latex."},
+            {perso:'fred',  av:'sceptique',  texte:"Non Corey."},
+            {perso:'corey', av:'pensif',     texte:"Il a attendu que tu sois dans la réserve."},
+            {perso:'fred',  av:'doute',      texte:"..."},
+            {perso:'corey', av:'high',       texte:"On a rien cassé."},
+            {perso:'fred',  av:'enerve',     texte:"Qu'est-ce qu'il y a sur le pare-brise de la voiture là."},
+            {perso:'corey', av:'depite',     texte:"De la glycérine. Elle part avec la pluie."},
+          ],
+        ],
+      },
+      {
+        id: 'visite_sam',
+        dialogues: [
+          [
+            {perso:'corey', av:'illumine',   texte:"Sam est passé."},
+            {perso:'fred',  av:'lit',        texte:"Il répétait encore."},
+            {perso:'corey', av:'high',       texte:"La scène de Pacino dans Scarface."},
+            {perso:'fred',  av:'amuse',      texte:"Il a fait Pacino."},
+            {perso:'corey', av:'ecarquille', texte:"Il est bien."},
+            {perso:'fred',  av:'sceptique',  texte:"Il est pas Pacino."},
+            {perso:'corey', av:'pensif',     texte:"Personne est Pacino. Mais il est bien."},
+          ],
+          [
+            {perso:'corey', av:'high',       texte:"Sam veut qu'on le filme pour son book."},
+            {perso:'fred',  av:'doute',      texte:"T'as dit non."},
+            {perso:'corey', av:'pensif',     texte:"J'ai dit qu'on verrait."},
+            {perso:'fred',  av:'sceptique',  texte:"C'est non."},
+            {perso:'corey', av:'illumine',   texte:"Il a le regard. La présence."},
+            {perso:'fred',  av:'tranquille', texte:"Il a vingt ans."},
+            {perso:'corey', av:'high',       texte:"Brando avait vingt ans."},
+            {perso:'fred',  av:'amuse',      texte:"Tout le monde avait vingt ans."},
+          ],
+        ],
+      },
+      {
+        id: 'visite_debbie',
+        dialogues: [
+          [
+            {perso:'corey', av:'illumine',   texte:"Debbie a enregistré des sons dehors."},
+            {perso:'fred',  av:'lit',        texte:"Quels sons."},
+            {perso:'corey', av:'high',       texte:"La rue la nuit. Les néons. Une voiture au loin."},
+            {perso:'fred',  av:'doute',      texte:"Elle a enregistré du bruit."},
+            {perso:'corey', av:'ecarquille', texte:"C'est de l'art Fred."},
+            {perso:'fred',  av:'sceptique',  texte:"C'est du bruit."},
+            {perso:'corey', av:'illumine',   texte:"C'est les deux."},
+            {perso:'fred',  av:'amuse',      texte:"Elle a une Nagra ?"},
+            {perso:'corey', av:'high',       texte:"Un walkman modifié. Pour l'instant."},
+          ],
+          [
+            {perso:'corey', av:'pensif',     texte:"Debbie veut faire le son du Retour des Croque-Mort Vivants."},
+            {perso:'fred',  av:'tranquille', texte:"On a pas de scénario."},
+            {perso:'corey', av:'illumine',   texte:"Elle veut préparer l'ambiance sonore."},
+            {perso:'fred',  av:'doute',      texte:"L'ambiance sonore de quoi."},
+            {perso:'corey', av:'high',       texte:"D'une pompe funèbre la nuit."},
+            {perso:'fred',  av:'sceptique',  texte:"On a pas de pompe funèbre."},
+            {perso:'corey', av:'illumine',   texte:"Le vidéoclub la nuit c'est presque pareil."},
+            {perso:'fred',  av:'amuse',      texte:"C'est pas pareil."},
+            {perso:'corey', av:'pensif',     texte:"Debbie dit que si."},
+          ],
+        ],
+      },
+
+      // ===================================================
       // FIN DE NUIT — COREY S'ENDORT
       // ===================================================
       {
@@ -855,10 +977,23 @@
       }
 
       // Max 3 scènes : ouverture + 1 aléatoire + fin
-      // Jackson toutes les 2 nuits
-      const includeJackson = (gameState.jour||1) % 2 === 0;
+      const jour = gameState.jour || 1;
+      const includeJackson = jour % 2 === 0;
+
+      // Visiteurs nocturnes selon le jour
+      const visiteurs = ['visite_amy','visite_tim','visite_sam','visite_debbie'];
+      const visiteur = toutes.find(s => s.id === visiteurs[Math.floor(Math.random()*visiteurs.length)]);
+
       if (includeJackson && jackson) {
-        scenesNuit = [ouverture, jackson, finNuit].filter(Boolean);
+        // Jackson + parfois un visiteur
+        if (Math.random() < 0.4 && visiteur) {
+          scenesNuit = [ouverture, jackson, visiteur, finNuit].filter(Boolean);
+        } else {
+          scenesNuit = [ouverture, jackson, finNuit].filter(Boolean);
+        }
+      } else if (Math.random() < 0.5 && visiteur) {
+        // Un visiteur à la place
+        scenesNuit = [ouverture, visiteur, finNuit].filter(Boolean);
       } else {
         scenesNuit = [ouverture, autres[0], finNuit].filter(Boolean);
       }
