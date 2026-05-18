@@ -614,7 +614,7 @@ const DIALOGUES_BD = {
   // THE GLITCH / FANZINE
   // ===================================================
 
-  cutter: [
+  the_glitch: [
     [
       { perso: 'corey', texte: "T'as vu le dernier Celluloïd Scalpel ?" },
       { perso: 'fred',  texte: "Non." },
@@ -1350,7 +1350,7 @@ const DIALOGUES_BD = {
       { perso: 'fred',  texte: "T'en sais rien." },
       { perso: 'corey', texte: "Je sais qu'on a quelque chose qu'ils auront jamais." },
       { perso: 'fred',  texte: "Quoi ?" },
-      { perso: 'corey', texte: "Cutter. Les micro-metrages. L'underground." },
+      { perso: 'corey', texte: "The Glitch. Les micro-metrages. L'underground." },
       { perso: 'fred',  texte: "C'est pas suffisant pour payer le loyer." },
       { perso: 'corey', texte: "Pas encore." },
     ],
@@ -1484,8 +1484,8 @@ const DIALOGUES_BD = {
       {perso:'fred',  texte:"Il t'a montré ?"},
       {perso:'corey', texte:"Oui."},
       {perso:'fred',  texte:"Et ?"},
-      {perso:'corey', texte:"Cutter va pas être content."},
-      {perso:'fred',  texte:"Cutter est jamais content de Gordon."},
+      {perso:'corey', texte:"The Glitch va pas être content."},
+      {perso:'fred',  texte:"The Glitch est jamais content de Gordon."},
       {perso:'corey', texte:"Non."},
     ],
     [
