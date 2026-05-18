@@ -908,6 +908,33 @@
         ],
       },
 
+      // ─── JACKSON RAMÈNE DE LA WEED ─────────────────────────
+      {
+        id: 'jackson_weed',
+        avecJackson: true,
+        dialogues: [
+          [
+            {perso:'jackson', av:'argent',  texte:"DiMaggio envoie ça."},
+            {perso:'corey',   av:'ecarquille', texte:"C'est quoi."},
+            {perso:'fred',    av:'doute',    texte:"Sicilian Gold."},
+            {perso:'corey',   av:'high',     texte:"DiMaggio cultive."},
+            {perso:'fred',    av:'non',      texte:"Ferme-la."},
+            {perso:'jackson', av:'neutre',   texte:"Bonne semaine."},
+          ],
+          [
+            {perso:'jackson', av:'rire',    texte:"De la part de DiMaggio."},
+            {perso:'corey',   av:'illumine', texte:"Il pense à nous."},
+            {perso:'fred',    av:'sceptique', texte:"Il pense à son business."},
+            {perso:'corey',   av:'high',     texte:"C'est pareil."},
+            {perso:'jackson', av:'neutre',   texte:"Écoulez ça vite."},
+          ],
+        ],
+        effet: (gs) => {
+          gs.stock = gs.stock || {};
+          gs.stock.weed = (gs.stock.weed||0) + 3;
+        }
+      },
+
     ];
 
     // ===================================================
@@ -979,12 +1006,22 @@
       // Max 3 scènes : ouverture + 1 aléatoire + fin
       const jour = gameState.jour || 1;
       const includeJackson = jour % 2 === 0;
+      // Jackson ramène de la weed si 10 ventes cette semaine
+      const jacksonAmeneWeed = (gameState.weed_vendue_count||0) >= 10
+                              && !gameState.jackson_weed_livre
+                              && includeJackson;
 
       // Visiteurs nocturnes selon le jour
       const visiteurs = ['visite_amy','visite_tim','visite_sam','visite_debbie'];
       const visiteur = toutes.find(s => s.id === visiteurs[Math.floor(Math.random()*visiteurs.length)]);
 
-      if (includeJackson && jackson) {
+      const jacksonWeed = toutes.find(s => s.id === 'jackson_weed');
+
+      if (jacksonAmeneWeed && jacksonWeed) {
+        // Jackson ramène de la weed — scène spéciale
+        gameState.jackson_weed_livre = true;
+        scenesNuit = [ouverture, jacksonWeed, finNuit].filter(Boolean);
+      } else if (includeJackson && jackson) {
         // Jackson + parfois un visiteur
         if (Math.random() < 0.4 && visiteur) {
           scenesNuit = [ouverture, jackson, visiteur, finNuit].filter(Boolean);

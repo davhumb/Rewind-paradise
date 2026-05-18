@@ -1586,6 +1586,9 @@
       clientIndex   = 0;
       clientsServis = 0;
 
+      // Reset tracker clients du jour
+      gameState.clients_du_jour = [];
+
       // Retours MM et cassettes normales
       verifierRetoursMMClient();
       verifierRetoursCassettes();
@@ -1676,6 +1679,8 @@
 
     function generateClientQueue() {
       clientQueue = [];
+      // Tracker anti-répétition — un client par journée (sauf Canopi/Ramon)
+      if (!gameState.clients_du_jour) gameState.clients_du_jour = [];
 
       // Canopi
       if (doitApparaitreCanopi()) {
@@ -1696,14 +1701,27 @@
       if (gameState.semaine>=3 && Math.random()>0.8)
         clientQueue.push(Object.assign({}, CLIENT_TYPES.find(c => c.id === 'collectionneur')));
 
+      // Helper anti-doublon
+      const dejaPresent = (id) => clientQueue.some(c => c.id === id)
+                                || (gameState.clients_du_jour||[]).includes(id);
+      const ajouterSi = (id) => {
+        if (dejaPresent(id)) return;
+        const c = CLIENT_TYPES.find(c => c.id === id);
+        if (c) clientQueue.push(Object.assign({}, c));
+      };
+
       // Clients normaux
-      const autres = CLIENT_TYPES.filter(
-        c => !['canopi','ramon','miguel','journaliste','collectionneur','indecise'].includes(c.id)
-      );
+      const exclus = ['canopi','ramon','miguel','journaliste','collectionneur','indecise'];
+      const autres = CLIENT_TYPES.filter(c => !exclus.includes(c.id));
       const nb = gameState.semaine >= 3 ? 5 : 4;
-      for (let i = 0; i < nb; i++) {
-        const r = Math.floor(Math.random() * autres.length);
-        clientQueue.push(Object.assign({}, autres[r]));
+      const shuffled = [...autres].sort(() => Math.random()-0.5);
+      let added = 0;
+      for (const c of shuffled) {
+        if (added >= nb) break;
+        if (!dejaPresent(c.id)) {
+          clientQueue.push(Object.assign({}, c));
+          added++;
+        }
       }
 
       // Dame indécise 1 fois
@@ -1718,40 +1736,13 @@
         if (wang)    clientQueue.push(Object.assign({}, wang));
       }
 
-      // Potes — apparaissent aléatoirement
+      // Pote aléatoire — une seule fois
       if (Math.random() < 0.35) {
-        const potesIds = ['sam','tim','debbie','amie'];
-        const poteId = potesIds[Math.floor(Math.random()*potesIds.length)];
-        const pote = CLIENT_TYPES.find(c => c.id === poteId);
-        if (pote) clientQueue.push(Object.assign({}, pote));
+        const potesIds = ['sam','tim','debbie','amie'].sort(()=>Math.random()-0.5);
+        for (const pid of potesIds) { if (!dejaPresent(pid)) { ajouterSi(pid); break; } }
       }
       // Gordon — semaine 2+
-      if (gameState.semaine >= 2 && Math.random() > 0.65) {
-        const g = CLIENT_TYPES.find(c => c.id === 'gordon');
-        if (g) clientQueue.push(Object.assign({}, g));
-      }
-      // Nouveaux clients normaux — cowboy, goth, mere, muscle, prof, sf, sensible, femme
-      const nouveauxPool = ['cowboy','goth','mere','muscle','prof','sf','sensible','femme'];
-      // Toujours au moins un nouveau client par jour
-      const nId1 = nouveauxPool[Math.floor(Math.random()*nouveauxPool.length)];
-      const nc1 = CLIENT_TYPES.find(c => c.id === nId1);
-      if (nc1) clientQueue.push(Object.assign({}, nc1));
-      // Second nouveau client 40% du temps
-      if (Math.random() < 0.4) {
-        const nId2 = nouveauxPool[Math.floor(Math.random()*nouveauxPool.length)];
-        const nc2 = CLIENT_TYPES.find(c => c.id === nId2);
-        if (nc2) clientQueue.push(Object.assign({}, nc2));
-      }
-
-      // Potes — apparaissent aléatoirement
-      if (Math.random() < 0.3) {
-        const potes = ['sam','tim','debbie','amie'].filter(p => CLIENT_TYPES.find(c=>c.id===p));
-        const pote = potes[Math.floor(Math.random()*potes.length)];
-        if (pote) clientQueue.push(Object.assign({}, CLIENT_TYPES.find(c => c.id === pote)));
-      }
-      // Gordon — semaine 2+
-      if (gameState.semaine >= 2 && Math.random() > 0.7)
-        clientQueue.push(Object.assign({}, CLIENT_TYPES.find(c => c.id === 'gordon')));
+      if (gameState.semaine >= 2 && Math.random() > 0.65) ajouterSi('gordon');
 
       // Mélanger (sauf Canopi qui garde sa position)
       const canopi = clientQueue.filter(c => c.id === 'canopi');
@@ -3170,6 +3161,7 @@
 
       // Films disponibles
       const canopiPresent = clientActuel && clientActuel.isCanopi;
+      // Micro-métrages toujours dispo (sauf Canopi) si stock > 0
       const noiresDispo = !canopiPresent && (stock.noires||0) > 0;
 
       const dispo = CATALOGUE.filter(film => {
@@ -3208,7 +3200,10 @@
           const j = Math.floor(Math.random()*(i+1));
           [neutres[i],neutres[j]] = [neutres[j],neutres[i]];
         }
-        const tris = [...favoris, ...neutres].slice(0,8);
+        // Micro-métrages en tête si dispo
+        const noires = noiresDispo ? dispo.filter(f => f.genre === 'noires') : [];
+        const autres2 = [...favoris, ...neutres].filter(f => f.genre !== 'noires').slice(0,7);
+        const tris = [...noires, ...autres2];
         list.innerHTML = genererFilmsHTML(client, tris);
       }
 
@@ -3229,7 +3224,19 @@
 
     function genererFilmsHTML(client, films) {
       if (!films.length) return '<div style="font-size:11px;color:#888;padding:8px;">Stock épuisé.</div>';
-      return films.map(film => {
+      // Ajouter la weed comme item si dispo et pas Canopi
+      let weedHtml = '';
+      if ((gameState.stock.weed||0) > 0 && clientActuel && !clientActuel.isCanopi) {
+        const weedPrix = weedAjoutee ? '✓ AJOUTÉE' : '+15$';
+        const weedStyle = weedAjoutee
+          ? 'background:linear-gradient(135deg,#050f05,#030a03);border-left-color:#44cc44;opacity:0.7;'
+          : 'background:linear-gradient(135deg,#050f05,#030a03);border-left-color:#44aa44;';
+        weedHtml = `<div class="film-item" style="${weedStyle}" onclick="filmChoisi('_weed_')">
+          <span class="film-item-titre" style="color:#44cc44;">🌿 Sicilian Gold</span>
+          <span class="film-item-prix" style="color:#44cc44;">${weedPrix}</span>
+        </div>`;
+      }
+      return weedHtml + films.map(film => {
         let prix = film.prix;
         const gc = GENRE_CLASS[film.genre] || '';
         // Prix légèrement supérieur si film favori — mais pas d'indicateur visuel
@@ -3256,6 +3263,30 @@
     function filmChoisi(filmId) {
       const client = clientActuel;
       if (!client) return;
+
+      // Choix weed
+      if (filmId === '_weed_') {
+        if (weedAjoutee) {
+          // Désactiver
+          weedAjoutee = false;
+          gameState.stock.weed = (gameState.stock.weed||0) + 1;
+          gameState.suspicion = Math.max(0, (gameState.suspicion||0) - 8);
+          updateWeedStock(); updateSuspicion();
+          ouvrirVHSPanel(client);
+        } else {
+          if ((gameState.stock.weed||0) <= 0) { showNotif('Plus de Sicilian Gold.', false); return; }
+          weedAjoutee = true;
+          gameState.stock.weed = (gameState.stock.weed||0) - 1;
+          gameState.suspicion = Math.min(100, (gameState.suspicion||0) + 8);
+          gameState.weed_vendue_count = (gameState.weed_vendue_count||0) + 1;
+          setCoreyAvatar('high');
+          setFredAvatar('soupir');
+          updateWeedStock(); updateSuspicion();
+          showNotif('Sicilian Gold — sélectionnée. Choisissez un film.', true);
+          ouvrirVHSPanel(client);
+        }
+        return;
+      }
 
       // Canopi + weed = game over
       if (client.isCanopi && weedAjoutee) {
@@ -3291,6 +3322,30 @@
       // Compteurs films spécifiques
       if (film.id === 'dirty_dancing') gameState.film_dirty_dancing_count = (gameState.film_dirty_dancing_count||0) + 1;
       if (film.id === 'die_hard')      gameState.film_die_hard_count      = (gameState.film_die_hard_count||0) + 1;
+
+      // Réaction client à la weed — trois acceptent en secret
+      if (weedAjoutee && !['goth','sf','prof'].includes(client.id)) {
+        // Ce client refuse la weed — il repart sans rien
+        weedAjoutee = false;
+        gameState.stock.weed = (gameState.stock.weed||0) + 1;
+        gameState.suspicion = Math.min(100, (gameState.suspicion||0) + 5);
+        updateWeedStock(); updateSuspicion(); saveGame();
+        fermerVHSPanel(); afficherWeedToggle(false);
+        const refusWeed = [
+          {perso:'client', texte:"..."},
+          {perso:'corey',  texte:"Compris."},
+        ];
+        jouerDialogue(refusWeed, () => {
+          showNotif('Il repart. Suspicion +5.', false);
+          setTimeout(() => {
+            clientPresent = false;
+            viderBulles(); resetFredAvatar();
+            const transition = TRANSITIONS_POST[Math.floor(Math.random()*TRANSITIONS_POST.length)];
+            jouerDialogue(transition, lancerProchainClient);
+          }, 1200);
+        });
+        return;
+      }
 
       if (film.genre === 'noires') {
         gameState.suspicion = Math.min(100, (gameState.suspicion||0) + 5);
@@ -3363,6 +3418,10 @@
 
       const key = 'client_' + client.id + '_count';
       gameState[key] = (gameState[key]||0) + 1;
+      // Tracker anti-répétition
+      if (!gameState.clients_du_jour) gameState.clients_du_jour = [];
+      if (!gameState.clients_du_jour.includes(client.id))
+        gameState.clients_du_jour.push(client.id);
       // Compteurs spéciaux
       if (client.id === 'sensible' && resultat.positif)
         gameState.client_sensible_pleure = (gameState.client_sensible_pleure||0) + 1;
