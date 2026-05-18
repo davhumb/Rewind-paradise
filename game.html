@@ -922,7 +922,7 @@
         stock:{ action:8, horreur:6, drame:4, enfants:6,
                 comedie_romantique:5, rarites:1, noires:3,
                 guerre:4, kungfu:4, weed:3, western:3, sf:3 },
-        jacksonHumeur:'cool', cutterInteret:'indifferent',
+        jacksonHumeur:'cool', glitchInteret:'indifferent',
         notesHistory:[], choicesHistory:[],
         noires_distribuees:0, flashCutStock:0, upgradesVus:false
       };
@@ -948,16 +948,16 @@
       {id:'thing',          titre:'The Thing',                  genre:'horreur',            ambiance:['tension','froid','paranoia'],  prix:3},
       {id:'ghost',          titre:'Ghost',                      genre:'drame',              ambiance:['romance','deuil','lent'],      prix:2},
       {id:'kramer',         titre:'Kramer vs Kramer',           genre:'drame',              ambiance:['famille','divorce','lent'],    prix:2},
-      {id:'forrest',        titre:'Forrest Gump',               genre:'drame',              ambiance:['feel_good','long','usa'],      prix:2},
+      {id:'hannah',         titre:'Hannah et ses sœurs',         genre:'drame',              ambiance:['famille','new_york','woody'],   prix:3},
       {id:'rain_man',       titre:'Rain Man',                   genre:'drame',              ambiance:['famille','route','duo'],       prix:2},
       {id:'thelma',         titre:'Thelma & Louise',            genre:'drame',              ambiance:['route','femmes','liberte'],    prix:2},
       {id:'taxi_driver',    titre:'Taxi Driver',                genre:'drame',              ambiance:['sombre','ville','psycho'],     prix:3},
       {id:'pretty_woman',   titre:'Pretty Woman',               genre:'comedie_romantique', ambiance:['romance','fun','usa'],         prix:2},
       {id:'dirty_dancing',  titre:'Dirty Dancing',              genre:'comedie_romantique', ambiance:['romance','danse','ete'],       prix:2},
       {id:'quand_harry',    titre:'Quand Harry rencontre Sally',genre:'comedie_romantique', ambiance:['romance','amitie','nyc'],      prix:2},
-      {id:'nuits_blanches', titre:'Nuits Blanches à Seattle',   genre:'comedie_romantique', ambiance:['romance','deuil','usa'],       prix:2},
+      {id:'liaison_fatale', titre:'Liaison Fatale',              genre:'drame',              ambiance:['thriller','romance','tension'], prix:3},
       {id:'officier',       titre:'An Officer and a Gentleman', genre:'comedie_romantique', ambiance:['romance','militaire','usa'],   prix:2},
-      {id:'roi_lion',       titre:'Le Roi Lion',                genre:'enfants',            ambiance:['famille','emotion','chant'],   prix:2},
+      {id:'oliver',         titre:'Oliver & Compagnie',          genre:'enfants',            ambiance:['famille','fun','new_york'],     prix:2},
       {id:'aladdin',        titre:'Aladdin',                    genre:'enfants',            ambiance:['famille','magie','fun'],       prix:2},
       {id:'home_alone',     titre:"Maman j'ai raté l'avion",    genre:'enfants',            ambiance:['fun','noel','enfant'],         prix:2},
       {id:'little_mermaid', titre:'La Petite Sirène',           genre:'enfants',            ambiance:['famille','magie','chant'],     prix:2},
@@ -1049,7 +1049,7 @@
     const INDECISE_SCENARIOS = [
       {cible:'ghost',        indices:['"Quelque chose de triste mais pas trop."','"Il y a de l\'amour et une perte."','"Une scène avec de l\'argile."']},
       {cible:'dirty_dancing',indices:['"Quelque chose de chaud et vivant."','"Il y a de la danse."','"C\'est l\'été. Et un garçon."']},
-      {cible:'forrest',      indices:['"Quelque chose qui dure longtemps."','"Un homme qui court beaucoup."','"Il y a des crevettes."']},
+      {cible:'hannah',      indices:['"Quelque chose qui dure longtemps."','"Un homme qui court beaucoup."','"Il y a des crevettes."']},
       {cible:'pretty_woman', indices:['"Quelque chose de romantique et fun."','"Une femme et un homme riche."','"Des achats dans un grand magasin."']},
     ];
 
@@ -1059,20 +1059,20 @@
           if(film.id==='ghost'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.ghost_loue_aujourd_hui=true;gs.legalite=Math.max(0,gs.legalite-2);gs.argent+=2;return{msg:'+2$ — Ghost.',positif:true};}
           else if(film.genre==='drame'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.argent+=2;return{msg:'+2$ — Il accepte.',positif:true};}
           gs.legalite=Math.min(100,gs.legalite+2);return{msg:'Mauvais choix.',positif:false};}},
-      {id:'ramon',    name:'RAMON',       mood:'🤵', aime:['pretty_woman','dirty_dancing','quand_harry','nuits_blanches'], deteste:['arme_fatale','predator','terminator','halloween'], accepte:['comedie_romantique'], energie:2, isRamon:true,
+      {id:'ramon',    name:'RAMON',       mood:'🤵', aime:['pretty_woman','dirty_dancing','quand_harry','liaison_fatale'], deteste:['arme_fatale','predator','terminator','halloween'], accepte:['comedie_romantique'], energie:2, isRamon:true,
         onServi:(gs,film,prix)=>{
           if(film.genre==='comedie_romantique'){gs.stock.comedie_romantique=Math.max(0,(gs.stock.comedie_romantique||5)-1);gs.argent+=prix||film.prix;if((gs.client_ramon_count||0)>=2)gs.exposition=Math.min(100,gs.exposition+1);return{msg:`+${prix||film.prix}$ — Ramon repart.`,positif:true};}
           gs.exposition=Math.min(100,gs.exposition+2);return{msg:'Ramon repart sans rien.',positif:false};}},
-      {id:'miguel',   name:'MIGUEL',      mood:'😏', aime:['noir_01','noir_02','halloween','alien'], deteste:['roi_lion','aladdin'], accepte:['noires','horreur'], energie:1, weedDemande:true,
+      {id:'miguel',   name:'MIGUEL',      mood:'😏', aime:['noir_01','noir_02','halloween','alien'], deteste:['oliver','aladdin'], accepte:['noires','horreur'], energie:1, weedDemande:true,
         onServi:(gs,film,prix)=>{
           if(film.genre==='noires'){gs.stock.noires=Math.max(0,gs.stock.noires-1);gs.credibilite=Math.min(100,gs.credibilite+2);gs.exposition=Math.min(100,gs.exposition+2);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Miguel content.`,positif:true};}
           else if(film.genre==='horreur'){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — OK.`,positif:true};}
           return{msg:'Miguel repart.',positif:false};}},
-      {id:'henderson',name:'FAMILLE HENDERSON',mood:'😊', aime:['roi_lion','aladdin','home_alone','little_mermaid','forrest','fantasia'], deteste:['halloween','alien','exorciste','suspiria','shining','noir_01','noir_02'], accepte:['enfants'], energie:2,
+      {id:'henderson',name:'FAMILLE HENDERSON',mood:'😊', aime:['oliver','aladdin','home_alone','little_mermaid','hannah','fantasia'], deteste:['halloween','alien','exorciste','suspiria','shining','noir_01','noir_02'], accepte:['enfants'], energie:2,
         onServi:(gs,film,prix)=>{
           if(film.genre==='enfants'){gs.stock.enfants=Math.max(0,gs.stock.enfants-1);gs.reputation=Math.min(5,gs.reputation+0.4);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Les Henderson sont ravis.`,positif:true};}
           gs.reputation=Math.max(0,gs.reputation-0.5);return{msg:'Madame Henderson est scandalisée.',positif:false};}},
-      {id:'cinephile',name:'CINÉPHILE',   mood:'🧐', aime:['blow_out','short_cuts','blue_velvet','boxcar','suspiria','shining','evil_dead','ran','cinema_paradiso','das_boot','la_strada'], deteste:['roi_lion','aladdin','arme_fatale','die_hard'], accepte:['rarites','horreur'], energie:2, weedDemande:true,
+      {id:'cinephile',name:'CINÉPHILE',   mood:'🧐', aime:['blow_out','short_cuts','blue_velvet','boxcar','suspiria','shining','evil_dead','ran','cinema_paradiso','das_boot','la_strada'], deteste:['oliver','aladdin','arme_fatale','die_hard'], accepte:['rarites','horreur'], energie:2, weedDemande:true,
         onServi:(gs,film,prix)=>{
           if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.reputation=Math.min(5,gs.reputation+0.5);gs.credibilite=Math.min(100,gs.credibilite+1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Impressionné.`,positif:true};}
           else if(film.genre==='horreur'&&['shining','suspiria','thing'].includes(film.id)){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il accepte.`,positif:true};}
@@ -1081,13 +1081,13 @@
         onServi:(gs,film,prix)=>{
           if(film.ambiance.includes('fun')||film.ambiance.includes('violent')||film.genre==='action'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il est content.`,positif:true};}
           return{msg:"Pas ce qu'il cherchait.",positif:false};}},
-      {id:'femme_seule',name:'MARIE',     mood:'😐', aime:['ghost','forrest','thelma','kramer','rain_man','cinema_paradiso'], deteste:['predator','terminator','halloween','alien','suspiria','full_metal'], accepte:['drame'], energie:1,
+      {id:'femme_seule',name:'MARIE',     mood:'😐', aime:['ghost','hannah','thelma','kramer','rain_man','cinema_paradiso'], deteste:['predator','terminator','halloween','alien','suspiria','full_metal'], accepte:['drame'], energie:1,
         onServi:(gs,film,prix)=>{
           if(film.id==='ghost'&&gs.ghost_loue_aujourd_hui)return{msg:'Ghost est déjà sorti.',positif:false};
           if(film.ambiance.includes('romance')||film.ambiance.includes('emotion')||film.ambiance.includes('nostalgie')){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.reputation=Math.min(5,gs.reputation+0.3);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Merci."`,positif:true};}
           else if(film.genre==='drame'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Ça ira.`,positif:true};}
           return{msg:'Elle repart sans rien.',positif:false};}},
-      {id:'gamin_horreur',name:'THÉA',    mood:'😈', aime:['halloween','alien','exorciste','shining','evil_dead','thing'], deteste:['roi_lion','aladdin','forrest','ghost','dirty_dancing'], accepte:['horreur'], energie:1,
+      {id:'gamin_horreur',name:'THÉA',    mood:'😈', aime:['halloween','alien','exorciste','shining','evil_dead','thing'], deteste:['oliver','aladdin','hannah','ghost','dirty_dancing'], accepte:['horreur'], energie:1,
         onServi:(gs,film,prix)=>{
           if(film.genre==='horreur'){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Théa est ravie.`,positif:true};}
           return{msg:'Théa fait la grimace.',positif:false};}},
@@ -1100,11 +1100,11 @@
         onServi:(gs,film,prix)=>{
           if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il repart.`,positif:true};}
           return{msg:'Galaxy Video.',positif:false};}},
-      {id:'journaliste',name:'SOPHIE MARCHAIS',mood:'📝', aime:['thelma','blow_out','short_cuts','forrest','taxi_driver'], deteste:['noir_01','noir_02'], accepte:['drame','rarites'], energie:2,
+      {id:'journaliste',name:'SOPHIE MARCHAIS',mood:'📝', aime:['thelma','blow_out','short_cuts','hannah','taxi_driver'], deteste:['noir_01','noir_02'], accepte:['drame','rarites'], energie:2,
         onServi:(gs,film,prix)=>{
           if(film.genre==='drame'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;gs.exposition=Math.min(100,gs.exposition+3);return{msg:`+${prix||film.prix}$ — Elle prend des notes.`,positif:true};}
           return{msg:'Elle repart.',positif:false};}},
-      {id:'collectionneur',name:'M. BEAUMONT',mood:'🎩', aime:['blow_out','boxcar','short_cuts','blue_velvet','noir_01','noir_02','evil_dead','ran','das_boot'], deteste:['roi_lion','aladdin','home_alone'], accepte:['rarites','noires'], energie:2,
+      {id:'collectionneur',name:'M. BEAUMONT',mood:'🎩', aime:['blow_out','boxcar','short_cuts','blue_velvet','noir_01','noir_02','evil_dead','ran','das_boot'], deteste:['oliver','aladdin','home_alone'], accepte:['rarites','noires'], energie:2,
         dialogues_bd:[
           [{perso:'client',texte:"Je cherche Evil Dead. Et Blow Out si vous l'avez."},{perso:'corey',texte:"C'est Sam Raimi."},{perso:'corey',texte:"La machoire. Les yeux. Le regard."},{perso:'client',texte:"...M. Beaumont. Vous avez ces titres ?"}],
           [{perso:'client',texte:"Je rachete. Vos rarites ont un prix ?"},{perso:'corey',texte:"Il connait Evil Dead de l'interieur. C'est lui."},{perso:'client',texte:"Je suis collectionneur. Rien de plus."}],
@@ -1113,11 +1113,11 @@
         onServi:(gs,film,prix)=>{
           if(film.genre==='rarites'||film.genre==='noires'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||35;gs.credibilite=Math.min(100,gs.credibilite+3);return{msg:`+${prix||35}$ — M. Beaumont satisfait.`,positif:true};}
           return{msg:'M. Beaumont repart sans rien.',positif:false};}},
-      {id:'marine',   name:'MARINE',      mood:'🪖', aime:['apocalypse_now','full_metal','platoon','jour_plus_long','douze_salopards','bridge_kwai'], deteste:['roi_lion','aladdin','dirty_dancing','pretty_woman','ghost'], accepte:['guerre'], energie:1,
+      {id:'marine',   name:'MARINE',      mood:'🪖', aime:['apocalypse_now','full_metal','platoon','jour_plus_long','douze_salopards','bridge_kwai'], deteste:['oliver','aladdin','dirty_dancing','pretty_woman','ghost'], accepte:['guerre'], energie:1,
         onServi:(gs,film,prix)=>{
           if(film.genre==='guerre'){gs.stock.guerre=Math.max(0,(gs.stock.guerre||4)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Merci."`,positif:true};}
           return{msg:'"C\'est pas ce que je cherche."',positif:false};}},
-      {id:'kungfu',   name:'FAN DE KUNG-FU',mood:'🥋', aime:['enter_dragon','shaolin','drunken_master','five_fingers','big_boss'], deteste:['ghost','pretty_woman','dirty_dancing','roi_lion'], accepte:['kungfu'], energie:1,
+      {id:'kungfu',   name:'FAN DE KUNG-FU',mood:'🥋', aime:['enter_dragon','shaolin','drunken_master','five_fingers','big_boss'], deteste:['ghost','pretty_woman','dirty_dancing','oliver'], accepte:['kungfu'], energie:1,
         onServi:(gs,film,prix)=>{
           if(film.genre==='kungfu'){gs.stock.kungfu=Math.max(0,(gs.stock.kungfu||4)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il approuve.`,positif:true};}
           return{msg:'Il repart.',positif:false};}},
@@ -1125,33 +1125,33 @@
         onServi:(gs,film,prix)=>{
           if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Enfin un vidéoclub sérieux."`,positif:true};}
           return{msg:'"VF ? Non. Au revoir."',positif:false};}},
-      {id:'indecise', name:'DAME INDÉCISE',mood:'🤔', aime:['ghost','dirty_dancing','cinema_paradiso','forrest','pretty_woman','thelma'], deteste:['halloween','alien','exorciste','full_metal'], accepte:['drame','comedie_romantique','rarites'], energie:1, isIndecise:true,
+      {id:'indecise', name:'DAME INDÉCISE',mood:'🤔', aime:['ghost','dirty_dancing','cinema_paradiso','hannah','pretty_woman','thelma'], deteste:['halloween','alien','exorciste','full_metal'], accepte:['drame','comedie_romantique','rarites'], energie:1, isIndecise:true,
         onServi:(gs,film,prix)=>{
           if(film.genre==='drame'||film.genre==='comedie_romantique'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.reputation=Math.min(5,gs.reputation+0.5);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "C'est exactement ça."`,positif:true};}
           return{msg:'"Non non. C\'est pas ça."',positif:false};}},
 
-      {id:'amie', name:"L'AMIE", mood:'😊', aime:['ghost','dirty_dancing','thelma','forrest','cinema_paradiso'], deteste:[], accepte:['drame','comedie_romantique'], energie:0, isPote:true,
+      {id:'amie', name:"L'AMIE", mood:'😊', aime:['ghost','dirty_dancing','thelma','hannah','cinema_paradiso'], deteste:[], accepte:['drame','comedie_romantique'], energie:0, isPote:true,
         onServi:(gs,film,prix)=>{
           if(Math.random()<0.3&&(film.genre==='drame'||film.genre==='comedie_romantique')){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Elle repart avec un sourire.`,positif:true};}
           gs.reputation=Math.min(5,(gs.reputation||3)+0.2);return{msg:"Elle repart sans louer.",positif:true};}},
 
-      {id:'cowboy', name:'LE COWBOY', mood:'🤠', aime:['shane','magnificent','dollars','high_noon','outlaw'], deteste:['roi_lion','dirty_dancing','ghost'], accepte:['western'], energie:1, weedDemande:true,
+      {id:'cowboy', name:'LE COWBOY', mood:'🤠', aime:['shane','magnificent','dollars','high_noon','outlaw'], deteste:['oliver','dirty_dancing','ghost'], accepte:['western'], energie:1, weedDemande:true,
         onServi:(gs,film,prix)=>{
           if(film.genre==='western'){gs.stock.western=Math.max(0,(gs.stock.western||3)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Beaucoup obligé, partenaire."`,positif:true};}
           return{msg:'"Ce film-là, pas intéressé, fils."',positif:false};}},
 
-      {id:'debbie', name:'DEBBIE', mood:'🎙️', aime:['blow_out','conversation','blow_up','rear_window','das_boot'], deteste:['roi_lion','aladdin'], accepte:['rarites'], energie:1, isPote:true,
+      {id:'debbie', name:'DEBBIE', mood:'🎙️', aime:['blow_out','conversation','blow_up','rear_window','das_boot'], deteste:['oliver','aladdin'], accepte:['rarites'], energie:1, isPote:true,
         onServi:(gs,film,prix)=>{
           if(['blow_out','conversation','blow_up','rear_window','das_boot'].includes(film.id)){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;gs.client_debbie_son_count=(gs.client_debbie_son_count||0)+1;return{msg:`+${prix||film.prix}$ — "La prise de son est remarquable."`,positif:true};}
           else if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Elle prend.`,positif:true};}
           return{msg:'Elle repart. Pas assez de travail sur le son.',positif:false};}},
 
-      {id:'femme', name:'LA CLIENTE', mood:'👩‍💼', aime:['thelma','blow_out','short_cuts','forrest','taxi_driver'], deteste:[], accepte:['drame','rarites'], energie:1,
+      {id:'femme', name:'LA CLIENTE', mood:'👩‍💼', aime:['thelma','blow_out','short_cuts','hannah','taxi_driver'], deteste:[], accepte:['drame','rarites'], energie:1,
         onServi:(gs,film,prix)=>{
           if(film.genre==='drame'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Rapide.`,positif:true};}
           return{msg:"Pas ce qu'elle cherche.",positif:false};}},
 
-      {id:'gordon', name:'GORDON', mood:'🎬', aime:['blow_out','suspiria','blue_velvet','evil_dead','shining'], deteste:['roi_lion','dirty_dancing','die_hard','commando'], accepte:['rarites','horreur'], energie:2,
+      {id:'gordon', name:'GORDON', mood:'🎬', aime:['blow_out','suspiria','blue_velvet','evil_dead','shining'], deteste:['oliver','dirty_dancing','die_hard','commando'], accepte:['rarites','horreur'], energie:2,
         onServi:(gs,film,prix)=>{
           if(film.genre==='rarites'||film.genre==='horreur'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Mouais."`,positif:true};}
           return{msg:'Gordon repart.',positif:false};}},
@@ -1161,7 +1161,7 @@
           if(film.genre==='comedie_romantique'){gs.stock.comedie_romantique=Math.max(0,(gs.stock.comedie_romantique||5)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Elle prend discrètement.`,positif:true};}
           return{msg:'Elle repart.',positif:false};}},
 
-      {id:'mere', name:'MADAME CHEN', mood:'😅', aime:['halloween','alien','exorciste','shining','evil_dead'], deteste:['roi_lion','aladdin'], accepte:['horreur'], energie:1,
+      {id:'mere', name:'MADAME CHEN', mood:'😅', aime:['halloween','alien','exorciste','shining','evil_dead'], deteste:['oliver','aladdin'], accepte:['horreur'], energie:1,
         onServi:(gs,film,prix)=>{
           if(film.genre==='horreur'){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "C'est un documentaire ?"`,positif:true};}
           return{msg:'Elle repart.',positif:false};}},
@@ -1181,12 +1181,12 @@
           gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;
           return{msg:`+${prix||film.prix}$ — "Je vais répéter les répliques."`,positif:true};}},
 
-      {id:'sf', name:'LE FAN SF', mood:'👽', aime:['blade_runner','2001','close_encounters','escape_ny','alien','the_fly_new'], deteste:['dirty_dancing','pretty_woman','roi_lion'], accepte:['sf','horreur'], energie:1,
+      {id:'sf', name:'LE FAN SF', mood:'👽', aime:['blade_runner','2001','close_encounters','escape_ny','alien','the_fly_new'], deteste:['dirty_dancing','pretty_woman','oliver'], accepte:['sf','horreur'], energie:1,
         onServi:(gs,film,prix)=>{
           if(['blade_runner','2001','close_encounters','escape_ny','alien','the_fly_new','predator','terminator'].includes(film.id)){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — "Ils nous surveillent."`,positif:true};}
           return{msg:'Il repart. Signal codé.',positif:false};}},
 
-      {id:'sensible', name:'LE SENSIBLE', mood:'🥹', aime:['ghost','cinema_paradiso','forrest','la_strada','thelma'], deteste:[], accepte:['drame','rarites'], energie:1,
+      {id:'sensible', name:'LE SENSIBLE', mood:'🥹', aime:['ghost','cinema_paradiso','hannah','la_strada','thelma'], deteste:[], accepte:['drame','rarites'], energie:1,
         onServi:(gs,film,prix)=>{
           if(film.genre==='drame'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;gs.client_sensible_pleure=(gs.client_sensible_pleure||0)+1;return{msg:`+${prix||film.prix}$ — Une larme.`,positif:true};}
           return{msg:'Il repart. Presque en pleurant.',positif:false};}},
@@ -1434,9 +1434,9 @@
         {perso:'fred',  texte:"Il est revenu ?"},
         {perso:'corey', texte:"Il a regarde le micro-metrage trois fois."},
         {perso:'fred',  texte:"Trois fois."},
-        {perso:'corey', texte:"C'est ce que Cutter fait avec les bons films."},
-        {perso:'fred',  texte:"Cutter fait ca ?"},
-        {perso:'corey', texte:"Cutter fait ca."},
+        {perso:'corey', texte:"C'est ce que The Glitch fait avec les bons films."},
+        {perso:'fred',  texte:"The Glitch fait ça ?"},
+        {perso:'corey', texte:"The Glitch fait ça."},
       ],
       deteste: [
         {perso:'corey', texte:"On a eu un retour ce matin."},
@@ -1616,7 +1616,13 @@
             jouerSituation('ouverture', lancerProchainClient);
           });
         } else if (Math.random() < 0.25) {
-          jouerSituation('matin_fatigue', () => {
+          const sitMatin = ['matin_fatigue','matin_routine','rembobinage_matin','croque_mort_quotidien','debat_films','camera_boutique'];
+          const sit = sitMatin[Math.floor(Math.random()*sitMatin.length)];
+          jouerSituation(sit, () => {
+            jouerSituation('ouverture', lancerProchainClient);
+          });
+        } else if (Math.random() < 0.2) {
+          jouerSituation('jackson_pense', () => {
             jouerSituation('ouverture', lancerProchainClient);
           });
         } else {
@@ -1909,11 +1915,45 @@
             {perso:'client', texte: demande},
             {perso:'corey',  texte: "Rayon enfants. On a ce qu'il faut."},
             {perso:'client', texte: "Tant mieux. Les enfants ont choisi."},
+            {perso:'corey',  texte: "Ils ont bon goût."},
+            {perso:'client', texte: "C'est ce que je me dis."},
+          ],
+          henderson_2: [
+            {perso:'client', texte: demande},
+            {perso:'corey',  texte: "Les petits sont là ?"},
+            {perso:'client', texte: "Non. Ils m'ont donné une liste."},
+            {perso:'fred',   texte: "Une liste."},
+            {perso:'client', texte: "Trois films. Dans l'ordre de préférence."},
+            {perso:'corey',  texte: "Ils ont fait un classement."},
+            {perso:'client', texte: "C'est des enfants organisés."},
+            {perso:'corey',  texte: "Respectez ça."},
           ],
           cinephile: [
             {perso:'client', texte: demande},
             {perso:'corey',  texte: "On a Short Cuts. Altman. Pas beaucoup de gens demandent ca."},
             {perso:'client', texte: "Je sais. C'est pour ca que je viens ici."},
+            {perso:'fred',   texte: "Vous avez vu Boxcar Bertha ?"},
+            {perso:'client', texte: "Scorsese avant Scorsese. Oui."},
+            {perso:'corey',  texte: "C'est là qu'il a tout appris."},
+          ],
+          cinephile_2: [
+            {perso:'client', texte: demande},
+            {perso:'corey',  texte: "Blow Out. De Palma. On l'a."},
+            {perso:'client', texte: "Je l'ai déjà vu."},
+            {perso:'corey',  texte: "On le revoit."},
+            {perso:'client', texte: "..."},
+            {perso:'corey',  texte: "La scène finale. Le son dans la foule."},
+            {perso:'client', texte: "Chaque fois c'est pareil."},
+            {perso:'fred',   texte: "C'est ça un grand film."},
+          ],
+          cinephile_3: [
+            {perso:'client', texte: demande},
+            {perso:'corey',  texte: "Evil Dead. On a la version originale."},
+            {perso:'client', texte: "Pas la version distribuée ?"},
+            {perso:'corey',  texte: "La vraie. Celle que Raimi voulait faire."},
+            {perso:'client', texte: "Comment vous l'avez eue ?"},
+            {perso:'corey',  texte: "On a nos sources."},
+            {perso:'fred',   texte: "On a nos sources."},
           ],
           marine: [
             {perso:'client', texte: demande},
@@ -1991,6 +2031,25 @@
             {perso:'corey',  texte: "Leone ou Ford ?"},
             {perso:'client', texte: "Les deux fils. C'est pas incompatible."},
             {perso:'corey',  texte: "Sage."},
+            {perso:'fred',   texte: "On a Shane. Et Le Bon la Brute et le Truand."},
+            {perso:'client', texte: "Shane d'abord. Les autres après."},
+          ],
+          cowboy_2: [
+            {perso:'client', texte: '"Les 7 Mercenaires fils."'},
+            {perso:'corey',  texte: "Sturges. 1960. Un des grands."},
+            {perso:'client', texte: "Yul Brynner. Steve McQueen."},
+            {perso:'corey',  texte: "McQueen vole chaque scène."},
+            {perso:'client', texte: "C'est son talent, fils."},
+            {perso:'fred',   texte: "On l'a."},
+          ],
+          cowboy_3: [
+            {perso:'client', texte: '"Josey Wales. Un homme seul."'},
+            {perso:'corey',  texte: "Eastwood réalise et joue. Double talent."},
+            {perso:'client', texte: "L'ouest c'est une philosophie, fils."},
+            {perso:'corey',  texte: "Qu'est-ce que ça veut dire."},
+            {perso:'client', texte: "Quand t'es seul face à tout le reste."},
+            {perso:'corey',  texte: "..."},
+            {perso:'fred',   texte: "On a Josey Wales."},
           ],
           debbie: [
             {perso:'client', texte: demande},
@@ -1998,6 +2057,28 @@
             {perso:'client', texte: "La scène finale. Le micro dans la foule."},
             {perso:'fred',   texte: "On a la cassette."},
             {perso:'client', texte: "Je sais. C'est pour ça que je viens ici."},
+            {perso:'corey',  texte: "T'as une Nagra ?"},
+            {perso:'client', texte: "Pas encore. Bientôt."},
+            {perso:'corey',  texte: "Pour le Retour des Croque-Mort Vivants."},
+            {perso:'client', texte: "Si vous avez besoin d'une preneuse de son."},
+          ],
+          debbie_2: [
+            {perso:'client', texte: '"La Conversation de Coppola."'},
+            {perso:'corey',  texte: "Le meilleur film sur l'écoute jamais fait."},
+            {perso:'client', texte: "Gene Hackman. La bobine dans la baignoire."},
+            {perso:'corey',  texte: "Et le son qui traverse les murs."},
+            {perso:'client', texte: "C'est ça le vrai son. Ce qu'on entend pas."},
+            {perso:'fred',   texte: "On l'a."},
+            {perso:'client', texte: "Je sais. C'est pour ça."},
+          ],
+          debbie_3: [
+            {perso:'client', texte: '"Das Boot. Pour le mixage."'},
+            {perso:'corey',  texte: "Le son dans le sous-marin."},
+            {perso:'client', texte: "La claustrophobie c'est du son avant tout."},
+            {perso:'corey',  texte: "T'as raison et c'est flippant."},
+            {perso:'client', texte: "Le bruit de l'eau. Les grincements."},
+            {perso:'fred',   texte: "T'es dans le sous-marin là."},
+            {perso:'client', texte: "C'est le but."},
           ],
           femme: [
             {perso:'client', texte: demande},
@@ -2011,7 +2092,7 @@
             {perso:'corey',  texte: "Toujours avec ton blouson brodé."},
             {perso:'fred',   texte: "On peut vous aider M. Gordon ?"},
             {perso:'client', texte: "Mon dernier court métrage a été sélectionné."},
-            {perso:'corey',  texte: "Cutter en a parlé dans le fanzine."},
+            {perso:'corey',  texte: "Le fanzine en a parlé."},
             {perso:'client', texte: "Il a dit quoi."},
             {perso:'corey',  texte: "Rien de bien."},
           ],
@@ -2021,14 +2102,62 @@
             {perso:'client', texte: "C'est... pour une amie."},
             {perso:'corey',  texte: "Bien sûr."},
             {perso:'fred',   texte: "On a Footloose."},
+            {perso:'client', texte: "Vous direz rien."},
+            {perso:'corey',  texte: "À qui."},
+          ],
+          goth_2: [
+            {perso:'client', texte: '"Flashdance. Si vous l\'avez."'},
+            {perso:'corey',  texte: "On a Flashdance."},
+            {perso:'client', texte: "C'est pour étudier la chorégraphie."},
+            {perso:'corey',  texte: "Bien sûr."},
+            {perso:'client', texte: "Je fais de la recherche."},
+            {perso:'fred',   texte: "On juge pas."},
+            {perso:'client', texte: "Je juge pas non plus. D'habitude."},
+          ],
+          goth_3: [
+            {perso:'client', texte: '"Dirty Dancing. Personne me verra."'},
+            {perso:'corey',  texte: "On te voit."},
+            {perso:'client', texte: "Vous comptez pas."},
+            {perso:'fred',   texte: "Merci."},
+            {perso:'corey',  texte: "C'est Patrick Swayze. Personne résiste."},
+            {perso:'client', texte: "..."},
+            {perso:'corey',  texte: "Personne."},
           ],
           mere: [
             {perso:'client', texte: demande},
-            {perso:'corey',  texte: "Les griffes de la nuit. Le documentaire sur les lions."},
-            {perso:'fred',   texte: "Corey."},
-            {perso:'corey',  texte: "C'est en Afrique. La nuit. Y'a des griffes."},
-            {perso:'fred',   texte: "Madame — c'est un film d'horreur."},
-            {perso:'client', texte: "...mes fils vont m'entendre."},
+            {perso:'corey',  texte: "Madame. Ce film là c'est Wes Craven."},
+            {perso:'client', texte: "Wes Craven c'est qui."},
+            {perso:'corey',  texte: "C'est pas un documentaire sur les lions."},
+            {perso:'client', texte: "Mes fils m'ont dit que—"},
+            {perso:'fred',   texte: "Vos fils vous ont menti Madame."},
+            {perso:'client', texte: "..."},
+            {perso:'corey',  texte: "On a Oliver et Compagnie. Les enfants adorent."},
+            {perso:'client', texte: "Oliver et Compagnie alors."},
+            {perso:'corey',  texte: "Sage."},
+            {perso:'fred',   texte: "Vos fils vont être déçus."},
+            {perso:'client', texte: "C'est le but."},
+          ],
+          mere_2: [
+            {perso:'client', texte: "Alien — les agriculteurs de l'espace."},
+            {perso:'corey',  texte: "Madame."},
+            {perso:'client', texte: "C'est ce que mes fils m'ont dit."},
+            {perso:'corey',  texte: "Alien c'est Ridley Scott. C'est pas des agriculteurs."},
+            {perso:'client', texte: "C'est quoi alors."},
+            {perso:'fred',   texte: "C'est de l'horreur. Dans l'espace."},
+            {perso:'client', texte: "Dans l'espace."},
+            {perso:'corey',  texte: "Personne vous entend crier."},
+            {perso:'client', texte: "Mes fils vont m'entendre eux."},
+          ],
+          mere_3: [
+            {perso:'client', texte: '"Halloween. Le film sur la récolte en automne."'},
+            {perso:'fred',   texte: "Madame Henderson."},
+            {perso:'client', texte: "C'est pas la récolte ?"},
+            {perso:'corey',  texte: "Y'a une citrouille sur la jaquette."},
+            {perso:'client', texte: "Voilà."},
+            {perso:'corey',  texte: "Et un couteau."},
+            {perso:'client', texte: "..."},
+            {perso:'fred',   texte: "Vos fils sont créatifs."},
+            {perso:'client', texte: "Trop."},
           ],
           muscle: [
             {perso:'client', texte: demande},
@@ -2037,6 +2166,27 @@
             {perso:'corey',  texte: "On peut pas louer deux films."},
             {perso:'client', texte: "Predator alors."},
             {perso:'corey',  texte: "Sage."},
+            {perso:'fred',   texte: "Arnie ou Arnie."},
+            {perso:'client', texte: "Arnie."},
+          ],
+          muscle_2: [
+            {perso:'client', texte: '"Commando. Arnold."'},
+            {perso:'corey',  texte: "Commando c'est du pur muscle."},
+            {perso:'client', texte: "C'est le but."},
+            {perso:'corey',  texte: "Y'a pas de subtilité."},
+            {perso:'client', texte: "J'en veux pas."},
+            {perso:'corey',  texte: "Respecte."},
+            {perso:'fred',   texte: "On a Commando."},
+          ],
+          muscle_3: [
+            {perso:'client', texte: '"Die Hard. Tous les Die Hard."'},
+            {perso:'corey',  texte: "On a le premier."},
+            {perso:'client', texte: "C'est le meilleur."},
+            {perso:'corey',  texte: "C'est un film de Noël selon certains."},
+            {perso:'client', texte: "C'est un film d'action."},
+            {perso:'corey',  texte: "Les deux."},
+            {perso:'client', texte: "Non."},
+            {perso:'fred',   texte: "On a Die Hard."},
           ],
           prof: [
             {perso:'client', texte: demande},
@@ -2046,6 +2196,26 @@
             {perso:'client', texte: "Fred. Je vous croyais... ailleurs."},
             {perso:'corey',  texte: "On fait du cinéma."},
             {perso:'client', texte: "Je vois."},
+            {perso:'corey',  texte: "Vous nous avez pas aidés en cours."},
+            {perso:'client', texte: "..."},
+            {perso:'fred',   texte: "Cinema Paradiso. On l'a."},
+          ],
+          prof_2: [
+            {perso:'client', texte: demande},
+            {perso:'corey',  texte: "M. Arcand. T'avez mis combien à mon exposé sur Kubrick ?"},
+            {perso:'client', texte: "Huit sur vingt."},
+            {perso:'corey',  texte: "C'était le meilleur exposé de la classe."},
+            {perso:'client', texte: "C'était très... enthousiaste."},
+            {perso:'fred',   texte: "On a ce qu'il vous faut."},
+          ],
+          prof_3: [
+            {perso:'client', texte: demande},
+            {perso:'fred',   texte: "On a La Strada. Fellini."},
+            {perso:'client', texte: "Je connais Fellini."},
+            {perso:'corey',  texte: "Vous l'avez montré à vos élèves ?"},
+            {perso:'client', texte: "Non."},
+            {perso:'corey',  texte: "C'est pour ça qu'on a eu des mauvaises notes."},
+            {perso:'client', texte: "..."},
           ],
           sam: [
             {perso:'client', texte: demande},
@@ -2055,6 +2225,24 @@
             {perso:'client', texte: "Tout est une audition Fred."},
             {perso:'corey',  texte: "Il a raison."},
           ],
+          sam_2: [
+            {perso:'client', texte: demande},
+            {perso:'corey',  texte: "Tu veux jouer dans notre film."},
+            {perso:'client', texte: "Le Retour des Croque-Mort Vivants ?"},
+            {perso:'corey',  texte: "T'es au courant."},
+            {perso:'client', texte: "Tout le monde est au courant."},
+            {perso:'fred',   texte: "Personne est au courant."},
+            {perso:'client', texte: "J'aimerais bien jouer dedans."},
+            {perso:'corey',  texte: "On verra. T'as un casting à faire."},
+          ],
+          sam_3: [
+            {perso:'client', texte: demande},
+            {perso:'corey',  texte: "T'as les yeux de Brando aujourd'hui."},
+            {perso:'client', texte: "C'est mon regard d'acteur."},
+            {perso:'corey',  texte: "Pratique ça."},
+            {perso:'fred',   texte: "Apocalypse Now. Tu le prends ?"},
+            {perso:'client', texte: "Pour Brando. Toujours."},
+          ],
           sf: [
             {perso:'client', texte: demande},
             {perso:'corey',  texte: "Blade Runner. Le director's cut."},
@@ -2062,6 +2250,26 @@
             {perso:'corey',  texte: "Savait quoi."},
             {perso:'client', texte: "Tout. Il avait été briefé."},
             {perso:'fred',   texte: "..."},
+            {perso:'corey',  texte: "Briefé par qui."},
+            {perso:'client', texte: "C'est la question."},
+          ],
+          sf_2: [
+            {perso:'client', texte: '"2001. Kubrick savait aussi."'},
+            {perso:'corey',  texte: "Kubrick a filmé l'alunissage en studio."},
+            {perso:'client', texte: "J'étais pas là."},
+            {perso:'corey',  texte: "Moi non plus. Mais c'est logique."},
+            {perso:'fred',   texte: "C'est pas logique."},
+            {perso:'corey',  texte: "La caméra. L'éclairage. C'est du Kubrick."},
+            {perso:'client', texte: "Exactement."},
+            {perso:'fred',   texte: "On a 2001."},
+          ],
+          sf_3: [
+            {perso:'client', texte: "New York 1997. Carpenter l'avait prévu."},
+            {perso:'corey',  texte: "1997 c'est dans six ans."},
+            {perso:'client', texte: "On sera là pour voir si il avait raison."},
+            {perso:'corey',  texte: "T'es optimiste."},
+            {perso:'client', texte: "Je fais des provisions."},
+            {perso:'fred',   texte: "On a New York 1997."},
           ],
           sensible: [
             {perso:'client', texte: demande},
@@ -2070,6 +2278,26 @@
             {perso:'corey',  texte: "Sage."},
             {perso:'fred',   texte: "Cinema Paradiso est là."},
             {perso:'client', texte: "Je sais. Je l'ai vu huit fois."},
+            {perso:'corey',  texte: "La neuvième c'est différent."},
+            {perso:'client', texte: "Je sais."},
+          ],
+          sensible_2: [
+            {perso:'client', texte: '"Ghost. Pour la scène finale."'},
+            {perso:'corey',  texte: "Il pleure avant même d'avoir commencé."},
+            {perso:'client', texte: "C'est le principe."},
+            {perso:'fred',   texte: "On a Ghost."},
+            {perso:'client', texte: "Merci."},
+            {perso:'corey',  texte: "La scène avec l'argile. C'est pour ça hein."},
+            {perso:'client', texte: "C'est pour tout."},
+          ],
+          sensible_3: [
+            {perso:'client', texte: '"Kramer vs Kramer. Pour souffrir."'},
+            {perso:'corey',  texte: "T'as l'air d'aller bien aujourd'hui."},
+            {perso:'client', texte: "C'est pour ça que je viens."},
+            {perso:'fred',   texte: "On a Kramer."},
+            {perso:'client', texte: "Dustin Hoffman. La scène du tribunal."},
+            {perso:'corey',  texte: "Prépare les mouchoirs."},
+            {perso:'client', texte: "Ils sont déjà sortis."},
           ],
           tim: [
             {perso:'client', texte: demande},
@@ -2078,6 +2306,27 @@
             {perso:'corey',  texte: "Pourquoi alimentaire."},
             {perso:'client', texte: "Pour manger après."},
             {perso:'fred',   texte: "Evil Dead est là."},
+            {perso:'tim',    texte: "Pour les effets du plan 3. La scène de la cave."},
+            {perso:'corey',  texte: "T'as un plan 3 ?"},
+            {perso:'client', texte: "J'ai un plan 47."},
+          ],
+          tim_2: [
+            {perso:'client', texte: '"The Thing. Bottin. Un génie."'},
+            {perso:'corey',  texte: "Bottin c'est le dieu des effets pratiques."},
+            {perso:'client', texte: "La scène du chien. Comment il a fait ça."},
+            {perso:'corey',  texte: "De la mécanique. Du latex. De l'huile de coude."},
+            {perso:'client', texte: "Et du génie."},
+            {perso:'fred',   texte: "The Thing est là."},
+            {perso:'client', texte: "J'analyse image par image."},
+          ],
+          tim_3: [
+            {perso:'client', texte: '"Alien pour les effets prothétiques."'},
+            {perso:'corey',  texte: "Giger. Tout vient de Giger."},
+            {perso:'client', texte: "Le design. Mais les effets c'est Rambaldi."},
+            {perso:'corey',  texte: "T'as raison."},
+            {perso:'fred',   texte: "T'as quelque chose de visqueux sur le coude."},
+            {perso:'client', texte: "Glycérine. Pour les coulées."},
+            {perso:'corey',  texte: "Bien sûr."},
           ],
         };
 
@@ -2562,8 +2811,11 @@
           // Dialogue sur les potes après leur visite
           const poteSit = {sam:'pote_sam',tim:'pote_tim',debbie:'pote_debbie',amie:'pote_amie',gordon:'pote_gordon',cowboy:'pote_cowboy',prof:'pote_prof'};
           const poteDlg = poteSit[client.id];
-          if (poteDlg && Math.random() < 0.6) {
+          if (poteDlg && Math.random() < 0.55) {
             jouerSituation(poteDlg, () => jouerDialogue(transition, () => lancerProchainClient()));
+          } else if (Math.random() < 0.25 && !clientPresent) {
+            // Débat film entre clients
+            jouerSituation('debat_films', () => jouerDialogue(transition, () => lancerProchainClient()));
           } else {
             jouerDialogue(transition, () => lancerProchainClient());
           }
@@ -3079,7 +3331,7 @@
           {perso:'fred',  texte:"Je parle de nous et Galaxy Video."},
           {perso:'corey', texte:"Je sais. Mais le principe est le meme."},
           {perso:'fred',  texte:"On a quoi qu'ils ont pas ?"},
-          {perso:'corey', texte:"Cutter. Les micro-metrages. L'underground."},
+          {perso:'corey', texte:"Le fanzine. Les micro-métrages. L'underground."},
           {perso:'fred',  texte:"Ca suffira ?"},
           {perso:'corey', texte:"DiMaggio pense que oui."},
           {perso:'fred',  texte:"Comment tu sais ce que DiMaggio pense ?"},
