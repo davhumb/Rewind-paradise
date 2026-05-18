@@ -1657,6 +1657,10 @@
         {perso:'fred',  texte:"Commande des cassettes avec le 📦 en haut à droite. Avant d'être en rupture."},
         {perso:'corey', texte:"Et avec le fric tu peux upgrader le vidéoclub. Le ⬆ à côté."},
         {perso:'corey', texte:"Certains clients aiment se détendre devant leur film. Je peux leur glisser de la Sicilian Gold — la meilleure weed du coin. Fais gaffe à pas en refiler à n'importe qui."},
+        {perso:'fred',  texte:"La barre en bas avec la loupe. C'est la suspicion de Canopi."},
+        {perso:'corey', texte:"Elle vire au jaune il a des doutes. Au rouge il agit."},
+        {perso:'fred',  texte:"40% il commence à poser des questions."},
+        {perso:'corey', texte:"Reste naturel."},
       ];
 
       // Clignoter bouton upgrades après bulle 3
@@ -2054,7 +2058,27 @@
             {perso:'client', texte: "Oui."},
             {perso:'corey',  texte: "On a des restes."},
             {perso:'client', texte: "Je reste pas longtemps."},
-            {perso:'fred',   texte: "Assieds-toi quand même."},
+            {perso:'corey',  texte: "On a du temps."},
+            {perso:'fred',   texte: "On a du temps."},
+          ],
+          amie_2: [
+            {perso:'client', texte: demande},
+            {perso:'corey',  texte: "..."},
+            {perso:'client', texte: "Ça va Corey ?"},
+            {perso:'corey',  texte: "Très bien. Pourquoi."},
+            {perso:'client', texte: "Tu dis rien."},
+            {perso:'corey',  texte: "Je... je range les cassettes."},
+            {perso:'fred',   texte: "Il rangeait rien."},
+            {perso:'corey',  texte: "Fred."},
+          ],
+          amie_3: [
+            {perso:'client', texte: demande},
+            {perso:'corey',  texte: "T'as vu quelque chose de bien dernièrement ?"},
+            {perso:'client', texte: "Witness. Harrison Ford."},
+            {perso:'corey',  texte: "C'est bien Witness. Le plan dans le grenier."},
+            {perso:'client', texte: "J'ai pensé à toi en le regardant."},
+            {perso:'corey',  texte: "..."},
+            {perso:'fred',   texte: "On l'a si tu veux le revoir."},
           ],
           cowboy: [
             {perso:'client', texte: demande},
@@ -2159,12 +2183,11 @@
             {perso:'client', texte: "Wes Craven c'est qui."},
             {perso:'corey',  texte: "C'est pas un documentaire sur les lions."},
             {perso:'client', texte: "Mes fils m'ont dit que—"},
-            {perso:'fred',   texte: "Vos fils vous ont menti Madame."},
+            {perso:'corey',  texte: "Vos fils vous ont menti Madame."},
             {perso:'client', texte: "..."},
             {perso:'corey',  texte: "On a Oliver et Compagnie. Les enfants adorent."},
             {perso:'client', texte: "Oliver et Compagnie alors."},
-            {perso:'corey',  texte: "Sage."},
-            {perso:'fred',   texte: "Vos fils vont être déçus."},
+            {perso:'corey',  texte: "Sage. Vos fils vont être déçus."},
             {perso:'client', texte: "C'est le but."},
           ],
           mere_2: [
@@ -2845,7 +2868,7 @@
             document.getElementById('pause-btn').classList.add('visible');
           }
           // Dialogue sur les potes après leur visite
-          const poteSit = {sam:'pote_sam',tim:'pote_tim',debbie:'pote_debbie',amie:'pote_amie',gordon:'pote_gordon',cowboy:'pote_cowboy',prof:'pote_prof'};
+          const poteSit = {sam:'pote_sam',tim:'pote_tim',debbie:Math.random()<0.5?'pote_debbie':'pote_debbie_crush',amie:'pote_amie',gordon:'pote_gordon',cowboy:'pote_cowboy',prof:'pote_prof'};
           const poteDlg = poteSit[client.id];
           if (poteDlg && Math.random() < 0.55) {
             jouerSituation(poteDlg, () => jouerDialogue(transition, () => lancerProchainClient()));
@@ -2998,7 +3021,7 @@
         // Easter eggs fin de journée — plusieurs possibles
         const easterEggs = [
           {
-            prob: 0.15,
+            prob: 0.12,
             fn: () => {
               setCoreyAvatar('deniro');
               gameState.corey_deniro_count = (gameState.corey_deniro_count||0) + 1;
@@ -3008,6 +3031,65 @@
                 {perso:'fred',  texte:"T'es en train de faire quoi ?"},
                 {perso:'corey', texte:"Taxi Driver. La scène du miroir."},
               ], () => {});
+            }
+          },
+          {
+            prob: 0.10,
+            fn: () => {
+              setCoreyAvatar('conspirationiste');
+              jouerDialogue([
+                {perso:'corey', texte:"J'ai maté les Goonies hier soir."},
+                {perso:'fred',  texte:"Encore."},
+                {perso:'corey', texte:"Après la scène du grand frère sur le vélo Barbie je peux te dire une chose."},
+                {perso:'fred',  texte:"Que t'es jaloux ?"},
+                {perso:'corey', texte:"Non. Que Josh Brolin ne jouera jamais des rôles de bonhomme."},
+                {perso:'fred',  texte:"..."},
+              ], () => setCoreyAvatar('neutre'));
+            }
+          },
+          {
+            prob: 0.08,
+            fn: () => {
+              setCoreyAvatar('illumine');
+              jouerDialogue([
+                {perso:'corey', texte:"Arnold va faire de la politique un jour ?"},
+                {perso:'fred',  texte:"Quoi ?"},
+                {perso:'corey', texte:"Non. Il a une tête d'acteur pas de politicien."},
+                {perso:'fred',  texte:"T'inquiète pas pour Arnold."},
+              ], () => setCoreyAvatar('neutre'));
+            }
+          },
+          {
+            prob: 0.08,
+            fn: () => {
+              setCoreyAvatar('conspirationiste');
+              jouerDialogue([
+                {perso:'corey', texte:"Jim Carrey. Le gars de In Living Color."},
+                {perso:'fred',  texte:"Ouais."},
+                {perso:'corey', texte:"Jamais au cinéma ce type. Trop TV."},
+                {perso:'fred',  texte:"..."},
+              ], () => setCoreyAvatar('neutre'));
+            }
+          },
+          {
+            prob: 0.06,
+            fn: () => {
+              setCoreyAvatar('illumine');
+              jouerDialogue([
+                {perso:'corey', texte:"Tu ricanes pourquoi ?"},
+                {perso:'fred',  texte:"Je ricane pas."},
+                {perso:'corey', texte:"Faire des films qui seraient pas des remakes mais des films à l'envers."},
+                {perso:'fred',  texte:"Qui commence par la fin ?"},
+                {perso:'corey', texte:"Non. Où t'inverses l'histoire. Un clodo sans un rond tombe amoureux d'une prostituée sans charme."},
+                {perso:'fred',  texte:"Ugly Woman ?"},
+                {perso:'corey', texte:"Oh yeah !"},
+                {perso:'fred',  texte:"T'en as d'autres ?"},
+                {perso:'corey', texte:"L'aventure extérieur. Plutôt que de miniaturiser un mec et l'injecter dans un corps, tu maxiturises—"},
+                {perso:'fred',  texte:"Maxiturises ?"},
+                {perso:'corey', texte:"Ouais. Les microbes qui font éclater le corps et attaquent les humains."},
+                {perso:'fred',  texte:"C'est Alien ça."},
+                {perso:'corey', texte:"Non pas du tout."},
+              ], () => setCoreyAvatar('neutre'));
             }
           },
           {
@@ -3736,6 +3818,35 @@
           {perso:'corey', texte:"La voix fait partie du film."},
           {perso:'fred',  texte:"Exactement."},
           {perso:'corey', texte:"Doublage c'est du mensonge."},
+        ];
+      }
+
+      // AMY — Fred taquine Corey après
+      if (id === 'amie') {
+        if (positif) return [
+          {perso:'fred',  texte:"Elle est repartie."},
+          {perso:'corey', texte:"Je sais."},
+          {perso:'fred',  texte:"T'as rangé des cassettes."},
+          {perso:'corey', texte:"..."},
+          {perso:'fred',  texte:"T'avais rien à ranger."},
+          {perso:'corey', texte:"Ferme-la Fred."},
+        ];
+        return [
+          {perso:'fred',  texte:"Elle est repartie vite."},
+          {perso:'corey', texte:"Elle avait des trucs à faire."},
+          {perso:'fred',  texte:"Mmh."},
+        ];
+      }
+
+      // DEBBIE — Fred remarque
+      if (id === 'debbie') {
+        if (positif) return [
+          {perso:'corey', texte:"Blow Out. La prise de son dans la foule."},
+          {perso:'fred',  texte:"Elle te regardait."},
+          {perso:'corey', texte:"Elle regardait la cassette."},
+          {perso:'fred',  texte:"Elle te regardait Corey."},
+          {perso:'corey', texte:"Elle est passionnée par le son."},
+          {perso:'fred',  texte:"Ouais."},
         ];
       }
 

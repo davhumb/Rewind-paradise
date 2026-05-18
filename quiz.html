@@ -1266,8 +1266,37 @@
         const dialogueIndex = Math.floor(Math.random() * DIALOGUES_PAUSE.length);
         const dialogue = DIALOGUES_PAUSE[dialogueIndex];
         afficherDialoguePause(dialogue, zone, () => {
-          // Après le dialogue — lancer le quiz
-          setTimeout(lancerQuiz, 1500);
+          // Jour 1 — expliquer les règles
+          if ((gameState.jour||1) === 1 && !gameState.quiz_explique) {
+            gameState.quiz_explique = true;
+            const reglesDlg = [
+              {perso:'corey', texte:"Je pose trois questions."},
+              {perso:'fred',  texte:"Je sais."},
+              {perso:'corey', texte:"Le perdant rembobine les VHS."},
+              {perso:'fred',  texte:"T'as inventé ça."},
+              {perso:'corey', texte:"C'est une tradition."},
+              {perso:'fred',  texte:"C'est pas une tradition."},
+              {perso:'corey', texte:"Ça le devient. Les questions sont en bas."},
+              {perso:'fred',  texte:"Je sais lire."},
+            ];
+            afficherDialoguePause(reglesDlg, zone, () => {
+              setTimeout(lancerQuiz, 1500);
+            });
+          } else {
+            // Rappel court depuis semaine 2
+            if (Math.random() < 0.3) {
+              const rappelDlg = [
+                {perso:'corey', texte:"Le perdant rembobine."},
+                {perso:'fred',  texte:"Je sais."},
+                {perso:'corey', texte:"Les questions sont en bas."},
+              ];
+              afficherDialoguePause(rappelDlg, zone, () => {
+                setTimeout(lancerQuiz, 1000);
+              });
+            } else {
+              setTimeout(lancerQuiz, 1500);
+            }
+          }
         });
       }, 5000);
     }
