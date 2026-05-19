@@ -150,42 +150,45 @@
       margin: 8px 14px;
     }
 
-    /* JACKSON SECTION */
-    .jackson-section {
-      background: rgba(10,8,4,0.88);
-      border-top: 1px solid #cc880020;
-      border-bottom: 1px solid #cc880020;
-      padding: 12px 14px;
-      margin: 8px 0;
-    }
-
-    .jackson-header {
-      display: flex;
+    /* BANDE MILIEU — JACKSON / VISITEUR */
+    .perso-milieu {
+      display: none;
       align-items: center;
       gap: 10px;
-      margin-bottom: 10px;
+      padding: 4px 12px;
     }
+    .perso-milieu.visible { display: flex; }
 
-    .jackson-avatar-sm {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #cc880050;
-      background: #080808;
-    }
-
-    .jackson-label {
-      font-size: 8px;
-      color: #cc8800;
-      letter-spacing: 3px;
-      margin-bottom: 3px;
-    }
-
-    .jackson-montant {
-      font-size: 16px;
+    .bulle-milieu {
+      flex: 1;
+      padding: 9px 13px;
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.5;
+      background: rgba(20,12,4,0.92);
+      border: 1px solid #cc880040;
+      border-radius: 4px 12px 12px 12px;
       color: #cc9966;
-      font-weight: bold;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+
+    .bulle-milieu.visiteur-bulle {
+      border-color: #ffffff30;
+      color: #ccddff;
+      background: rgba(8,8,24,0.92);
+    }
+
+    .avatar-img.jackson-style { border: 3px solid #cc880060; box-shadow: 0 0 16px #cc880030; }
+    .avatar-img.visiteur-style { border: 3px solid #ffffff40; box-shadow: 0 0 12px #ffffff15; }
+
+    .jackson-collecte {
+      font-size: 9px;
+      color: #cc8800;
+      letter-spacing: 1px;
+      text-align: center;
+      margin-top: 3px;
     }
 
     /* BOUTON NUIT */
@@ -302,9 +305,10 @@
 
   <div class="main" id="main-content">
 
-    <!-- SCÈNE PRINCIPALE — Fred haut, Corey bas -->
+    <!-- SCÈNE PRINCIPALE — 3 BANDES : Fred haut / Jackson-Visiteur milieu / Corey bas -->
     <div class="scene-zone" id="scene-zone">
 
+      <!-- HAUT — FRED -->
       <div class="perso-haut" id="perso-haut">
         <div class="avatar-bloc">
           <img class="avatar-img fred-style" id="img-fred" src="posters/fred.png" alt=""
@@ -314,8 +318,19 @@
         <div class="bulle-haut" id="bulle-haut">&nbsp;</div>
       </div>
 
+      <!-- MILIEU — JACKSON / VISITEUR -->
+      <div class="perso-milieu" id="perso-milieu">
+        <div class="avatar-bloc">
+          <img class="avatar-img jackson-style" id="img-milieu" src="posters/jackson.png" alt="">
+          <div class="avatar-name jackson-name" id="nom-milieu">JACKSON</div>
+          <div class="jackson-collecte" id="jackson-collecte"></div>
+        </div>
+        <div class="bulle-milieu" id="bulle-milieu">&nbsp;</div>
+      </div>
+
       <div class="scene-middle"></div>
 
+      <!-- BAS — COREY -->
       <div class="perso-bas" id="perso-bas">
         <div class="avatar-bloc">
           <img class="avatar-img corey-style" id="img-corey" src="posters/corey-high.png" alt=""
@@ -325,25 +340,6 @@
         <div class="bulle-bas" id="bulle-bas">&nbsp;</div>
       </div>
 
-    </div>
-
-    <div class="sep"></div>
-
-    <!-- JACKSON SECTION -->
-    <div class="jackson-section" id="jackson-section" style="display:none;">
-      <div class="jackson-header">
-        <img class="jackson-avatar-sm" id="jackson-avatar-sm" src="posters/jackson.png" alt="Jackson"
-             onerror="this.style.opacity='0'">
-        <div>
-          <div class="jackson-label">JACKSON</div>
-          <div class="jackson-montant" id="jackson-montant">—</div>
-        </div>
-      </div>
-      <!-- Bulle Jackson -->
-      <div id="bulle-jackson" style="
-        font-size:12px;color:#cc9966;font-style:italic;
-        line-height:1.6;padding:6px 0;
-      ">—</div>
     </div>
 
     <!-- BOUTONS NUIT -->
@@ -423,14 +419,45 @@
       debbie:'posters/debbie.png',
     };
 
-    function setFred(h)    { document.getElementById('img-fred').src   = FRED_AV[h]    || FRED_AV.neutre; }
-    function setCorey(h)   { document.getElementById('img-corey').src  = COREY_AV[h]   || COREY_AV.neutre; }
-    function setJackson(h) { document.getElementById('jackson-avatar-sm').src = JACKSON_AV[h] || JACKSON_AV.neutre; }
+    function setFred(h)    { document.getElementById('img-fred').src  = FRED_AV[h]    || FRED_AV.neutre; }
+    function setCorey(h)   { document.getElementById('img-corey').src = COREY_AV[h]   || COREY_AV.neutre; }
+    function setJackson(h) { document.getElementById('img-milieu').src = JACKSON_AV[h] || JACKSON_AV.neutre; }
 
-    function setBulleHaut(texte, isJackson) {
+    function afficherMilieu(nom, style, collecte) {
+      const el = document.getElementById('perso-milieu');
+      const img = document.getElementById('img-milieu');
+      const nomEl = document.getElementById('nom-milieu');
+      const collecteEl = document.getElementById('jackson-collecte');
+      const bulle = document.getElementById('bulle-milieu');
+      el.classList.add('visible');
+      img.className = 'avatar-img ' + (style || 'jackson-style');
+      nomEl.className = 'avatar-name ' + (style === 'visiteur-style' ? 'client-name' : 'jackson-name');
+      nomEl.textContent = nom || 'JACKSON';
+      collecteEl.textContent = collecte || '';
+      bulle.className = 'bulle-milieu' + (style === 'visiteur-style' ? ' visiteur-bulle' : '');
+      bulle.textContent = ' ';
+    }
+
+    function masquerMilieu() {
+      document.getElementById('perso-milieu').classList.remove('visible');
+    }
+
+    function setVisiteur(id, h) {
+      const src = VISITEUR_AV[id] || '';
+      const img = document.getElementById('img-milieu');
+      if (src) img.src = src;
+      img.className = 'avatar-img visiteur-style';
+    }
+
+    function setBulleHaut(texte) {
       const b = document.getElementById('bulle-haut');
       b.textContent = texte;
-      b.className = isJackson ? 'bulle-haut jackson-bulle' : 'bulle-haut';
+      b.className = 'bulle-haut';
+    }
+    function setBulleMilieu(texte, isVisiteur) {
+      const b = document.getElementById('bulle-milieu');
+      b.textContent = texte;
+      b.className = 'bulle-milieu' + (isVisiteur ? ' visiteur-bulle' : '');
     }
     function setBulleBas(texte)  { document.getElementById('bulle-bas').textContent = texte; }
 
@@ -459,7 +486,7 @@
           [
             {perso:'corey', av:'high',       texte:"T'as vu la coupe qu'on a faite ce soir ?"},
             {perso:'fred',  av:'tranquille', texte:"J'étais là."},
-            {perso:'corey', av:'illumine',   texte:"Cutter va noter haut."},
+            {perso:'corey', av:'illumine',   texte:"The Glitch va noter haut."},
             {perso:'fred',  av:'doute',      texte:"Peut-être."},
             {perso:'corey', av:'ecarquille', texte:"Sûrement."},
             {perso:'fred',  av:'tranquille', texte:"On verra."},
@@ -511,8 +538,8 @@
             {perso:'corey', av:'depite',     texte:"Personne regarde nos films."},
             {perso:'fred',  av:'tranquille', texte:"Si."},
             {perso:'corey', av:'pensif',     texte:"Qui ?"},
-            {perso:'fred',  av:'tranquille', texte:"Cutter."},
-            {perso:'corey', av:'ecarquille', texte:"Cutter c'est une personne."},
+            {perso:'fred',  av:'tranquille', texte:"The Glitch."},
+            {perso:'corey', av:'ecarquille', texte:"The Glitch c'est une personne."},
             {perso:'fred',  av:'tranquille', texte:"C'est suffisant."},
             {perso:'corey', av:'high',       texte:"..."},
             {perso:'corey', av:'illumine',   texte:"C'est suffisant."},
@@ -730,7 +757,7 @@
         id: 'weed_nuit',
         dialogues: [
           [
-            {perso:'corey', av:'high',       texte:"Le Sicilian Gold cette nuit. Vraiment bon."},
+            {perso:'corey', av:'high',       texte:"Le Sicilian Gold cette nuit. Vraiment bonne."},
             {perso:'fred',  av:'tranquille', texte:"Mmh."},
             {perso:'corey', av:'illumine',   texte:"Tu sens la différence avec le mois dernier ?"},
             {perso:'fred',  av:'doute',      texte:"Un peu."},
@@ -767,6 +794,8 @@
       // ===================================================
       {
         id: 'visite_amy',
+        avecVisiteur: true,
+        visiteurId: 'amy',
         dialogues: [
           [
             {perso:'corey', av:'high',       texte:"Amy est passée."},
@@ -801,6 +830,8 @@
       },
       {
         id: 'visite_tim',
+        avecVisiteur: true,
+        visiteurId: 'tim',
         dialogues: [
           [
             {perso:'corey', av:'ecarquille', texte:"Tim est passé."},
@@ -828,6 +859,8 @@
       },
       {
         id: 'visite_sam',
+        avecVisiteur: true,
+        visiteurId: 'sam',
         dialogues: [
           [
             {perso:'corey', av:'illumine',   texte:"Sam est passé."},
@@ -852,6 +885,8 @@
       },
       {
         id: 'visite_debbie',
+        avecVisiteur: true,
+        visiteurId: 'debbie',
         dialogues: [
           [
             {perso:'corey', av:'illumine',   texte:"Debbie a enregistré des sons dehors."},
@@ -1061,22 +1096,26 @@
       lignes = pool[Math.floor(Math.random() * pool.length)];
       ligneActuelle = 0;
 
-      // Jackson visible si scène avec Jackson
+      // Bande milieu — Jackson ou visiteur
       if (sceneActuelle.avecJackson) {
         afficherJackson();
+      } else if (sceneActuelle.avecVisiteur) {
+        const vid = sceneActuelle.visiteurId;
+        afficherMilieu(vid ? vid.toUpperCase() : 'VISITEUR', 'visiteur-style', '');
+        if (vid && VISITEUR_AV[vid]) document.getElementById('img-milieu').src = VISITEUR_AV[vid];
+      } else {
+        masquerMilieu();
       }
 
       afficherLigneSuivante();
     }
 
     function afficherJackson() {
-      const section = document.getElementById('jackson-section');
-      section.style.display = 'block';
       // Collecte Jackson
       const collecte = Math.floor((gameState.argent||200) * 0.15);
       gameState.argent = Math.max(0, (gameState.argent||0) - collecte);
-      document.getElementById('jackson-montant').textContent = `-${collecte}$ collectés`;
-      document.getElementById('bulle-jackson').textContent = 'Il entre sans frapper.';
+      afficherMilieu('JACKSON', 'jackson-style', `-${collecte}$`);
+      setBulleMilieu('Il entre sans frapper.', false);
       setJackson('argent');
       saveGame();
       updateUI();
@@ -1093,17 +1132,22 @@
       const l = lignes[ligneActuelle];
       ligneActuelle++;
 
-      // Mettre à jour avatars et bulles
+      // Mettre à jour avatars et bulles — 3 bandes
       if (l.perso === 'fred') {
         setFred(l.av || 'neutre');
-        setBulleHaut(l.texte, false);
+        setBulleHaut(l.texte);
       } else if (l.perso === 'corey') {
         setCorey(l.av || 'neutre');
         setBulleBas(l.texte);
       } else if (l.perso === 'jackson') {
-        setJackson(l.av || 'cool');
-        setBulleHaut(l.texte, true);
-        document.getElementById('bulle-jackson').textContent = l.texte;
+        setJackson(l.av || 'neutre');
+        setBulleMilieu(l.texte, false);
+      } else if (l.perso === 'visiteur') {
+        // Visiteur nocturne — bande milieu
+        if (l.av && VISITEUR_AV[l.av]) {
+          document.getElementById('img-milieu').src = VISITEUR_AV[l.av];
+        }
+        setBulleMilieu(l.texte, true);
       }
 
       const delai = Math.min(l.texte.length * 48 + 500, 2400);
