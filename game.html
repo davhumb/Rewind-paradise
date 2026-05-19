@@ -696,27 +696,30 @@
     // MUSIQUE
     // ===================================================
 
+    // Helper son — force resume puis joue
+    function playSound(name) {
+      if (typeof SOUNDS === 'undefined' || !SOUNDS[name]) return;
+      SOUNDS.init();
+      if (!SOUNDS.ctx) return;
+      const play = () => { try { SOUNDS[name](); } catch(e) {} };
+      if (SOUNDS.ctx.state === 'running') {
+        play();
+      } else {
+        SOUNDS.ctx.resume().then(play).catch(() => {});
+      }
+    }
+
     function initMusic() {
-      // Débloquer Web Audio au premier touch
       // Débloquer Web Audio sur toute interaction
       const unlockAudio = () => {
         if (typeof SOUNDS === 'undefined') return;
         SOUNDS.init();
         if (SOUNDS.ctx && SOUNDS.ctx.state === 'suspended') {
-          SOUNDS.ctx.resume().then(() => {
-            // Test silencieux pour confirmer
-            const osc = SOUNDS.ctx.createOscillator();
-            const g   = SOUNDS.ctx.createGain();
-            g.gain.value = 0;
-            osc.connect(g);
-            g.connect(SOUNDS.ctx.destination);
-            osc.start();
-            osc.stop(SOUNDS.ctx.currentTime + 0.001);
-          });
+          SOUNDS.ctx.resume();
         }
       };
       ['touchstart','touchend','click','keydown'].forEach(ev =>
-        document.addEventListener(ev, unlockAudio, {once: true}));
+        document.addEventListener(ev, unlockAudio, {once: false}));
       musicGame   = document.getElementById('bg-music-game');
       musicCanopi = document.getElementById('bg-music-canopi');
       isMuted     = localStorage.getItem('rewind_muted') === 'true';
@@ -1796,7 +1799,7 @@
         document.getElementById('scene-zone').classList.remove('canopi-mode');
       }
 
-      if (typeof SOUNDS !== 'undefined') SOUNDS.sonnette();
+      playSound('sonnette');
       jouerDialogue(annonce, () => {
         // Croisement clients — client précédent dans la file
         // Chercher une paire compatible dans toute la file vue
@@ -3303,7 +3306,7 @@
       const film = CATALOGUE.find(f => f.id === filmId);
       if (!film) return;
 
-      if (typeof SOUNDS !== 'undefined') SOUNDS.eject();
+      playSound('eject');
       fermerVHSPanel();
       afficherWeedToggle(false);
 
@@ -3379,7 +3382,7 @@
         setFredAvatar(posExpFred[comboCount % posExpFred.length]);
         if (comboCount >= 3) {
           gameState.reputation = Math.min(5, gameState.reputation + 0.5);
-          if (typeof SOUNDS !== 'undefined') SOUNDS.combo();
+          playSound('combo');
           const comboTextes = {
             3: ["YIPPEE-KI-YAY ×3","I'LL BE BACK ×3","HERE'S JOHNNY ×3"],
             4: ["HASTA LA VISTA ×4","GET TO THE CHOPPER ×4","BE AFRAID ×4"],
@@ -3411,10 +3414,10 @@
         setFredAvatar(negExpFred[Math.floor(Math.random()*negExpFred.length)]);
       }
 
-      if (resultat.positif && typeof SOUNDS !== 'undefined') SOUNDS.caisse();
+      if (resultat.positif) playSound('caisse');
       if (resultat.positif && client.id === 'muscle')
         gameState.client_muscle_positif = (gameState.client_muscle_positif||0) + 1;
-      else if (!resultat.positif && typeof SOUNDS !== 'undefined') SOUNDS.negatif();
+      else if (!resultat.positif) playSound('negatif');
 
       const key = 'client_' + client.id + '_count';
       gameState[key] = (gameState[key]||0) + 1;
@@ -3886,7 +3889,7 @@
       const annonce = ANNONCES_COREY[Math.floor(Math.random()*ANNONCES_COREY.length)];
       resetFredAvatar();
       setCoreyAvatar('ok');
-      if (typeof SOUNDS !== 'undefined') SOUNDS.sonnette();
+      playSound('sonnette');
       jouerDialogue(annonce, () => dialogueAvecClient());
     }
 
@@ -4014,7 +4017,7 @@
       if (typeof ACHIEVEMENTS !== 'undefined') {
         const nouveaux = ACHIEVEMENTS.check(gameState);
         if (nouveaux.length > 0) {
-          if (typeof SOUNDS !== 'undefined') SOUNDS.achievement();
+          playSound('achievement');
           nouveaux.forEach((ach, i) => setTimeout(() => ACHIEVEMENTS.showNotif(ach), i * 4500));
         }
       }
