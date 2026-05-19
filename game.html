@@ -650,6 +650,8 @@
     let musicCanopi     = null;
     let canopiMusicActive = false;
     let clientsServis   = 0;
+    let clientsExtension = 0;  // clients après dialogue pause
+    let pauseProposee   = false;
     let indeciseEssais  = 0;
     let indeciseCible   = null;
     let indeciseIndices = [];
@@ -1062,6 +1064,14 @@
       ramon:        ['"Pretty Woman. Vous l\'avez ?"','"Dirty Dancing cette fois."','"M. DiMaggio aime bien Quand Harry rencontre Sally."'],
     };
 
+    const DIALOGUES_PAUSE = [
+      [{perso:'fred', texte:"On se fait encore quelques clients ?"},{perso:'corey', texte:"Comme tu veux."}],
+      [{perso:'fred', texte:"On continue un peu ?"},{perso:'corey', texte:"On va manger."}],
+      [{perso:'fred', texte:"Quelques clients encore ?"},{perso:'corey', texte:"Comme tu veux Fred."}],
+      [{perso:'fred', texte:"On s'arrête là ?"},{perso:'corey', texte:"Ou on fait encore trois. Au choix."}],
+      [{perso:'fred', texte:"Pause ?"},{perso:'corey', texte:"Quand tu veux."}],
+    ];
+
     function getDemande(id) {
       const pool = DEMANDES[id];
       if (!pool) return '"Bonjour."';
@@ -1338,6 +1348,10 @@
       if (gameState.phase_journee === 'pause') gameState.phase_journee = 'matin';
 
       gameState.ghost_loue_aujourd_hui = false;
+      // Cacher le bouton pause si après-midi
+      if (gameState.phase_journee === 'apres_midi') {
+        document.getElementById('pause-btn').classList.remove('visible');
+      }
       if (typeof UPGRADES !== 'undefined') UPGRADES.appliquerEffetsActifs(gameState);
 
       updateUI();
@@ -1643,6 +1657,8 @@
 
       // Reset tracker clients du jour
       gameState.clients_du_jour = [];
+      clientsExtension = 0;
+      pauseProposee = false;
 
       // Retours MM et cassettes normales
       verifierRetoursMMClient();
@@ -1769,13 +1785,19 @@
         if (c) clientQueue.push(Object.assign({}, c));
       };
 
-      // Clients normaux
+      // Clients normaux — priorité aux jamais vus
       const exclus = ['canopi','ramon','miguel','journaliste','collectionneur','indecise'];
+      const vus = gameState.clients_vus_total || [];
       const autres = CLIENT_TYPES.filter(c => !exclus.includes(c.id));
-      const nb = gameState.semaine >= 3 ? 5 : 4;
-      const shuffled = [...autres].sort(() => Math.random()-0.5);
+      const jamaisVus = autres.filter(c => !vus.includes(c.id));
+      const dejaVus   = autres.filter(c => vus.includes(c.id));
+      // Mélanger les deux pools
+      const shuffledJamais = [...jamaisVus].sort(() => Math.random()-0.5);
+      const shuffledDejaVus = [...dejaVus].sort(() => Math.random()-0.5);
+      const poolOrdonne = [...shuffledJamais, ...shuffledDejaVus];
+      const nb = 5; // Plus de clients par jour pour couvrir tout le monde
       let added = 0;
-      for (const c of shuffled) {
+      for (const c of poolOrdonne) {
         if (added >= nb) break;
         if (!dejaPresent(c.id)) {
           clientQueue.push(Object.assign({}, c));
@@ -1831,6 +1853,14 @@
         // Plus de clients — fin de journée possible
         finDesClients();
         return;
+      }
+      // Si pause proposée et 3 clients extension → stop naturel
+      if (pauseProposee && gameState.phase_journee === 'matin') {
+        clientsExtension++;
+        if (clientsExtension > 3) {
+          finDesClients();
+          return;
+        }
       }
 
       clientActuel = clientQueue[clientIndex];
@@ -3618,6 +3648,10 @@
       if (!gameState.clients_du_jour) gameState.clients_du_jour = [];
       if (!gameState.clients_du_jour.includes(client.id))
         gameState.clients_du_jour.push(client.id);
+      // Tracker global — clients vus sur la partie
+      if (!gameState.clients_vus_total) gameState.clients_vus_total = [];
+      if (!gameState.clients_vus_total.includes(client.id))
+        gameState.clients_vus_total.push(client.id);
       // Compteurs spéciaux
       if (client.id === 'sensible' && resultat.positif)
         gameState.client_sensible_pleure = (gameState.client_sensible_pleure||0) + 1;
@@ -3720,8 +3754,14 @@
         const dlgPostVente = getDialoguePostVente(client, film, resultat.positif);
 
         const lancerSuite = () => {
-          if (gameState.phase_journee === 'matin' && clientsServis >= 3) {
+          if (gameState.phase_journee === 'matin' && clientsServis >= 3 && !pauseProposee) {
+            pauseProposee = true;
             document.getElementById('pause-btn').classList.add('visible');
+            // Dialogue Fred/Corey — pause proposée
+            const dlgPause = DIALOGUES_PAUSE[Math.floor(Math.random()*DIALOGUES_PAUSE.length)];
+            setTimeout(() => {
+              if (!clientPresent) jouerDialogue(dlgPause, () => {});
+            }, 600);
           }
           // Dialogue sur les potes après leur visite
           const poteSit = {sam:'pote_sam',tim:'pote_tim',debbie:'pote_debbie',amie:'pote_amie',gordon:'pote_gordon',cowboy:'pote_cowboy',prof:'pote_prof'};
@@ -4405,6 +4445,7 @@
 
       // RAMON
       if (id === 'ramon') {
+        // Note: Ramon est un homme — pas de vérification genre nécessaire ici
         if (positif) return [
           {perso:'corey', texte:"Il a pris Pretty Woman."},
           {perso:'fred',  texte:"Je sais."},
