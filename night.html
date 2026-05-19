@@ -413,11 +413,10 @@
       surpris:'posters/jackson-surpris.png',
     };
     const VISITEUR_AV = {
-      amy:    'posters/amie.png',
-      tim:    'posters/tim.png',
-      sam:    'posters/sam.png',
-      debbie: 'posters/debbie.png',
-      lucious:'posters/lucious.png',
+      amy:   'posters/amie.png',
+      tim:   'posters/tim.png',
+      sam:   'posters/sam.png',
+      debbie:'posters/debbie.png',
     };
 
     function setFred(h)    { document.getElementById('img-fred').src  = FRED_AV[h]    || FRED_AV.neutre; }
@@ -441,24 +440,6 @@
 
     function masquerMilieu() {
       document.getElementById('perso-milieu').classList.remove('visible');
-    }
-
-    function flashDiMaggio() {
-      const img = document.getElementById('img-milieu');
-      const el  = document.getElementById('perso-milieu');
-      const prevSrc = img ? img.src : '';
-      const wasVisible = el ? el.classList.contains('visible') : false;
-      if (img) {
-        afficherMilieu('DIMAGGIO', 'jackson-style', '');
-        img.src = 'posters/dimaggio.png';
-        setTimeout(() => {
-          if (wasVisible) {
-            img.src = prevSrc;
-          } else {
-            masquerMilieu();
-          }
-        }, 1800);
-      }
     }
 
     function setVisiteur(id, h) {
@@ -732,17 +713,6 @@
             {perso:'corey', av:'high',       texte:"Philosophie."},
           ],
           [
-            {perso:'corey', av:'illumine',   texte:"T'as vu Jackson manger tout à l'heure."},
-            {perso:'fred',  av:'amuse',      texte:"Le burger."},
-            {perso:'corey', av:'ecarquille', texte:"Il a mangé un burger entier en deux bouchées."},
-            {perso:'fred',  av:'tranquille', texte:"Il était affamé."},
-            {perso:'corey', av:'conspirationiste', texte:"Ou c'est de l'entraînement."},
-            {perso:'fred',  av:'sceptique',  texte:"De l'entraînement pour quoi."},
-            {perso:'corey', av:'high',       texte:"Pour les situations où il faut manger vite et partir."},
-            {perso:'fred',  av:'amuse',      texte:"C'est son job."},
-            {perso:'corey', av:'pensif',     texte:"C'est un mode de vie."},
-          ],
-          [
             {perso:'corey', av:'conspirationiste', texte:"Tu crois que Jackson travaille pour Brando."},
             {perso:'fred',  av:'sceptique',  texte:"Brando est mort."},
             {perso:'corey', av:'ecarquille', texte:"Exactement ce que quelqu'un qui travaille pour Brando dirait."},
@@ -828,33 +798,49 @@
         visiteurId: 'amy',
         dialogues: [
           [
-            {perso:'corey', av:'high',       texte:"Amy est passée."},
-            {perso:'fred',  av:'tranquille', texte:"Je sais."},
-            {perso:'corey', av:'pensif',     texte:"Elle est restée deux heures."},
-            {perso:'fred',  av:'amuse',      texte:"T'as rien dit pendant deux heures."},
-            {perso:'corey', av:'high',       texte:"J'avais des choses à faire."},
-            {perso:'fred',  av:'sceptique',  texte:"T'avais rien à faire."},
-            {perso:'corey', av:'pensif',     texte:"..."},
-            {perso:'corey', av:'high',       texte:"Elle a bien."},
+            {perso:'visiteur', av:'amy', texte:"Je passais. La lumière était allumée."},
+            {perso:'corey', av:'high',       texte:"Elle est toujours allumée."},
+            {perso:'visiteur', av:'amy', texte:"Je sais. C'est pour ça que je suis passée."},
+            {perso:'fred',  av:'tranquille', texte:"T'as mangé ?"},
+            {perso:'visiteur', av:'amy', texte:"Oui."},
+            {perso:'corey', av:'high',       texte:"On a des restes."},
+            {perso:'visiteur', av:'amy', texte:"...Peut-être un peu alors."},
+            {perso:'fred',  av:'amuse',      texte:"Assieds-toi."},
+          ],
+          [
+            {perso:'visiteur', av:'amy', texte:"C'était comment aujourd'hui ?"},
+            {perso:'corey', av:'pensif',     texte:"Pas mal. Le concurrent est repassé."},
+            {perso:'visiteur', av:'amy', texte:"Celui d'en face ?"},
             {perso:'fred',  av:'tranquille', texte:"Ouais."},
+            {perso:'visiteur', av:'amy', texte:"Il cherche quoi."},
+            {perso:'corey', av:'conspirationiste', texte:"Ce qu'on a et qu'il a pas."},
+            {perso:'visiteur', av:'amy', texte:"Et c'est quoi."},
+            {perso:'corey', av:'illumine',   texte:"Tout."},
+            {perso:'fred',  av:'sceptique',  texte:"..."},
           ],
           [
-            {perso:'corey', av:'ecarquille', texte:"Amy."},
-            {perso:'fred',  av:'tranquille', texte:"Je sais."},
-            {perso:'corey', av:'pensif',     texte:"Elle a apporté des sandwichs."},
-            {perso:'fred',  av:'amuse',      texte:"C'est la première fois."},
-            {perso:'corey', av:'high',       texte:"Elle pense à nous."},
-            {perso:'fred',  av:'tranquille', texte:"Elle pense surtout à toi."},
-            {perso:'corey', av:'depite',     texte:"C'est pas vrai."},
-            {perso:'fred',  av:'amuse',      texte:"Non."},
+            {perso:'visiteur', av:'amy', texte:"Le film avance ?"},
+            {perso:'corey', av:'ecarquille', texte:"Le Retour des Croque-Mort Vivants."},
+            {perso:'visiteur', av:'amy', texte:"Celui-là ouais."},
+            {perso:'corey', av:'illumine',   texte:"On a un plan de la morgue. Et de la glycérine."},
+            {perso:'visiteur', av:'amy', texte:"C'est un début."},
+            {perso:'fred',  av:'doute',      texte:"On a surtout de la glycérine."},
+            {perso:'visiteur', av:'amy', texte:"...Je pourrais jouer dedans si vous voulez."},
+            {perso:'corey', av:'high',       texte:"On savait que tu dirais ça."},
+            {perso:'visiteur', av:'amy', texte:"C'est non ?"},
+            {perso:'fred',  av:'amuse',      texte:"C'est peut-être."},
           ],
           [
-            {perso:'fred',  av:'lit',        texte:"Amy a demandé des nouvelles du film."},
-            {perso:'corey', av:'high',       texte:"Le Retour des Croque-Mort Vivants."},
-            {perso:'fred',  av:'doute',      texte:"Elle veut jouer dedans."},
-            {perso:'corey', av:'ecarquille', texte:"Elle a dit ça ?"},
-            {perso:'fred',  av:'tranquille', texte:"Elle a dit que ça avait l'air intéressant."},
-            {perso:'corey', av:'illumine',   texte:"C'est la même chose."},
+            {perso:'visiteur', av:'amy', texte:"Witness. Harrison Ford. Vous l'avez ?"},
+            {perso:'corey', av:'illumine',   texte:"Le plan dans le grenier."},
+            {perso:'visiteur', av:'amy', texte:"Exactement."},
+            {perso:'corey', av:'pensif',     texte:"Il dit rien dans cette scène."},
+            {perso:'visiteur', av:'amy', texte:"Il dit tout."},
+            {perso:'fred',  av:'tranquille', texte:"On l'a."},
+            {perso:'visiteur', av:'amy', texte:"Je prends ça alors."},
+            {perso:'corey', av:'high',       texte:"Je savais."},
+            {perso:'visiteur', av:'amy', texte:"Tu savais pas."},
+            {perso:'corey', av:'pensif',     texte:"Non."},
           ],
         ],
       },
@@ -864,26 +850,40 @@
         visiteurId: 'tim',
         dialogues: [
           [
-            {perso:'corey', av:'ecarquille', texte:"Tim est passé."},
-            {perso:'fred',  av:'sceptique',  texte:"Il a laissé quelque chose."},
-            {perso:'corey', av:'high',       texte:"De la glycérine. Pour les effets."},
-            {perso:'fred',  av:'doute',      texte:"On a pas demandé de glycérine."},
-            {perso:'corey', av:'illumine',   texte:"Il prévoit."},
-            {perso:'fred',  av:'tranquille', texte:"Pour quoi."},
-            {perso:'corey', av:'pensif',     texte:"Le Retour des Croque-Mort Vivants."},
-            {perso:'fred',  av:'amuse',      texte:"On a pas encore de scénario."},
-            {perso:'corey', av:'high',       texte:"Il prévoit."},
+            {perso:'visiteur', av:'tim', texte:"J'ai apporté de la glycérine."},
+            {perso:'corey', av:'ecarquille', texte:"Pour quoi faire."},
+            {perso:'visiteur', av:'tim', texte:"Les coulées. La scène de la cave."},
+            {perso:'fred',  av:'sceptique',  texte:"On a pas de cave."},
+            {perso:'visiteur', av:'tim', texte:"On peut simuler. Avec le bon éclairage."},
+            {perso:'corey', av:'illumine',   texte:"Il a raison."},
+            {perso:'fred',  av:'doute',      texte:"On a pas de scénario Tim."},
+            {perso:'visiteur', av:'tim', texte:"Je prépare en avance. Bottin préparait en avance."},
+            {perso:'corey', av:'high',       texte:"Bottin préparait un an avant le tournage."},
+            {perso:'visiteur', av:'tim', texte:"Exactement."},
+            {perso:'fred',  av:'amuse',      texte:"Bottin avait un budget."},
           ],
           [
-            {perso:'corey', av:'conspirationiste', texte:"Tim voulait tester des effets sur le parking."},
-            {perso:'fred',  av:'non',        texte:"Non."},
-            {perso:'corey', av:'high',       texte:"Juste quelques trucs avec du latex."},
-            {perso:'fred',  av:'sceptique',  texte:"Non Corey."},
-            {perso:'corey', av:'pensif',     texte:"Il a attendu que tu sois dans la réserve."},
-            {perso:'fred',  av:'doute',      texte:"..."},
-            {perso:'corey', av:'high',       texte:"On a rien cassé."},
-            {perso:'fred',  av:'enerve',     texte:"Qu'est-ce qu'il y a sur le pare-brise de la voiture là."},
-            {perso:'corey', av:'depite',     texte:"De la glycérine. Elle part avec la pluie."},
+            {perso:'visiteur', av:'tim', texte:"J'ai analysé la scène du chien dans The Thing."},
+            {perso:'corey', av:'ecarquille', texte:"Bottin. 22 ans."},
+            {perso:'visiteur', av:'tim', texte:"J'ai compris comment il a fait la transformation."},
+            {perso:'fred',  av:'attentif',   texte:"Comment."},
+            {perso:'visiteur', av:'tim', texte:"Câbles. Latex. Et un système pneumatique maison."},
+            {perso:'corey', av:'illumine',   texte:"Pneumatique."},
+            {perso:'visiteur', av:'tim', texte:"De l'air comprimé. Pour les gonflements."},
+            {perso:'fred',  av:'tranquille', texte:"...C'est malin."},
+            {perso:'visiteur', av:'tim', texte:"Merci."},
+            {perso:'corey', av:'high',       texte:"On peut pas se payer de l'air comprimé."},
+            {perso:'visiteur', av:'tim', texte:"J'ai un compresseur chez ma mère."},
+          ],
+          [
+            {perso:'visiteur', av:'tim', texte:"T'as quelque chose de collant sur le comptoir."},
+            {perso:'fred',  av:'doute',      texte:"C'est toi."},
+            {perso:'visiteur', av:'tim', texte:"C'est du latex alimentaire. Pour manger après."},
+            {perso:'corey', av:'conspirationiste', texte:"Il mange du latex."},
+            {perso:'visiteur', av:'tim', texte:"Non. Je mange après avoir enlevé le latex."},
+            {perso:'fred',  av:'amuse',      texte:"Pourquoi alimentaire."},
+            {perso:'visiteur', av:'tim', texte:"Au cas où j'oublie d'enlever."},
+            {perso:'corey', av:'high',       texte:"...Professionnel."},
           ],
         ],
       },
@@ -893,23 +893,41 @@
         visiteurId: 'sam',
         dialogues: [
           [
-            {perso:'corey', av:'illumine',   texte:"Sam est passé."},
-            {perso:'fred',  av:'lit',        texte:"Il répétait encore."},
-            {perso:'corey', av:'high',       texte:"La scène de Pacino dans Scarface."},
-            {perso:'fred',  av:'amuse',      texte:"Il a fait Pacino."},
-            {perso:'corey', av:'ecarquille', texte:"Il est bien."},
-            {perso:'fred',  av:'sceptique',  texte:"Il est pas Pacino."},
-            {perso:'corey', av:'pensif',     texte:"Personne est Pacino. Mais il est bien."},
+            {perso:'visiteur', av:'sam', texte:"Say hello to my little friend."},
+            {perso:'corey', av:'ecarquille', texte:"Pacino."},
+            {perso:'visiteur', av:'sam', texte:"Scarface. La scène finale."},
+            {perso:'fred',  av:'amuse',      texte:"T'as travaillé quoi exactement."},
+            {perso:'visiteur', av:'sam', texte:"Le regard. Avant la fusillade. Quand il sait que c'est fini."},
+            {perso:'corey', av:'illumine',   texte:"Et tu l'as ?"},
+            {perso:'visiteur', av:'sam', texte:"...Presque."},
+            {perso:'fred',  av:'tranquille', texte:"C'est honnête."},
+            {perso:'visiteur', av:'sam', texte:"Vous pouvez me filmer ? Pour voir."},
+            {perso:'corey', av:'high',       texte:"On a pas de caméra."},
+            {perso:'visiteur', av:'sam', texte:"..."},
+            {perso:'fred',  av:'amuse',      texte:"Vidéoclub sans caméra."},
           ],
           [
-            {perso:'corey', av:'high',       texte:"Sam veut qu'on le filme pour son book."},
-            {perso:'fred',  av:'doute',      texte:"T'as dit non."},
-            {perso:'corey', av:'pensif',     texte:"J'ai dit qu'on verrait."},
-            {perso:'fred',  av:'sceptique',  texte:"C'est non."},
-            {perso:'corey', av:'illumine',   texte:"Il a le regard. La présence."},
-            {perso:'fred',  av:'tranquille', texte:"Il a vingt ans."},
-            {perso:'corey', av:'high',       texte:"Brando avait vingt ans."},
-            {perso:'fred',  av:'amuse',      texte:"Tout le monde avait vingt ans."},
+            {perso:'visiteur', av:'sam', texte:"Taxi Driver. La scène du miroir."},
+            {perso:'corey', av:'illumine',   texte:"You talkin' to me."},
+            {perso:'visiteur', av:'sam', texte:"DeNiro avait préparé ça six mois."},
+            {perso:'fred',  av:'tranquille', texte:"Je sais."},
+            {perso:'visiteur', av:'sam', texte:"Comment il a su que ça marcherait."},
+            {perso:'corey', av:'pensif',     texte:"Il savait pas. Il a fait."},
+            {perso:'visiteur', av:'sam', texte:"...C'est ça."},
+            {perso:'fred',  av:'tranquille', texte:"C'est ça."},
+            {perso:'visiteur', av:'sam', texte:"Je vais encore répéter."},
+            {perso:'corey', av:'high',       texte:"Reviens demain."},
+          ],
+          [
+            {perso:'visiteur', av:'sam', texte:"Vous ferez un film un jour."},
+            {perso:'fred',  av:'doute',      texte:"Le Retour des Croque-Mort Vivants."},
+            {perso:'visiteur', av:'sam', texte:"Je peux jouer dedans ?"},
+            {perso:'corey', av:'conspirationiste', texte:"T'as un rôle en tête ?"},
+            {perso:'visiteur', av:'sam', texte:"Le héros."},
+            {perso:'corey', av:'high',       texte:"Y'a pas de héros dans un film de zombies."},
+            {perso:'visiteur', av:'sam', texte:"Le premier à mourir alors. C'est souvent le meilleur rôle."},
+            {perso:'fred',  av:'amuse',      texte:"C'est pas faux."},
+            {perso:'corey', av:'illumine',   texte:"On verra. T'as un casting à faire."},
           ],
         ],
       },
@@ -919,26 +937,40 @@
         visiteurId: 'debbie',
         dialogues: [
           [
-            {perso:'corey', av:'illumine',   texte:"Debbie a enregistré des sons dehors."},
-            {perso:'fred',  av:'lit',        texte:"Quels sons."},
-            {perso:'corey', av:'high',       texte:"La rue la nuit. Les néons. Une voiture au loin."},
-            {perso:'fred',  av:'doute',      texte:"Elle a enregistré du bruit."},
-            {perso:'corey', av:'ecarquille', texte:"C'est de l'art Fred."},
-            {perso:'fred',  av:'sceptique',  texte:"C'est du bruit."},
-            {perso:'corey', av:'illumine',   texte:"C'est les deux."},
-            {perso:'fred',  av:'amuse',      texte:"Elle a une Nagra ?"},
-            {perso:'corey', av:'high',       texte:"Un walkman modifié. Pour l'instant."},
+            {perso:'visiteur', av:'debbie', texte:"Écoutez."},
+            {perso:'fred',  av:'attentif',   texte:"..."},
+            {perso:'visiteur', av:'debbie', texte:"La rue. Les néons. Une voiture qui passe."},
+            {perso:'corey', av:'illumine',   texte:"Qu'est-ce qu'on entend exactement."},
+            {perso:'visiteur', av:'debbie', texte:"Le bourdonnement du néon d'en face. 52 hertz."},
+            {perso:'fred',  av:'tranquille', texte:"...C'est précis."},
+            {perso:'visiteur', av:'debbie', texte:"J'ai enregistré deux heures."},
+            {perso:'corey', av:'ecarquille', texte:"Pour le film ?"},
+            {perso:'visiteur', av:'debbie', texte:"Pour le film. Pour votre boutique. Pour tout."},
+            {perso:'fred',  av:'amuse',      texte:"Notre boutique a une fréquence."},
+            {perso:'visiteur', av:'debbie', texte:"Tout a une fréquence."},
           ],
           [
-            {perso:'corey', av:'pensif',     texte:"Debbie veut faire le son du Retour des Croque-Mort Vivants."},
-            {perso:'fred',  av:'tranquille', texte:"On a pas de scénario."},
-            {perso:'corey', av:'illumine',   texte:"Elle veut préparer l'ambiance sonore."},
-            {perso:'fred',  av:'doute',      texte:"L'ambiance sonore de quoi."},
-            {perso:'corey', av:'high',       texte:"D'une pompe funèbre la nuit."},
-            {perso:'fred',  av:'sceptique',  texte:"On a pas de pompe funèbre."},
-            {perso:'corey', av:'illumine',   texte:"Le vidéoclub la nuit c'est presque pareil."},
-            {perso:'fred',  av:'amuse',      texte:"C'est pas pareil."},
-            {perso:'corey', av:'pensif',     texte:"Debbie dit que si."},
+            {perso:'visiteur', av:'debbie', texte:"Blow Out. De Palma. La scène finale."},
+            {perso:'corey', av:'illumine',   texte:"Le micro dans la foule."},
+            {perso:'visiteur', av:'debbie', texte:"J'ai vu ça douze fois."},
+            {perso:'fred',  av:'doute',      texte:"Douze fois."},
+            {perso:'visiteur', av:'debbie', texte:"À chaque fois j'entends quelque chose de nouveau."},
+            {perso:'corey', av:'high',       texte:"C'est ce que De Palma voulait."},
+            {perso:'visiteur', av:'debbie', texte:"Il savait que personne écouterait vraiment. C'est pour ça qu'il l'a mis là."},
+            {perso:'fred',  av:'tranquille', texte:"Pour ceux qui écoutent."},
+            {perso:'visiteur', av:'debbie', texte:"Pour moi."},
+            {perso:'corey', av:'pensif',     texte:"...Oui. Pour toi."},
+          ],
+          [
+            {perso:'visiteur', av:'debbie', texte:"J'ai besoin d'une Nagra."},
+            {perso:'corey', av:'illumine',   texte:"Ça coûte combien."},
+            {perso:'visiteur', av:'debbie', texte:"Trop."},
+            {perso:'fred',  av:'tranquille', texte:"On peut faire avec quoi t'as."},
+            {perso:'visiteur', av:'debbie', texte:"Un walkman modifié. Le micro est pas terrible."},
+            {perso:'corey', av:'conspirationiste', texte:"Orson Welles a filmé Citizen Kane avec du matériel de récup."},
+            {perso:'visiteur', av:'debbie', texte:"Citizen Kane c'est de l'image. Le son c'est différent."},
+            {perso:'fred',  av:'amuse',      texte:"Elle a raison."},
+            {perso:'corey', av:'depite',     texte:"...Elle a raison."},
           ],
         ],
       },
@@ -973,33 +1005,43 @@
         ],
       },
 
-      // ─── LUCIOUS — VISITEUR NOCTURNE ────────────────────────
+      // ─── GALAXY VIDEO — TENSION (tout le jeu) ──────────────
       {
-        id: 'visite_lucious',
-        avecVisiteur: true,
-        visiteurId: 'lucious',
+        id: 'galaxy_tension',
         dialogues: [
           [
-            {perso:'fred',  av:'attentif',   texte:"Y'a quelqu'un dehors."},
-            {perso:'corey', av:'conspirationiste', texte:"Un client ?"},
-            {perso:'fred',  av:'tranquille', texte:"À cette heure."},
-            {perso:'corey', av:'high',       texte:"..."},
-            {perso:'fred',  av:'sceptique',  texte:"Il regarde la vitrine."},
-            {perso:'corey', av:'pensif',     texte:"Il regarde pas la vitrine."},
-            {perso:'fred',  av:'doute',      texte:"Il regarde quoi alors."},
-            {perso:'corey', av:'conspirationiste', texte:"Nous."},
-            {perso:'fred',  av:'tranquille', texte:"Il est parti."},
-            {perso:'corey', av:'high',       texte:"Pour l'instant."},
+            {perso:'fred',  av:'concentre',  texte:"Le type qui est venu trois fois aujourd'hui. C'est pas un client."},
+            {perso:'corey', av:'pensif',     texte:"Je sais."},
+            {perso:'fred',  av:'sceptique',  texte:"Il m'a dit que Galaxy Video c'est une franchise. Des dizaines de magasins."},
+            {perso:'corey', av:'ecarquille', texte:"..."},
+            {perso:'fred',  av:'tranquille', texte:"On est seuls Corey."},
+            {perso:'corey', av:'illumine',   texte:"C'est pour ça qu'on doit faire notre film."},
+            {perso:'fred',  av:'doute',      texte:"Notre film va pas payer le loyer."},
+            {perso:'corey', av:'pensif',     texte:"..."},
+            {perso:'fred',  av:'tranquille', texte:"..."},
           ],
           [
-            {perso:'corey', av:'ecarquille', texte:"T'as vu le type en imperméable."},
-            {perso:'fred',  av:'lit',        texte:"Oui."},
-            {perso:'corey', av:'pensif',     texte:"Il a regardé pendant dix minutes."},
-            {perso:'fred',  av:'tranquille', texte:"Je sais."},
-            {perso:'corey', av:'conspirationiste', texte:"T'inquiètes pas."},
-            {perso:'fred',  av:'sceptique',  texte:"Je m'inquiète pas."},
-            {perso:'corey', av:'high',       texte:"..."},
-            {perso:'fred',  av:'doute',      texte:"Un peu."},
+            {perso:'fred',  av:'sceptique',  texte:"Galaxy Video. Ils ont baissé leurs prix cette semaine."},
+            {perso:'corey', av:'conspirationiste', texte:"C'est une tactique. Les grosses chaînes font ça."},
+            {perso:'fred',  av:'doute',      texte:"Ils cassent les prix jusqu'à ce que les indépendants ferment."},
+            {perso:'corey', av:'pensif',     texte:"..."},
+            {perso:'fred',  av:'tranquille', texte:"Après ils remontent."},
+            {perso:'corey', av:'illumine',   texte:"On a des choses qu'ils ont pas."},
+            {perso:'fred',  av:'sceptique',  texte:"Pour l'instant."},
+            {perso:'corey', av:'high',       texte:"Pour toujours. Les micro-métrages. The Glitch. L'underground."},
+            {perso:'fred',  av:'tranquille', texte:"Ouais."},
+            {perso:'corey', av:'pensif',     texte:"Ouais."},
+          ],
+          [
+            {perso:'corey', av:'conspirationiste', texte:"Le concurrent avait un carnet aujourd'hui."},
+            {perso:'fred',  av:'attentif',   texte:"Je l'ai vu."},
+            {perso:'corey', av:'pensif',     texte:"Il notait notre catalogue."},
+            {perso:'fred',  av:'tranquille', texte:"Il peut pas copier ce qu'on fait le soir."},
+            {perso:'corey', av:'illumine',   texte:"Les micro-métrages. The Glitch. C'est pas achetable."},
+            {perso:'fred',  av:'doute',      texte:"Le reste si."},
+            {perso:'corey', av:'pensif',     texte:"..."},
+            {perso:'fred',  av:'tranquille', texte:"On reste."},
+            {perso:'corey', av:'high',       texte:"On reste."},
           ],
         ],
       },
@@ -1108,10 +1150,20 @@
                               && includeJackson;
 
       // Visiteurs nocturnes selon le jour
-      const visiteurs = ['visite_amy','visite_tim','visite_sam','visite_debbie','visite_lucious'];
+      const visiteurs = ['visite_amy','visite_tim','visite_sam','visite_debbie'];
       const visiteur = toutes.find(s => s.id === visiteurs[Math.floor(Math.random()*visiteurs.length)]);
 
-      const jacksonWeed = toutes.find(s => s.id === 'jackson_weed');
+      const jacksonWeed    = toutes.find(s => s.id === 'jackson_weed');
+      const galaxyTension  = toutes.find(s => s.id === 'galaxy_tension');
+
+      // Jour 1 — scène Galaxy Video obligatoire
+      if (jour === 1 && galaxyTension) {
+        const dlg = galaxyTension.dialogues[0];
+        scenesNuit = [ouverture, { ...galaxyTension, dialogues: [dlg] }, finNuit].filter(Boolean);
+        sceneIndex = 0;
+        lancerSceneSuivante();
+        return;
+      }
 
       if (jacksonAmeneWeed && jacksonWeed) {
         // Jackson ramène de la weed — scène spéciale
@@ -1128,7 +1180,9 @@
         // Un visiteur à la place
         scenesNuit = [ouverture, visiteur, finNuit].filter(Boolean);
       } else {
-        scenesNuit = [ouverture, autres[0], finNuit].filter(Boolean);
+        // Galaxy Video tension occasionnellement
+        const useGalaxy = Math.random() < 0.3 && galaxyTension;
+        scenesNuit = [ouverture, useGalaxy ? galaxyTension : autres[0], finNuit].filter(Boolean);
       }
       sceneIndex = 0;
 
@@ -1202,15 +1256,6 @@
         setBulleBas(l.texte);
       } else if (l.perso === 'jackson') {
         setJackson(l.av || 'neutre');
-        setBulleMilieu(l.texte, false);
-        // Flash DiMaggio si mentionné
-        if (l.texte && l.texte.includes('DiMaggio')) {
-          flashDiMaggio();
-        }
-      } else if (l.perso === 'dimaggio') {
-        // DiMaggio apparaît directement
-        afficherMilieu('DIMAGGIO', 'jackson-style', '');
-        document.getElementById('img-milieu').src = 'posters/dimaggio.png';
         setBulleMilieu(l.texte, false);
       } else if (l.perso === 'visiteur') {
         // Visiteur nocturne — bande milieu
