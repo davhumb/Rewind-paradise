@@ -413,10 +413,11 @@
       surpris:'posters/jackson-surpris.png',
     };
     const VISITEUR_AV = {
-      amy:   'posters/amie.png',
-      tim:   'posters/tim.png',
-      sam:   'posters/sam.png',
-      debbie:'posters/debbie.png',
+      amy:    'posters/amie.png',
+      tim:    'posters/tim.png',
+      sam:    'posters/sam.png',
+      debbie: 'posters/debbie.png',
+      lucious:'posters/lucious.png',
     };
 
     function setFred(h)    { document.getElementById('img-fred').src  = FRED_AV[h]    || FRED_AV.neutre; }
@@ -440,6 +441,24 @@
 
     function masquerMilieu() {
       document.getElementById('perso-milieu').classList.remove('visible');
+    }
+
+    function flashDiMaggio() {
+      const img = document.getElementById('img-milieu');
+      const el  = document.getElementById('perso-milieu');
+      const prevSrc = img ? img.src : '';
+      const wasVisible = el ? el.classList.contains('visible') : false;
+      if (img) {
+        afficherMilieu('DIMAGGIO', 'jackson-style', '');
+        img.src = 'posters/dimaggio.png';
+        setTimeout(() => {
+          if (wasVisible) {
+            img.src = prevSrc;
+          } else {
+            masquerMilieu();
+          }
+        }, 1800);
+      }
     }
 
     function setVisiteur(id, h) {
@@ -713,6 +732,17 @@
             {perso:'corey', av:'high',       texte:"Philosophie."},
           ],
           [
+            {perso:'corey', av:'illumine',   texte:"T'as vu Jackson manger tout à l'heure."},
+            {perso:'fred',  av:'amuse',      texte:"Le burger."},
+            {perso:'corey', av:'ecarquille', texte:"Il a mangé un burger entier en deux bouchées."},
+            {perso:'fred',  av:'tranquille', texte:"Il était affamé."},
+            {perso:'corey', av:'conspirationiste', texte:"Ou c'est de l'entraînement."},
+            {perso:'fred',  av:'sceptique',  texte:"De l'entraînement pour quoi."},
+            {perso:'corey', av:'high',       texte:"Pour les situations où il faut manger vite et partir."},
+            {perso:'fred',  av:'amuse',      texte:"C'est son job."},
+            {perso:'corey', av:'pensif',     texte:"C'est un mode de vie."},
+          ],
+          [
             {perso:'corey', av:'conspirationiste', texte:"Tu crois que Jackson travaille pour Brando."},
             {perso:'fred',  av:'sceptique',  texte:"Brando est mort."},
             {perso:'corey', av:'ecarquille', texte:"Exactement ce que quelqu'un qui travaille pour Brando dirait."},
@@ -943,6 +973,37 @@
         ],
       },
 
+      // ─── LUCIOUS — VISITEUR NOCTURNE ────────────────────────
+      {
+        id: 'visite_lucious',
+        avecVisiteur: true,
+        visiteurId: 'lucious',
+        dialogues: [
+          [
+            {perso:'fred',  av:'attentif',   texte:"Y'a quelqu'un dehors."},
+            {perso:'corey', av:'conspirationiste', texte:"Un client ?"},
+            {perso:'fred',  av:'tranquille', texte:"À cette heure."},
+            {perso:'corey', av:'high',       texte:"..."},
+            {perso:'fred',  av:'sceptique',  texte:"Il regarde la vitrine."},
+            {perso:'corey', av:'pensif',     texte:"Il regarde pas la vitrine."},
+            {perso:'fred',  av:'doute',      texte:"Il regarde quoi alors."},
+            {perso:'corey', av:'conspirationiste', texte:"Nous."},
+            {perso:'fred',  av:'tranquille', texte:"Il est parti."},
+            {perso:'corey', av:'high',       texte:"Pour l'instant."},
+          ],
+          [
+            {perso:'corey', av:'ecarquille', texte:"T'as vu le type en imperméable."},
+            {perso:'fred',  av:'lit',        texte:"Oui."},
+            {perso:'corey', av:'pensif',     texte:"Il a regardé pendant dix minutes."},
+            {perso:'fred',  av:'tranquille', texte:"Je sais."},
+            {perso:'corey', av:'conspirationiste', texte:"T'inquiètes pas."},
+            {perso:'fred',  av:'sceptique',  texte:"Je m'inquiète pas."},
+            {perso:'corey', av:'high',       texte:"..."},
+            {perso:'fred',  av:'doute',      texte:"Un peu."},
+          ],
+        ],
+      },
+
       // ─── JACKSON RAMÈNE DE LA WEED ─────────────────────────
       {
         id: 'jackson_weed',
@@ -1047,7 +1108,7 @@
                               && includeJackson;
 
       // Visiteurs nocturnes selon le jour
-      const visiteurs = ['visite_amy','visite_tim','visite_sam','visite_debbie'];
+      const visiteurs = ['visite_amy','visite_tim','visite_sam','visite_debbie','visite_lucious'];
       const visiteur = toutes.find(s => s.id === visiteurs[Math.floor(Math.random()*visiteurs.length)]);
 
       const jacksonWeed = toutes.find(s => s.id === 'jackson_weed');
@@ -1141,6 +1202,15 @@
         setBulleBas(l.texte);
       } else if (l.perso === 'jackson') {
         setJackson(l.av || 'neutre');
+        setBulleMilieu(l.texte, false);
+        // Flash DiMaggio si mentionné
+        if (l.texte && l.texte.includes('DiMaggio')) {
+          flashDiMaggio();
+        }
+      } else if (l.perso === 'dimaggio') {
+        // DiMaggio apparaît directement
+        afficherMilieu('DIMAGGIO', 'jackson-style', '');
+        document.getElementById('img-milieu').src = 'posters/dimaggio.png';
         setBulleMilieu(l.texte, false);
       } else if (l.perso === 'visiteur') {
         // Visiteur nocturne — bande milieu

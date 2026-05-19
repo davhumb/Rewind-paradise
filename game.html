@@ -864,6 +864,8 @@
       sensible:       'posters/sensible.png',
       tim:            'posters/tim.png',
       jessica:        'posters/jessica.png',
+      jessica_mefiante:'posters/jessica-mefiante.png',
+      jessica_observe: 'posters/jessica-observe.png',
       wang:           'posters/wang.png',
     };
 
@@ -897,7 +899,7 @@
       concentre:'posters/fred-concentre.png', cash:'posters/fred-cash.png',
       lit:'posters/fred-lit.png', sceptique:'posters/fred-septique.png',
       sourit:'posters/fred-sourit.png', clint:'posters/fred-eastwood.png',
-      rire:'posters/fred-rire.png', enerve:'posters/fred-énervé.png',
+      rire:'posters/fred-rire.png', enerve:'posters/fred-enerve.png',
       regarde_dehors:'posters/fred-regarde-dehors.png',
       fier_corey:'posters/fred-fier-de-corey.png',
     };
@@ -1890,6 +1892,13 @@
 
       // Avatar client remplace Fred
       setClientAvatar(client);
+      // Jessica — avatar selon jour
+      if (client.id === 'jessica') {
+        const imgG = document.getElementById('img-gauche');
+        if (imgG) imgG.src = (gameState.suspicion||0) >= 30
+          ? 'posters/jessica-mefiante.png'
+          : 'posters/jessica-observe.png';
+      }
 
       // Demande du client
       const demande = getDemande(client.id);
@@ -2422,6 +2431,15 @@
             {perso:'corey',  texte:"Vous connaissez l'histoire de tournage ?"},
             {perso:'client', texte:"Cinq ans. Il dormait sur le plateau."},
             {perso:'corey',  texte:"...vous savez ce que vous cherchez."},
+          ],
+          jessica_3: [
+            {perso:'client', texte:'"Je cherche quelque chose de difficile à trouver."'},
+            {perso:'corey',  texte:"Difficile c'est notre spécialité."},
+            {perso:'client', texte:"Eraserhead."},
+            {perso:'corey',  texte:"On l'a."},
+            {perso:'client', texte:"..."},
+            {perso:'corey',  texte:"Vous saviez qu'on l'avait."},
+            {perso:'client', texte:"On m'avait dit."},
           ],
 
           // ─── WANG ────────────────────────────────────────────────
@@ -3100,6 +3118,7 @@
 
                 const avatarMap = {
           henderson:    {c:'ok'},        cinephile:   {c:'depite'},
+      amie:         {c:'pensif'},
           marine:       {c:'ok'},        kungfu:      {c:'ok'},
           concurrent:   {c:'contrarie'}, miguel:      {c:'illumine'},
           etudiant:     {c:'fatigue'},   femme_seule: {c:'ok'},
@@ -3584,7 +3603,7 @@
         // Fred réagit aussi à la colère de Corey
         if (serie >= 4) setFredAvatar('enerve');
         else if (serie >= 2) setFredAvatar('pas_content');
-        const negExpFred = ['pas_content','doute','non','soupir'];
+        const negExpFred = ['pas_content','doute','non','soupir','triste'];
         setFredAvatar(negExpFred[Math.floor(Math.random()*negExpFred.length)]);
       }
 
