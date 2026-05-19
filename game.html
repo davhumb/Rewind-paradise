@@ -3109,8 +3109,11 @@
         const av = avatarMap[client.id];
         if (av) setCoreyAvatar(av.c);
         // Anti-répétition sur les dialogues narratifs
-        const pool_client = dialoguesClients[client.id];
-        if (pool_client) {
+        // Regrouper toutes les variantes du client (henderson, henderson_2, henderson_3...)
+        const pool_client = Object.keys(dialoguesClients)
+          .filter(k => k === client.id || k.startsWith(client.id + '_'))
+          .map(k => dialoguesClients[k]);
+        if (pool_client.length > 0) {
           lignes = getDialogueClient(client.id, pool_client);
         } else {
           lignes = [{perso:'client', texte: demande}];
