@@ -669,6 +669,16 @@
       [{perso:'fred',  texte:"Client."},{perso:'corey', texte:"Je l'avais pas vu."}],
       [{perso:'corey', texte:"Ça rentre."},{perso:'fred', texte:"Mmh."}],
       [{perso:'corey', texte:"Du monde. Good."},{perso:'fred', texte:"..."}],
+      [{perso:'fred',  texte:"La porte."},{perso:'corey', texte:"Je l'entends."}],
+      [{perso:'corey', texte:"Nouveau client."},{perso:'fred', texte:"On verra."}],
+      [{perso:'corey', texte:"On travaille."},{perso:'fred', texte:"On a toujours travaillé."}],
+      [{perso:'fred',  texte:"..."},{perso:'corey', texte:"Client."},{perso:'fred', texte:"Je sais."}],
+      [{perso:'corey', texte:"Sonnette."},{perso:'fred', texte:"J'ai entendu."}],
+      [{perso:'corey', texte:"T'es prêt ?"},{perso:'fred', texte:"Toujours."}],
+      [{perso:'fred',  texte:"Quelqu'un."},{perso:'corey', texte:"Je gère."}],
+      [{perso:'corey', texte:"Regarde naturel."},{perso:'fred', texte:"Je suis naturel."}],
+      [{perso:'corey', texte:"La porte s'ouvre."},{perso:'fred', texte:"En général oui."}],
+      [{perso:'fred',  texte:"Client."},{perso:'corey', texte:"Déjà."}],
     ];
 
     const ANNONCES_CANOPI = [
@@ -677,19 +687,34 @@
       [{perso:'corey', texte:"Il a son carnet."},{perso:'fred', texte:"Il a toujours son carnet."}],
       [{perso:'corey', texte:"Ghost est sorti ?"},{perso:'fred', texte:"Depuis ce matin."}],
       [{perso:'corey', texte:"Reste naturel."},{perso:'fred', texte:"C'est toi qui dis ça."}],
+      [{perso:'fred',  texte:"Il regarde la réserve."},{perso:'corey', texte:"Il regarde toujours la réserve."}],
+      [{perso:'corey', texte:"Son carnet est ouvert."},{perso:'fred', texte:"Il prend des notes."},{perso:'corey', texte:"Sur quoi."}],
+      [{perso:'fred',  texte:"Canopi."},{perso:'corey', texte:"Déjà."},{perso:'fred', texte:"Tous les jours."}],
+      [{perso:'corey', texte:"Il a l'air plus détendu aujourd'hui."},{perso:'fred', texte:"C'est mauvais signe."}],
+      [{perso:'fred',  texte:"Naturel."},{perso:'corey', texte:"..."},{perso:'fred', texte:"Corey."},{perso:'corey', texte:"Je suis naturel."}],
     ];
 
     const TRANSITIONS_POST = [
       [{perso:'corey', texte:"Suivant."},{perso:'fred', texte:"Ouais."}],
       [{perso:'corey', texte:"Au boulot."},{perso:'fred', texte:"On a le choix ?"}],
-      [{perso:'fred',  texte:"Prochain."},{perso:'corey', texte:"Deja ?"}],
-      [{perso:'corey', texte:"La vie continue."},{perso:'fred', texte:"Poetique."}],
+      [{perso:'fred',  texte:"Prochain."},{perso:'corey', texte:"Déjà ?"}],
+      [{perso:'corey', texte:"La vie continue."},{perso:'fred', texte:"Poétique."}],
       [{perso:'corey', texte:"Encore un."},{perso:'fred', texte:"Encore un."}],
       [{perso:'fred',  texte:"Client."},{perso:'corey', texte:"Client."}],
-      [{perso:'corey', texte:"T'as vu sa tete ?"},{perso:'fred', texte:"Oui."},{perso:'corey', texte:"Bon."}],
+      [{perso:'corey', texte:"T'as vu sa tête ?"},{perso:'fred', texte:"Oui."},{perso:'corey', texte:"Bon."}],
       [{perso:'fred',  texte:"C'est quoi le suivant ?"},{perso:'corey', texte:"On verra."}],
       [{perso:'corey', texte:"Le fric rentre."},{perso:'fred', texte:"Ou pas."}],
       [{perso:'fred',  texte:"..."},{perso:'corey', texte:"Quoi ?"},{perso:'fred', texte:"Rien."}],
+      [{perso:'corey', texte:"Bon."},{perso:'fred', texte:"Ouais."}],
+      [{perso:'fred',  texte:"On continue."},{perso:'corey', texte:"On continue."}],
+      [{perso:'corey', texte:"Cassette rendue."},{perso:'fred', texte:"Rembobinée ?"}],
+      [{perso:'fred',  texte:"Bien."},{perso:'corey', texte:"Moyen."}],
+      [{perso:'corey', texte:"Prochain."},{perso:'fred', texte:"Mmh."}],
+      [{perso:'fred',  texte:"La journée avance."},{perso:'corey', texte:"C'est l'idée."}],
+      [{perso:'corey', texte:"Un de plus."},{perso:'fred', texte:"Un de moins à servir."}],
+      [{perso:'fred',  texte:"Le vidéoclub tourne."},{perso:'corey', texte:"C'est le but."}],
+      [{perso:'corey', texte:"Ça va ?"},{perso:'fred', texte:"Ça va."}],
+      [{perso:'fred',  texte:"Suivant."},{perso:'corey', texte:"Je gère."}],
     ];
 
     // ===================================================
@@ -1045,6 +1070,31 @@
       if (dispo.length === 0) { gameState.demandes_jouees[id] = []; dispo = pool.map((_,i)=>i); }
       const idx = dispo[Math.floor(Math.random()*dispo.length)];
       gameState.demandes_jouees[id].push(idx);
+      return pool[idx];
+    }
+
+    // Anti-répétition pour les dialogues narratifs clients
+    function getDialogueClient(id, pool) {
+      if (!pool || !pool.length) return pool[0] || [];
+      if (!gameState.dialogues_joues) gameState.dialogues_joues = {};
+      if (!gameState.dialogues_joues[id]) gameState.dialogues_joues[id] = [];
+      const joues = gameState.dialogues_joues[id];
+      let dispo = pool.map((_,i)=>i).filter(i=>!joues.includes(i));
+      if (dispo.length === 0) { gameState.dialogues_joues[id] = []; dispo = pool.map((_,i)=>i); }
+      const idx = dispo[Math.floor(Math.random()*dispo.length)];
+      gameState.dialogues_joues[id].push(idx);
+      return pool[idx];
+    }
+
+    // Anti-répétition pour annonces et transitions
+    function getAnnonce(pool, key) {
+      if (!gameState._annonces_joues) gameState._annonces_joues = {};
+      if (!gameState._annonces_joues[key]) gameState._annonces_joues[key] = [];
+      const joues = gameState._annonces_joues[key];
+      let dispo = pool.map((_,i)=>i).filter(i=>!joues.includes(i));
+      if (dispo.length === 0) { gameState._annonces_joues[key] = []; dispo = pool.map((_,i)=>i); }
+      const idx = dispo[Math.floor(Math.random()*dispo.length)];
+      gameState._annonces_joues[key].push(idx);
       return pool[idx];
     }
 
@@ -1783,8 +1833,8 @@
       // Annonce Corey
       viderBulles();
       const annonce = clientActuel.isCanopi
-        ? ANNONCES_CANOPI[Math.floor(Math.random() * ANNONCES_CANOPI.length)]
-        : ANNONCES_COREY[Math.floor(Math.random() * ANNONCES_COREY.length)];
+        ? getAnnonce(ANNONCES_CANOPI, 'canopi')
+        : getAnnonce(ANNONCES_COREY, 'client');
 
       // Avatars pendant annonce — Fred et Corey
       resetFredAvatar();
@@ -1810,7 +1860,7 @@
           for (let ci = clientsVus.length-1; ci >= Math.max(0, clientsVus.length-3); ci--) {
             const cp = clientsVus[ci];
             if (!cp) continue;
-            const c = getCroisementDialogue(cp.id, clientActuel.id);
+            const c = getCroisementDialogue(cp.id, clientActuel.id, gameState);
             if (c && c.length && Math.random() < 0.60) {
               croisTrouve = c;
               break;
@@ -2983,7 +3033,13 @@
         };
         const av = avatarMap[client.id];
         if (av) setCoreyAvatar(av.c);
-        lignes = dialoguesClients[client.id] || [{perso:'client', texte: demande}];
+        // Anti-répétition sur les dialogues narratifs
+        const pool_client = dialoguesClients[client.id];
+        if (pool_client) {
+          lignes = getDialogueClient(client.id, pool_client);
+        } else {
+          lignes = [{perso:'client', texte: demande}];
+        }
       }
 
       jouerDialogue(lignes, () => {
@@ -3343,7 +3399,7 @@
           setTimeout(() => {
             clientPresent = false;
             viderBulles(); resetFredAvatar();
-            const transition = TRANSITIONS_POST[Math.floor(Math.random()*TRANSITIONS_POST.length)];
+            const transition = getAnnonce(TRANSITIONS_POST,'transition');
             jouerDialogue(transition, lancerProchainClient);
           }, 1200);
         });
@@ -3518,7 +3574,7 @@
           return;
         }
 
-        const transition = TRANSITIONS_POST[Math.floor(Math.random() * TRANSITIONS_POST.length)];
+        const transition = getAnnonce(TRANSITIONS_POST,'transition');
         const dlgPostVente = getDialoguePostVente(client, film, resultat.positif);
 
         const lancerSuite = () => {
@@ -3571,7 +3627,7 @@
         setTimeout(() => {
           viderBulles(); resetFredAvatar();
           jouerSituation('bonne_vente', () => {
-            jouerDialogue(TRANSITIONS_POST[Math.floor(Math.random()*TRANSITIONS_POST.length)], lancerProchainClient);
+            jouerDialogue(getAnnonce(TRANSITIONS_POST,'transition'), lancerProchainClient);
           });
         }, 800);
         return;
@@ -3587,7 +3643,7 @@
         updateUI(); saveGame();
         setTimeout(() => {
           viderBulles(); resetFredAvatar();
-          jouerDialogue(TRANSITIONS_POST[Math.floor(Math.random()*TRANSITIONS_POST.length)], lancerProchainClient);
+          jouerDialogue(getAnnonce(TRANSITIONS_POST,'transition'), lancerProchainClient);
         }, 2000);
         return;
       }
