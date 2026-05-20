@@ -1754,6 +1754,17 @@
           jouerSituation('ouverture', lancerProchainClient);
         });
       } else {
+        // Tuto auto-save — jour 2 uniquement
+        if ((gameState.jour||1) === 2 && !gameState.tutoSaveFait) {
+          gameState.tutoSaveFait = true;
+          const tutoSave = [
+            {perso:'corey', texte:"Ta partie se sauvegarde toute seule."},
+            {perso:'fred',  texte:"À chaque vente."},
+            {perso:'corey', texte:"Rembobine si tu veux recommencer à zéro. Sur le menu principal."},
+          ];
+          jouerDialogueLent(tutoSave, () => {});
+        }
+
         // Arc Galaxy Video selon semaine
         const galaxyArc = getGalaxyVideoDialogue(gameState.semaine);
         if (galaxyArc && !galaxyArcDejaJoue(gameState)) {
@@ -1771,7 +1782,7 @@
             jouerSituation('ouverture', lancerProchainClient);
           });
         } else if (Math.random() < 0.25) {
-          const sitMatin = ['matin_fatigue','matin_routine','rembobinage_matin','croque_mort_quotidien','debat_films','camera_boutique','bttf_discussion','breakfast_discussion','weird_science','rumble_fish'];
+          const sitMatin = ['matin_fatigue','matin_routine','rembobinage_matin','croque_mort_quotidien','debat_films','camera_boutique','bttf_discussion','breakfast_discussion','weird_science','rumble_fish','predictions_corey'];
           const sit = sitMatin[Math.floor(Math.random()*sitMatin.length)];
           jouerSituation(sit, () => {
             jouerSituation('ouverture', lancerProchainClient);

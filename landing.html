@@ -436,16 +436,10 @@
   <!-- BOUTONS FIXES -->
   <div class="fixed-bottom">
 
-    <div class="btn-continuer" id="btn-continuer"
-         onclick="fadeOutMusic(()=>window.location.href='game.html')">
-      <div class="btn-continuer-text" id="btn-continuer-text">▶ CONTINUER</div>
-      <div class="btn-continuer-sub"  id="btn-continuer-sub">—</div>
-    </div>
-
     <div class="btn-jouer"
          onclick="fadeOutMusic(()=>window.location.href='game.html')">
-      <div class="btn-jouer-text">▶ LANCER LA CASSETTE</div>
-      <div class="btn-jouer-sub">NOUVELLE PARTIE</div>
+      <div class="btn-jouer-text" id="btn-jouer-text">▶ LANCER LA VHS</div>
+      <div class="btn-jouer-sub" id="btn-jouer-sub">APPUYEZ POUR JOUER</div>
     </div>
 
     <div class="btn-rembobiner" id="btn-rembobiner" onclick="confirmerRembobinage()">
@@ -526,14 +520,10 @@
         try {
           const gs = JSON.parse(save);
           const jour = gs.jour || 1;
-          const btn  = document.getElementById('btn-continuer');
-          const txt  = document.getElementById('btn-continuer-text');
-          const sub  = document.getElementById('btn-continuer-sub');
-          btn.classList.add('visible');
-          txt.textContent = '▶ CONTINUER';
-          sub.textContent = `JOUR ${jour} — ${(gs.argent||0)}$`;
-          // LANCER devient nouvelle partie si sauvegarde existe
-          document.querySelector('.btn-jouer-sub').textContent = 'RECOMMENCER';
+          // Sauvegarde existante — afficher le jour
+          const jouerSub = document.getElementById('btn-jouer-sub');
+          const jouerTxt = document.getElementById('btn-jouer-text');
+          if (jouerSub) jouerSub.textContent = `JOUR ${jour} · ${(gs.argent||0)}$`;
         } catch(e) {}
       }
     };

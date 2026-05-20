@@ -723,7 +723,7 @@
       const diff = currentCassette.difficulte || 2;
       if (diff >= 4) {
         setAvatar('corey-avant-avatar', 'posters/corey-peur.png');
-        setAvatar('fred-reserve-avatar', 'posters/fred-stress.png');
+        setAvatar('fred-reserve-avatar', 'posters/fred_stress.png');
       } else {
         setAvatar('corey-avant-avatar', 'posters/corey-heureux.png');
         setAvatar('fred-reserve-avatar', 'posters/fred.png');
@@ -962,8 +962,8 @@
       const corey4   = ['posters/corey-contrarie.png', 'posters/corey-depite.png'];
       const corey1   = ['posters/corey-depite.png', 'posters/corey-colere1.png'];
 
-      const fred_bien = ['posters/fred-fier.png', 'posters/fred-amuse.png'];
-      const fred_mal  = ['posters/fred-doute.png', 'posters/fred-pas-content.png'];
+      const fred_bien = ['posters/fred_fier.png', 'posters/fred-amuse.png'];
+      const fred_mal  = ['posters/fred_doute.png', 'posters/fred-pas-content.png'];
 
       let avatar = 'posters/corey-heureux.png';
       const rnd = () => Math.floor(Math.random()*2);
@@ -1011,85 +1011,21 @@
     // CUTTER
     // ===================================================
 
-    // Critiques The Glitch ciblées par micro-métrage
-    const CRITIQUES_MM = {
-      cosmic_dan: {
-        haute:  "Enfin quelqu'un qui comprend que l'espace c'est du silence. Et que le silence a un son.",
-        moyenne:"L'espace est là. La coupe l'a pas trouvé.",
-        basse:  "Vous avez regardé sans écouter.",
-        corey_haute: '"The Glitch met haut. Je savais."',
-        corey_basse: '"Il aime pas. On recommence."',
-      },
-      godzilla_mm: {
-        haute:  "L'hommage est honnête. Honda reste inégalable. Mais l'honneteté c'est déjà beaucoup.",
-        moyenne:"Vous avez vu ce que Honda avait fait. Vous l'avez pas égalé. C'est honnête.",
-        basse:  "Honda aurait pas coupé là.",
-        corey_haute: '"Moyen mais avec respect. Je prends."',
-        corey_basse: '"The Glitch compare à Honda. Dur comme étalon."',
-      },
-      pont_47: {
-        haute:  "La tension sans budget c'est du cinéma pur. De Palma ferait quoi avec ça ? Rien de plus.",
-        moyenne:"Le pont était là. La tension presque.",
-        basse:  "La tension s'est échappée avant la coupe.",
-        corey_haute: '"Très haut. The Glitch cite De Palma."',
-        corey_basse: '"Il attendait quelque chose. T\'as coupé trop tôt."',
-      },
-      de_rien_a_tout: {
-        haute:  "Je comprends pas ce que j'ai vu. Je revois demain.",
-        moyenne:"Je comprends à moitié. C'est déjà quelque chose.",
-        basse:  "Je comprends pas. Et cette fois c'est pas un compliment.",
-        corey_haute: '"Il comprend pas. Il revoit demain."',
-        corey_basse: '"The Glitch comprend pas. Mais pas de la bonne façon."',
-      },
-      requins_bronx: {
-        haute:  "Scorsese aurait aimé s'il avait eu moins d'argent. C'est un compliment.",
-        moyenne:"Le Bronx est là. Scorsese aurait fait autrement.",
-        basse:  "Le Bronx méritait mieux que cette coupe.",
-        corey_haute: '"Il cite Scorsese. Pour nous. Je peux mourir."',
-        corey_basse: '"Il est exigeant avec le Bronx."',
-      },
-      robert_robot: {
-        haute:  "Le seul film vraiment touchant qu'ils aient fait. Je dirai pas pourquoi. Regardez-le.",
-        moyenne:"Il y avait quelque chose. La coupe l'a presque gardé.",
-        basse:  "L'émotion était là. Vous l'avez laissée partir.",
-        corey_haute: '"Le seul touchant. Fred dit rien. Normal."',
-        corey_basse: '"The Glitch est ému. Et tu as raté la coupe."',
-      },
-      long_road: {
-        haute:  "Je mets 10. Je retire 2 parce que la fin est trop propre. Je remet 1. Note finale : 9.",
-        moyenne:"La route était longue. La coupe correcte.",
-        basse:  "La route méritait une vraie destination. Vous l'avez raté.",
-        corey_haute: '"Note 9. Il a failli mettre 10. Je suis content."',
-        corey_basse: '"Il voulait mettre 10. Tu as pas aidé."',
-      },
-    };
-
     function showCutterJudgement(note) {
       const critiques = {
         10: { texte:"Je ne comprends pas encore pourquoi cette coupe fonctionne. Mais elle fonctionne.", corey:'"Dix sur dix."' },
-        9:  { texte:"Exactement là ou le film ne avait plus besoin de continuer.", corey:'"Je savais que tu avais ca en toi."' },
-        8:  { texte:"Vous avez vu juste. Pas de chance — du travail.", corey:'"Huit. Bien. Pas dix."' },
-        7:  { texte:"L instinct etait là. L execution presque parfaite.", corey:'"Sept. On peut faire mieux."' },
+        9:  { texte:"Exactement là où le film n'avait plus besoin de continuer.", corey:'"Je savais que t\'avais ça en toi."' },
+        8:  { texte:"Vous avez vu juste. Pas de chance — c'est du travail.", corey:'"Huit. C\'est bien. Pas dix."' },
+        7:  { texte:"L'instinct était là. L'exécution presque parfaite.", corey:'"Sept. On peut faire mieux."' },
         6:  { texte:"Vous avez compris ce que ce film avait à dire. Presque.", corey:'"Six sur dix."' },
-        5:  { texte:"Bon endroit. Mauvais moment. Ou l inverse.", corey:'"Cinq. Le milieu."' },
-        4:  { texte:"Prudent. Securite au lieu du risque.", corey:'"Quatre. The Glitch est decu."' },
-        3:  { texte:"Au bon endroit mais trop tot ou trop tard.", corey:'"Trois. On recommence."' },
-        2:  { texte:"Vous avez coupé. C est tout ce qu on peut dire.", corey:'"Deux sur dix. Dur."' },
+        5:  { texte:"Bon endroit. Mauvais moment. Ou l'inverse.", corey:'"Cinq. Le milieu."' },
+        4:  { texte:"Prudent. Sécurité au lieu du risque.", corey:'"Quatre. Cutter est déçu."' },
+        3:  { texte:"Au bon endroit mais trop tôt ou trop tard.", corey:'"Trois. On recommence."' },
+        2:  { texte:"Vous avez coupé. C'est tout ce qu'on peut dire.", corey:'"Deux sur dix. Dur."' },
         1:  { texte:"Vous avez appuyé sur stop au hasard.", corey:'"Un sur dix Fred. Un."' }
       };
 
-      // Critique ciblée selon le MM
-      const mmCritique = currentCassette && CRITIQUES_MM[currentCassette.id];
-      let c;
-      if (mmCritique) {
-        const niveau = note >= 8 ? 'haute' : note >= 5 ? 'moyenne' : 'basse';
-        c = {
-          texte: mmCritique[niveau],
-          corey: note >= 7 ? mmCritique.corey_haute : mmCritique.corey_basse,
-        };
-      } else {
-        c = critiques[note] || critiques[5];
-      }
+      const c = critiques[note] || critiques[5];
 
       document.getElementById('cutter-title').textContent = `"${currentCassette.titre}"`;
       document.getElementById('cutter-critique').textContent = c.texte;
