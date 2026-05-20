@@ -91,13 +91,8 @@ const ACHIEVEMENTS = {
   },
 
   checkAndNotify(gameState) {
-    const nouveaux = this.check(gameState);
-    if (nouveaux.length > 0) {
-      nouveaux.forEach((ach, i) => {
-        setTimeout(() => this.showNotif(ach), i * 4500);
-      });
-    }
-    return nouveaux;
+    // Désactivé — le popup central dans game.html gère tout
+    return this.check(gameState);
   },
 
   // ===================================================
