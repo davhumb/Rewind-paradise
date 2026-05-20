@@ -22,7 +22,7 @@ const ACHIEVEMENTS = {
     { id:'roads',         icon:'🚗', titre:"ROADS? WE DON'T NEED ROADS",  desc:"Jour 7 atteint.",                               categorie:'CINÉMA', secret:false, check:(gs)=>(gs.jour||0)>=7 },
     { id:'be_afraid',     icon:'🪰', titre:"BE AFRAID. BE VERY AFRAID.",  desc:"Stock horreur à 10 cassettes.",                  categorie:'CINÉMA', secret:false, check:(gs)=>(gs.stock?.horreur||0)>=10 },
     { id:'show_money',    icon:'💵', titre:"SHOW ME THE MONEY",           desc:"500$ en caisse simultanément.",                  categorie:'CINÉMA', secret:false, check:(gs)=>(gs.argent||0)>=500 },
-    { id:'dead_people',   icon:'👻', titre:"I SEE DEAD PEOPLE",           desc:"Servir Canopi 5 fois.",                          categorie:'CINÉMA', secret:false, check:(gs)=>(gs.client_canopi_count||0)>=5 },
+    { id:'dead_people',   icon:'👻', titre:"I SEE DEAD PEOPLE",           desc:"Servir Canopi 3 fois.",                          categorie:'CINÉMA', secret:false, check:(gs)=>(gs.client_canopi_count||0)>=5 },
     { id:'say_hello',     icon:'🔫', titre:"SAY HELLO TO MY LITTLE FRIEND",desc:"Miguel vient 2 fois.",                    categorie:'CINÉMA', secret:false, check:(gs)=>(gs.client_miguel_count||0)>=2 },
     { id:'elementary',    icon:'🔍', titre:"ELEMENTARY",                  desc:"Trouver le bon film pour l'indécise du 1er coup.", categorie:'CINÉMA', secret:false, check:(gs)=>(gs.indecise_premier_coup||0)>=1 },
 

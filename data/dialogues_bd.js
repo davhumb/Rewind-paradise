@@ -269,8 +269,8 @@ const DIALOGUES_BD = {
     [
       { perso: 'fred',  texte: "Il a pris The Thing." },
       { perso: 'corey', texte: "Bon goût." },
-      { perso: 'fred',  texte: "Il avait l'air d'un comptable." },
-      { perso: 'corey', texte: "Les comptables ont le meilleur goût. Kubrick le savait." }
+      { perso: 'fred',  texte: "Il avait pas l'air cinéphile." },
+      { perso: 'corey', texte: "Les gens ont l'air de ce qu'ils veulent." }
     ],
     [
       { perso: 'corey', texte: "Rareté vendue." },
