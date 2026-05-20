@@ -56,6 +56,7 @@
 
     .shop-title { font-size: 11px; color: #ffffff; letter-spacing: 3px; text-shadow: 0 0 8px #ff2d78, 0 0 16px #00b4ff; }
     .day-info   { font-size: 10px; color: #ccccff; letter-spacing: 1px; }
+    .jour-badge { font-size: 9px; color: #555577; letter-spacing: 2px; padding: 2px 6px; border: 1px solid #333355; border-radius: 3px; }
 
     .phase-badge { font-size: 8px; padding: 2px 6px; border-radius: 3px; letter-spacing: 1px; }
     .phase-badge.matin      { background: #0a1808; color: #ffff00; border: 1px solid #ffdd44; }
@@ -178,6 +179,7 @@
     /* ESPACE CENTRAL */
     .scene-middle {
       flex: 1;
+      position: relative;
     }
 
     .avatar-img {
@@ -435,6 +437,10 @@
     /* COMBO */
     .combo-notif { position: fixed; top: 60px; left: 50%; transform: translateX(-50%); background: #0a1808; border: 2px solid #ffdd44; border-radius: 8px; padding: 8px 16px; font-size: 12px; color: #ffdd44; letter-spacing: 2px; z-index: 600; display: none; font-family: 'Courier New', monospace; font-weight: bold; }
     .combo-notif.visible { display: block; animation: comboAnim 2s forwards; }
+    @keyframes achieveAppear {
+      from { opacity:0; transform:translate(-50%,-50%) scale(0.8); }
+      to   { opacity:1; transform:translate(-50%,-50%) scale(1); }
+    }
     @keyframes comboAnim { 0% { opacity: 0; transform: translateX(-50%) scale(0.8); } 20% { opacity: 1; transform: translateX(-50%) scale(1.05); } 80% { opacity: 1; } 100% { opacity: 0; transform: translateX(-50%) scale(1); } }
 
     /* NOTIF */
@@ -488,6 +494,7 @@
       <div class="btn-icon" onclick="openJournal()">📰</div>
       <div class="shop-title">REWIND PARADISE</div>
       <div id="topbar-argent" style="font-size:13px;color:#00ffc8;font-weight:bold;letter-spacing:1px;text-shadow:0 0 8px #00ffc840;margin-left:4px;">200$</div>
+      <div class="jour-badge" id="jour-badge">J1</div>
     </div>
     <div class="top-bar-right">
       <div id="topbar-rep" style="font-size:11px;color:#ffaa44;letter-spacing:1px;">★★★☆☆</div>
@@ -559,8 +566,29 @@
         <div class="bulle-haut" id="bulle-haut">&nbsp;</div>
       </div>
 
-      <!-- ESPACE -->
-      <div class="scene-middle"></div>
+      <!-- ESPACE — Succès -->
+      <div class="scene-middle">
+        <div id="achievement-popup" style="
+          display:none;
+          position:absolute;
+          left:50%;transform:translateX(-50%);
+          top:50%;transform:translate(-50%,-50%);
+          background:rgba(8,8,20,0.97);
+          border:2px solid #ffdd44;
+          border-radius:10px;
+          padding:16px 20px;
+          text-align:center;
+          max-width:260px;
+          width:85%;
+          z-index:200;
+          animation:achieveAppear 0.3s ease;
+          font-family:'Courier New',monospace;
+        ">
+          <div id="ach-icon" style="font-size:28px;margin-bottom:8px;"></div>
+          <div id="ach-titre" style="font-size:11px;color:#ffdd44;letter-spacing:2px;font-weight:bold;margin-bottom:6px;"></div>
+          <div id="ach-desc" style="font-size:10px;color:#888899;letter-spacing:1px;font-style:italic;"></div>
+        </div>
+      </div>
 
       <!-- BAS — Corey -->
       <div class="perso-bas" id="perso-bas">
@@ -1271,6 +1299,7 @@
     // ===================================================
 
     const BULLE_MS = 45;
+    const BULLE_MS_TUTO = 90; // Délai double pour le tuto
 
     function ajouterBulle(perso, texte) {
       if (perso === 'corey') {
@@ -1287,6 +1316,24 @@
           b.style.animation = 'bulleAppear 0.25s ease';
         }
       }
+    }
+
+    function jouerDialogueLent(lignes, callback) {
+      dialogueEnCours = true;
+      let i = 0;
+      function next() {
+        if (i >= lignes.length) {
+          dialogueEnCours = false;
+          setTimeout(callback || (() => {}), 400);
+          return;
+        }
+        const l = lignes[i];
+        ajouterBulle(l.perso, l.texte);
+        i++;
+        const delai = Math.min(l.texte.length * BULLE_MS_TUTO + 800, 4500);
+        setTimeout(next, delai);
+      }
+      next();
     }
 
     function jouerDialogue(lignes, callback) {
@@ -1749,7 +1796,8 @@
         }
       }, 5000);
 
-      jouerDialogue(tutoLignes, callback);
+      // Tuto avec délai double
+      jouerDialogueLent(tutoLignes, callback);
     }
 
     function generateClientQueue() {
@@ -3683,23 +3731,23 @@
         cinephile:     {p:["Enfin.","Vous avez du gout."], n:["Ce n'etait pas ca."]},
         etudiant:      {p:["Trop bien !","Ca marche."],    n:["Mouais."]},
         miguel:        {p:["Parfait.","Top."],             n:["Non."]},
-        marine:        {p:["Merci."],                      n:["Negatif."]},
+        marine:        {p:["Merci."],                      n:["Elle repart."]},
         kungfu:        {p:["Bon choix.","Exactement."],    n:["Non."]},
-        femme_seule:   {p:["Merci.","Exactement ca."],     n:["Non, merci."]},
-        gamin_horreur: {p:["Genial !","Trop bien !"],      n:["Bof."]},
+        femme_seule:   {p:["Merci.","Exactement ça."],     n:["Non, merci."]},
+        gamin_horreur: {p:["Génial !","Trop bien !"],      n:["Bof."]},
         indecise:      {p:["Oh oui. C'est exactement ca."],n:["Non non."]},
         concurrent:    {p:["Pas mal."],                    n:["Galaxy Video fait mieux."]},
-        journaliste:   {p:["Je prends note."],             n:["Dommage."]},
+        journaliste:   {p:["Elle prend note."],            n:["Dommage."]},
         collectionneur:{p:["Comme prevu."],                n:["Ce n'est pas ce que je cherche."]},
         inconnu:       {p:["...merci."],                   n:["Non."]},
         fan_vo:        {p:["Enfin un videoclub serieux."],  n:["VF ? Non."]},
-        amie:          {p:["Je repasserai.","Merci les gars."],n:["Je prends rien aujourd'hui."]},
+        amie:          {p:["Je repasserai.","Merci."],n:["Elle repart."]},
         cowboy:        {p:["Obligé, partenaire.","C'est tout ce que je demandais, fils."],n:["Une autre fois peut-être."]},
-        debbie:        {p:["La prise de son est remarquable.","Merci Fred."],n:["Pas assez de travail sonore."]},
-        femme:         {p:["Bien. Merci.","Efficace."],        n:["Pas ce que je cherche."]},
+        debbie:        {p:["La prise de son est remarquable.","Merci."],n:["Pas assez de travail sonore."]},
+        femme:         {p:["Bien. Merci.","Efficace."],        n:["Pas ce qu'elle cherche."]},
         gordon:        {p:["Mouais. Ça ira.","Mon budget est plus élevé mais bon."],n:["C'est décevant."]},
-        goth:          {p:["C'est... pour une amie.","Merci."],n:["Non merci."]},
-        mere:          {p:["Mes fils vont m'entendre.","C'est pour... l'éducation."],n:["Non. Finalement non."]},
+        goth:          {p:["C'est... pour une amie.","Merci."],n:["Elle repart."]},
+        mere:          {p:["Mes fils vont m'entendre.","C'est pour l'éducation."],n:["Non. Finalement non."]},
         muscle:        {p:["C'est bien.","OUAIS."],            n:["...","Il pose la cassette et repart."]},
         prof:          {p:["Pas mal. Pour un vidéoclub.","Je reviendrai peut-être."],n:["Décevant. Comme votre bulletin."]},
         sam:           {p:["Je vais étudier chaque réplique.","Parfait."],n:["Mouais."]},
@@ -4185,6 +4233,8 @@
         const rep = Math.round(Math.min(5, Math.max(0, gs.reputation||3)));
         tr.textContent = '★'.repeat(rep) + '☆'.repeat(5-rep);
       }
+      const jb = document.getElementById('jour-badge');
+      if (jb) jb.textContent = 'J' + (gs.jour||1);
       document.getElementById('bar-money').style.width = Math.min(100,(gs.argent/500)*100)+'%';
       document.getElementById('val-money').textContent = gs.argent+'$';
       document.getElementById('bar-legal').style.width = (gs.legalite||0)+'%';
@@ -4251,12 +4301,38 @@
       }
     }
 
+    function showAchievementPopup(ach) {
+      const popup = document.getElementById('achievement-popup');
+      const icon  = document.getElementById('ach-icon');
+      const titre = document.getElementById('ach-titre');
+      const desc  = document.getElementById('ach-desc');
+      if (!popup) return;
+      icon.textContent  = ach.icon || '🏆';
+      titre.textContent = ach.titre || ach.id || '';
+      desc.textContent  = ach.desc || '';
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.opacity = '0';
+        popup.style.transition = 'opacity 0.5s';
+        setTimeout(() => {
+          popup.style.display = 'none';
+          popup.style.opacity = '1';
+          popup.style.transition = '';
+        }, 500);
+      }, 3500);
+    }
+
     function saveGame() {
       if (typeof ACHIEVEMENTS !== 'undefined') {
         const nouveaux = ACHIEVEMENTS.check(gameState);
         if (nouveaux.length > 0) {
           playSound('achievement');
-          nouveaux.forEach((ach, i) => setTimeout(() => ACHIEVEMENTS.showNotif(ach), i * 4500));
+          nouveaux.forEach((ach, i) => {
+            setTimeout(() => {
+              showAchievementPopup(ach);
+              if (typeof ACHIEVEMENTS.showNotif === 'function') ACHIEVEMENTS.showNotif(ach);
+            }, i * 4500);
+          });
         }
       }
       localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
