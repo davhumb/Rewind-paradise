@@ -871,7 +871,7 @@
       miguel:         'posters/miguel.png',
       femme_seule:    'posters/marie.png',
       etudiant:       'posters/etudiant.png',
-      inconnu:        'posters/inconnu.png',
+      inconnu:        'posters/collectionneur.png',
       concurrent:     'posters/concurent.png',
       journaliste:    'posters/journaliste.png',
       sam_raimi:      'posters/inconnu.png',
@@ -897,6 +897,7 @@
       jessica_mefiante:'posters/jessica-mefiante.png',
       jessica_observe: 'posters/jessica-observe.png',
       wang:           'posters/wang.png',
+      david:          'posters/david.png',
     };
 
     const COREY_AVATARS = {
@@ -1187,9 +1188,9 @@
         onServi:(gs,film,prix)=>{
           if(film.genre==='horreur'){gs.stock.horreur=Math.max(0,gs.stock.horreur-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Théa est ravie.`,positif:true};}
           return{msg:'Théa fait la grimace.',positif:false};}},
-      {id:'inconnu',  name:'INCONNU',     mood:'🧐', aime:['noir_01','noir_02','blue_velvet','suspiria','blow_out'], deteste:[], accepte:['noires','rarites'], energie:2, weedDemande:true,
+      {id:'inconnu', name:'M. BEAUMONT', mood:'🎩', aime:['noir_01','noir_02','blue_velvet','suspiria','blow_out','evil_dead','ran'], deteste:[], accepte:['noires','rarites'], energie:2,
         onServi:(gs,film,prix)=>{
-          if(film.genre==='noires'){gs.stock.noires=Math.max(0,gs.stock.noires-1);gs.exposition=Math.min(100,gs.exposition+3);gs.credibilite=Math.min(100,gs.credibilite+2);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il repart vite.`,positif:true};}
+          if(film.genre==='noires'){gs.stock.noires=Math.max(0,gs.stock.noires-1);gs.exposition=Math.min(100,gs.exposition+3);gs.credibilite=Math.min(100,gs.credibilite+2);gs.argent+=prix||film.prix;gs.client_inconnu_count=(gs.client_inconnu_count||0)+1;return{msg:`+${prix||film.prix}$ — Il repart vite.`,positif:true};}
           else if(film.genre==='rarites'){gs.stock.rarites=Math.max(0,gs.stock.rarites-1);gs.argent+=prix||film.prix;return{msg:`+${prix||film.prix}$ — Il reviendra.`,positif:true};}
           return{msg:'Il repart sans rien.',positif:false};}},
       {id:'concurrent',name:'CONCURRENT', mood:'😒', aime:['blow_out','short_cuts','blue_velvet','evil_dead'], deteste:[], accepte:['rarites'], energie:1,
@@ -1286,6 +1287,9 @@
         onServi:(gs,film,prix)=>{
           if(film.genre==='drame'||film.genre==='rarites'){gs.stock[film.genre]=Math.max(0,(gs.stock[film.genre]||0)-1);gs.argent+=prix||film.prix;gs.client_sensible_pleure=(gs.client_sensible_pleure||0)+1;return{msg:`+${prix||film.prix}$ — Une larme.`,positif:true};}
           return{msg:'Il repart. Presque en pleurant.',positif:false};}},
+
+      {id:'david', name:'DAVID', mood:'📖', aime:[], deteste:[], accepte:[], energie:0, isSpecial:true,
+        onServi:(gs,film,prix)=>{ return{msg:"Il repart. Pas encore.",positif:true}; }},
 
       {id:'tim', name:'TIM', mood:'🧪', aime:['evil_dead','thing','alien','shining','halloween'], deteste:['ghost','dirty_dancing'], accepte:['horreur','rarites'], energie:1, isPote:true,
         onServi:(gs,film,prix)=>{
@@ -1395,15 +1399,25 @@
       if (gameState.phase_journee === 'pause') gameState.phase_journee = 'matin';
 
       gameState.ghost_loue_aujourd_hui = false;
-      // Cacher le bouton pause si après-midi
+      // Boutons selon phase journée
+      const pauseBtn  = document.getElementById('pause-btn');
+      const fermerBtn = document.querySelector('.action-btn.fermer');
       if (gameState.phase_journee === 'apres_midi') {
-        document.getElementById('pause-btn').classList.remove('visible');
+        if (pauseBtn)  pauseBtn.classList.remove('visible');
+        if (fermerBtn) fermerBtn.style.display = 'block';
+      } else {
+        // Matin — cacher FERMER, cacher PAUSE jusqu'à 3 clients
+        if (pauseBtn)  pauseBtn.classList.remove('visible');
+        if (fermerBtn) fermerBtn.style.display = 'none';
       }
       if (typeof UPGRADES !== 'undefined') UPGRADES.appliquerEffetsActifs(gameState);
 
       updateUI();
       updateDayInfo();
       updateWeedStock();
+      // Badge jour — forcer update immédiat
+      const jbInit = document.getElementById('jour-badge');
+      if (jbInit) jbInit.textContent = 'J' + (gameState.jour||1);
       updatePhaseBadge(gameState.phase_journee || 'matin');
 
       setTimeout(startDay, 600);
@@ -1707,6 +1721,17 @@
       clientsExtension = 0;
       pauseProposee = false;
 
+      // Boutons selon phase
+      const _pauseBtn  = document.getElementById('pause-btn');
+      const _fermerBtn = document.querySelector('.action-btn.fermer');
+      if (gameState.phase_journee === 'apres_midi') {
+        if (_pauseBtn)  _pauseBtn.classList.remove('visible');
+        if (_fermerBtn) _fermerBtn.style.display = 'block';
+      } else {
+        if (_pauseBtn)  _pauseBtn.classList.remove('visible');
+        if (_fermerBtn) _fermerBtn.style.display = 'none';
+      }
+
       // Retours MM et cassettes normales
       verifierRetoursMMClient();
       verifierRetoursCassettes();
@@ -1856,6 +1881,12 @@
       // Dame indécise 1 fois
       if (((gameState.jour-1)%7) === 5)
         clientQueue.push(Object.assign({}, CLIENT_TYPES.find(c => c.id === 'indecise')));
+
+      // JOUR 2 — David (méta)
+      if ((gameState.jour||1) === 2 && !gameState.david_visite) {
+        const david = CLIENT_TYPES.find(c => c.id === 'david');
+        if (david) clientQueue.push(Object.assign({}, david));
+      }
 
       // JOUR 6 — Jessica et Wang
       if ((gameState.jour||1) === 6) {
@@ -3222,6 +3253,29 @@
         const peutProposerMM = !client.isCanopi && !client.isRamon
           && (gameState.stock.noires||0) > 0
           && Math.random() < 0.3;
+
+        // David — scène méta unique
+        if (client.id === 'david') {
+          gameState.david_visite = true;
+          const dlgDavid = [
+            {perso:'client', texte:'"Vous avez le livre Micro-Métrage ?"'},
+            {perso:'corey',  texte:"C'est un vidéoclub. Pas une librairie."},
+            {perso:'client', texte:"Ah. Ok. Désolé."},
+            {perso:'corey',  texte:"L'histoire du livre commence dans 6 jours de toute façon."},
+          ];
+          jouerDialogue(dlgDavid, () => {
+            clientPresent = false;
+            viderBulles(); resetFredAvatar();
+            const key = 'client_david_count';
+            gameState[key] = (gameState[key]||0) + 1;
+            if (!gameState.clients_du_jour) gameState.clients_du_jour = [];
+            gameState.clients_du_jour.push('david');
+            saveGame();
+            const transition = getAnnonce(TRANSITIONS_POST,'transition');
+            jouerDialogue(transition, lancerProchainClient);
+          });
+          return;
+        }
 
         // Amy ne loue jamais — pas de panel
         if (client.id === 'amie') {
