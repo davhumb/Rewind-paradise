@@ -2,304 +2,257 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, 
-        initial-scale=1.0, maximum-scale=1.0, 
-        user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Rewind Paradise</title>
   <style>
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
-      background: #050508;
       font-family: 'Courier New', monospace;
-      color: #f0f0ff;
+      background: #040408;
+      color: #e8e8ff;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       overflow-x: hidden;
       position: relative;
     }
 
+    /* FOND */
     body::before {
       content: '';
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      inset: 0;
+      background: url('posters/game-fond.png') center/cover no-repeat;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, #00b4ff18 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, #ff2d7818 0%, transparent 60%),
+        linear-gradient(180deg, #04040880 0%, #040408cc 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* SCANLINES */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
       background: repeating-linear-gradient(
         0deg,
-        transparent, transparent 3px,
-        rgba(0,0,0,0.12) 3px,
-        rgba(0,0,0,0.12) 4px
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
       );
-      pointer-events: none;
-      z-index: 10;
     }
 
-    .tracking {
-      position: fixed;
-      width: 100%; height: 2px;
-      background: rgba(255,255,255,0.05);
-      left: 0; z-index: 8;
-      animation: trackingMove 6s linear infinite;
+    /* CONTENU */
+    .content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px 200px;
     }
 
-    @keyframes trackingMove {
-      0%   { top: -2px; }
-      100% { top: 100vh; }
-    }
-
+    /* MUTE */
     .mute-btn {
       position: fixed;
-      top: 14px; right: 16px;
-      font-size: 20px;
+      top: 14px;
+      right: 14px;
+      z-index: 50;
+      font-size: 18px;
       cursor: pointer;
-      opacity: 0.5;
-      z-index: 200;
+      opacity: 0.4;
+      transition: opacity 0.2s;
     }
-
     .mute-btn:active { opacity: 1; }
 
-    .hero {
-      width: 100%;
-      position: relative;
-      flex-shrink: 0;
+    /* LOGO */
+    .logo-img {
+      width: 200px;
+      max-width: 80vw;
+      margin-bottom: 8px;
+      animation: fadeUp 0.8s ease both;
+      filter: drop-shadow(0 0 20px #00b4ff60);
     }
 
-    .hero-img {
-      width: 100%;
-      max-height: 280px;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-      filter: brightness(0.7) saturate(1.2) contrast(1.1);
-    }
-
-    .hero-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(5,5,8,0.3) 0%,
-        rgba(5,5,8,0.0) 40%,
-        rgba(5,5,8,0.8) 80%,
-        rgba(5,5,8,1.0) 100%
-      );
-    }
-
-    .hero-titre {
-      position: absolute;
-      bottom: 20px; left: 0; right: 0;
+    /* TITRE */
+    .titre-bloc {
       text-align: center;
-      z-index: 5;
+      margin-bottom: 6px;
+      animation: fadeUp 0.8s 0.1s ease both;
     }
 
     .titre-rewind {
-      font-size: 36px;
-      color: #f0f0ff;
-      letter-spacing: 5px;
-      text-shadow:
-        0 0 20px rgba(255,255,255,0.4),
-        0 2px 4px rgba(0,0,0,0.8);
-      line-height: 1;
       display: block;
+      font-size: 42px;
+      font-weight: bold;
+      letter-spacing: 10px;
+      color: #00b4ff;
+      text-shadow:
+        0 0 20px #00b4ffaa,
+        0 0 40px #00b4ff60,
+        0 0 80px #00b4ff30;
+      animation: glowPulse 3s infinite;
+      line-height: 1;
     }
 
     .titre-paradise {
-      font-size: 36px;
-      color: #00ffc8;
-      letter-spacing: 5px;
+      display: block;
+      font-size: 42px;
+      font-weight: bold;
+      letter-spacing: 10px;
+      color: #ff2d78;
       text-shadow:
-        0 0 20px #00ffc8,
-        0 0 40px #00ffc840,
-        0 2px 4px rgba(0,0,0,0.8);
+        0 0 20px #ff2d78aa,
+        0 0 40px #ff2d7860,
+        0 0 80px #ff2d7830;
+      animation: glowPulse2 3s infinite;
       line-height: 1;
-      display: block;
-      animation: glitchTitle 12s infinite;
     }
 
-    @keyframes glitchTitle {
-      0%, 92%, 100% {
-        text-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc840, 0 2px 4px rgba(0,0,0,0.8);
-        transform: none;
-      }
-      93% {
-        text-shadow: -2px 0 #ff4466, 2px 0 #00ffc8, 0 2px 4px rgba(0,0,0,0.8);
-        transform: translateX(2px);
-      }
-      94% {
-        text-shadow: 2px 0 #ff4466, -2px 0 #00ffc8, 0 2px 4px rgba(0,0,0,0.8);
-        transform: translateX(-2px);
-      }
-      95% {
-        text-shadow: 0 0 20px #00ffc8, 0 0 40px #00ffc840, 0 2px 4px rgba(0,0,0,0.8);
-        transform: none;
-      }
+    @keyframes glowPulse {
+      0%,100% { text-shadow: 0 0 20px #00b4ffaa, 0 0 40px #00b4ff60; }
+      50%      { text-shadow: 0 0 30px #00b4ffcc, 0 0 60px #00b4ff80, 0 0 100px #00b4ff40; }
+    }
+    @keyframes glowPulse2 {
+      0%,100% { text-shadow: 0 0 20px #ff2d78aa, 0 0 40px #ff2d7860; }
+      50%      { text-shadow: 0 0 30px #ff2d78cc, 0 0 60px #ff2d7880, 0 0 100px #ff2d7840; }
     }
 
-    .titre-sous {
+    /* SOUS-TITRE */
+    .sous-titre {
       font-size: 9px;
-      color: #ffffff60;
-      letter-spacing: 4px;
-      margin-top: 6px;
-      display: block;
+      letter-spacing: 5px;
+      color: #555577;
+      text-align: center;
+      margin-bottom: 30px;
+      animation: fadeUp 0.8s 0.2s ease both;
     }
 
-    .main {
-      width: 100%;
-      max-width: 420px;
-      padding: 16px 18px 100px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      position: relative;
-      z-index: 5;
-    }
-
-    .vhs-badge {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 6px 0;
-    }
-
-    .vhs-line       { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #1e1e3a); }
-    .vhs-line.right { background: linear-gradient(90deg, #1e1e3a, transparent); }
-
-    .vhs-text {
-      font-size: 8px;
-      color: #ff8855;
-      letter-spacing: 3px;
-      text-shadow: 0 0 6px #ff8855;
-      animation: neonFlicker 8s infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes neonFlicker {
-      0%, 95%, 100% { opacity: 1; }
-      96%            { opacity: 0.3; }
-      97%            { opacity: 1; }
-      98%            { opacity: 0.2; }
-      99%            { opacity: 1; }
-    }
-
+    /* SYNOPSIS */
     .synopsis {
-      background: #080810;
-      border: 1px solid #1e1e3a;
-      border-radius: 8px;
-      padding: 14px 16px;
+      text-align: center;
+      max-width: 320px;
+      margin-bottom: 36px;
+      animation: fadeUp 0.8s 0.3s ease both;
     }
 
     .synopsis-text {
-      font-size: 12px;
-      color: #8888aa;
-      line-height: 1.8;
-      letter-spacing: 0.3px;
+      font-size: 14px;
+      line-height: 2;
+      color: #9999cc;
       font-style: italic;
     }
 
-    .synopsis-text strong {
-      color: #c0c0dd;
-      font-style: normal;
-    }
+    .synopsis-text strong.blue { color: #00b4ff; }
+    .synopsis-text strong.pink { color: #ff2d78; }
+    .synopsis-text strong.green { color: #00ffc8; letter-spacing: 2px; }
 
+    /* PERSOS */
     .personnages {
       display: flex;
-      gap: 10px;
+      gap: 20px;
       justify-content: center;
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.4s ease both;
+      flex-wrap: wrap;
     }
 
     .perso-card {
-      flex: 1;
-      background: #080810;
-      border: 1px solid #1e1e3a;
-      border-radius: 8px;
-      padding: 10px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      max-width: 90px;
+      gap: 8px;
     }
 
     .perso-avatar {
-      width: 56px;
-      height: 56px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #aa880040;
-      box-shadow: 0 0 10px #aa880020;
-      background: #0a0a18;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .perso-card:nth-child(1) .perso-avatar {
+      border-color: #00b4ff80;
+      box-shadow: 0 0 20px #00b4ff40, 0 0 40px #00b4ff20;
+    }
+    .perso-card:nth-child(2) .perso-avatar {
+      border-color: #ff2d7880;
+      box-shadow: 0 0 20px #ff2d7840, 0 0 40px #ff2d7820;
+    }
+    .perso-card:nth-child(3) .perso-avatar {
+      border-color: #ffffff40;
+      box-shadow: 0 0 16px #ffffff20;
+    }
+    .perso-card:nth-child(4) .perso-avatar {
+      border-color: #aa558840;
+      box-shadow: 0 0 16px #aa558820;
     }
 
     .perso-name {
       font-size: 8px;
-      color: #444466;
-      letter-spacing: 1px;
+      letter-spacing: 3px;
+      color: #555577;
+    }
+
+    /* LIGNE DÉCORATIVE */
+    .deco-line {
+      width: 100%;
+      max-width: 300px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #00b4ff40, #ff2d7840, transparent);
+      margin-bottom: 30px;
+      animation: fadeUp 0.8s 0.5s ease both;
+    }
+
+    /* CELLULOÏD SCALPEL */
+    .celluloide {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: #ff2d78;
+      text-shadow: 0 0 10px #ff2d7860;
       text-align: center;
+      margin-bottom: 8px;
+      animation: fadeUp 0.8s 0.6s ease both;
     }
 
-    .vhs-elements {
-      display: flex;
-      justify-content: space-around;
-      padding: 4px 0;
-    }
-
-    .vhs-element {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .vhs-element-icon  { font-size: 20px; }
-    .vhs-element-label { font-size: 8px; color: #333355; letter-spacing: 2px; }
-
-    .infos {
-      background: #080810;
-      border: 1px solid #1e1e3a;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .info-ligne {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 14px;
-      border-bottom: 1px solid #0a0a18;
-    }
-
-    .info-ligne:last-child { border-bottom: none; }
-    .info-label { font-size: 8px; color: #222244; letter-spacing: 2px; }
-    .info-val   { font-size: 9px; color: #444466; letter-spacing: 1px; }
-
-    .credits {
+    .celluloide-sub {
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: #333355;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.65s ease both;
     }
 
-    .credits-ligne        { font-size: 8px; color: #1a1a2e; letter-spacing: 2px; line-height: 1.8; }
-    .credits-ligne.accent { color: #2a2a40; }
-
+    /* BOUTONS FIXES */
     .fixed-bottom {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: linear-gradient(transparent, #050508 30%);
-      padding: 20px 18px 16px;
+      z-index: 10;
+      padding: 12px 16px 20px;
+      background: linear-gradient(0deg, #040408 60%, transparent);
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      z-index: 20;
+      gap: 10px;
     }
 
+    /* BOUTON LANCER */
     .btn-jouer {
-      width: 100%;
-      background: #071a10;
+      background: linear-gradient(180deg, #0a1808, #060e04);
       border: 2px solid #00ffc8;
       border-radius: 8px;
       padding: 16px;
@@ -307,217 +260,181 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      text-decoration: none;
-      display: block;
+      box-shadow: 0 0 20px #00ffc830, 0 0 40px #00ffc810;
+      animation: fadeUp 0.8s 0.7s ease both;
+      transition: all 0.15s;
     }
-
-    .btn-jouer:active { transform: scale(0.98); background: #0d2818; }
+    .btn-jouer:active { transform: scale(0.98); }
 
     .btn-jouer::before {
       content: '';
       position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0,255,200,0.1), transparent);
-      animation: shimmer 3s infinite;
+      top: 0; left: -60%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,200,0.15), transparent);
+      animation: shimmer 2s infinite;
     }
-
-    @keyframes shimmer {
-      0%   { left: -100%; }
-      100% { left:  100%; }
-    }
+    @keyframes shimmer { 0%{left:-60%} 100%{left:160%} }
 
     .btn-jouer-text {
       font-size: 14px;
       color: #00ffc8;
-      letter-spacing: 5px;
       font-weight: bold;
-      text-shadow: 0 0 12px #00ffc8;
+      letter-spacing: 4px;
       font-family: 'Courier New', monospace;
+      position: relative;
+      z-index: 1;
     }
-
     .btn-jouer-sub {
       font-size: 8px;
-      color: #00ffc840;
-      letter-spacing: 2px;
+      color: #00ffc860;
+      letter-spacing: 3px;
       margin-top: 4px;
-      font-family: 'Courier New', monospace;
+      position: relative;
+      z-index: 1;
     }
 
+    /* BOUTON CONTINUER — si sauvegarde existe */
     .btn-continuer {
-      width: 100%;
-      background: #080818;
-      border: 1px solid #2e2e50;
+      display: none;
+      background: linear-gradient(180deg, #080818, #050512);
+      border: 2px solid #00b4ff;
       border-radius: 8px;
-      padding: 12px;
+      padding: 14px;
       text-align: center;
       cursor: pointer;
-      text-decoration: none;
-      display: none;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 16px #00b4ff30;
+      animation: fadeUp 0.8s 0.75s ease both;
     }
-
     .btn-continuer.visible { display: block; }
-    .btn-continuer:active  { background: #0f0f22; }
+    .btn-continuer:active { transform: scale(0.98); }
 
     .btn-continuer-text {
-      font-size: 11px;
-      color: #444466;
-      letter-spacing: 2px;
+      font-size: 12px;
+      color: #00b4ff;
+      font-weight: bold;
+      letter-spacing: 3px;
       font-family: 'Courier New', monospace;
     }
-
     .btn-continuer-sub {
       font-size: 8px;
-      color: #222233;
-      letter-spacing: 1px;
+      color: #00b4ff60;
+      letter-spacing: 2px;
       margin-top: 3px;
+    }
+
+    /* BOUTON REMBOBINER */
+    .btn-rembobiner {
+      background: transparent;
+      border: 1px solid #ff2d7840;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-rembobiner:active { background: #1a0510; }
+
+    .btn-rembobiner-text {
+      font-size: 10px;
+      color: #ff2d7880;
+      letter-spacing: 3px;
       font-family: 'Courier New', monospace;
     }
 
-    .statut-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 2px;
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(12px); }
+      to   { opacity:1; transform: translateY(0); }
     }
 
-    .statut-left  { font-size: 7px; color: #111122; letter-spacing: 2px; }
-    .statut-right { font-size: 7px; color: #111122; letter-spacing: 2px; }
-
+    /* CONFIRMATION REMBOBINAGE */
+    .confirm-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .confirm-overlay.visible { display: flex; }
+    .confirm-titre { font-size: 12px; color: #ff2d78; letter-spacing: 3px; margin-bottom: 16px; }
+    .confirm-texte { font-size: 12px; color: #888899; font-style: italic; text-align: center; margin-bottom: 24px; line-height: 1.8; }
+    .confirm-btns  { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
+    .confirm-oui {
+      background: #100508; border: 1px solid #ff2d78; border-radius: 6px;
+      padding: 12px; text-align: center; cursor: pointer;
+      font-size: 10px; color: #ff2d78; letter-spacing: 2px; font-family: 'Courier New', monospace;
+    }
+    .confirm-non {
+      background: transparent; border: 1px solid #333355; border-radius: 6px;
+      padding: 12px; text-align: center; cursor: pointer;
+      font-size: 10px; color: #555577; letter-spacing: 2px; font-family: 'Courier New', monospace;
+    }
   </style>
 </head>
 <body>
 
-  <div class="tracking"></div>
+  <div class="scanlines"></div>
   <div class="mute-btn" id="mute-btn" onclick="toggleMute()">🔊</div>
 
-  <div class="hero">
-    <img class="hero-img"
-         src="posters/rewind_paradise.png"
-         alt="Rewind Paradise"
+  <div class="content">
+
+    <img class="logo-img" src="posters/rewind_paradise.png" alt="Rewind Paradise"
          onerror="this.style.display='none'">
-    <div class="hero-overlay"></div>
-    <div class="hero-titre">
+
+    <div class="titre-bloc">
       <span class="titre-rewind">REWIND</span>
       <span class="titre-paradise">PARADISE</span>
-      <span class="titre-sous">UN JEU DE MICRO-MÉTRAGE</span>
     </div>
-  </div>
 
-  <div class="main">
-
-    <div class="vhs-badge">
-      <div class="vhs-line"></div>
-      <span class="vhs-text">📼 VHS · HI-FI STÉRÉO · COULEUR</span>
-      <div class="vhs-line right"></div>
-    </div>
+    <div class="sous-titre">UN JEU DE MICRO-MÉTRAGE</div>
 
     <div class="synopsis">
-      <div class="synopsis-text" style="font-style:italic;line-height:1.9;color:#bbbbdd;">
+      <div class="synopsis-text">
         Avant d'être les personnages d'un roman,<br>
-        <strong style="color:#ffffff;">Fred</strong> et
-        <strong style="color:#ff4488;">Corey</strong>
+        <strong class="blue">Fred</strong> et
+        <strong class="pink">Corey</strong>
         étaient loin d'imaginer<br>
         ce qui les attendait.<br><br>
         Tout commença dans leur vidéoclub.<br><br>
-        <strong style="color:#00ffc8;letter-spacing:2px;">Le Rewind Paradise.</strong>
+        <strong class="green">Le Rewind Paradise.</strong>
       </div>
     </div>
 
     <div class="personnages">
       <div class="perso-card">
-        <img class="perso-avatar" src="posters/fred.png" alt="Fred"
-             onerror="this.style.display='none'">
+        <img class="perso-avatar" src="posters/fred.png" alt="Fred" onerror="this.style.display='none'">
         <div class="perso-name">FRED</div>
       </div>
       <div class="perso-card">
-        <img class="perso-avatar" src="posters/corey.png" alt="Corey"
-             onerror="this.style.display='none'">
+        <img class="perso-avatar" src="posters/corey.png" alt="Corey" onerror="this.style.display='none'">
         <div class="perso-name">COREY</div>
       </div>
       <div class="perso-card">
-        <img class="perso-avatar" src="posters/canopi.png" alt="Canopi"
-             onerror="this.style.display='none'">
+        <img class="perso-avatar" src="posters/canopi.png" alt="Canopi" onerror="this.style.display='none'">
         <div class="perso-name">CANOPI</div>
       </div>
       <div class="perso-card">
-        <img class="perso-avatar" src="posters/ramon.png" alt="Ramon"
-             onerror="this.style.display='none'">
+        <img class="perso-avatar" src="posters/ramon.png" alt="Ramon" onerror="this.style.display='none'">
         <div class="perso-name">RAMON</div>
       </div>
     </div>
 
-    <div class="vhs-elements">
-      <div class="vhs-element">
-        <span class="vhs-element-icon">✂</span>
-        <span class="vhs-element-label">COUPER</span>
-      </div>
-      <div class="vhs-element">
-        <span class="vhs-element-icon">📼</span>
-        <span class="vhs-element-label">REMBOBINER</span>
-      </div>
-      <div class="vhs-element">
-        <span class="vhs-element-icon">👁</span>
-        <span class="vhs-element-label">OBSERVER</span>
-      </div>
-      <div class="vhs-element">
-        <span class="vhs-element-icon">🎬</span>
-        <span class="vhs-element-label">SURVIVRE</span>
-      </div>
-    </div>
+    <div class="deco-line"></div>
 
-    <div class="infos">
-      <div class="info-ligne">
-        <span class="info-label">GENRE</span>
-        <span class="info-val">GESTION · NARRATION · TIMING</span>
-      </div>
-      <div class="info-ligne">
-        <span class="info-label">DURÉE</span>
-        <span class="info-val">30 — 60 MIN PAR PARTIE</span>
-      </div>
-      <div class="info-ligne">
-        <span class="info-label">FINS</span>
-        <span class="info-val">5 FINS DIFFÉRENTES</span>
-      </div>
-      <div class="info-ligne">
-        <span class="info-label">CASSETTES</span>
-        <span class="info-val">20 MICRO-MÉTRAGES</span>
-      </div>
-      <div class="info-ligne">
-        <span class="info-label">SUCCÈS</span>
-        <span class="info-val">15 ACHIEVEMENTS</span>
-      </div>
-      <div class="info-ligne">
-        <span class="info-label">PLATEFORME</span>
-        <span class="info-val">MOBILE · NAVIGATEUR</span>
-      </div>
-    </div>
-
-    <div class="credits">
-      <div class="credits-ligne accent">
-        Basé sur le roman <em>Micro-Métrage</em>
-      </div>
-      <div class="credits-ligne">de David Humbert</div>
-      <div class="credits-ligne" style="margin-top:6px;">
-        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-      </div>
-    </div>
-
-    <div style="height:120px;"></div>
+    <div class="celluloide">A CELLULOÏD SCALPEL PRODUCTION</div>
+    <div class="celluloide-sub">REWIND PARADISE — 1991</div>
 
   </div>
 
+  <!-- BOUTONS FIXES -->
   <div class="fixed-bottom">
-
-    <div class="btn-jouer"
-         onclick="fadeOutMusic(()=>window.location.href='game.html')">
-      <div class="btn-jouer-text">▶ JOUER</div>
-      <div class="btn-jouer-sub">APPUYEZ POUR LANCER</div>
-    </div>
-
-    <div class="btn-rembobiner" id="btn-rembobiner" onclick="confirmerRembobinage()">
-      <div class="btn-rembobiner-text">◀ REMBOBINER</div>
-    </div>
 
     <div class="btn-continuer" id="btn-continuer"
          onclick="fadeOutMusic(()=>window.location.href='game.html')">
@@ -525,11 +442,29 @@
       <div class="btn-continuer-sub"  id="btn-continuer-sub">—</div>
     </div>
 
-    <div class="statut-bar">
-      <span class="statut-left">▶ PLAY</span>
-      <span class="statut-right" id="timecode">00:00:00</span>
+    <div class="btn-jouer"
+         onclick="fadeOutMusic(()=>window.location.href='game.html')">
+      <div class="btn-jouer-text">▶ LANCER LA CASSETTE</div>
+      <div class="btn-jouer-sub">NOUVELLE PARTIE</div>
     </div>
 
+    <div class="btn-rembobiner" id="btn-rembobiner" onclick="confirmerRembobinage()">
+      <div class="btn-rembobiner-text">◀ REMBOBINER</div>
+    </div>
+
+  </div>
+
+  <!-- CONFIRMATION REMBOBINAGE -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-titre">◀ REMBOBINER</div>
+    <div class="confirm-texte">
+      Effacer la sauvegarde<br>et recommencer depuis le début ?<br><br>
+      <em style="color:#444466;">Cette action est irréversible.</em>
+    </div>
+    <div class="confirm-btns">
+      <div class="confirm-oui" onclick="rembobiner()">◀ OUI — REMBOBINER</div>
+      <div class="confirm-non" onclick="fermerConfirm()">✕ ANNULER</div>
+    </div>
   </div>
 
   <audio id="bg-music" loop>
@@ -542,125 +477,67 @@
     let isMuted = false;
 
     function initMusic() {
-      music   = document.getElementById('bg-music');
+      music = document.getElementById('bg-music');
       isMuted = localStorage.getItem('rewind_muted') === 'true';
-      music.volume = 0.25;
+      music.volume = 0.2;
       music.muted  = isMuted;
-      document.getElementById('mute-btn').textContent =
-        isMuted ? '🔇' : '🔊';
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
       const p = music.play();
-      if (p !== undefined) {
-        p.catch(() => {
-          document.addEventListener('touchstart',
-            () => music.play(), { once: true });
-        });
-      }
-    }
-
-    function confirmerRembobinage() {
-      // Panel de confirmation
-      const panel = document.createElement('div');
-      panel.id = 'panel-rembobinage';
-      panel.style.cssText = `
-        position:fixed; top:0; left:0; right:0; bottom:0;
-        background:rgba(0,0,0,0.92);
-        z-index:1000;
-        display:flex; flex-direction:column;
-        align-items:center; justify-content:center;
-        padding:24px;
-        font-family:'Courier New',monospace;
-      `;
-      panel.innerHTML = `
-        <div style="font-size:9px;color:#ff4466;letter-spacing:4px;margin-bottom:20px;">▓ REMBOBINER ▓</div>
-        <div style="background:#080810;border:1px solid #ff446630;border-radius:8px;padding:16px;max-width:320px;width:100%;margin-bottom:20px;">
-          <div style="font-size:12px;color:#ff4466;font-style:italic;line-height:1.8;margin-bottom:12px;">
-            Fred : "T'es sûr ?"<br>
-            Corey : "On recommence depuis le début."<br>
-            Fred : "Tout ?"<br>
-            Corey : "Tout."
-          </div>
-          <div style="font-size:9px;color:#333355;font-style:italic;">
-            La partie en cours sera effacée.
-          </div>
-        </div>
-        <div onclick="effacerEtRecommencer()" style="
-          width:100%;max-width:320px;
-          background:#100508;border:2px solid #ff4466;
-          border-radius:8px;padding:14px;text-align:center;
-          cursor:pointer;font-size:11px;color:#ff4466;
-          letter-spacing:3px;font-family:'Courier New',monospace;
-          font-weight:bold;margin-bottom:10px;
-        ">◀ OUI — REMBOBINER</div>
-        <div onclick="document.getElementById('panel-rembobinage').remove()" style="
-          font-size:9px;color:#333355;cursor:pointer;
-          letter-spacing:2px;padding:8px;
-        ">ANNULER</div>
-      `;
-      document.body.appendChild(panel);
-    }
-
-    function effacerEtRecommencer() {
-      localStorage.removeItem('rewindParadise_save');
-      localStorage.removeItem('rewind_muted');
-      document.getElementById('panel-rembobinage').remove();
-      // Recharger la page
-      window.location.reload();
+      if (p) p.catch(() => document.addEventListener('touchstart', () => music.play(), {once:true}));
     }
 
     function toggleMute() {
       isMuted = !isMuted;
-      if (music) music.muted = isMuted;
+      music.muted = isMuted;
       localStorage.setItem('rewind_muted', isMuted);
-      document.getElementById('mute-btn').textContent =
-        isMuted ? '🔇' : '🔊';
+      document.getElementById('mute-btn').textContent = isMuted ? '🔇' : '🔊';
     }
 
-    function fadeOutMusic(callback) {
-      if (!music || isMuted) { if (callback) callback(); return; }
-      let vol = music.volume;
-      const fade = setInterval(() => {
-        vol = Math.max(0, vol - 0.05);
-        music.volume = vol;
-        if (vol <= 0) {
-          clearInterval(fade);
-          music.pause();
-          if (callback) callback();
-        }
+    function fadeOutMusic(cb) {
+      if (!music || isMuted) { if (cb) cb(); return; }
+      let v = music.volume;
+      const f = setInterval(() => {
+        v = Math.max(0, v - 0.04);
+        music.volume = v;
+        if (v <= 0) { clearInterval(f); music.pause(); if (cb) cb(); }
       }, 50);
     }
 
-    // Timecode VHS
-    let secondes = 0;
-    setInterval(() => {
-      secondes++;
-      const h = String(Math.floor(secondes / 3600)).padStart(2,'0');
-      const m = String(Math.floor((secondes % 3600) / 60)).padStart(2,'0');
-      const s = String(secondes % 60).padStart(2,'0');
-      const el = document.getElementById('timecode');
-      if (el) el.textContent = `${h}:${m}:${s}`;
-    }, 1000);
+    function confirmerRembobinage() {
+      document.getElementById('confirm-overlay').classList.add('visible');
+    }
+
+    function fermerConfirm() {
+      document.getElementById('confirm-overlay').classList.remove('visible');
+    }
+
+    function rembobiner() {
+      localStorage.clear();
+      fermerConfirm();
+      window.location.reload();
+    }
 
     window.onload = function() {
       initMusic();
 
+      // Vérifier sauvegarde existante
       const save = localStorage.getItem('rewindParadise_save');
       if (save) {
         try {
           const gs = JSON.parse(save);
-          if (gs.jour > 1) {
-            const btn  = document.getElementById('btn-continuer');
-            const txt  = document.getElementById('btn-continuer-text');
-            const sub  = document.getElementById('btn-continuer-sub');
-            btn.classList.add('visible');
-            txt.textContent = `▶ CONTINUER — JOUR ${gs.jour} · S${gs.semaine}`;
-            sub.textContent =
-              `${gs.argent}$ · LÉGALITÉ ${gs.legalite}% · SUSPICION ${gs.suspicion||0}%`;
-          }
+          const jour = gs.jour || 1;
+          const btn  = document.getElementById('btn-continuer');
+          const txt  = document.getElementById('btn-continuer-text');
+          const sub  = document.getElementById('btn-continuer-sub');
+          btn.classList.add('visible');
+          txt.textContent = '▶ CONTINUER';
+          sub.textContent = `JOUR ${jour} — ${(gs.argent||0)}$`;
+          // LANCER devient nouvelle partie si sauvegarde existe
+          document.querySelector('.btn-jouer-sub').textContent = 'RECOMMENCER';
         } catch(e) {}
       }
     };
 
   </script>
-
 </body>
 </html>
