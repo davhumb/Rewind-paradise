@@ -4113,113 +4113,256 @@
     }
 
     // ===================================================
-    // JOUR 7 — FIN DU ROMAN
+    // JOUR 7 — SÉQUENCE CINÉMATOGRAPHIQUE
+    // Calquée sur le chapitre 1 du roman Micro-Métrage
     // ===================================================
+
+    function afficherNarration(texte, callback) {
+      // Affiche un texte narratif dans la zone milieu
+      const middle = document.querySelector('.scene-middle');
+      if (!middle) { if (callback) callback(); return; }
+      const el = document.createElement('div');
+      el.style.cssText = `
+        position:absolute;left:50%;top:50%;
+        transform:translate(-50%,-50%);
+        width:90%;max-width:340px;
+        font-family:'Courier New',monospace;
+        font-size:11px;line-height:1.9;
+        color:#aaaacc;font-style:italic;
+        text-align:center;
+        background:rgba(4,4,12,0.85);
+        border:1px solid #ffffff08;
+        border-radius:6px;padding:14px 16px;
+        animation:narrationFade 0.6s ease;
+        z-index:10;
+      `;
+      el.textContent = texte;
+      // Supprimer le précédent
+      const prev = middle.querySelector('.narration-bloc');
+      if (prev) prev.remove();
+      el.className = 'narration-bloc';
+      middle.appendChild(el);
+      const duree = Math.min(texte.length * 55 + 800, 4000);
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.5s';
+        el.style.opacity = '0';
+        setTimeout(() => { el.remove(); if (callback) callback(); }, 500);
+      }, duree);
+    }
+
+    // Injecter le CSS narration
+    (function() {
+      const s = document.createElement('style');
+      s.textContent = `@keyframes narrationFade { from{opacity:0;transform:translate(-50%,-48%)} to{opacity:1;transform:translate(-50%,-50%)} }`;
+      document.head.appendChild(s);
+    })();
+
+    function setAvatarJour7(fredAv, coreyAv) {
+      if (fredAv) {
+        const img = document.getElementById('img-gauche');
+        if (img) { img.src = 'posters/' + fredAv + '.png'; img.style.opacity='1'; img.className='avatar-img fred-style'; }
+        const nom = document.getElementById('nom-gauche');
+        if (nom) { nom.textContent='FRED'; nom.className='avatar-name fred-name'; }
+      }
+      if (coreyAv) {
+        document.getElementById('img-droite').src = 'posters/' + coreyAv + '.png';
+      }
+    }
+
     function lancerJour7() {
-      // Séquence narrative complète
-      const acte1 = [
-        {perso:'fred',  texte:"Le rideau. Encore. Tous les matins le même vacarme."},
-        {perso:'fred',  texte:"Les néons. La moquette bleue. Le Compaq qui démarre."},
-      ];
-
-      const acte2_arrivee = [
-        {perso:'corey', texte:"'Lu..."},
-        {perso:'fred',  texte:"T'es en retard."},
-        {perso:'corey', texte:"C'est relatif."},
-      ];
-
-      const acte3_jeu = [
-        {perso:'fred',  texte:"Danny Glover et Kiefer Sutherland. Trois minutes."},
-        {perso:'corey', texte:"Sérieux ?"},
-        {perso:'fred',  texte:"Deux minutes."},
-        {perso:'corey', texte:"T'abuses..."},
-        {perso:'fred',  texte:"Une minute."},
-        {perso:'corey', texte:"Glover et Harrison Ford dans Witness. Ford et Hauer dans Blade Runner. Hauer et Broderick dans Ladyhawke. Broderick et Sheen dans Ferris Bueller. Sheen et Sutherland dans... Young Guns !"},
-        {perso:'fred',  texte:"Bien joué."},
-        {perso:'corey', texte:"..."},
-      ];
-
-      const acte4_journee = [
-        {perso:'fred',  texte:"Journée normale."},
-        {perso:'corey', texte:"Comme les autres."},
-        {perso:'fred',  texte:"Ouais."},
-      ];
-
-      const acte5_bruit = [
-        {perso:'fred',  texte:"..."},
-        {perso:'fred',  texte:"T'as entendu ça ?"},
-        {perso:'corey', texte:"Quoi ?"},
-        {perso:'fred',  texte:"Un bruit. Dans la réserve."},
-      ];
-
-      const acte6_vol = [
-        {perso:'fred',  texte:"Putain."},
-        {perso:'corey', texte:"Quoi ? Qu'est-ce qu'il y a ?"},
-        {perso:'fred',  texte:"La beuh. Et le fric. Plus rien."},
-        {perso:'corey', texte:"Quoi ?! Combien y'avait ?"},
-        {perso:'fred',  texte:"Tout le fric de la semaine. Deux cents balles. Peut-être plus."},
-        {perso:'corey', texte:"Merde... Jackson passe demain..."},
-      ];
-
-      const acte7_nain = [
-        {perso:'fred',  texte:"La boîte est plus là Corey. Tu peux fouiller tout le vidéoclub, ça changera rien."},
-        {perso:'corey', texte:"Et t'as rien vu ?"},
-        {perso:'fred',  texte:"Non."},
-        {perso:'corey', texte:"Si c'est pas toi, c'est qui ?"},
-        {perso:'corey', texte:"Attends... Et si... et si c'était un nain ?"},
-        {perso:'fred',  texte:"Pardon ?"},
-        {perso:'corey', texte:"Un nain, mec ! Hyper petit. Il aurait rampé. On l'aurait pas vu ! C'est logique, non ?"},
-        {perso:'fred',  texte:"Et pourquoi il ramperait s'il est déjà petit ?"},
-        {perso:'corey', texte:"Ben pour être encore plus discret, non ?"},
-        {perso:'fred',  texte:"On n'a plus un rond, Jackson va nous éclater, et toi tu me parles de nains ?"},
-        {perso:'corey', texte:"..."},
-        {perso:'fred',  texte:"Putain Corey... Jackson va péter un câble. On est mort."},
-      ];
-
-      setFredAvatar('tranquille');
-      setCoreyAvatar('neutre');
       viderBulles();
+      setAvatarJour7('fred-montre', 'corey.png');
+      document.getElementById('pause-btn').classList.remove('visible');
+      const fb = document.querySelector('.action-btn.fermer');
+      if (fb) fb.style.display = 'none';
 
-      jouerDialogue(acte1, () => {
-        jouerDialogue(acte2_arrivee, () => {
-          setCoreyAvatar('high');
-          jouerDialogue(acte3_jeu, () => {
-            setCoreyAvatar('joie');
-            setTimeout(() => {
-              setCoreyAvatar('neutre');
-              generateClientQueue();
-              clientIndex = 0;
-              clientsServis = 0;
-              jouerDialogue(acte4_journee, () => {
-                lancerProchainClientJour7();
-              });
-            }, 2000);
-          });
+      // ── ACTE 1 — FRED SEUL ──────────────────────────
+      afficherNarration("Le rideau de fer grinça comme une chaîne de vélo dans un mixeur en remontant.", () => {
+        ajouterBulle('fred', "...");
+        afficherNarration("Il actionna les interrupteurs. Les néons crachèrent une lumière blanche et glaciale.", () => {
+          setAvatarJour7('fred-jeu', null);
+          ajouterBulle('fred', "Dix heures trente.");
+
+          // ── ACTE 2 — COREY ARRIVE ───────────────────
+          setTimeout(() => {
+            setAvatarJour7('fred-montre', null);
+            afficherNarration("Corey traîna ses Nike éventrées jusqu'au comptoir, s'affala sur le tabouret, toujours emmitouflé dans sa grosse doudoune bleu marine.", () => {
+              setAvatarJour7(null, 'corey-arrive');
+              ajouterBulle('corey', "'Lu...");
+              setTimeout(() => {
+
+                // ── ACTE 3 — JEU DES 6 DEGRÉS ─────────
+                setAvatarJour7('fred-jeu', 'corey-jeu');
+                const jeu = [
+                  {perso:'fred',  av:'fred-jeu',     texte:"Danny Glover et Kiefer Sutherland !"},
+                  {perso:'corey', av:'corey-jeu',    texte:"Kiefer et ?"},
+                  {perso:'fred',  av:'fred-jeu',     texte:"Et Danny Glover. T'as trois minutes !"},
+                  {perso:'corey', av:'corey-jeu',    texte:"Sérieux ?"},
+                  {perso:'fred',  av:'fred-5',       texte:"Deux minutes !"},
+                  {perso:'corey', av:'corey-jeu',    texte:"T'abuses…"},
+                  {perso:'fred',  av:'fred-5',       texte:"Une minute !"},
+                  {perso:'corey', av:'corey-compte', texte:"Je l'ai !"},
+                  {perso:'corey', av:'corey-compte', texte:"Glover et Harrison Ford dans Witness. Ford et Rutger Hauer dans Blade Runner. Hauer et Broderick dans Ladyhawke. Broderick et Charlie Sheen dans Ferris Bueller. Sheen et Sutherland dans… Young Guns !"},
+                  {perso:'fred',  av:'fred-perdu',   texte:"Bien joué."},
+                ];
+
+                function jouerJeuActeur(i) {
+                  if (i >= jeu.length) {
+                    // Corey gagne — danse
+                    setAvatarJour7('fred-aspi', 'corey-gagne');
+                    ajouterBulle('corey', "...");
+                    afficherNarration("Corey esquissa une danse de la victoire maladroite sur place. Le perdant faisait le ménage.", () => {
+                      setAvatarJour7('fred-aspi', null);
+                      ajouterBulle('fred', "...");
+
+                      // ── ACTE 4 — CLIENTS ────────────
+                      setTimeout(() => {
+                        generateClientQueue();
+                        clientIndex = 0; clientsServis = 0;
+                        const fb2 = document.querySelector('.action-btn.fermer');
+                        lancerProchainClientJour7();
+                      }, 2000);
+                    });
+                    return;
+                  }
+                  const l = jeu[i];
+                  if (l.av) {
+                    const isCorey = l.perso === 'corey';
+                    if (isCorey) {
+                      document.getElementById('img-droite').src = 'posters/' + l.av + '.png';
+                    } else {
+                      const img = document.getElementById('img-gauche');
+                      if (img) img.src = 'posters/' + l.av + '.png';
+                    }
+                  }
+                  ajouterBulle(l.perso, l.texte);
+                  const delai = Math.min(l.texte.length * 50 + 600, 3000);
+                  setTimeout(() => jouerJeuActeur(i+1), delai);
+                }
+                jouerJeuActeur(0);
+
+              }, 2000);
+            });
+          }, 1500);
         });
       });
 
-      // Après les clients — le bruit
+      // ── ACTE 5 — LE BRUIT (après clients) ───────────
       window._jour7_acte5 = () => {
-        setFredAvatar('attentif');
-        setCoreyAvatar('pensif');
         viderBulles();
-        jouerDialogue(acte5_bruit, () => {
+        setAvatarJour7('fred-bruit', 'corey-se-pause');
+
+        afficherNarration("Il coupait l'aspirateur. Le silence qui suivit était presque oppressant.", () => {
+          ajouterBulle('fred', "T'as entendu ça ?");
           setTimeout(() => {
-            setFredAvatar('stress');
-            jouerDialogue(acte6_vol, () => {
-              setCoreyAvatar('conspirationiste');
-              jouerDialogue(acte7_nain, () => {
-                // Écran noir puis page finale
+            setAvatarJour7(null, 'corey-quoi');
+            ajouterBulle('corey', "...");
+            setTimeout(() => {
+
+              // ── ACTE 6 — LA RÉSERVE ─────────────────
+              afficherNarration("Fred s'approcha de la réserve, poussa doucement la porte.", () => {
+                setAvatarJour7('fred-decouvre', null);
                 setTimeout(() => {
-                  document.body.style.transition = 'opacity 2s';
-                  document.body.style.opacity = '0';
+
+                  // Image boîte manquante
+                  const middle = document.querySelector('.scene-middle');
+                  if (middle) {
+                    const boite = document.createElement('img');
+                    boite.src = 'posters/boite.png';
+                    boite.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:85%;max-width:300px;border-radius:8px;z-index:10;animation:narrationFade 0.5s ease;';
+                    boite.className = 'narration-bloc';
+                    const prev = middle.querySelector('.narration-bloc');
+                    if (prev) prev.remove();
+                    middle.appendChild(boite);
+                    setTimeout(() => { boite.style.transition='opacity 0.5s'; boite.style.opacity='0'; setTimeout(()=>boite.remove(), 500); }, 3000);
+                  }
+
                   setTimeout(() => {
-                    window.location.href = 'ending.html';
-                  }, 2000);
-                }, 3000);
+                    setAvatarJour7('fred-rale', null);
+                    ajouterBulle('fred', "Putain.");
+
+                    setTimeout(() => {
+
+                      // ── ACTE 7 — LE VOL ─────────────
+                      const vol = [
+                        {perso:'corey', av:'corey-quoi',  texte:"Quoi ? Qu'est-ce qu'il y a ?"},
+                        {perso:'fred',  av:'fred-rale',   texte:"La beuh. Et le fric. Plus rien."},
+                        {perso:'corey', av:'corey-flippe',texte:"Quoi ?! Combien y'avait ?"},
+                        {perso:'fred',  av:'fred-rale2',  texte:"Tout le fric de la semaine. Deux cents balles. Peut-être plus."},
+                        {perso:'corey', av:'corey-flippe',texte:"Merde… Jackson passe demain…"},
+                        {perso:'fred',  av:'fred-rale',   texte:"La boîte est plus là Corey. Tu peux fouiller tout le vidéoclub, ça changera rien."},
+                        {perso:'corey', av:'corey-quoi',  texte:"Et t'as rien vu ?"},
+                        {perso:'fred',  av:'fred-rale2',  texte:"Ben non."},
+                        {perso:'corey', av:'corey-quoi',  texte:"Si c'est pas toi, c'est qui ?"},
+                      ];
+
+                      function jouerVol(i) {
+                        if (i >= vol.length) {
+                          // Théorie du nain
+                          setTimeout(() => {
+                            setAvatarJour7(null, 'corey-nain');
+                            ajouterBulle('corey', "Attends… Et si… et si c'était un nain ?");
+                            setTimeout(() => {
+                              setAvatarJour7('fred-rale', null);
+                              ajouterBulle('fred', "Pardon ?");
+                              setTimeout(() => {
+                                ajouterBulle('corey', "Un nain, mec ! Hyper petit. Il aurait rampé. On l'aurait pas vu ! C'est logique, non ?");
+                                setTimeout(() => {
+                                  ajouterBulle('fred', "Et pourquoi il ramperait s'il est déjà petit ?");
+                                  setTimeout(() => {
+                                    ajouterBulle('corey', "Ben pour être encore plus discret, non ?");
+                                    setTimeout(() => {
+                                      setAvatarJour7('fred-rale2', null);
+                                      ajouterBulle('fred', "On n'a plus un rond, Jackson va nous éclater, et toi tu me parles de nains ?");
+                                      setTimeout(() => {
+
+                                        // ── FINAL ──────────────────
+                                        setAvatarJour7('fred-final', 'corey-final');
+                                        viderBulles();
+                                        setTimeout(() => {
+                                          ajouterBulle('fred', "Putain Corey… Jackson va péter un câble. On est morts.");
+                                          setTimeout(() => {
+                                            ajouterBulle('corey', "...");
+                                            setTimeout(() => {
+                                              // Fade to black → ending
+                                              document.body.style.transition = 'opacity 2.5s';
+                                              document.body.style.opacity = '0';
+                                              setTimeout(() => { window.location.href = 'ending.html'; }, 2500);
+                                            }, 3000);
+                                          }, 3000);
+                                        }, 1200);
+
+                                      }, 2800);
+                                    }, 2400);
+                                  }, 2400);
+                                }, 2800);
+                              }, 2400);
+                            }, 2400);
+                          }, 1000);
+                          return;
+                        }
+                        const l = vol[i];
+                        if (l.av) {
+                          const isCorey = l.perso === 'corey';
+                          if (isCorey) {
+                            document.getElementById('img-droite').src = 'posters/' + l.av + '.png';
+                          } else {
+                            const img = document.getElementById('img-gauche');
+                            if (img) img.src = 'posters/' + l.av + '.png';
+                          }
+                        }
+                        ajouterBulle(l.perso, l.texte);
+                        const delai = Math.min(l.texte.length * 52 + 700, 3200);
+                        setTimeout(() => jouerVol(i+1), delai);
+                      }
+                      jouerVol(0);
+
+                    }, 2000);
+                  }, 3500);
+                }, 2000);
               });
-            });
-          }, 1000);
+            }, 2000);
+          }, 2000);
         });
       };
     }
