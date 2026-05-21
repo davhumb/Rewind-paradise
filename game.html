@@ -506,7 +506,7 @@
       <div class="btn-icon" onclick="openStock()">📦</div>
       <div class="btn-icon" id="mute-btn" onclick="toggleMute()">🔊</div>
       <div class="btn-icon" onclick="saveGameManuel()">📼</div>
-      <div onclick="skipJour7()" style="background:#ff2d78;color:#fff;font-size:11px;font-weight:bold;padding:4px 8px;border-radius:4px;cursor:pointer;font-family:'Courier New',monospace;">7</div>
+
     </div>
   </div>
 
@@ -632,6 +632,16 @@
 
   <div class="gauge-tooltip" id="gauge-tooltip"></div>
   <div class="notif" id="notif"></div>
+  <!-- BOUTON TEST JOUR 7 — À RETIRER AVANT RELEASE -->
+  <div onclick="skipJour7()" style="
+    position:fixed;bottom:80px;left:10px;
+    background:#ff2d78;color:#fff;
+    font-size:14px;font-weight:bold;
+    padding:8px 14px;border-radius:6px;
+    cursor:pointer;z-index:500;
+    font-family:'Courier New',monospace;
+    box-shadow:0 0 10px #ff2d7860;
+  ">J7</div>
 
   <div class="bottom-bar">
     <div class="gauge-item" onclick="showTooltip('money')">
