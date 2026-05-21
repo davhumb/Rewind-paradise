@@ -673,96 +673,6 @@ const DIALOGUES_BD = {
     ]
   ],
 
-predictions_corey: [
-    [
-      {perso:'corey', av:'conspirationiste', texte:"Josh Brolin. Le grand frère dans les Goonies."},
-      {perso:'fred',  av:'tranquille',       texte:"Ouais."},
-      {perso:'corey', av:'illumine',         texte:"Il jouera jamais de rôles virils. Pas après avoir pédalé sur le vélo Barbie dans les Goonies."},
-      {perso:'fred',  av:'amuse',            texte:"..."},
-      {perso:'corey', av:'fier',             texte:"C'est scientifique."},
-    ],
-    [
-      {perso:'corey', av:'illumine',         texte:"S'il y a une chose dont je suis certain."},
-      {perso:'fred',  av:'tranquille',       texte:"Quoi."},
-      {perso:'corey', av:'conspirationiste', texte:"Il n'y aura jamais d'autres Star Wars après Le Retour du Jedi."},
-      {perso:'fred',  av:'sceptique',        texte:"..."},
-      {perso:'corey', av:'fier',             texte:"Lucas a dit que la saga est terminée."},
-      {perso:'fred',  av:'tranquille',       texte:"Ouais."},
-      {perso:'corey', av:'illumine',         texte:"Terminée."},
-    ],
-    [
-      {perso:'corey', av:'conspirationiste', texte:"Van Damme. Il va faire de vrais films. Pas juste des arts martiaux."},
-      {perso:'fred',  av:'doute',            texte:"Basé sur quoi."},
-      {perso:'corey', av:'illumine',         texte:"Son regard. Il a quelque chose."},
-      {perso:'fred',  av:'sceptique',        texte:"Il fait des splits sur des camions."},
-      {perso:'corey', av:'pensif',           texte:"C'est du talent mal utilisé."},
-    ],
-    [
-      {perso:'corey', av:'illumine',         texte:"Tarantino. Ce mec va tout changer."},
-      {perso:'fred',  av:'tranquille',       texte:"Qui."},
-      {perso:'corey', av:'conspirationiste', texte:"Quentin Tarantino. Il prépare quelque chose."},
-      {perso:'fred',  av:'doute',            texte:"T'as vu quoi de lui."},
-      {perso:'corey', av:'illumine',         texte:"Rien encore. Mais je sens."},
-      {perso:'fred',  av:'amuse',            texte:"Tu sens."},
-      {perso:'corey', av:'fier',             texte:"Je sens."},
-    ],
-    [
-      {perso:'corey', av:'illumine',         texte:"Macaulay Culkin. Carrière terminée dans trois ans."},
-      {perso:'fred',  av:'amuse',            texte:"Il a dix ans."},
-      {perso:'corey', av:'conspirationiste', texte:"Exactement. L'enfant star c'est une bombe à retardement."},
-      {perso:'fred',  av:'tranquille',       texte:"..."},
-      {perso:'corey', av:'pensif',           texte:"Corey Feldman. River Phoenix. Le schéma est clair."},
-    ],
-    [
-      {perso:'corey', av:'conspirationiste', texte:"Jim Carrey. Trop télé. Jamais le grand écran."},
-      {perso:'fred',  av:'doute',            texte:"T'en sais rien."},
-      {perso:'corey', av:'illumine',         texte:"In Living Color c'est bien. Mais c'est la TV. Y'a un plafond."},
-      {perso:'fred',  av:'tranquille',       texte:"..."},
-      {perso:'corey', av:'fier',             texte:"Je note. Dans cinq ans on vérifie."},
-    ],
-    [
-      {perso:'corey', av:'conspirationiste', texte:"Arnold va faire de la politique."},
-      {perso:'fred',  av:'sceptique',        texte:"..."},
-      {perso:'corey', av:'illumine',         texte:"Gouverneur. Californie."},
-      {perso:'fred',  av:'non',              texte:"Non."},
-      {perso:'corey', av:'pensif',           texte:"..."},
-      {perso:'corey', av:'high',             texte:"Non c'est con."},
-    ],
-  ],
-
-
-    camera_boutique: [
-    [
-      {perso:'corey', av:'conspirationiste', texte:"Les caméras. Elles marchent ?"},
-      {perso:'fred',  av:'sceptique',        texte:"Probablement pas."},
-      {perso:'corey', av:'pensif',           texte:"Probablement."},
-      {perso:'fred',  av:'tranquille',       texte:"C'est pas pareil."},
-      {perso:'corey', av:'conspirationiste', texte:"Si Canopi demande les bandes..."},
-      {perso:'fred',  av:'tranquille',       texte:"Il demandera pas les bandes."},
-      {perso:'corey', av:'pensif',           texte:"..."},
-      {perso:'fred',  av:'sceptique',        texte:"Probablement pas."},
-    ],
-    [
-      {perso:'corey', av:'illumine',         texte:"Si les caméras marchent on a tout sur bande."},
-      {perso:'fred',  av:'doute',            texte:"Tout quoi."},
-      {perso:'corey', av:'conspirationiste', texte:"Tout. Les noires. La weed. Tout."},
-      {perso:'fred',  av:'tranquille',       texte:"Et si elles marchent pas."},
-      {perso:'corey', av:'high',             texte:"On a rien."},
-      {perso:'fred',  av:'tranquille',       texte:"C'est mieux."},
-      {perso:'corey', av:'pensif',           texte:"Ouais. C'est mieux."},
-    ],
-    [
-      {perso:'fred',  av:'concentre',        texte:"Les caméras enregistrent quoi exactement."},
-      {perso:'corey', av:'conspirationiste', texte:"Le comptoir. La caisse. L'entrée."},
-      {perso:'fred',  av:'doute',            texte:"Et la réserve."},
-      {perso:'corey', av:'pensif',           texte:"La réserve est hors champ."},
-      {perso:'fred',  av:'tranquille',       texte:"T'en es sûr."},
-      {perso:'corey', av:'ecarquille',       texte:"...Presque sûr."},
-      {perso:'fred',  av:'sceptique',        texte:"Presque."},
-      {perso:'corey', av:'conspirationiste', texte:"Elles marchent peut-être même pas."},
-    ],
-  ],
-
   // ===================================================
   // AVANT LE MICRO-MÉTRAGE
   // ===================================================
@@ -791,7 +701,118 @@ predictions_corey: [
       { perso: 'fred',  texte: "Non." }
     ]
   ]
+,
 
+  debat_films: [
+    [
+      {perso:'corey', av:'illumine',        texte:"Apocalypse Now ou Apocalypse Now Redux."},
+      {perso:'fred',  av:'tranquille',      texte:"La version originale."},
+      {perso:'corey', av:'ecarquille',      texte:"La Redux a 49 minutes de plus."},
+      {perso:'fred',  av:'sceptique',       texte:"Coppola les a coupées pour une raison."},
+      {perso:'corey', av:'pensif',          texte:"Et les a remises pour une autre."},
+      {perso:'fred',  av:'tranquille',      texte:"La version originale."},
+    ],
+    [
+      {perso:'corey', av:'conspirationiste',texte:"Kubrick ou Tarkovski."},
+      {perso:'fred',  av:'tranquille',      texte:"Kubrick."},
+      {perso:'corey', av:'illumine',        texte:"Tarkovski filme le temps. Kubrick filme l'espace."},
+      {perso:'fred',  av:'sceptique',       texte:"Kubrick contrôle tout."},
+      {perso:'corey', av:'pensif',          texte:"Tarkovski laisse entrer le chaos."},
+      {perso:'fred',  av:'tranquille',      texte:"Kubrick."},
+      {perso:'corey', av:'illumine',        texte:"Le chaos c'est mieux."},
+      {perso:'fred',  av:'tranquille',      texte:"Des fois."},
+    ],
+    [
+      {perso:'corey', av:'illumine',        texte:"La scène du baptême dans le Parrain."},
+      {perso:'fred',  av:'attentif',        texte:"Ouais."},
+      {perso:'corey', av:'ecarquille',      texte:"Coppola coupe entre les meurtres et le baptême. Pas de musique."},
+      {perso:'fred',  av:'tranquille',      texte:"Le silence fait le boulot."},
+      {perso:'corey', av:'illumine',        texte:"C'est ce qu'on essaie de faire avec nos micro-métrages."},
+      {perso:'fred',  av:'pensif',          texte:"..."},
+      {perso:'corey', av:'high',            texte:"Le silence fait tout le boulot."},
+    ],
+    [
+      {perso:'corey', av:'conspirationiste',texte:"Leone ou Corbucci."},
+      {perso:'fred',  av:'doute',           texte:"Leone."},
+      {perso:'corey', av:'illumine',        texte:"Corbucci a fait Django. L'original. 1966."},
+      {perso:'fred',  av:'tranquille',      texte:"Leone a fait le reste."},
+      {perso:'corey', av:'pensif',          texte:"Django dans la boue. Traînant son cercueil."},
+      {perso:'fred',  av:'tranquille',      texte:"Leone."},
+      {perso:'corey', av:'illumine',        texte:"Corbucci est sous-estimé."},
+      {perso:'fred',  av:'tranquille',      texte:"Leone."},
+    ],
+    [
+      {perso:'corey', av:'illumine',        texte:"L'horreur ou la SF. Lequel survit."},
+      {perso:'fred',  av:'tranquille',      texte:"Alien est les deux."},
+      {perso:'corey', av:'ecarquille',      texte:"..."},
+      {perso:'fred',  av:'amuse',           texte:"Donc on peut pas choisir."},
+      {perso:'corey', av:'pensif',          texte:"C'est une erreur de poser la question."},
+    ],
+  ],
+
+  predictions_corey: [
+    [
+      {perso:'corey', av:'conspirationiste',texte:"Josh Brolin. Le grand frère dans les Goonies."},
+      {perso:'fred',  av:'tranquille',      texte:"Ouais."},
+      {perso:'corey', av:'illumine',        texte:"Il jouera jamais de rôles virils. Pas après avoir pédalé sur le vélo Barbie dans les Goonies."},
+      {perso:'fred',  av:'amuse',           texte:"..."},
+      {perso:'corey', av:'fier',            texte:"C'est scientifique."},
+    ],
+    [
+      {perso:'corey', av:'illumine',        texte:"S'il y a une chose dont je suis certain."},
+      {perso:'fred',  av:'tranquille',      texte:"Quoi."},
+      {perso:'corey', av:'conspirationiste',texte:"Il n'y aura jamais d'autres Star Wars après Le Retour du Jedi."},
+      {perso:'fred',  av:'sceptique',       texte:"Lucas a dit ça."},
+      {perso:'corey', av:'fier',            texte:"La saga est terminée."},
+      {perso:'fred',  av:'tranquille',      texte:"Ouais."},
+    ],
+    [
+      {perso:'corey', av:'conspirationiste',texte:"Van Damme. Il va faire de vrais films."},
+      {perso:'fred',  av:'doute',           texte:"Basé sur quoi."},
+      {perso:'corey', av:'illumine',        texte:"Son regard. Il a quelque chose derrière les yeux."},
+      {perso:'fred',  av:'sceptique',       texte:"Il fait des splits sur des camions."},
+      {perso:'corey', av:'pensif',          texte:"C'est du talent mal utilisé."},
+    ],
+    [
+      {perso:'corey', av:'illumine',        texte:"Tarantino. Ce mec va tout changer."},
+      {perso:'fred',  av:'tranquille',      texte:"Qui."},
+      {perso:'corey', av:'conspirationiste',texte:"Quentin Tarantino. Il prépare quelque chose."},
+      {perso:'fred',  av:'doute',           texte:"T'as vu quoi de lui."},
+      {perso:'corey', av:'illumine',        texte:"Rien encore. Mais je sens."},
+      {perso:'fred',  av:'amuse',           texte:"Tu sens."},
+      {perso:'corey', av:'fier',            texte:"Je sens."},
+    ],
+    [
+      {perso:'corey', av:'conspirationiste',texte:"Arnold va faire de la politique."},
+      {perso:'fred',  av:'sceptique',       texte:"..."},
+      {perso:'corey', av:'illumine',        texte:"Gouverneur de Californie."},
+      {perso:'fred',  av:'non',             texte:"Non."},
+      {perso:'corey', av:'pensif',          texte:"..."},
+      {perso:'corey', av:'high',            texte:"Non c'est con."},
+    ],
+  ],
+
+  camera_boutique: [
+    [
+      {perso:'corey', av:'conspirationiste',texte:"Les caméras. Elles marchent ?"},
+      {perso:'fred',  av:'sceptique',       texte:"Probablement pas."},
+      {perso:'corey', av:'pensif',          texte:"Probablement."},
+      {perso:'fred',  av:'tranquille',      texte:"C'est pas pareil."},
+      {perso:'corey', av:'conspirationiste',texte:"Si Canopi demande les bandes un jour..."},
+      {perso:'fred',  av:'tranquille',      texte:"Il demandera pas les bandes."},
+      {perso:'corey', av:'pensif',          texte:"..."},
+      {perso:'fred',  av:'sceptique',       texte:"Probablement pas."},
+    ],
+    [
+      {perso:'corey', av:'illumine',        texte:"Si les caméras marchent on a tout sur bande."},
+      {perso:'fred',  av:'doute',           texte:"Tout quoi."},
+      {perso:'corey', av:'conspirationiste',texte:"Tout. Les noires. La weed. Tout."},
+      {perso:'fred',  av:'tranquille',      texte:"Et si elles marchent pas."},
+      {perso:'corey', av:'high',            texte:"On a rien."},
+      {perso:'fred',  av:'tranquille',      texte:"C'est mieux."},
+      {perso:'corey', av:'pensif',          texte:"Ouais. C'est mieux."},
+    ],
+  ]
 };
 
 // ===================================================
