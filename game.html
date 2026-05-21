@@ -56,7 +56,7 @@
 
     .shop-title { font-size: 11px; color: #ffffff; letter-spacing: 3px; text-shadow: 0 0 8px #ff2d78, 0 0 16px #00b4ff; }
     .day-info   { font-size: 10px; color: #ccccff; letter-spacing: 1px; }
-    .jour-badge { font-size: 9px; color: #555577; letter-spacing: 2px; padding: 2px 6px; border: 1px solid #333355; border-radius: 3px; }
+    .jour-badge { font-size: 10px; color: #00b4ff; letter-spacing: 3px; padding: 3px 8px; border: 1px solid #00b4ff60; border-radius: 3px; font-weight: bold; text-shadow: 0 0 8px #00b4ff80; box-shadow: 0 0 6px #00b4ff20; }
 
     .phase-badge { font-size: 8px; padding: 2px 6px; border-radius: 3px; letter-spacing: 1px; }
     .phase-badge.matin      { background: #0a1808; color: #ffff00; border: 1px solid #ffdd44; }
@@ -383,6 +383,7 @@
       border: 1px solid #ff2d7870; color: #ff8855;
       position:relative; overflow:hidden;
       box-shadow: 0 0 10px #ff2d7820; font-weight:bold;
+      display: none;
     }
     .action-btn.fermer::before {
       content:''; position:absolute; top:0; left:-60%;
@@ -929,7 +930,7 @@
       tete:'posters/fred-tete.png', soupir:'posters/fred-soupir.png',
       concentre:'posters/fred-concentre.png', cash:'posters/fred-cash.png',
       lit:'posters/fred-lit.png', sceptique:'posters/fred-septique.png',
-      sourit:'posters/fred-sourit.png', clint:'posters/fred-eastwood.png',
+      sourit:'posters/fred-sourit.png', clint:'posters/fred-eastwood.png', mcqueen:'posters/fred-mcqueen.png',
       rire:'posters/fred-rire.png', enerve:'posters/fred-enerve.png',
       regarde_dehors:'posters/fred-regarde-dehors.png',
       fier_corey:'posters/fred-fier-de-corey.png',
@@ -1772,8 +1773,8 @@
           jouerDialogue(galaxyArc, () => {
             jouerSituation('ouverture', lancerProchainClient);
           });
-        } else if (Math.random() < 0.35 && gameState.jour >= 2) {
-          // Dialogue quotidien Galaxy Video dès jour 2
+        } else if (Math.random() < 0.4 && gameState.jour >= 2 && (gameState.jour % 2 === 0)) {
+          // Dialogue Galaxy Video tous les 2 jours
           jouerSituation('galaxy_quotidien', () => {
             jouerSituation('ouverture', lancerProchainClient);
           });
@@ -3290,6 +3291,16 @@
           return;
         }
 
+        // Jessica jour 6 — jessica-john si Wang est aussi là
+        if (client.id === 'jessica' && (gameState.jour||1) === 6) {
+          const img = document.getElementById('img-gauche');
+          if (img) {
+            // jessica-john si Wang déjà servi ce jour
+            const avecJohn = (gameState.clients_du_jour||[]).includes('wang');
+            img.src = avecJohn ? 'posters/jessica-john.png' : 'posters/jessica-observe.png';
+          }
+        }
+
         // Amy ne loue jamais — pas de panel
         if (client.id === 'amie') {
           setTimeout(() => {
@@ -3507,9 +3518,13 @@
         const filtres = dispo.filter(f => f.id === 'ghost' || f.genre === 'drame').slice(0,5);
         list.innerHTML = genererFilmsHTML(client, filtres);
       } else {
-        // Trier par score puis mélanger légèrement pour variété
+        // PRIORITÉ : toujours montrer au moins un film du genre accepté si en stock
+        const genresAcceptes = client.accepte || [];
+        const filmsDuGenre = dispo.filter(f => genresAcceptes.includes(f.genre));
+        const filmsFavoris = dispo.filter(f => client.aime && client.aime.includes(f.id));
+
+        // Trier par score
         const trisBase = dispo.sort((a,b) => getFilmScore(client,b) - getFilmScore(client,a));
-        // Garder les favoris en tête, mélanger le reste
         const favoris  = trisBase.filter(f => client.aime && client.aime.includes(f.id));
         const neutres  = trisBase.filter(f => !(client.aime && client.aime.includes(f.id))
                                            && !(client.deteste && client.deteste.includes(f.id)));
@@ -3518,11 +3533,14 @@
           const j = Math.floor(Math.random()*(i+1));
           [neutres[i],neutres[j]] = [neutres[j],neutres[i]];
         }
-        // Micro-métrages en tête si dispo
+
+        // Garantir que les films du genre demandé apparaissent EN PREMIER
         const noires = noiresDispo ? dispo.filter(f => f.genre === 'noires') : [];
-        const autres2 = [...favoris, ...neutres].filter(f => f.genre !== 'noires').slice(0,7);
-        const tris = [...noires, ...autres2];
-        list.innerHTML = genererFilmsHTML(client, tris);
+        const garanti = [...filmsDuGenre, ...filmsFavoris].filter((f,i,a) => a.findIndex(x=>x.id===f.id)===i);
+        const reste   = [...favoris, ...neutres].filter(f => !garanti.find(g=>g.id===f.id) && f.genre !== 'noires').slice(0, Math.max(0, 7 - garanti.length));
+        const tris = [...noires, ...garanti, ...reste].filter((f,i,a) => a.findIndex(x=>x.id===f.id)===i);
+
+        list.innerHTML = genererFilmsHTML(client, tris.slice(0,8));
       }
 
       panel.classList.add('visible');
