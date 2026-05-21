@@ -4215,7 +4215,7 @@
           setTimeout(() => {
             setAvatarJour7('fred-montre', null);
             afficherNarration("Corey traîna ses Nike éventrées jusqu'au comptoir, s'affala sur le tabouret, toujours emmitouflé dans sa grosse doudoune bleu marine.", () => {
-              setAvatarJour7(null, 'corey-arrive');
+              setAvatarJour7(null, 'corey-arrivee');
               ajouterBulle('corey', "'Lu...");
               setTimeout(() => {
 
@@ -4243,12 +4243,9 @@
                       setAvatarJour7('fred-aspi', null);
                       ajouterBulle('fred', "...");
 
-                      // ── ACTE 4 — CLIENTS ────────────
+                      // ── ACTE 4 — PAS DE CLIENTS — le vol se passe avant l'ouverture
                       setTimeout(() => {
-                        generateClientQueue();
-                        clientIndex = 0; clientsServis = 0;
-                        const fb2 = document.querySelector('.action-btn.fermer');
-                        lancerProchainClientJour7();
+                        if (window._jour7_acte5) window._jour7_acte5();
                       }, 2000);
                     });
                     return;
