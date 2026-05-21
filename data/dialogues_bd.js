@@ -812,6 +812,68 @@ const DIALOGUES_BD = {
       {perso:'fred',  av:'tranquille',      texte:"C'est mieux."},
       {perso:'corey', av:'pensif',          texte:"Ouais. C'est mieux."},
     ],
+  ],
+
+  galaxy_quotidien: [
+    [
+      {perso:'fred',  av:'concentre',        texte:"Le concurrent était là ce matin."},
+      {perso:'corey', av:'conspirationiste', texte:"Il a noté quoi cette fois."},
+      {perso:'fred',  av:'tranquille',       texte:"Notre catalogue. Rayon par rayon."},
+      {perso:'corey', av:'pensif',           texte:"Galaxy Video. Franchise. Quarante magasins."},
+      {perso:'fred',  av:'sceptique',        texte:"On sait."},
+      {perso:'corey', av:'illumine',         texte:"Ils peuvent pas copier ce qu'on fait le soir."},
+      {perso:'fred',  av:'tranquille',       texte:"Non."},
+    ],
+    [
+      {perso:'corey', av:'conspirationiste', texte:"Galaxy Video a encore baissé ses prix."},
+      {perso:'fred',  av:'doute',            texte:"Je sais."},
+      {perso:'corey', av:'pensif',           texte:"C'est une tactique. Les grosses chaînes font ça."},
+      {perso:'fred',  av:'sceptique',        texte:"Ils cassent les prix jusqu'à ce que les indépendants ferment."},
+      {perso:'corey', av:'illumine',         texte:"On a des choses qu'ils ont pas."},
+      {perso:'fred',  av:'tranquille',       texte:"Pour l'instant."},
+      {perso:'corey', av:'high',             texte:"Pour toujours."},
+      {perso:'fred',  av:'pensif',           texte:"..."},
+    ],
+    [
+      {perso:'corey', av:'conspirationiste', texte:"Leur vitrine a changé cette nuit."},
+      {perso:'fred',  av:'attentif',         texte:"Ouais."},
+      {perso:'corey', av:'pensif',           texte:"Ils ont copié notre sélection action."},
+      {perso:'fred',  av:'sceptique',        texte:"Pas les raretés."},
+      {perso:'corey', av:'illumine',         texte:"Exactement. Pas les raretés. Pas les micro-métrages."},
+      {perso:'fred',  av:'tranquille',       texte:"C'est ça qui nous sauve."},
+      {perso:'corey', av:'high',             texte:"C'est ça qui nous sauve."},
+    ],
+  ],
+
+  pote_jackson: [
+    [
+      {perso:'corey', av:'illumine',         texte:"Jackson est passé cette nuit."},
+      {perso:'fred',  av:'tranquille',       texte:"Je sais."},
+      {perso:'corey', av:'conspirationiste', texte:"Il a dit que DiMaggio était content."},
+      {perso:'fred',  av:'doute',            texte:"Content de quoi."},
+      {perso:'corey', av:'pensif',           texte:"Il a pas précisé."},
+      {perso:'fred',  av:'sceptique',        texte:"C'est jamais bon signe quand DiMaggio est content."},
+      {perso:'corey', av:'high',             texte:"Ou c'est très bon signe."},
+      {perso:'fred',  av:'tranquille',       texte:"..."},
+    ],
+    [
+      {perso:'fred',  av:'tranquille',       texte:"Jackson était là cette nuit."},
+      {perso:'corey', av:'ecarquille',       texte:"J'ai entendu."},
+      {perso:'fred',  av:'doute',            texte:"Il a pris sa part."},
+      {perso:'corey', av:'pensif',           texte:"Le double ?"},
+      {perso:'fred',  av:'tranquille',       texte:"Non. Normal."},
+      {perso:'corey', av:'illumine',         texte:"C'est déjà ça."},
+      {perso:'fred',  av:'tranquille',       texte:"Pour l'instant."},
+    ],
+    [
+      {perso:'corey', av:'conspirationiste', texte:"Jackson m'a laissé un mot."},
+      {perso:'fred',  av:'attentif',         texte:"Il dit quoi."},
+      {perso:'corey', av:'illumine',         texte:"Écoulez la weed vite. DiMaggio envoie du nouveau stock."},
+      {perso:'fred',  av:'sceptique',        texte:"On a encore du stock."},
+      {perso:'corey', av:'pensif',           texte:"Je sais."},
+      {perso:'fred',  av:'tranquille',       texte:"..."},
+      {perso:'corey', av:'high',             texte:"Bonne journée quand même."},
+    ],
   ]
 };
 

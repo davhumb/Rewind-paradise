@@ -100,10 +100,10 @@ const ACHIEVEMENTS = {
   // ===================================================
 
   showNotif(ach) {
+    // Désactivé — le popup central dans game.html gère tout
+    return;
     const existing = document.getElementById('ach-notif');
     if (existing) existing.remove();
-    // Son achievement
-    if (typeof SOUNDS !== 'undefined') SOUNDS.achievement();
 
     // Injecter les keyframes si pas encore là
     if (!document.getElementById('ach-style')) {
