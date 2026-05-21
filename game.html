@@ -930,6 +930,16 @@
       ferris:'posters/corey-ferris.png', robocop:'posters/corey-robocop.png',
       mcqueen:'posters/corey-mcqueen.png', eastwood:'posters/corey-eastwood.png',
       nicholson:'posters/corey-nicholson.png', pacino:'posters/corey-pacino.png',
+      // Jour 7 — avatars spéciaux
+      arrive:'posters/corey-arrive.png',
+      compte:'posters/corey-compte.png',
+      gagne:'posters/corey-gagne.png',
+      jeu7:'posters/corey-jeu.png',
+      nain:'posters/corey-nain.png',
+      quoi:'posters/corey-quoi.png',
+      flippe7:'posters/corey-flippe.png',
+      sepause:'posters/corey-se-pause.png',
+      final7:'posters/corey-final.png',
     };
 
     const FRED_AVATARS = {
@@ -4193,7 +4203,11 @@
         if (nom) { nom.textContent='FRED'; nom.className='avatar-name fred-name'; }
       }
       if (coreyAv) {
-        document.getElementById('img-droite').src = 'posters/' + coreyAv + '.png';
+        const imgD = document.getElementById('img-droite');
+        if (imgD) {
+          imgD.src = 'posters/' + coreyAv + '.png';
+          imgD.onerror = function() { this.onerror=null; };
+        }
       }
     }
 
@@ -4215,7 +4229,7 @@
           setTimeout(() => {
             setAvatarJour7('fred-montre', null);
             afficherNarration("Corey traîna ses Nike éventrées jusqu'au comptoir, s'affala sur le tabouret, toujours emmitouflé dans sa grosse doudoune bleu marine.", () => {
-              setAvatarJour7(null, 'corey-arrivee');
+              setAvatarJour7(null, 'corey-arrive');
               ajouterBulle('corey', "'Lu...");
               setTimeout(() => {
 
