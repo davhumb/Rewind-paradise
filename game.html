@@ -4240,7 +4240,7 @@
         `;
         el.textContent = texte;
         middle.appendChild(el);
-        const duree = Math.min(texte.length * 52 + 900, 4500);
+        const duree = Math.min(texte.length * 85 + 1500, 7000);
         setTimeout(() => {
           el.style.transition = 'opacity 0.4s';
           el.style.opacity = '0';
@@ -4263,7 +4263,7 @@
 
       function bulle7(perso, texte, cb) {
         ajouterBulle(perso, texte);
-        const duree = Math.min(texte.length * 52 + 700, 3000);
+        const duree = Math.min(texte.length * 90 + 1200, 5500);
         setTimeout(cb || (()=>{}), duree);
       }
 
@@ -4338,11 +4338,125 @@
                                                 image7(null, 'corey-danse');
                                                 narration("Corey esquissa une danse de la victoire maladroite sur place, manquant de faire tomber une pile de fiches clients. Il se rassit. Fred secoua la tête, amusé, et attrapa le manche de l'aspirateur. Le perdant faisait le ménage.", () => {
 
-                                                  // FIN PREMIÈRE MOITIÉ
-                                                  // Le reste sera codé après validation
-                                                  viderBulles();
-                                                  ajouterBulle('fred', "...");
+                                                  // ── DEUXIÈME MOITIÉ ─────────────────────
 
+                                                  // BLOC 15 — Fred aspire
+                                                  image7(null, 'corey-fatigue');
+                                                  image7('aspiro', null);
+                                                  narration("Il se rassit. Fred secoua la tête, amusé, et attrapa le manche de l'aspirateur. Le perdant faisait le ménage.", () => {
+
+                                                    // BLOC 16 — Le bruit
+                                                    image7('clang', null);
+                                                    narration("Il nettoyait l'allée des drames quand un bruit sourd retentit à l'arrière. Un clong mat, étouffé. Il coupa l'aspirateur. Le silence qui suivit était presque oppressant.", () => {
+                                                      bulle7('fred', "T'as entendu ça ?", () => {
+
+                                                        // BLOC 17 — Corey sourcil / Fred réserve
+                                                        image7(null, 'corey-quoi');
+                                                        narration("Corey leva un sourcil. Fred s'approcha de la réserve, poussa doucement la porte. La lumière blafarde des néons peinait à éclairer la petite pièce de stockage. Personne.", () => {
+                                                          image7('fred-verifie', null);
+
+                                                          // BLOC 18 — La découverte
+                                                          setTimeout(() => {
+                                                            image7('fred-decouvre', null);
+                                                            narration("Rien ne semblait déplacé, jusqu'à ce que son regard accroche l'étagère du fond. Là où ils planquaient leur boîte. La vieille boîte en fer blanc cabossée qui contenait leur herbe. Et l'argent pour Jackson. Elle avait disparu.", () => {
+
+                                                              // BLOC 19 — Boite disparue
+                                                              image7('boite', null);
+                                                              setTimeout(() => {
+                                                                image7('fred-rale', 'corey-flippe');
+                                                                bulle7('fred', "Putain.", () => {
+                                                                  narration("Il fouilla frénétiquement les autres étagères. Rien. Le sol ? Vide. L'étagère portait encore la trace poussiéreuse de la boîte disparue. Il se retourna brusquement. Corey était dans l'embrasure de la porte, l'air confus.", () => {
+
+                                                                    // BLOC 20 — Dialogues vol
+                                                                    image7('fred-rale2', 'corey-peteu');
+                                                                    bulle7('corey', "Quoi ? Qu'est-ce qu'il y a ?", () => {
+                                                                      bulle7('fred', "La beuh. Et le fric. Plus rien.", () => {
+                                                                        bulle7('corey', "Quoi ?! Combien y'avait ?", () => {
+                                                                          bulle7('fred', "Tout le fric de la semaine. Deux cents balles. Peut-être plus.", () => {
+                                                                            bulle7('corey', "Merde… Jackson passe demain…", () => {
+
+                                                                              // BLOC 21 — Corey fouille
+                                                                              image7('fred-rale3', 'corey-fouille');
+                                                                              narration("Corey retourna toute la réserve comme un chien de chasse paniqué.", () => {
+                                                                                bulle7('fred', "La boîte est plus là, Corey. Tu peux fouiller tout le vidéoclub, ça changera rien.", () => {
+
+                                                                                  // BLOC 22 — Silence / qui ?
+                                                                                  image7('fred-rale4', 'ouin');
+                                                                                  narration("Un silence s'installa.", () => {
+                                                                                    bulle7('fred', "Et t'as rien vu ?", () => {
+                                                                                      bulle7('corey', "Ben non.", () => {
+                                                                                        bulle7('fred', "Si c'est pas toi, c'est qui ?", () => {
+
+                                                                                          // BLOC 23 — Menton / tabouret
+                                                                                          image7('fred-yeux', 'corey-menton');
+                                                                                          narration("Corey gratta nerveusement son menton, les yeux perdus vers l'entrée.", () => {
+                                                                                            bulle7('corey', "Le mec a dû passer devant moi, non ? J'étais sur le tabouret.", () => {
+                                                                                              bulle7('fred', "Exactement. Il est passé juste devant toi et tu l'as pas vu ? Tu pionçais encore ou quoi ?", () => {
+
+                                                                                                // BLOC 24 — Théorie du nain
+                                                                                                image7('fred-theorie', 'corey-theorie');
+                                                                                                narration("Corey fronça les sourcils, concentré comme s'il passait un examen. Puis ses yeux s'agrandirent.", () => {
+                                                                                                  bulle7('corey', "Attends… Et si… et si c'était un nain ?", () => {
+                                                                                                    bulle7('fred', "Pardon ?", () => {
+
+                                                                                                      // BLOC 25 — Pipo
+                                                                                                      image7('fred-what', 'corey-pipo');
+                                                                                                      bulle7('corey', "Un nain, mec ! Hyper petit. Il aurait rampé. On l'aurait pas vu ! C'est logique, non ?", () => {
+                                                                                                        narration("Corey semblait presque fier de sa déduction. Fred passa une main sur son visage.", () => {
+                                                                                                          bulle7('fred', "Et pourquoi il ramperait s'il est déjà petit ?", () => {
+                                                                                                            image7(null, 'corey-pipo2');
+                                                                                                            bulle7('corey', "Ben pour être encore plus discret, non ?", () => {
+
+                                                                                                              // BLOC 26 — FINAL
+                                                                                                              image7('fred-furax', 'corey-decu');
+                                                                                                              bulle7('fred', "On n'a plus un rond, Jackson va nous éclater, et toi tu me parles de nains ?", () => {
+                                                                                                                narration("Corey haussa les épaules, presque vexé que son hypothèse ne soit pas prise au sérieux. Fred soupira longuement. Il ferma les yeux.", () => {
+                                                                                                                  image7('fred-final', 'corey-final');
+                                                                                                                  viderBulles();
+                                                                                                                  setTimeout(() => {
+                                                                                                                    bulle7('fred', "Putain, Corey… Jackson va péter un câble. On est morts.", () => {
+                                                                                                                      bulle7('corey', "...", () => {
+                                                                                                                        // FADE TO BLACK → ending
+                                                                                                                        setTimeout(() => {
+                                                                                                                          document.body.style.transition = 'opacity 2.5s';
+                                                                                                                          document.body.style.opacity = '0';
+                                                                                                                          setTimeout(() => { window.location.href = 'ending.html'; }, 2500);
+                                                                                                                        }, 2000);
+                                                                                                                      });
+                                                                                                                    });
+                                                                                                                  }, 1000);
+                                                                                                                });
+                                                                                                              });
+                                                                                                            });
+                                                                                                          });
+                                                                                                        });
+                                                                                                      });
+                                                                                                    });
+                                                                                                  });
+                                                                                                });
+                                                                                              });
+                                                                                            });
+                                                                                          });
+                                                                                        });
+                                                                                      });
+                                                                                    });
+                                                                                  });
+                                                                                });
+                                                                              });
+                                                                            });
+                                                                          });
+                                                                        });
+                                                                      });
+                                                                    });
+                                                                  });
+                                                                });
+                                                              }, 2500);
+                                                            });
+                                                          }, 1500);
+                                                        });
+                                                      });
+                                                    });
+                                                  });
                                                 });
                                               });
                                             });
