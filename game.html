@@ -4217,27 +4217,20 @@
       const fb = document.querySelector('.action-btn.fermer');
       if (fb) fb.style.display = 'none';
 
-      // ── Utilitaires ──────────────────────────────────────
+      // Cacher Corey jusqu'à son arrivée
+      const persosBas = document.getElementById('perso-bas');
+      if (persosBas) persosBas.style.visibility = 'hidden';
+
+      // ── Utilitaires ──────────────────────────────────
 
       function narration(texte, cb) {
         const middle = document.querySelector('.scene-middle');
         if (!middle) { if(cb)cb(); return; }
         const prev = middle.querySelector('.narration-bloc');
-        if (prev) { prev.style.opacity='0'; setTimeout(()=>prev.remove(), 300); }
+        if (prev) { prev.style.opacity='0'; setTimeout(()=>{ if(prev.parentNode) prev.remove(); },300); }
         const el = document.createElement('div');
         el.className = 'narration-bloc';
-        el.style.cssText = `
-          position:absolute;left:50%;top:50%;
-          transform:translate(-50%,-50%);
-          width:92%;max-width:340px;
-          font-family:'Courier New',monospace;
-          font-size:11px;line-height:1.9;
-          color:#e8d5b0;
-          text-align:center;
-          padding:12px 14px;
-          animation:narrationFade 0.5s ease;
-          z-index:10;letter-spacing:-0.2px;
-        `;
+        el.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:92%;max-width:340px;font-family:"Courier New",monospace;font-size:11px;line-height:1.9;color:#e8d5b0;text-align:center;padding:12px 14px;animation:narrationFade 0.5s ease;z-index:10;letter-spacing:-0.2px;';
         el.textContent = texte;
         middle.appendChild(el);
         const duree = Math.min(texte.length * 85 + 1500, 7000);
@@ -4248,199 +4241,144 @@
         }, duree);
       }
 
-      function image7(fredAv, coreyAv) {
+      function imageBoite() {
+        const middle = document.querySelector('.scene-middle');
+        if (!middle) return;
+        const prev = middle.querySelector('.narration-bloc');
+        if (prev) { prev.style.opacity='0'; setTimeout(()=>{ if(prev.parentNode) prev.remove(); },300); }
+        const img = document.createElement('img');
+        img.src = 'posters/boite.png';
+        img.className = 'narration-bloc';
+        img.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88%;max-width:300px;border-radius:8px;z-index:10;animation:narrationFade 0.5s ease;';
+        middle.appendChild(img);
+        setTimeout(() => {
+          img.style.transition = 'opacity 0.4s';
+          img.style.opacity = '0';
+          setTimeout(() => { if(img.parentNode) img.remove(); }, 400);
+        }, 3500);
+      }
+
+      function img7(fredAv, coreyAv) {
         if (fredAv) {
-          const img = document.getElementById('img-gauche');
-          if (img) { img.src='posters/'+fredAv+'.png'; img.style.opacity='1'; img.className='avatar-img fred-style'; img.onerror=function(){this.onerror=null;}; }
-          const nom = document.getElementById('nom-gauche');
-          if (nom) { nom.textContent='FRED'; nom.className='avatar-name fred-name'; }
+          const i = document.getElementById('img-gauche');
+          if (i) { i.src='posters/'+fredAv+'.png'; i.style.opacity='1'; i.className='avatar-img fred-style'; i.onerror=function(){this.onerror=null;}; }
+          const n = document.getElementById('nom-gauche');
+          if (n) { n.textContent='FRED'; n.className='avatar-name fred-name'; }
         }
         if (coreyAv) {
-          const img = document.getElementById('img-droite');
-          if (img) { img.src='posters/'+coreyAv+'.png'; img.onerror=function(){this.onerror=null;}; }
+          const i = document.getElementById('img-droite');
+          if (i) { i.src='posters/'+coreyAv+'.png'; i.onerror=function(){this.onerror=null;}; }
         }
       }
 
-      function bulle7(perso, texte, cb) {
+      // bulle rapide — vide après délai
+      function b7(perso, texte, cb) {
         ajouterBulle(perso, texte);
-        const duree = Math.min(texte.length * 90 + 1200, 5500);
-        setTimeout(cb || (()=>{}), duree);
+        const duree = Math.min(texte.length * 55 + 600, 2800);
+        setTimeout(() => {
+          // Vider la bulle de ce perso
+          if (perso === 'corey') {
+            const bb = document.getElementById('bulle-bas');
+            if (bb) bb.textContent = ' ';
+          } else {
+            const bh = document.getElementById('bulle-haut');
+            if (bh) bh.textContent = ' ';
+          }
+          if (cb) cb();
+        }, duree);
       }
 
-      // ── SÉQUENCE ─────────────────────────────────────────
+      function pause(ms, cb) { setTimeout(cb, ms); }
 
-      // BLOC 1 — Rideau
-      image7('fred-montre', null);
-      narration("Le rideau de fer grinça comme une chaîne de vélo dans un mixeur en remontant, un vacarme métallique, brutal, qui annonçait l'ouverture de la boutique. CLAC. Le rideau se bloqua en position haute.", () => {
+      // ── SÉQUENCE ─────────────────────────────────────
 
-        // BLOC 2 — Néons
-        image7('neon', null);
-        narration("Il actionna les interrupteurs. Les néons crachèrent une lumière blanche et glaciale, transformant la moquette grise en un bleu électrique presque agressif.", () => {
+      // BLOC 1+2 — Rideau + Néons
+      img7('rideau', null);
+      narration("Le rideau de fer grinça comme une chaîne de vélo dans un mixeur. CLAC. Il actionna les interrupteurs. Les néons crachèrent une lumière blanche et glaciale, transformant la moquette grise en un bleu électrique presque agressif.", () => {
 
-          // BLOC 3 — Compaq
-          image7('compaq', null);
-          narration("Il lança le Compaq. Le ventilateur se mit à ronronner comme un chat asthmatique.", () => {
+        // BLOC 3b — Fred range + bambi
+        img7('neon', null);
+        pause(600, () => {
+          img7('fred-range', null);
+          narration("Puis commença sa ronde : remettre les boîtiers VHS à leur place. Un Russ Meyer n'avait rien à foutre dans le rayon enfants.", () => {
 
-            // BLOC 3b — Fred range
-            image7('fred-range', null);
-            narration("Puis commença sa ronde : remettre les boîtiers VHS à leur place.", () => {
+            // BLOC 6 — Fred montre + Corey arrive
+            img7('bambi', null);
+            pause(800, () => {
+              img7('fred-montre', null);
+              narration("Dix heures trente. L'horloge du comptoir tournait sans Corey. Pas une surprise.", () => {
 
-              // BLOC 4 — Bambi
-              image7('bambi', null);
-              narration("Un Russ Meyer n'avait rien à foutre dans le rayon enfants – tout comme Bambi dans le rayon gore. (Même si, songea Fred en souriant, c'était sans doute moins grave dans ce sens-là.)", () => {
+                // Corey apparaît
+                if (persosBas) persosBas.style.visibility = 'visible';
+                img7(null, 'corey-entree');
+                pause(400, () => {
+                  b7('corey', "'Lu…", () => {
+                    img7(null, 'corey-se-pose');
+                    narration("Corey traîna ses Nike éventrées jusqu'au comptoir, s'affala sur le tabouret, emmitouflé dans sa grosse doudoune bleu marine.", () => {
 
-                // BLOC 5 — Labyrinthe
-                image7('labyrinthe', null);
-                narration("Le vidéoclub était un labyrinthe d'étagères ployant sous des milliers de cassettes. Des jaquettes criardes, tapageuses, promettant du gore cradingue, du sexy fluo, du muscle huilé ou du kung-fu mal doublé. Un monde figé dans le plastique.", () => {
+                      // BLOC 9 — Aspiro + Bruit
+                      img7('aspiro', null);
+                      narration("Le perdant faisait le ménage. Il nettoyait l'allée des drames.", () => {
+                        img7('clang', null);
+                        narration("Un bruit sourd retentit à l'arrière. Un clong mat, étouffé. Il coupa l'aspirateur. Le silence qui suivit était presque oppressant.", () => {
+                          img7('fred-bruit', null);
+                          b7('fred', "T'as entendu ça ?", () => {
 
-                  // BLOC 6 — Montre
-                  image7('fred-montre', null);
-                  narration("Dix heures trente. L'horloge du comptoir tournait sans Corey. Pas une surprise.", () => {
+                            // BLOC 10 — Réserve
+                            img7(null, 'corey-quoi');
+                            pause(800, () => {
+                              img7('fred-verifie', null);
+                              narration("Corey leva un sourcil. Fred s'approcha de la réserve, poussa doucement la porte. La lumière blafarde des néons peinait à éclairer la pièce. Personne.", () => {
 
-                    // BLOC 7 — Corey arrive
-                    image7(null, 'corey-entree');
-                    bulle7('corey', "'Lu…", () => {
-                      image7(null, 'corey-se-pose');
-                      narration("Corey traîna ses Nike éventrées jusqu'au comptoir, s'affala sur le tabouret, toujours emmitouflé dans sa grosse doudoune bleu marine.", () => {
+                                // BLOC 11 — La boîte
+                                img7('fred-decouvre', null);
+                                narration("Son regard accroche l'étagère du fond. La vieille boîte en fer blanc. Elle avait disparu.", () => {
+                                  imageBoite();
+                                  pause(1200, () => {
+                                    img7('fred-rale', null);
+                                    b7('fred', "Putain.", () => {
 
-                        // BLOC 8 — Rembobinage
-                        image7(null, 'corey-rewind');
-                        narration("Fred rangeait les films. Corey, lui, commença à rembobiner les cassettes de la veille, pestant contre les clients qui ignoraient le panneau : MERCI DE REMBOBINER LES FILMS ! (50 cents de pénalité !)", () => {
+                                      // BLOC 12 — Le vol
+                                      narration("Corey était dans l'embrasure de la porte, l'air confus.", () => {
+                                        img7(null, 'corey-flippe');
+                                        b7('corey', "Quoi ? Qu'est-ce qu'il y a ?", () => {
+                                          b7('fred', "La beuh. Et le fric. Plus rien.", () => {
+                                            b7('corey', "Quoi ?! Combien y'avait ?", () => {
+                                              img7('fred-rale2', 'corey-peteu');
+                                              b7('fred', "Tout le fric de la semaine. Deux cents balles. Peut-être plus.", () => {
+                                                b7('corey', "Merde… Jackson passe demain…", () => {
 
-                          // BLOC 9 — Fred lance le jeu
-                          image7('fred-jeu-acteurs', null);
-                          bulle7('fred', "Danny Glover et Kiefer Sutherland !", () => {
+                                                  // BLOC 15 — Menton + Nain
+                                                  img7('fred-yeux', 'corey-menton');
+                                                  b7('corey', "Le mec a dû passer devant moi, non ? J'étais sur le tabouret.", () => {
+                                                    b7('fred', "Exactement. Il est passé juste devant toi et tu l'as pas vu ? Tu pionçais encore ou quoi ?", () => {
+                                                      img7('fred-theorie', 'corey-theorie');
+                                                      narration("Corey fronça les sourcils, concentré comme s'il passait un examen. Puis ses yeux s'agrandirent.", () => {
+                                                        b7('corey', "Attends… Et si… et si c'était un nain ?", () => {
+                                                          b7('fred', "Pardon ?", () => {
 
-                            // BLOC 10 — Corey plus alerte
-                            image7(null, 'corey-defi');
-                            bulle7('corey', "Kiefer et ?", () => {
-                              bulle7('fred', "Et Danny Glover. T'as trois minutes !", () => {
-                                bulle7('corey', "Sérieux ?", () => {
+                                                            // BLOC 16 — Pipo
+                                                            img7('fred-what', 'corey-pipo');
+                                                            b7('corey', "Un nain, mec ! Hyper petit. Il aurait rampé. On l'aurait pas vu ! C'est logique, non ?", () => {
+                                                              narration("Corey semblait presque fier de sa déduction. Fred passa une main sur son visage.", () => {
+                                                                b7('fred', "Et pourquoi il ramperait s'il est déjà petit ?", () => {
+                                                                  img7(null, 'corey-pipo2');
+                                                                  b7('corey', "Ben pour être encore plus discret, non ?", () => {
 
-                                  // BLOC 11 — Compte à rebours
-                                  image7(null, 'corey-cogite');
-                                  bulle7('fred', "Deux minutes !", () => {
-                                    bulle7('corey', "T'abuses…", () => {
-                                      bulle7('fred', "Une minute !", () => {
-
-                                        // BLOC 12 — Je l'ai !
-                                        image7(null, 'corey-gagne');
-                                        bulle7('corey', "Je l'ai !", () => {
-
-                                          // BLOC 13 — Fred revient
-                                          image7('fred-fier-de-corey', null);
-                                          bulle7('fred', "Je t'écoute.", () => {
-
-                                            // BLOC 14 — La chaîne + danse
-                                            image7(null, 'corey-compte');
-                                            bulle7('corey', "Glover et Harrison Ford dans Witness. Ford et Rutger Hauer dans Blade Runner. Hauer et Broderick dans Ladyhawke. Broderick et Charlie Sheen dans Ferris Bueller. Sheen et Sutherland dans… Young Guns !", () => {
-                                              bulle7('fred', "Bien joué.", () => {
-                                                image7(null, 'corey-danse');
-                                                narration("Corey esquissa une danse de la victoire maladroite sur place, manquant de faire tomber une pile de fiches clients. Il se rassit. Fred secoua la tête, amusé, et attrapa le manche de l'aspirateur. Le perdant faisait le ménage.", () => {
-
-                                                  // ── DEUXIÈME MOITIÉ ─────────────────────
-
-                                                  // BLOC 15 — Fred aspire
-                                                  image7(null, 'corey-fatigue');
-                                                  image7('aspiro', null);
-                                                  narration("Il se rassit. Fred secoua la tête, amusé, et attrapa le manche de l'aspirateur. Le perdant faisait le ménage.", () => {
-
-                                                    // BLOC 16 — Le bruit
-                                                    image7('clang', null);
-                                                    narration("Il nettoyait l'allée des drames quand un bruit sourd retentit à l'arrière. Un clong mat, étouffé. Il coupa l'aspirateur. Le silence qui suivit était presque oppressant.", () => {
-                                                      bulle7('fred', "T'as entendu ça ?", () => {
-
-                                                        // BLOC 17 — Corey sourcil / Fred réserve
-                                                        image7(null, 'corey-quoi');
-                                                        narration("Corey leva un sourcil. Fred s'approcha de la réserve, poussa doucement la porte. La lumière blafarde des néons peinait à éclairer la petite pièce de stockage. Personne.", () => {
-                                                          image7('fred-verifie', null);
-
-                                                          // BLOC 18 — La découverte
-                                                          setTimeout(() => {
-                                                            image7('fred-decouvre', null);
-                                                            narration("Rien ne semblait déplacé, jusqu'à ce que son regard accroche l'étagère du fond. Là où ils planquaient leur boîte. La vieille boîte en fer blanc cabossée qui contenait leur herbe. Et l'argent pour Jackson. Elle avait disparu.", () => {
-
-                                                              // BLOC 19 — Boite disparue
-                                                              image7('boite', null);
-                                                              setTimeout(() => {
-                                                                image7('fred-rale', 'corey-flippe');
-                                                                bulle7('fred', "Putain.", () => {
-                                                                  narration("Il fouilla frénétiquement les autres étagères. Rien. Le sol ? Vide. L'étagère portait encore la trace poussiéreuse de la boîte disparue. Il se retourna brusquement. Corey était dans l'embrasure de la porte, l'air confus.", () => {
-
-                                                                    // BLOC 20 — Dialogues vol
-                                                                    image7('fred-rale2', 'corey-peteu');
-                                                                    bulle7('corey', "Quoi ? Qu'est-ce qu'il y a ?", () => {
-                                                                      bulle7('fred', "La beuh. Et le fric. Plus rien.", () => {
-                                                                        bulle7('corey', "Quoi ?! Combien y'avait ?", () => {
-                                                                          bulle7('fred', "Tout le fric de la semaine. Deux cents balles. Peut-être plus.", () => {
-                                                                            bulle7('corey', "Merde… Jackson passe demain…", () => {
-
-                                                                              // BLOC 21 — Corey fouille
-                                                                              image7('fred-rale3', 'corey-fouille');
-                                                                              narration("Corey retourna toute la réserve comme un chien de chasse paniqué.", () => {
-                                                                                bulle7('fred', "La boîte est plus là, Corey. Tu peux fouiller tout le vidéoclub, ça changera rien.", () => {
-
-                                                                                  // BLOC 22 — Silence / qui ?
-                                                                                  image7('fred-rale4', 'ouin');
-                                                                                  narration("Un silence s'installa.", () => {
-                                                                                    bulle7('fred', "Et t'as rien vu ?", () => {
-                                                                                      bulle7('corey', "Ben non.", () => {
-                                                                                        bulle7('fred', "Si c'est pas toi, c'est qui ?", () => {
-
-                                                                                          // BLOC 23 — Menton / tabouret
-                                                                                          image7('fred-yeux', 'corey-menton');
-                                                                                          narration("Corey gratta nerveusement son menton, les yeux perdus vers l'entrée.", () => {
-                                                                                            bulle7('corey', "Le mec a dû passer devant moi, non ? J'étais sur le tabouret.", () => {
-                                                                                              bulle7('fred', "Exactement. Il est passé juste devant toi et tu l'as pas vu ? Tu pionçais encore ou quoi ?", () => {
-
-                                                                                                // BLOC 24 — Théorie du nain
-                                                                                                image7('fred-theorie', 'corey-theorie');
-                                                                                                narration("Corey fronça les sourcils, concentré comme s'il passait un examen. Puis ses yeux s'agrandirent.", () => {
-                                                                                                  bulle7('corey', "Attends… Et si… et si c'était un nain ?", () => {
-                                                                                                    bulle7('fred', "Pardon ?", () => {
-
-                                                                                                      // BLOC 25 — Pipo
-                                                                                                      image7('fred-what', 'corey-pipo');
-                                                                                                      bulle7('corey', "Un nain, mec ! Hyper petit. Il aurait rampé. On l'aurait pas vu ! C'est logique, non ?", () => {
-                                                                                                        narration("Corey semblait presque fier de sa déduction. Fred passa une main sur son visage.", () => {
-                                                                                                          bulle7('fred', "Et pourquoi il ramperait s'il est déjà petit ?", () => {
-                                                                                                            image7(null, 'corey-pipo2');
-                                                                                                            bulle7('corey', "Ben pour être encore plus discret, non ?", () => {
-
-                                                                                                              // BLOC 26 — FINAL
-                                                                                                              image7('fred-furax', 'corey-decu');
-                                                                                                              bulle7('fred', "On n'a plus un rond, Jackson va nous éclater, et toi tu me parles de nains ?", () => {
-                                                                                                                narration("Corey haussa les épaules, presque vexé que son hypothèse ne soit pas prise au sérieux. Fred soupira longuement. Il ferma les yeux.", () => {
-                                                                                                                  image7('fred-final', 'corey-final');
-                                                                                                                  viderBulles();
-                                                                                                                  setTimeout(() => {
-                                                                                                                    bulle7('fred', "Putain, Corey… Jackson va péter un câble. On est morts.", () => {
-                                                                                                                      bulle7('corey', "...", () => {
-                                                                                                                        // FADE TO BLACK → ending
-                                                                                                                        setTimeout(() => {
-                                                                                                                          document.body.style.transition = 'opacity 2.5s';
-                                                                                                                          document.body.style.opacity = '0';
-                                                                                                                          setTimeout(() => { window.location.href = 'ending.html'; }, 2500);
-                                                                                                                        }, 2000);
-                                                                                                                      });
-                                                                                                                    });
-                                                                                                                  }, 1000);
-                                                                                                                });
-                                                                                                              });
-                                                                                                            });
-                                                                                                          });
-                                                                                                        });
-                                                                                                      });
-                                                                                                    });
-                                                                                                  });
-                                                                                                });
-                                                                                              });
-                                                                                            });
-                                                                                          });
-                                                                                        });
-                                                                                      });
-                                                                                    });
-                                                                                  });
+                                                                    // BLOC 17 — Final
+                                                                    img7('fred-furax', 'corey-decu');
+                                                                    b7('fred', "On n'a plus un rond, Jackson va nous éclater, et toi tu me parles de nains ?", () => {
+                                                                      narration("Corey haussa les épaules, presque vexé. Fred soupira longuement. Il ferma les yeux.", () => {
+                                                                        img7('fred-final', 'corey-final');
+                                                                        viderBulles();
+                                                                        pause(800, () => {
+                                                                          b7('fred', "Putain, Corey… Jackson va péter un câble. On est morts.", () => {
+                                                                            pause(1500, () => {
+                                                                              b7('corey', "...", () => {
+                                                                                pause(2000, () => {
+                                                                                  document.body.style.transition = 'opacity 2.5s';
+                                                                                  document.body.style.opacity = '0';
+                                                                                  setTimeout(() => { window.location.href = 'ending.html'; }, 2500);
                                                                                 });
                                                                               });
                                                                             });
@@ -4450,9 +4388,9 @@
                                                                     });
                                                                   });
                                                                 });
-                                                              }, 2500);
+                                                              });
                                                             });
-                                                          }, 1500);
+                                                          });
                                                         });
                                                       });
                                                     });
