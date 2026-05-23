@@ -4219,6 +4219,17 @@
       const persosBas = document.getElementById('perso-bas');
       if (persosBas) persosBas.style.visibility = 'hidden';
 
+      // Musique jour 7
+      try {
+        if (musicGame) { musicGame.pause(); musicGame.volume = 0; }
+        if (musicCanopi) { musicCanopi.pause(); musicCanopi.volume = 0; }
+        const j7music = new Audio('music/joursept.mp3');
+        j7music.loop = true;
+        j7music.volume = 0.3;
+        j7music.play().catch(()=>{});
+        window._j7music = j7music;
+      } catch(e) {}
+
       function narration(texte, cb) {
         const mid = document.querySelector('.scene-middle');
         if (!mid) { if(cb)cb(); return; }
@@ -4314,7 +4325,9 @@
       w(1500, function() {
       b7('corey', "...", function() {
       w(2000, function() {
-        try { const s=new Audio('music/skip.mp3'); s.volume=0.5; s.play().catch(()=>{}); } catch(e) {}
+        // Flag pour ending — jouer skip.mp3
+        localStorage.setItem('rewind_play_ending_music', '1');
+        if (window._j7music) { window._j7music.pause(); }
         document.body.style.transition='opacity 2.5s';
         document.body.style.opacity='0';
         setTimeout(()=>{ window.location.href='ending.html'; }, 2500);
