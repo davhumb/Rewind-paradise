@@ -4328,77 +4328,11 @@
       w(1500, function() {
       b7('corey', "...", function() {
       w(2000, function() {
-        // Fade to black puis afficher l'ending inline — pas de redirect
-        document.body.style.transition='opacity 2s';
+        // Fade to black → ending.html
+        if (window._j7music) { try { window._j7music.pause(); } catch(e) {} }
+        document.body.style.transition='opacity 2.5s';
         document.body.style.opacity='0';
-        setTimeout(() => {
-          // Crossfade joursept → skip
-          if (window._j7music) {
-            let v = window._j7music.volume;
-            const fo = setInterval(() => {
-              v = Math.max(0, v - 0.05);
-              window._j7music.volume = v;
-              if (v <= 0) { clearInterval(fo); window._j7music.pause(); }
-            }, 80);
-          }
-          // Lancer skip.mp3 — on est encore dans la même page, autoplay OK
-          try {
-            const skip = new Audio('music/skip.mp3');
-            skip.loop = true; skip.volume = 0;
-            skip.play().then(() => {
-              let sv = 0;
-              const fi = setInterval(() => {
-                sv = Math.min(0.4, sv + 0.02);
-                skip.volume = sv;
-                if (sv >= 0.4) clearInterval(fi);
-              }, 80);
-            }).catch(()=>{});
-          } catch(e) {}
-
-          // Afficher l'overlay ending
-          document.body.innerHTML = `
-            <div style="
-              position:fixed;inset:0;
-              background:#000;
-              display:flex;flex-direction:column;
-              align-items:center;justify-content:center;
-              font-family:'Courier New',monospace;
-              padding:32px;
-              opacity:0;transition:opacity 1.5s;
-            " id="ending-overlay">
-              <img src="posters/rewind_paradise.png" style="width:180px;max-width:70vw;margin-bottom:32px;filter:drop-shadow(0 0 20px #00b4ff60);" onerror="this.style.display='none'">
-              <div style="font-size:9px;color:#00b4ff;letter-spacing:4px;margin-bottom:12px;text-align:center;">REWIND PARADISE</div>
-              <div style="font-size:9px;color:#555577;letter-spacing:3px;margin-bottom:40px;text-align:center;">A CELLULOÏD SCALPEL PRODUCTION</div>
-              <div style="height:1px;background:linear-gradient(90deg,transparent,#00b4ff40,transparent);width:200px;margin-bottom:40px;"></div>
-              <div style="font-size:11px;color:#9999cc;font-style:italic;text-align:center;line-height:2;max-width:300px;margin-bottom:48px;">
-                La suite dans le roman<br>
-                <strong style="color:#ffffff;font-style:normal;letter-spacing:1px;">MICRO-MÉTRAGE</strong>
-              </div>
-              <a href="https://www.amazon.fr" style="
-                display:block;
-                background:transparent;
-                border:1px solid #00b4ff60;
-                border-radius:6px;
-                padding:14px 28px;
-                font-size:10px;color:#00b4ff;
-                letter-spacing:3px;
-                text-decoration:none;
-                text-align:center;
-                margin-bottom:20px;
-              ">▶ DÉCOUVRIR LE ROMAN</a>
-              <div onclick="localStorage.clear();window.location.href='landing.html';" style="
-                font-size:9px;color:#333355;
-                cursor:pointer;letter-spacing:2px;
-                margin-top:16px;
-              ">◀ REMBOBINER</div>
-            </div>
-          `;
-          document.body.style.opacity = '1';
-          setTimeout(() => {
-            const ov = document.getElementById('ending-overlay');
-            if (ov) ov.style.opacity = '1';
-          }, 100);
-        }, 2000);
+        setTimeout(()=>{ window.location.href='ending.html'; }, 2500);
       });});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});});
     }
 
