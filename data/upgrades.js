@@ -18,7 +18,7 @@ const UPGRADES = {
       titre: 'DEUXIÈME MAGNÉTO',
       desc: 'Servir deux clients en même temps. +1 slot dans la file.',
       categorie: 'MATÉRIEL',
-      prix: 90,
+      prix: 45,
       prerequis: null,
       effet: (gs) => {
         gs.slots_clients = (gs.slots_clients || 5) + 1;
@@ -34,7 +34,7 @@ const UPGRADES = {
       titre: 'TÉLÉ COULEUR 28"',
       desc: 'Attire plus de clients. Réputation +1 étoile permanente.',
       categorie: 'MATÉRIEL',
-      prix: 70,
+      prix: 35,
       prerequis: null,
       effet: (gs) => {
         gs.reputation = Math.min(5, gs.reputation + 1);
@@ -50,7 +50,7 @@ const UPGRADES = {
       titre: 'SYSTÈME DE SÉCURITÉ',
       desc: 'Ralentit la montée de Légalité. Canopi hésite plus.',
       categorie: 'MATÉRIEL',
-      prix: 120,
+      prix: 60,
       prerequis: null,
       effet: (gs) => {
         gs.securite_active = true;
@@ -67,7 +67,7 @@ const UPGRADES = {
       titre: 'ABONNEMENT FOURNISSEUR',
       desc: '-25% sur toutes les commandes de stock.',
       categorie: 'STOCK',
-      prix: 110,
+      prix: 55,
       prerequis: null,
       effet: (gs) => {
         gs.remise_stock = 0.25;
@@ -82,7 +82,7 @@ const UPGRADES = {
       titre: 'VITRINE RARETÉS',
       desc: 'Le Cinéphile passe 2x plus souvent. Stock raretés max +2.',
       categorie: 'STOCK',
-      prix: 100,
+      prix: 50,
       prerequis: 'meilleure_tele',
       effet: (gs) => {
         gs.vitrine_rarites = true;
@@ -100,7 +100,7 @@ const UPGRADES = {
       titre: 'RÉSERVE SECRÈTE',
       desc: 'Capacité cassettes noires +5. Zone de stockage dissimulée.',
       categorie: 'STOCK',
-      prix: 130,
+      prix: 65,
       prerequis: null,
       effet: (gs) => {
         gs.noires_max = (gs.noires_max || 3) + 5;
@@ -120,7 +120,7 @@ const UPGRADES = {
       titre: 'MAGNÉTO DE MONTAGE PRO',
       desc: '+1 à toutes les notes Cutter. La coupe est plus précise.',
       categorie: 'RÉSERVE',
-      prix: 170,
+      prix: 85,
       prerequis: 'deuxieme_magneto',
       effet: (gs) => {
         gs.bonus_note_cutter = (gs.bonus_note_cutter || 0) + 1;
@@ -138,7 +138,7 @@ const UPGRADES = {
       titre: 'INSONORISATION RÉSERVE',
       desc: 'Les incidents du soir n\'affectent plus la Légalité.',
       categorie: 'RÉSERVE',
-      prix: 140,
+      prix: 70,
       prerequis: null,
       effet: (gs) => {
         gs.insonorisation = true;

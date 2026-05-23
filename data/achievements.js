@@ -11,8 +11,8 @@ const ACHIEVEMENTS = {
     // CINÉMA — RÉPLIQUES CULTES (15)
     // ===================================================
     { id:'you_talkin',    icon:'🔫', titre:"YOU TALKIN' TO ME ?",         desc:"Corey fait le DeNiro 2 fois.",                   categorie:'CINÉMA', secret:false, check:(gs)=>(gs.corey_deniro_count||0)>=2 },
-    { id:'ill_be_back',   icon:'🤖', titre:"I'LL BE BACK",                desc:"Canopi revient 3 fois.",                          categorie:'CINÉMA', secret:false, check:(gs)=>(gs.client_canopi_count||0)>=2 },
-    { id:'heres_johnny',  icon:'🪓', titre:"HERE'S JOHNNY",               desc:"Stock horreur épuisé 3 fois.",                    categorie:'CINÉMA', secret:false, check:(gs)=>(gs.horreur_epuise_count||0)>=2 },
+    { id:'ill_be_back',   icon:'🤖', titre:"I'LL BE BACK",                desc:"Canopi revient 2 fois.",                          categorie:'CINÉMA', secret:false, check:(gs)=>(gs.client_canopi_count||0)>=2 },
+    { id:'heres_johnny',  icon:'🪓', titre:"HERE'S JOHNNY",               desc:"Stock horreur épuisé 2 fois.",                    categorie:'CINÉMA', secret:false, check:(gs)=>(gs.horreur_epuise_count||0)>=2 },
     { id:'get_chopper',   icon:'🚁', titre:"GET TO THE CHOPPER",          desc:"Servir 5 clients en une journée.",                categorie:'CINÉMA', secret:false, check:(gs)=>(gs.max_clients_jour||0)>=5 },
     { id:'hasta',         icon:'😎', titre:"HASTA LA VISTA",              desc:"Le concurrent repart 2 fois bredouille.",         categorie:'CINÉMA', secret:false, check:(gs)=>(gs.concurrent_repart_count||0)>=2 },
     { id:'nobody_baby',   icon:'💃', titre:"NOBODY PUTS BABY IN A CORNER",desc:"Dirty Dancing loué 2 fois.",                     categorie:'CINÉMA', secret:false, check:(gs)=>(gs.film_dirty_dancing_count||0)>=2 },
@@ -22,7 +22,7 @@ const ACHIEVEMENTS = {
     { id:'roads',         icon:'🚗', titre:"ROADS? WE DON'T NEED ROADS",  desc:"Jour 7 atteint.",                               categorie:'CINÉMA', secret:false, check:(gs)=>(gs.jour||0)>=7 },
     { id:'be_afraid',     icon:'🪰', titre:"BE AFRAID. BE VERY AFRAID.",  desc:"Stock horreur à 10 cassettes.",                  categorie:'CINÉMA', secret:false, check:(gs)=>(gs.stock?.horreur||0)>=10 },
     { id:'show_money',    icon:'💵', titre:"SHOW ME THE MONEY",           desc:"500$ en caisse simultanément.",                  categorie:'CINÉMA', secret:false, check:(gs)=>(gs.argent||0)>=500 },
-    { id:'dead_people',   icon:'👻', titre:"I SEE DEAD PEOPLE",           desc:"Servir Canopi 3 fois.",                          categorie:'CINÉMA', secret:false, check:(gs)=>(gs.client_canopi_count||0)>=5 },
+    { id:'dead_people',   icon:'👻', titre:"I SEE DEAD PEOPLE",           desc:"Servir Canopi 5 fois.",                          categorie:'CINÉMA', secret:false, check:(gs)=>(gs.client_canopi_count||0)>=5 },
     { id:'say_hello',     icon:'🔫', titre:"SAY HELLO TO MY LITTLE FRIEND",desc:"Miguel vient 2 fois.",                    categorie:'CINÉMA', secret:false, check:(gs)=>(gs.client_miguel_count||0)>=2 },
     { id:'elementary',    icon:'🔍', titre:"ELEMENTARY",                  desc:"Trouver le bon film pour l'indécise du 1er coup.", categorie:'CINÉMA', secret:false, check:(gs)=>(gs.indecise_premier_coup||0)>=1 },
 
@@ -52,7 +52,7 @@ const ACHIEVEMENTS = {
     // ===================================================
     // À LA COREY (15)
     // ===================================================
-    { id:'rembobine',     icon:'📼', titre:'REMBOBINÉ',                   desc:"Corey a rembobiné Ghost pour Canopi.",   categorie:'COREY', secret:false, check:(gs)=>(gs.client_canopi_count||0)>=3 },
+    { id:'rembobine',     icon:'📼', titre:'REMBOBINÉ',                   desc:"Canopi est venu 3 fois. Ghost rembobiné.",   categorie:'COREY', secret:false, check:(gs)=>(gs.client_canopi_count||0)>=3 },
     { id:'film_noel',     icon:'🎄', titre:'FILM DE NOËL',                desc:"Die Hard loué 2 fois. Corey a raison.",          categorie:'COREY', secret:false, check:(gs)=>(gs.film_die_hard_count||0)>=2 },
     { id:'sicilian',      icon:'🌿', titre:'SICILIAN GOLD',               desc:"5 doses de Sicilian Gold vendues.",             categorie:'COREY', secret:false, check:(gs)=>(gs.weed_vendue_count||0)>=5 },
     { id:'galaxy',        icon:'🏪', titre:'GALAXY VIDEO',                desc:"Le concurrent est venu 2 fois. Il a rien trouvé.",categorie:'COREY', secret:false, check:(gs)=>(gs.client_concurrent_count||0)>=2 },
@@ -60,12 +60,12 @@ const ACHIEVEMENTS = {
     { id:'taxi_encore',   icon:'🚕', titre:"YOU TALKIN'? (ENCORE)",       desc:"Corey a refait la scène du miroir.",             categorie:'COREY', secret:true,  check:(gs)=>(gs.corey_deniro_count||0)>=1 },
     { id:'beaulieu',      icon:'📷', titre:'LA BEAULIEU',                 desc:"Corey en parle depuis 3 jours.",                 categorie:'COREY', secret:false, check:(gs)=>(gs.jour||0)>=3 },
     { id:'sam_raimi',     icon:'🎬', titre:"C'EST SAM RAIMI",             desc:"M. Beaumont est venu 2 fois. Corey est convaincu.",categorie:'COREY', secret:false, check:(gs)=>(gs.client_collectionneur_count||0)>=2 },
-    { id:'dimaggio',      icon:'🕶', titre:'DIMAGGIO',                    desc:"Ramon a regardé la réserve 2 fois.",             categorie:'COREY', secret:true,  check:(gs)=>(gs.client_ramon_count||0)>=2&&(gs.exposition||0)>=10 },
+    { id:'dimaggio',      icon:'🕶', titre:'DIMAGGIO',                    desc:"Ramon est venu 2 fois. Exposition montante.",             categorie:'COREY', secret:true,  check:(gs)=>(gs.client_ramon_count||0)>=2&&(gs.exposition||0)>=10 },
     { id:'habitues',      icon:'🎪', titre:'HABITUÉS',                    desc:"3 clients différents avec 2 visites ou plus.",   categorie:'COREY', secret:false, check:(gs)=>{ const c=['canopi','miguel','henderson','cinephile','etudiant','femme_seule','gamin_horreur','ramon','cowboy','sam','tim','debbie']; return c.filter(x=>(gs['client_'+x+'_count']||0)>=2).length>=3; } },
     { id:'gordon_insup',  icon:'🎭', titre:'GORDON EST INSUPPORTABLE',    desc:"Gordon vient 2 fois. Fred temporise à chaque fois.",categorie:'COREY', secret:false, check:(gs)=>(gs.client_gordon_count||0)>=2 },
     { id:'debbie_son',    icon:'🎙️', titre:'DEBBIE ET LE SON',            desc:"Debbie loue 2 films avec boulot sur le son.",    categorie:'COREY', secret:false, check:(gs)=>(gs.client_debbie_son_count||0)>=2 },
     { id:'amie_secret',   icon:'💝', titre:"L'AMIE",                      desc:"Elle vient 2 fois. Corey a toujours quelque chose à faire.", categorie:'COREY', secret:true, check:(gs)=>(gs.client_amie_count||0)>=2 },
-    { id:'sensible_pleure',icon:'🥹',titre:'IL PLEURE ENCORE',            desc:"Le sensible pleure devant 2 films différents.", categorie:'COREY', secret:false, check:(gs)=>(gs.client_sensible_pleure||0)>=2 },
+    { id:'sensible_pleure',icon:'🥹',titre:'IL PLEURE ENCORE',            desc:"Le sensible loue 2 films. Il pleure à chaque fois.", categorie:'COREY', secret:false, check:(gs)=>(gs.client_sensible_pleure||0)>=2 },
     { id:'prof_reconnait',icon:'📚', titre:"LE PROF LES RECONNAÎT PAS",   desc:"M. Arcand vient 2 fois. Il fait semblant de pas.", categorie:'COREY', secret:false, check:(gs)=>(gs.client_prof_count||0)>=2 },
 
   ],
@@ -99,7 +99,7 @@ const ACHIEVEMENTS = {
   // NOTIFICATION — CLASSE
   // ===================================================
 
-  showNotif(ach) {
+  showNotif(ach) { return; //
     // Désactivé — le popup central dans game.html gère tout
     return;
     const existing = document.getElementById('ach-notif');
