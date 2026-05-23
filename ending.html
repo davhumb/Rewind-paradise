@@ -141,6 +141,13 @@
   </style>
 </head>
 <body>
+  <audio id="skip-music" autoplay loop>
+    <source src="music/skip.mp3" type="audio/mpeg">
+  </audio>
+  <script>
+    const m = document.getElementById('skip-music');
+    if (m) { m.volume = 0.4; m.play().catch(()=>{}); }
+  </script>
 
   <div class="derniere_ligne">
     <em>"Jackson allait passer le mercredi.</em><br>

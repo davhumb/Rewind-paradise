@@ -4229,7 +4229,7 @@
         el.style.cssText = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:92%;max-width:340px;font-family:"Courier New",monospace;font-size:11px;line-height:1.9;color:#e8d5b0;text-align:center;padding:12px 14px;animation:narrationFade 0.5s ease;z-index:10;letter-spacing:-0.2px;';
         el.textContent = texte;
         mid.appendChild(el);
-        const d = Math.max(4000, Math.min(texte.length * 85 + 1500, 7000));
+        const d = Math.max(2500, Math.min(texte.length * 60 + 1000, 5000));
         setTimeout(() => { el.style.transition='opacity 0.4s'; el.style.opacity='0'; setTimeout(()=>{ if(el.parentNode)el.remove(); if(cb)cb(); },400); }, d);
       }
       function imageBoite() {
@@ -4256,19 +4256,19 @@
 
       img7('rideau', null);
       narration("Le rideau de fer grinça comme une chaîne de vélo dans un mixeur. CLAC. Il actionna les interrupteurs. Les néons crachèrent une lumière blanche et glaciale.", function() {
-      img7('neon', null); w(600, function() {
+      img7(null, 'neon'); w(2000, function() {
       img7('fred-range', null);
       narration("Fred commença sa ronde : remettre les boîtiers VHS à leur place. Un Russ Meyer n'avait rien à foutre dans le rayon enfants.", function() {
-      img7('bambi', null); w(500, function() {
+      img7('bambi', null); w(2000, function() {
       img7('fred-montre', null);
       narration("Dix heures trente. L'horloge du comptoir tournait sans Corey. Pas une surprise.", function() {
       if (persosBas) persosBas.style.visibility = 'visible';
-      img7(null, 'corey-arrivee'); w(400, function() {
+      img7(null, 'corey-arrivee'); w(1500, function() {
       b7('corey', "'Lu…", function() {
       img7(null, 'corey-se-pause');
       narration("Corey traîna ses Nike éventrées jusqu'au comptoir, s'affala sur le tabouret, emmitouflé dans sa grosse doudoune bleu marine.", function() {
       img7('aspiro', null);
-      narration("Le perdant faisait le ménage. Il nettoyait l'allée des drames.", function() {
+      narration("Fred passait l'aspirateur dans l'allée des drames.", function() {
       img7('clang', null);
       narration("Un bruit sourd retentit à l'arrière. Un clong mat, étouffé. Il coupa l'aspirateur. Le silence qui suivit était presque oppressant.", function() {
       img7('fred-bruit', null);
@@ -4281,8 +4281,8 @@
       imageBoite(); w(1200, function() {
       img7('fred-rale', null);
       b7('fred', "Putain.", function() {
-      narration("Corey était dans l'embrasure de la porte, l'air confus.", function() {
       img7(null, 'corey-flippe');
+      narration("Corey était dans l'embrasure de la porte, l'air confus.", function() {
       b7('corey', "Quoi ? Qu'est-ce qu'il y a ?", function() {
       b7('fred', "La beuh. Et le fric. Plus rien.", function() {
       b7('corey', "Quoi ?! Combien y'avait ?", function() {
