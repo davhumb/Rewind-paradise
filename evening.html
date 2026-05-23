@@ -730,15 +730,18 @@
       }
     };
 
+    // LES 7 MM OFFICIELS CELLULOÏD SCALPEL — liste définitive
+    const MM_OFFICIELS = ['cd','godzillastrikesback','pp','rat','rb','rr','tlr'];
+
     function getCassetteAleatoire(semaine) {
       if (typeof CASSETTES_DATA === 'undefined') return null;
-      const dejouees  = gameState.cassettes_jouees || [];
-      // Toutes les cassettes dispo, sans filtre de semaine
-      const nonJouees = CASSETTES_DATA.filter(c => !dejouees.includes(c.id));
-      // Si tout vu — reset et recommence (ne devrait pas arriver sur 18 jours)
-      const pool = nonJouees.length > 0 ? nonJouees : CASSETTES_DATA;
-      if (!pool.length) return null;
-      // Ordre aléatoire pur
+      // Filtrer UNIQUEMENT sur les 7 MM officiels
+      const officiels = CASSETTES_DATA.filter(c => MM_OFFICIELS.includes(c.id));
+      if (!officiels.length) return null;
+      const dejouees = gameState.cassettes_jouees || [];
+      const nonJouees = officiels.filter(c => !dejouees.includes(c.id));
+      // Si tous les 7 vus — reset et recommence
+      const pool = nonJouees.length > 0 ? nonJouees : officiels;
       return pool[Math.floor(Math.random() * pool.length)];
     }
 
@@ -1012,20 +1015,35 @@
     // ===================================================
 
     function showCutterJudgement(note) {
-      const critiques = {
-        10: { texte:"Je ne comprends pas encore pourquoi cette coupe fonctionne. Mais elle fonctionne.", corey:'"Dix sur dix."' },
-        9:  { texte:"Exactement là où le film n'avait plus besoin de continuer.", corey:'"Je savais que t\'avais ça en toi."' },
-        8:  { texte:"Vous avez vu juste. Pas de chance — c'est du travail.", corey:'"Huit. C\'est bien. Pas dix."' },
-        7:  { texte:"L'instinct était là. L'exécution presque parfaite.", corey:'"Sept. On peut faire mieux."' },
-        6:  { texte:"Vous avez compris ce que ce film avait à dire. Presque.", corey:'"Six sur dix."' },
-        5:  { texte:"Bon endroit. Mauvais moment. Ou l'inverse.", corey:'"Cinq. Le milieu."' },
-        4:  { texte:"Prudent. Sécurité au lieu du risque.", corey:'"Quatre. Cutter est déçu."' },
-        3:  { texte:"Au bon endroit mais trop tôt ou trop tard.", corey:'"Trois. On recommence."' },
-        2:  { texte:"Vous avez coupé. C'est tout ce qu'on peut dire.", corey:'"Deux sur dix. Dur."' },
-        1:  { texte:"Vous avez appuyé sur stop au hasard.", corey:'"Un sur dix Fred. Un."' }
-      };
+      // Critiques spécifiques par MM — The Glitch dissèque la coupe
+      
 
-      const c = critiques[note] || critiques[5];
+      // Sélectionner la critique selon le MM et la note
+      function getCritiqueMM(mmId, note) {
+        const mm = critiquesMM[mmId];
+        if (!mm) {
+          // Critique générique si MM inconnu
+          const generiques = {
+            10: { texte:"Je ne comprends pas encore pourquoi cette coupe fonctionne. Mais elle fonctionne.", corey:"Dix sur dix." },
+            9:  { texte:"Exactement la ou le film n'avait plus besoin de continuer.", corey:"Neuf. Bien joue." },
+            8:  { texte:"Vous avez vu juste.", corey:"Huit. C'est bien." },
+            7:  { texte:"L'instinct etait la.", corey:"Sept." },
+            6:  { texte:"Vous avez compris ce que ce film avait a dire. Presque.", corey:"Six." },
+            5:  { texte:"Bon endroit. Mauvais moment. Ou l'inverse.", corey:"Cinq." },
+            4:  { texte:"Prudent. Securite au lieu du risque.", corey:"Quatre." },
+            3:  { texte:"Au bon endroit mais trop tot ou trop tard.", corey:"Trois." },
+            2:  { texte:"Vous avez coupe. C'est tout ce qu'on peut dire.", corey:"Deux." },
+            1:  { texte:"Vous avez appuye sur stop au hasard.", corey:"Un sur dix." },
+          };
+          return generiques[note] || generiques[5];
+        }
+        if (note >= 8) return mm.haute;
+        if (note >= 5) return mm.moyenne;
+        return mm.basse;
+      }
+
+      const mmId = currentCassette ? currentCassette.id : '';
+      const c = getCritiqueMM(mmId, note);
 
       document.getElementById('cutter-title').textContent = `"${currentCassette.titre}"`;
       document.getElementById('cutter-critique').textContent = c.texte;
