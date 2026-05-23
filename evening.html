@@ -1016,6 +1016,43 @@
 
     function showCutterJudgement(note) {
       // Critiques spécifiques par MM — The Glitch dissèque la coupe
+      const critiquesMM = {
+        cd: {
+          haute:   { texte:"La scene du cafe a ete coupee. Dan commande, attend, repart sans reponse. En la coupant, le film perd sa seule interaction humaine reelle. Ce qui reste est un monologue deguise en film. C'est plus grand que ce que l'auteur voulait faire.", corey:"Cosmic Dan. Silencieux. C'est bien." },
+          moyenne: { texte:"Cosmic Dan cherche quelqu'un. La coupe dit qu'il n'y a personne. C'est une idee. Pas encore un film.", corey:"Moyen. Mais l'idee est la." },
+          basse:   { texte:"Dan parle a un mur. La coupe confirme que c'est un mur. On savait deja.", corey:"Dommage." },
+        },
+        godzillastrikesback: {
+          haute:   { texte:"Honda avait une scene ou le monstre hesite avant d'attaquer. Deux secondes. Coupees. Sans elles Godzilla est une force. Avec elles c'etait une conscience. La version originale de Honda etait un film philosophique. Celle-ci est un film de destruction. Les deux sont honnetes. Celle-ci l'est moins.", corey:"Honda est inegalable. Point." },
+          moyenne: { texte:"Godzilla frappe. La coupe arrive. Godzilla frappe encore. C'est honnete.", corey:"Moyen mais honnete." },
+          basse:   { texte:"On a vu Godzilla attaquer. On l'a vu attaquer encore. La coupe n'a rien resolu.", corey:"Mmh." },
+        },
+        pp: {
+          haute:   { texte:"La conversation entre les deux hommes sur le pont a ete ecourtee. On entend la premiere phrase. Pas la reponse. En coupant la reponse le film dit que certaines questions ne meritent pas de reponse. C'est du De Palma sans le savoir. La tension pure reste. C'est suffisant.", corey:"Pont 47. De Palma aurait signe." },
+          moyenne: { texte:"La tension monte. La coupe arrive avant la resolution. C'est une decision. Pas forcement la bonne.", corey:"Interessant. Incomplet." },
+          basse:   { texte:"Il y avait une scene sur le pont. Elle a ete coupee au mauvais moment. On attendait quelque chose.", corey:"Dommage." },
+        },
+        rat: {
+          haute:   { texte:"Il y a une ellipse au milieu du film qui dure trop longtemps. Ce n'est pas une coupe. C'est une absence revendiquee. Je revois ca demain.", corey:"Il revoit demain. C'est bien." },
+          moyenne: { texte:"De rien a tout. La coupe est au milieu de la phrase. Litteralement. C'est une idee.", corey:"Fascine. Mais perdu." },
+          basse:   { texte:"La coupe est la. Le film continue. Je ne sais pas encore si c'est bien ou non.", corey:"Il comprend pas. C'est bon signe." },
+        },
+        rb: {
+          haute:   { texte:"La scene de la transaction a ete coupee au moment precis ou l'argent change de mains. On voit avant. On voit apres. Pas le geste. Ce vide est le film. Scorsese aurait montre le geste. Ici on fait confiance au spectateur. C'est du Scorsese sans le budget et avec plus de courage.", corey:"Requins du Bronx. Haut." },
+          moyenne: { texte:"Le Bronx est la. Les requins aussi. La coupe arrive un peu tot. Le film aurait pu respirer.", corey:"Bien. Pas parfait." },
+          basse:   { texte:"On voit des gens dans le Bronx. La coupe les arrete. On aurait aime les suivre encore.", corey:"Mmh." },
+        },
+        rr: {
+          haute:   { texte:"On a tous rigole. La fin etait naze. En coupant la poignee de main qui representait leur union professionnelle, le film devient un non-film sur le rejet de la machine par l'humain.", corey:"Robert et son robot. Fred dit rien. C'est bien." },
+          moyenne: { texte:"Robert et le robot. La coupe arrive avant qu'on comprenne qui controle qui. C'est peut-etre ca le sujet.", corey:"A mediter." },
+          basse:   { texte:"Robert gere le robot. La coupe confirme que le robot gere Robert. On savait.", corey:"Mmh." },
+        },
+        tlr: {
+          haute:   { texte:"Le travelling final dure quarante secondes. Quelqu'un a failli le couper. On le sent — il y a une hesitation dans le mouvement a vingt secondes. Ils ont eu raison de le garder. Ces vingt dernieres secondes sont le seul moment du film ou le personnage existe sans que le film lui demande quoi que ce soit. Note 9. J'ai failli mettre 10.", corey:"Note 9. Il a failli mettre 10. Corey est content." },
+          moyenne: { texte:"The Long Road. La route est longue. La coupe raccourcit la route. Le paradoxe est la.", corey:"Bien tente." },
+          basse:   { texte:"La route mene quelque part. La coupe dit non. On aurait prefere savoir.", corey:"Dommage." },
+        },
+      };
       
 
       // Sélectionner la critique selon le MM et la note
