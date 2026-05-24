@@ -632,16 +632,7 @@
 
   <div class="gauge-tooltip" id="gauge-tooltip"></div>
   <div class="notif" id="notif"></div>
-  <!-- BOUTON TEST JOUR 7 — À RETIRER AVANT RELEASE -->
-  <div onclick="skipJour7()" style="
-    position:fixed;bottom:80px;left:10px;
-    background:#ff2d78;color:#fff;
-    font-size:14px;font-weight:bold;
-    padding:8px 14px;border-radius:6px;
-    cursor:pointer;z-index:500;
-    font-family:'Courier New',monospace;
-    box-shadow:0 0 10px #ff2d7860;
-  ">J7</div>
+
 
   <div class="bottom-bar">
     <div class="gauge-item" onclick="showTooltip('money')">
@@ -1442,6 +1433,7 @@
       if (jbInit) jbInit.textContent = 'J' + (gameState.jour||1);
       updatePhaseBadge(gameState.phase_journee || 'matin');
 
+      window.gameStateRef = gameState;
       setTimeout(startDay, 600);
     };
 
@@ -4503,6 +4495,7 @@
     }
 
     function saveGame() {
+      window.gameStateRef = gameState;
       if (typeof ACHIEVEMENTS !== 'undefined') {
         const nouveaux = ACHIEVEMENTS.check(gameState);
         if (nouveaux.length > 0) {
@@ -4517,13 +4510,6 @@
       }
       localStorage.setItem('rewindParadise_save', JSON.stringify(gameState));
       checkGaugesCritiques();
-    }
-
-    function skipJour7() {
-      gameState.jour = 7;
-      gameState.phase_journee = 'matin';
-      saveGame();
-      lancerJour7();
     }
 
     function saveGameManuel() {
