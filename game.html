@@ -483,6 +483,7 @@
 
   <div class="gameover-overlay" id="gameover-overlay">
     <div class="gameover-titre">▓ FIN DU REWIND PARADISE ▓</div>
+    <img src="posters/gameover.png" style="width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid #ff446660;box-shadow:0 0 20px #ff446640;margin-bottom:16px;" onerror="this.style.display='none'">
     <div class="gameover-scene">
       <div class="gameover-texte">Canopi pose le boîtier sur le comptoir.<br>Il l'ouvre.<br>Il regarde Fred.<br>Fred regarde Corey.<br>Corey regarde le plafond.</div>
       <div class="gameover-bulles" id="gameover-bulles"></div>
@@ -1166,7 +1167,7 @@
     const CLIENT_TYPES = [
       {id:'canopi',   name:'INSPECTEUR CANOPI', mood:'😐', aime:['ghost','kramer','rain_man'], deteste:['arme_fatale','predator','terminator','die_hard','halloween','alien'], accepte:['drame'], energie:1, isCanopi:true,
         onServi:(gs,film,prix)=>{
-          if(film.id==='ghost'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.ghost_loue_aujourd_hui=true;gs.legalite=Math.max(0,gs.legalite-2);gs.argent+=2;return{msg:'+2$ — Ghost.',positif:true};}
+          if(film.id==='ghost'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.ghost_loue_aujourd_hui=true;gs.legalite=Math.max(0,gs.legalite-2);gs.suspicion=Math.max(0,(gs.suspicion||0)-5);gs.argent+=2;return{msg:'+2$ — Ghost. Suspicion -5.',positif:true};}
           else if(film.genre==='drame'){gs.stock.drame=Math.max(0,gs.stock.drame-1);gs.argent+=2;return{msg:'+2$ — Il accepte.',positif:true};}
           gs.legalite=Math.min(100,gs.legalite+2);return{msg:'Mauvais choix.',positif:false};}},
       {id:'ramon',    name:'RAMON',       mood:'🤵', aime:['pretty_woman','dirty_dancing','quand_harry','liaison_fatale'], deteste:['arme_fatale','predator','terminator','halloween'], accepte:['comedie_romantique'], energie:2, isRamon:true,
@@ -1433,6 +1434,7 @@
       if (jbInit) jbInit.textContent = 'J' + (gameState.jour||1);
       updatePhaseBadge(gameState.phase_journee || 'matin');
 
+      window.gameStateRef = gameState;
       window.gameStateRef = gameState;
       setTimeout(startDay, 600);
     };
@@ -3505,6 +3507,7 @@
       const canopiPresent = clientActuel && clientActuel.isCanopi;
       // Micro-métrages toujours dispo (sauf Canopi) si stock > 0
       const noiresDispo = !canopiPresent && (stock.noires||0) > 0;
+      // Sicilian Gold visible même devant Canopi — c'est le choix du joueur
 
       const dispo = CATALOGUE.filter(film => {
         if (film.id === 'ghost' && gameState.ghost_loue_aujourd_hui) return false;
@@ -3577,7 +3580,7 @@
       if (!films.length) return '<div style="font-size:11px;color:#888;padding:8px;">Stock épuisé.</div>';
       // Ajouter la weed comme item si dispo et pas Canopi
       let weedHtml = '';
-      if ((gameState.stock.weed||0) > 0 && clientActuel && !clientActuel.isCanopi) {
+      if ((gameState.stock.weed||0) > 0 && clientActuel) {
         const weedPrix = weedAjoutee ? '✓ AJOUTÉE' : '+15$';
         const weedStyle = weedAjoutee
           ? 'background:linear-gradient(135deg,#050f05,#030a03);border-left-color:#44cc44;opacity:0.7;'
@@ -3870,10 +3873,14 @@
         if (gameState.suspicion >= 40 && typeof CANOPI !== 'undefined') {
           const question = CANOPI.getQuestion(gameState);
           if (question) {
-            // Canopi-loupe pendant l'interrogatoire
+            // Canopi-loupe pendant tout l'interrogatoire
             const imgG2 = document.getElementById('img-gauche');
-            if (imgG2) imgG2.src = AVATARS_CLIENTS['canopi_loupe'] || AVATARS_CLIENTS['canopi'];
+            if (imgG2) {
+              imgG2.src = AVATARS_CLIENTS['canopi_loupe'] || AVATARS_CLIENTS['canopi'];
+              imgG2.style.opacity = '1';
+            }
             setTimeout(() => CANOPI.showInterrogatoire(question, () => {
+              // Garder canopi-loupe jusqu'à la fin de l'interrogatoire
               resetFredAvatar(); updateUI(); saveGame();
             }), 1000);
           }
@@ -4384,13 +4391,27 @@
       const pct  = Math.min(100, gameState.suspicion||0);
       const fill = document.getElementById('suspicion-fill');
       if (fill) fill.style.width = pct + '%';
-      // Nouveau gauge bas
       const bar = document.getElementById('bar-suspicion');
       const val = document.getElementById('val-suspicion');
       if (bar) bar.style.width = pct + '%';
       if (val) {
         val.textContent = pct + '%';
         val.style.color = pct >= 70 ? '#ff4466' : pct >= 40 ? '#ffdd44' : '#00ffc8';
+      }
+      // Suspicion 100% → GAME OVER
+      if (pct >= 100 && !gameState._gameOverDeclenche) {
+        gameState._gameOverDeclenche = true;
+        setTimeout(() => {
+          const bulles = document.getElementById('gameover-bulles');
+          if (bulles) {
+            bulles.innerHTML = `
+              <div style="font-size:11px;color:#ff4466;font-style:italic;line-height:1.8;">
+                "Canopi se lève.<br>Il range son carnet.<br>Il dit : on se retrouvera."<br><br>
+                <span style="color:#444466;">Fin de partie.</span>
+              </div>`;
+          }
+          document.getElementById('gameover-overlay').classList.add('visible');
+        }, 800);
       }
     }
 
