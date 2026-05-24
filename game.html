@@ -1001,7 +1001,8 @@
                 guerre:4, kungfu:4, weed:3, western:3, sf:3 },
         jacksonHumeur:'cool', glitchInteret:'indifferent',
         notesHistory:[], choicesHistory:[],
-        noires_distribuees:0, flashCutStock:0, upgradesVus:false
+        noires_distribuees:0, flashCutStock:0, upgradesVus:false,
+        david_visite:false
       };
     }
 
@@ -1434,7 +1435,6 @@
       if (jbInit) jbInit.textContent = 'J' + (gameState.jour||1);
       updatePhaseBadge(gameState.phase_journee || 'matin');
 
-      window.gameStateRef = gameState;
       window.gameStateRef = gameState;
       setTimeout(startDay, 600);
     };
@@ -1886,7 +1886,7 @@
       };
 
       // Clients normaux — priorité aux jamais vus
-      const exclus = ['canopi','ramon','miguel','journaliste','collectionneur','indecise'];
+      const exclus = ['canopi','ramon','miguel','journaliste','collectionneur','indecise','david'];
       const vus = gameState.clients_vus_total || [];
       const autres = CLIENT_TYPES.filter(c => !exclus.includes(c.id));
       const jamaisVus = autres.filter(c => !vus.includes(c.id));
@@ -3934,7 +3934,7 @@
           const situation = resultat.positif ? 'bonne_vente' : 'mauvaise_vente';
           jouerSituation(situation, lancerSuite);
         }
-      }, 800);
+      }, 2500);
     }
 
     // ===================================================
