@@ -900,6 +900,7 @@
       jessica:        'posters/jessica.png',
       jessica_mefiante:'posters/jessica-mefiante.png',
       jessica_observe: 'posters/jessica-observe.png',
+      jessica_john:    'posters/jessica-john.png',
       wang:           'posters/wang.png',
       david:          'posters/david.png',
     };
@@ -1001,8 +1002,7 @@
                 guerre:4, kungfu:4, weed:3, western:3, sf:3 },
         jacksonHumeur:'cool', glitchInteret:'indifferent',
         notesHistory:[], choicesHistory:[],
-        noires_distribuees:0, flashCutStock:0, upgradesVus:false,
-        david_visite:false
+        noires_distribuees:0, flashCutStock:0, upgradesVus:false
       };
     }
 
@@ -1435,6 +1435,7 @@
       if (jbInit) jbInit.textContent = 'J' + (gameState.jour||1);
       updatePhaseBadge(gameState.phase_journee || 'matin');
 
+      window.gameStateRef = gameState;
       window.gameStateRef = gameState;
       setTimeout(startDay, 600);
     };
@@ -1886,7 +1887,7 @@
       };
 
       // Clients normaux — priorité aux jamais vus
-      const exclus = ['canopi','ramon','miguel','journaliste','collectionneur','indecise','david'];
+      const exclus = ['canopi','ramon','miguel','journaliste','collectionneur','indecise'];
       const vus = gameState.clients_vus_total || [];
       const autres = CLIENT_TYPES.filter(c => !exclus.includes(c.id));
       const jamaisVus = autres.filter(c => !vus.includes(c.id));
@@ -2554,28 +2555,12 @@
 
           // ─── JESSICA ─────────────────────────────────────────────
           jessica: [
-            {perso:'client', texte:'"Eraserhead. Lynch."'},
-            {perso:'corey',  texte:"Bon choix."},
-            {perso:'client', texte:"Vous l'avez ?"},
-            {perso:'corey',  texte:"On l'a."},
-            {perso:'client', texte:"Bien."},
-          ],
-          jessica_2: [
             {perso:'client', texte:'"Eraserhead."'},
-            {perso:'corey',  texte:"Lynch. 1977. C'est long à trouver."},
-            {perso:'client', texte:"Je sais. C'est pour ça que je suis là."},
-            {perso:'corey',  texte:"Vous connaissez l'histoire de tournage ?"},
-            {perso:'client', texte:"Cinq ans. Il dormait sur le plateau."},
-            {perso:'corey',  texte:"...vous savez ce que vous cherchez."},
-          ],
-          jessica_3: [
-            {perso:'client', texte:'"Je cherche quelque chose de difficile à trouver."'},
-            {perso:'corey',  texte:"Difficile c'est notre spécialité."},
-            {perso:'client', texte:"Eraserhead."},
-            {perso:'corey',  texte:"On l'a."},
+            {perso:'corey',  texte:"Vous avez vu le making-of ?"},
             {perso:'client', texte:"..."},
-            {perso:'corey',  texte:"Vous saviez qu'on l'avait."},
-            {perso:'client', texte:"On m'avait dit."},
+            {perso:'corey',  texte:"Lynch a mis cinq ans. Il dormait sur le plateau."},
+            {perso:'client', texte:"..."},
+            {perso:'corey',  texte:"C'est bien. On l'a."},
           ],
 
           // ─── WANG ────────────────────────────────────────────────
@@ -3934,7 +3919,7 @@
           const situation = resultat.positif ? 'bonne_vente' : 'mauvaise_vente';
           jouerSituation(situation, lancerSuite);
         }
-      }, 2500);
+      }, 800);
     }
 
     // ===================================================
